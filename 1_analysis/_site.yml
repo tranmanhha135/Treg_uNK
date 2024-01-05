@@ -1,0 +1,37 @@
+name: "Beta-defensin 22"
+output_dir: ../docs
+navbar:
+  title: "Beta-defensin 22"
+  left:
+  - text: "Home"
+    href: index.html
+  - text: "Pre-processing"
+    href: setUp.html
+  - text: "DE Analysis"
+    href: deAnalysis.html
+  - text: "Over-representation Analysis (ORA)"
+    menu:
+    - text: "Gene Ontology"
+      href: go.html
+    - text: "KEGG"
+      href: kegg.html
+    - text: "Reactome"
+      href: reactome.html
+    - text: "IPA"
+      href: ipa.html
+  - text: "Gene Set Enrichment Analysis (GSEA)"
+    href: gsea.html
+  right:
+  - icon: fa-linkedin
+    href: https://www.linkedin.com/in/ha-tran-6973b5130/
+  - icon: fa-github
+    href: https://github.com/tranmanhha135/
+output:
+  workflowr::wflow_html:
+    toc: yes
+    toc_float: yes
+    theme: sandstone
+    highlight: textmate
+    code_folding: hide
+    df_print: paged
+

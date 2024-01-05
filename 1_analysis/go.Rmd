@@ -1,0 +1,575 @@
+---
+title: "Gene ontology (GO) analysis"
+author: "Ha M. Tran"
+date: "2023-12-07"
+editor_options: 
+  chunk_output_type: console
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(
+  echo = TRUE,
+  message = FALSE,
+  warning = FALSE,
+  eval = TRUE,
+  fig.align = "center"
+)
+```
+
+
+```{r load libraries}
+# working with data
+library(dplyr)
+library(magrittr)
+library(readr)
+library(tibble)
+library(reshape2)
+library(tidyverse)
+
+# Visualisation:
+library(kableExtra)
+library(ggplot2)
+library(grid)
+library(DT)
+library(extrafont)
+
+# Custom ggplot
+library(gridExtra)
+library(ggbiplot)
+library(ggrepel)
+library(rrvgo)
+library(d3treeR)
+library(plotly)
+library(GOSemSim)
+
+
+# Bioconductor packages:
+library(edgeR)
+library(limma)
+library(Glimma)
+library(clusterProfiler)
+library(org.Mm.eg.db)
+library(enrichplot)
+
+library(pandoc)
+library(knitr)
+opts_knit$set(progress = FALSE, verbose = FALSE)
+opts_chunk$set(warning=FALSE, message=FALSE, echo=FALSE)
+
+```
+
+```{r importData}
+# load DGElist previously created in the set up
+dge <- readRDS(here::here("0_data/rds_objects/dge.rds"))
+fc <- readRDS(here::here("0_data/rds_objects/fc.rds"))
+fdr <- readRDS(here::here("0_data/rds_objects/fdr.rds"))
+lm <- readRDS(here::here("0_data/rds_objects/lm.rds"))
+lm_sig <- readRDS(here::here("0_data/rds_objects/lm_sig.rds"))
+
+# to increase the knitting speed. change to T to save all plots
+savePlots <- F
+export <- F
+```
+
+```{r importFunctions}
+# Theme
+bossTheme <- readRDS(here::here("0_data/functions/bossTheme.rds"))
+bossTheme_bar <- readRDS(here::here("0_data/functions/bossTheme.rds"))
+groupColour <- readRDS(here::here("0_data/functions/groupColour.rds"))
+groupColour_dark <- readRDS(here::here("0_data/functions/groupColour_dark.rds"))
+expressionCol <- readRDS(here::here("0_data/functions/expressionCol.rds"))
+expressionCol_dark <- readRDS(here::here("0_data/functions/expressionCol_dark.rds"))
+
+
+DT <- readRDS(here::here("0_data/functions/DT.rds"))
+
+# Plotting
+convert_to_superscript <- readRDS(here::here("0_data/functions/convert_to_superscript.rds"))
+exponent <- readRDS(here::here("0_data/functions/exponent.rds"))
+format_y_axis <- readRDS(here::here("0_data/functions/format_y_axis.rds"))
+```
+
+# Gene ontology (GO) Analysis 
+
+Functional enrichment analysis is a method used to identify biological functions or processes overrepresented in a set of genes or proteins. 
+
+Gene Ontology (GO) is a standardized system for annotating genes and their products with terms from a controlled vocabulary, organized into three main categories: Molecular Function, Biological Process, and Cellular Component.  
+
+-   **Biological Process (BP):** Describes the larger, coordinated biological events or processes in which a gene product is involved. This category represents a series of molecular events that contribute to a specific function.
+
+-   **Molecular Function (MF):** Describes the specific molecular activities that a gene product performs, such as catalytic or binding activities.
+
+-   **Cellular Component (CC):** Describes the location or structure within the cell where a gene product is active, such as the nucleus, cytoplasm, or membrane.
+
+Each of these three main categories is further organized into a hierarchical structure with more specific terms. The terms become more specialized as you move down the hierarchy (ontology level). Comparing a gene list to a reference database offers critical insights into the biological significance of gene expression changes.
+
+```{r}
+# circumvent rerunning of lengthy analysis.
+enrichGO <- readRDS(here::here("0_data/rds_objects/enrichGO.rds"))
+enrichGO_sig <- readRDS(here::here("0_data/rds_objects/enrichGO_sig.rds"))
+```
+
+```{r enrichGO, eval=FALSE}
+# `goSummaries` is a package created by Dr Stevie Pederson for filtering GO terms based on ontology level.
+goSummaries <- url("https://uofabioinformaticshub.github.io/summaries2GO/data/goSummaries.RDS") %>%
+  readRDS()
+minPath <- 3
+mmGO <- godata('org.Mm.eg.db', ont="BP")
+enrichGO=list()
+enrichGO_sig <- list()
+for (i in 1:length(fc)) {
+  for (j in 1:length(fdr)) {
+    name <- paste0(fc[i] %>% as.character(), "_", fdr[j] %>% as.character())
+    # x <- fc[i] %>% as.character()
+    # find enriched GO terms
+    enrichGO[[name]] <- clusterProfiler::enrichGO(
+      gene =lm_sig[[name]]$entrezid,
+      OrgDb = org.Mm.eg.db,
+      keyType = "ENTREZID",
+      ont = "ALL",
+      pAdjustMethod = "fdr",
+      pvalueCutoff = 0.05
+    )
+    
+    
+    enrichGO[[name]] <- pairwise_termsim(enrichGO[[name]], method = "Wang",semData = mmGO, showCategory = nrow(enrichGO[[name]]@result))
+  }
+}
+
+for (i in 1:length(fc)) {
+  for (j in 1:length(fdr)) {
+    name <- paste0(fc[i] %>% as.character(), "_", fdr[j] %>% as.character())
+
+    # bind to goSummaries to elminate go terms with ontology levels 1 and 2.
+    enrichGO_sig[[name]] <- enrichGO[[name]] %>% 
+      clusterProfiler::setReadable(OrgDb = org.Mm.eg.db, keyType = "auto")
+    
+    enrichGO_sig[[name]] <- enrichGO_sig[[name]] %>%
+      as.data.frame() %>%
+      rownames_to_column("id") %>%
+      left_join(goSummaries) %>%
+      dplyr::filter(shortest_path >= minPath) %>%
+      column_to_rownames("id")
+    
+    # adjust go results, separate compound column, add FDR column, adjust the GeneRatio column
+    enrichGO_sig[[name]] <- enrichGO_sig[[name]] %>%
+      separate(col = BgRatio, sep = "/", into = c("Total", "Universe")) %>%
+      dplyr::mutate(
+        logFDR = -log(p.adjust, 10),
+        GeneRatio = Count / as.numeric(Total)) %>% 
+      dplyr::select(c("Description", "ontology", "GeneRatio", "pvalue", "p.adjust", "logFDR", "qvalue", "geneID", "Count"))
+    
+    
+    enrichGO_sig[[name]]$Description <- enrichGO_sig[[name]]$Description %>% str_to_sentence()
+    
+    # at the beginnning of a word (after 35 characters), add a newline. shorten the y axis for dot plot
+    enrichGO_sig[[name]]$Description <- sub(pattern = "(.{1,45})(?:$| )",
+                                         replacement = "\\1\n",
+                                         x = enrichGO_sig[[name]]$Description)
+
+    # # remove the additional newline at the end of the string
+    enrichGO_sig[[name]]$Description <- sub(pattern = "\n$",
+                                         replacement = "",
+                                         x = enrichGO_sig[[name]]$Description)
+    
+  }
+}
+```
+
+```{r semanticSim, eval=FALSE}
+simMatrix <- lapply(enrichGO, function(x) {
+  calculateSimMatrix(x@result$ID,
+                     orgdb="org.Mm.eg.db",
+                     ont="BP",
+                     method="Wang")
+}) %>% setNames(names(enrichGO))
+
+scores <- lapply(enrichGO, function(x) {setNames(-log10(x@result$p.adjust), x@result$ID)}) %>% setNames(names(enrichGO))
+
+reducedTerms <- list()
+
+for(name in names(enrichGO)){
+
+  # scores <- setNames(-log10(x@result$p.adjust), x@result$ID)
+  reducedTerms[[name]] <- reduceSimMatrix(simMatrix[[name]],
+                             scores[[name]],
+                             threshold=0.7,
+                             orgdb="org.Mm.eg.db")
+  
+  reducedTerms[[name]]$parentTerm <- reducedTerms[[name]]$parentTerm %>% str_to_sentence()
+  reducedTerms[[name]]$parentTerm <- sub(pattern = "(.{1,35})(?:$| )", replacement = "\\1\n", x = reducedTerms[[name]]$parentTerm)
+  reducedTerms[[name]]$parentTerm <- sub(pattern = "\n$", replacement = "", x = reducedTerms[[name]]$parentTerm)
+  
+  reducedTerms[[name]]$term <- reducedTerms[[name]]$term %>% str_to_sentence()
+  reducedTerms[[name]]$term <- sub(pattern = "(.{1,35})(?:$| )", replacement = "\\1\n", x = reducedTerms[[name]]$term)
+  reducedTerms[[name]]$term <- sub(pattern = "\n$", replacement = "", x = reducedTerms[[name]]$term)
+  
+  
+}
+
+saveRDS(simMatrix, here::here("0_data/rds_objects/simMatrix_ora.rds"))
+saveRDS(scores, here::here("0_data/rds_objects/scores_ora.rds"))
+saveRDS(reducedTerms, here::here("0_data/rds_objects/reducedTerms_ora.rds"))
+```
+
+## Visualisations {.tabset .tabset-pills}
+
+Again, for data exploratory purposes, the following visualisations are GO enrichment analysis performed with set of DE genes significantly below **FDR \< 0.1 or \< 0.05** with and without FC threshold (TREAT). IMPORTANTLY, these GO terms are all significantly enriched (FDR <0.05)
+
+-   **Dot plot:** illustrates the top 25 enriched GO terms.
+
+    -   $Gene ratio =$ the number of significant DE gene in the term / the total of number of genes in the term. Indicated by the size
+    -   The shapes represents the three main GO categories, either BP, MP, or CC
+
+-   **Table:** list of all the significant GO terms
+
+-   **Upset:** illustrate the overlap of gene between different functional terms
+
+**Semantic similarity plots - GO specific**
+
+Due to the hierarchical structure of Gene Ontologies, the enriched sets generated often exhibit redundancy and pose challenges in interpretation.
+The subsequent analyses and visualizations seek to alleviate this redundancy in GO sets by grouping comparable terms based on their semantic similarity.
+The underlying concept behind measuring semantic similarity is grounded in the idea that genes sharing similar functions should possess analogous annotation vocabulary and exhibit close relationships within the ontology structure.
+
+NOTE: the following semantic similarity analyses are performed using Graph-based method (Wang et al. 2007)
+
+-   **Dendrogram plot:** performs hierarchical clustering on the semantic similarity of GO terms.
+
+    -   NOTE: to maintain readability, only the top 50 most significant GO terms are clustered. These clusters are then divided into 9 clades and labeled using the top 4 high-frequency words.
+
+-   **Scatter plot:** illustrates the UMAP space between semantically similar significant GO terms
+
+    -   Distances represent the similarity between terms,
+    -   Size represents the significance (in $-\log_{10}FDR$))
+    -   NOTE: to maintain reability, only the top 15 most significant parent terms are labeled. Parent terms are the most significant term in a particular cluster
+
+-   **Treemap plot:** Visualise the of hierarchical structures of semantically similar GO terms.
+
+    -   The terms are colored based on their parent term, 
+    -   The size of the term is proportional to the significance.
+
+
+**I recommend reading through the full list of significant GO terms and selecting the most biologically relevant for better visualisation**
+
+
+### FC=none, FDR<0.1 {.tabset .tabset-pills}
+
+#### Dot plot
+```{r dot, fig.width=8, fig.height=10}
+dot <- list()
+tab <- list()
+upset <- list()
+
+for (i in 1:length(fc)) {
+  for (j in 1:length(fdr)) {
+    name <- paste0(fc[i] %>% as.character(), "_", fdr[j] %>% as.character())
+    
+    
+    dot[[name]] <- ggplot(enrichGO_sig[[name]][1:25, ]) +
+      geom_point(aes(x = GeneRatio, y = reorder(Description, GeneRatio), colour = logFDR, size = Count, shape = ontology %>% as.factor())) +
+      scale_color_gradientn(colors = rev(c("#FB8072","#FDB462","#ffffd5","#8DD3C7","#80B1D3")),
+                            values = scales::rescale(c(min(enrichGO_sig[[name]]$logFDR), max(enrichGO_sig[[name]]$logFDR))),
+                            breaks = scales::pretty_breaks(n = 5)) +
+      scale_size(range = c(2,5)) +
+      labs(x = "Gene ratio", y = "", color = expression("-log"[10] * "FDR"), size = "Gene Counts", shape = "Ontology")+
+      bossTheme(base_size = 14,legend = "right")
+    
+    tab[[name]] <- enrichGO_sig[[name]] %>% 
+      dplyr::mutate_if(is.numeric, funs(as.character(signif(.,3)))) %>% 
+      DT(., caption = "Significantly enriched GO terms")
+    
+    
+    upset[[name]] <- upsetplot(x = enrichGO[[name]], 10)
+    
+    if(savePlots == TRUE) {
+      ggsave(filename = paste0("dot_", name, ".svg"), plot = dot[[name]], path = here::here("2_plots/3_FA/go/"),
+             width = 18, height = 20, units = "cm")
+      ggsave(filename = paste0("upset_", name, ".svg"), plot = upset[[name]], path = here::here("2_plots/3_FA/go/"), width = 20, height = 14, units = "cm")
+      
+    }
+    
+  }
+}
+
+dot[[1]]
+```
+
+#### Table
+```{r tab}
+# display the top 30 most sig
+tab[[1]]
+```
+
+#### Upset plot
+
+```{r upset, fig.width=11, fig.height=9}
+upset[[1]]
+```
+
+
+#### Dendrogram
+
+```{r semSim_den, fig.width=8, fig.height=11}
+# den <- lapply(enrichGO, function(x) {
+#   treeplot(x,showCategory = 50, fontsize = 3, cex_category = 0.5,
+#          cluster.params      = list(method = "ward.D", n = 9, label_words_n = 4, label_format = 30),
+#          hilight.params      = list(hilight = F, align = "both"),
+#          clusterPanel.params = list(clusterPanel = "heatMap", pie = "equal", legend_n = 3),
+#          offset.params       = list(bar_tree = rel(3), tiplab = rel(4), extend = 0.1, hexpand = 0.4)) +
+#   theme(legend.position = "bottom")
+# }) %>% setNames(enrichGO)
+
+# saveRDS(den, here::here("0_data/rds_objects/ora_dendrogram.rds"))
+den <- readRDS(here::here("0_data/rds_objects/ora_dendrogram.rds"))
+
+den[[1]]
+```
+
+#### Scatter plot
+
+Static scatter
+
+```{r semSim_scatter, fig.width = 8, fig.height=8}
+simMatrix <- readRDS(here::here("0_data/rds_objects/simMatrix_ora.rds"))
+scores <- readRDS(here::here("0_data/rds_objects/scores_ora.rds"))
+reducedTerms <- readRDS(here::here("0_data/rds_objects/reducedTerms_ora.rds"))
+
+revigo_dimReduction <- function (simMatrix, reducedTerms, algorithm = c("pca", "umap"), size = "score") {
+  
+  x <- switch(match.arg(algorithm), pca = cmdscale(as.matrix(as.dist(1 - simMatrix)), eig = TRUE, k = 3)$points, umap = umap::umap(as.matrix(as.dist(1 - simMatrix)),n_components = 3)$layout)
+  df <- cbind(as.data.frame(x), reducedTerms[match(rownames(x), reducedTerms$go), c("term", "parent", "parentTerm", size)])
+  
+  return(df)
+}
+dimReduced <- list()
+scatter <- list()
+for (name in names(enrichGO)){
+  set.seed(3)
+  dimReduced[[name]] <- revigo_dimReduction(simMatrix[[name]], reducedTerms[[name]], algorithm = "umap")
+  
+  m <- subset(dimReduced[[name]], parent == rownames(dimReduced[[name]]))[1:15,]
+  
+  scatter[[name]] <- ggplot(dimReduced[[name]], aes(x = V1, y = V2, color = parentTerm)) +
+    geom_point(aes_string(size = "score"), alpha = 0.5, stroke = 0) + 
+    scale_color_discrete(guide = "none") +
+    # scale_fill_discrete(guide = "none") +
+    scale_size_continuous(name = expression("-log"[10] * "FDR"), range = c(0,12)) + 
+    scale_x_continuous(name = "UMAP1") +
+    scale_y_continuous(name = "UMAP2") +
+    guides(x = ggh4x::guide_axis_truncated(trunc_lower = unit(0, "npc"),trunc_upper = unit(3, "cm")), 
+           y = ggh4x::guide_axis_truncated(trunc_lower = unit(0, "npc"),trunc_upper = unit(3, "cm"))) +
+    geom_label_repel(aes(label = m$parentTerm),data = m, box.padding = grid::unit(1,"lines"), size = 3, label.size = 0.15) + 
+    bossTheme(14) +
+    theme(
+      line = element_blank(),
+      rect = element_blank(),
+      panel.border = element_blank(),
+      axis.text.x = element_blank(),
+      axis.text.y = element_blank(),
+      axis.ticks = element_blank(),
+      legend.position = "right",
+      axis.line = element_line(arrow = arrow()),
+      axis.title = element_text(hjust = 0),
+      axis.title.y = element_text(
+        family = "Arial Narrow",
+        face = "plain",
+        size = 13,
+        angle = 90,
+        vjust = 1
+      ),
+      axis.title.x = element_text(
+        family = "Arial Narrow",
+        face = "plain",
+        size = 13,
+        angle = 0,
+        vjust = 0
+      )
+    )
+  
+}
+
+scatter[[1]]
+```
+
+Interactive scatter
+
+```{r interactiveScatter, fig.width = 9, fig.height=9}
+# a <- list(
+#   x = m$V1,
+#   y = m$V2,
+#   text = m$parentTerm,
+#   xref = "x",
+#   yref = "y",
+#   showarrow = TRUE,
+#   arrowhead = 0
+# )
+scatter_plotly <- list()
+for (name in names(enrichGO)){
+  scatter_plotly[[name]] <- ggplotly(scatter[[name]] + bossTheme(14)) %>% add_markers(size = 5) %>% layout(showlegend = FALSE)
+}
+
+scatter_plotly[[1]]
+```
+
+
+3D Interactive scatter
+
+
+```{r 3d interactive scatter, fig.width = 9, fig.height=9}
+scatter_3d <- list()
+
+for(name in names(enrichGO)){
+  scatter_3d[[name]] <- plot_ly(dimReduced[[name]], x = ~ V1, y = ~ V2, z = ~ V3, color = ~ parentTerm, size = ~ score,
+  marker = list(symbol = 'circle', sizemode = 'diameter'),
+  sizes = c(5, 70),
+  text = ~paste('Term    :', term,'<br>P. Term:', parentTerm, '<br>Sig       :', score),
+  hoverinfo = 'text') %>% 
+  layout(showlegend = FALSE,
+         title = 'Semantically similar GO terms',
+         scene = list(xaxis = list(title = 'UMAP 1',
+                      gridcolor = 'rgb(255, 255, 255)',
+                      zerolinewidth = 1,
+                      ticklen = 5,
+                      gridwidth = 2),
+               yaxis = list(title = 'UMAP 2',
+                      gridcolor = 'rgb(255, 255, 255)',
+                      zerolinewidth = 1,
+                      ticklen = 5,
+                      gridwith = 2),
+               zaxis = list(title = 'UMAP 3',
+                            gridcolor = 'rgb(255, 255, 255)',
+                            zerolinewidth = 1,
+                            ticklen = 5,
+                            gridwith = 2)))
+  
+}
+
+scatter_3d[[1]]
+```
+
+#### Treemap plot
+
+```{r semSim_tree, fig.width=8, fig.height=8}
+adjTreemap <- function (x, size = "score", title = "", ...) {
+  treemap::treemap(
+    x,
+    index = c("parentTerm", "term"),
+    vSize = size,
+    type = "index",
+    title = title,
+    palette = "Set2",
+    fontcolor.labels = c("grey85","#00000080"),
+    bg.labels = 0,
+    border.col = "grey10",
+    border.lwds = c(1,0.5),
+    fontfamily.labels = "Arial Narrow"
+  )
+}
+
+
+```
+
+Interactive Tree
+
+```{r interactiveTree, fig.width=9,fig.height=9}
+# png(filename=here::here("2_plots/tree.png"),width=20, height=20,units = "cm",res = 900)
+# tree <- adjTreemap(reducedTerms)
+# dev.off()
+
+library(htmltools)
+
+interactive_treemap <- function(x){
+  browsable(
+    tagList(
+      tags$head(
+        tags$style('text.label{font-size: 20px !important}')
+      ),
+      d3tree3(adjTreemap(x), rootname = "General")
+    )
+  )
+}
+
+interactive_treemap(reducedTerms[[1]])
+```
+
+```{r loop, results="asis"}
+## this function is basically creating chunks within chunks, and then
+## I use results='asis' so that the html image code is rendered 
+kexpand <- function(wd, ht, cap, res, echo) {
+  cat(knit(text = knit_expand(text = 
+     sprintf("```{r %s, results='%s', echo = '%s',fig.keep='all', fig.width=%s, fig.height=%s}\n.pl\n```", cap, res, echo, wd, ht)
+)))}
+
+special_kexpand <- function(wd, ht, cap, res, echo) {
+  cat(knit(text = knit_expand(text = 
+     sprintf("```{r %s, results='%s', echo = '%s',fig.keep='all', fig.width=%s, fig.height=%s}\nadjTreemap(x = reducedTerms[[i]])\n```", cap, res, echo, wd, ht)
+)))}
+
+# Loop through each FC value
+headers <- c("FC=none, FDR<0.1", "FC=none, FDR<0.05", "FC=1.1, FDR<0.1", 
+             "FC=1.1, FDR<0.05", "FC=1.2, FDR<0.1"  , "FC=1.2, FDR<0.05")
+types <- c("Dot plot", "Table", "Upset plot", "Dendrogram", "Scatter", "Treemap")
+
+for (i in 2:length(headers)) {
+  cat(paste0("### ",headers[i],"{.tabset .tabset-pills} \n\n"))
+  
+  cat(paste0("#### ",types[[1]]," \n"))
+  .pl <- dot[[i]] 
+  kexpand(wd = 8,ht = 10,cap = paste0("dot",i),res = "markup",echo = "TRUE")
+  cat("\n\n")
+  
+  cat(paste0("#### ",types[[2]]," \n"))
+  .pl <- tab[[i]]
+  kexpand(wd = 11,ht = 8,cap = paste0("tab",i), res = "markup",echo = "TRUE")
+  cat("\n\n")
+  
+  cat(paste0("#### ",types[[3]]," \n"))
+  .pl <- upset[[i]] 
+  kexpand(wd = 11,ht = 9,cap = paste0("upset",i),res = "markup",echo = "TRUE")
+  cat("\n\n")
+  
+  cat(paste0("#### ",types[[4]]," \n"))
+  .pl <- den[[i]] 
+  kexpand(wd = 8,ht = 11,cap = paste0("den",i),res = "markup",echo = "TRUE")
+  cat("\n\n")
+  
+  cat(paste0("#### ",types[[5]]," \n"))
+  .pl <- scatter[[i]] 
+  kexpand(wd = 8,ht = 8,cap = paste0("scatter",i),res = "markup",echo = "TRUE")
+  cat("\n\n")
+  
+  cat(paste0("Interactive Scatter \n"))
+  .pl <- scatter_plotly[[i]] 
+  kexpand(wd = 9,ht = 9,cap = paste0("scatter_interactive",i),res = "markup",echo = "TRUE")
+  cat("\n\n")
+  
+  cat(paste0("3D scatter \n"))
+  .pl <- scatter_3d[[i]] 
+  kexpand(wd = 9,ht = 9,cap = paste0("scatter_3d",i),res = "markup",echo = "TRUE")
+  cat("\n\n")
+  
+  cat(paste0("#### ",types[[6]]," \n"))
+  # adjTreemap(x = reducedTerms[[i]])
+  special_kexpand(wd = 9,ht = 9,cap = paste0("upset",i),res = "hide",echo = "FALSE")
+  cat("\n\n")
+  
+  # cat(paste0("Interactive Treemap\n"))
+  # .pl <- interactive_treemap(reducedTerms[[i]])
+  # kexpand(wd = 9,ht = 9,cap = paste0("upset",i),res = "hide",echo = "FALSE")
+  # cat("\n\n")
+}
+```
+# Export Data
+
+The following are exported:
+
+-   **GO.xlsx** - This spreadsheet contains all significantly enriched GO terms. NOTE:
+
+```{r exportData, eval=export}
+
+# save to excel
+writexl::write_xlsx(x = enrichGO_sig, here::here("3_output/GO_sig.xlsx"))
+saveRDS(object = enrichGO_sig,file = here::here("0_data/rds_objects/enrichGO_sig.rds"))
+saveRDS(object = enrichGO,file = here::here("0_data/rds_objects/enrichGO.rds"))
+
+```

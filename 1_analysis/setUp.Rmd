@@ -1,0 +1,504 @@
+---
+title: "Setting up for DGE analysis"
+author: "Ha Tran"
+date: "2023-12-07"
+output: html_document
+editor_options: 
+  chunk_output_type: console
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(
+  echo = TRUE,
+  message = FALSE,
+  warning = FALSE,
+  fig.align = "center",
+  fig.width = 11)
+```
+
+# Data Setup
+
+Prior to this analysis, reads were:
+
+1. Trimmed using `cutAdapt`
+
+2. Aligned to **GRCm39/mm39** using `STAR`
+
+3. Reads quantification performed with `STAR` 
+
+```{r loadLibraries}
+# working with data
+library(dplyr)
+library(magrittr)
+library(readr)
+library(tibble)
+library(reshape2)
+library(tidyverse)
+library(bookdown)
+library(here)
+
+# Visualisation:
+library(ggbiplot)
+library(ggrepel)
+library(grid)
+library(cowplot)
+library(corrplot)
+library(DT)
+library(plotly)
+library(patchwork)
+
+# Bioconductor packages:
+library(AnnotationHub)
+library(edgeR)
+library(limma)
+library(Glimma)
+
+# Fontlib
+library(extrafont)
+# loadfonts(device = "win")
+
+```
+
+```{r importData}
+rawCount <- readRDS(here::here("0_data/rds_objects/rawCount.rds"))
+DT <- readRDS(here::here("0_data/functions/DT.rds"))
+```
+
+```{r importFunctions}
+# Theme
+bossTheme <- readRDS(here::here("0_data/functions/bossTheme.rds"))
+bossTheme_bar <- readRDS(here::here("0_data/functions/bossTheme.rds"))
+groupColour <- readRDS(here::here("0_data/functions/groupColour.rds"))
+groupColour_dark <- readRDS(here::here("0_data/functions/groupColour_dark.rds"))
+
+# Plotting
+convert_to_superscript <- readRDS(here::here("0_data/functions/convert_to_superscript.rds"))
+exponent <- readRDS(here::here("0_data/functions/exponent.rds"))
+format_y_axis <- readRDS(here::here("0_data/functions/format_y_axis.rds"))
+```
+
+## Import raw count data
+
+To save time, this will only be performed once at the begining of the analysis. For subsequent analysis, the file will just be loaded.
+```{r importRawcount, eval=FALSE}
+# Import sample-specific raw counts, extract only the "geneID" and the unstranded read counts
+files <- list.files(path = here::here("0_data/rawData/"),pattern = '.tab$', full =T)
+rawCount <- lapply(files, function(x) {
+  read_tsv(file = x,
+           skip = 3,
+           col_select = c(1,2))
+})
+rawCount <- lapply(rawCount, setNames, c("gene","count"))
+
+# merge all samples into a single large rawcount matrix
+merge_dataframes <- function(df1, df2) {
+  merged_df <- merge(df1, df2, by = "gene", all = TRUE)
+  return(merged_df)
+}
+
+# Use the Reduce function to merge all data frames in the list
+rawCount <- Reduce(merge_dataframes, rawCount) %>% setNames(c("GeneID", "Negtative Control", "WT-1", "WT-2", "WT-3", "WT-4", "KO-1", "KO-2", "KO-3", "KO-4")) %>% column_to_rownames("GeneID")
+
+# remove the negative control sample
+rawCount <- rawCount[,-1]
+
+saveRDS(rawCount, here::here("0_data/rds_objects/rawCount.rds"))
+```
+
+## Importing Metadata
+There are generally two metadata required for DGE analysis.
+
+1.  metadata about *each sample*
+
+2.  metadata about *each gene*
+
+### Sample Metadata
+
+The sample metadata can be extracted from the `logCPM` column names. These data include `sample_id`, `sample_group`, `sample_type`.
+
+```{r sampleMetadata}
+
+sampleMeta <- data.frame("sample" = colnames(rawCount), `group` = c(rep("WT",4),rep("KO",4)), `rep` = rep(c("1","2","3","4"), 2))
+```
+
+### Gene Metadata {.tabset .tabset-pills}
+
+Gene annotation is useful for the DGE analysis as it will provide useful information about the genes. The annotated genes of *Mus musculus* can be pulled down by using Annotation Hub.
+
+Annotation Hub also has a web service that can be assessed through the display function. Pulling down the gene annotation can take a long time, so after the initial run, the annotated genes is saved to a `genes.rds` file. To save time, if `genes.rds` is already present, don't run the code chunk.
+
+```{r AnnotationHub, eval=FALSE}
+ah <- AnnotationHub()
+ah %>% 
+  subset(grepl("musculus", species)) %>%
+  subset(rdataclass == "EnsDb")
+
+#viewing web service for annotation hub 
+BiocHubsShiny::BiocHubsShiny()
+
+# Annotation hub html site was used to identify ID for the latest mouse genome from Ensembl: 
+# Ensembl 110 EnsDb for Mus musculus (GRCm39/mm39)
+ensDb <- ah[["AH113713"]]
+
+genes <- genes(ensDb) %>% 
+  as.data.frame()
+
+#the annotated genes are saved into a RDS object to save computational time in subsequent run of the setUp.Rmd
+saveRDS(object = genes,file = here::here("0_data/rds_objects/gene_metadata.rds"))
+```
+
+Using the annotated gene list through AnnotationHub(), load into object called `geneMetadata`. Filter out all genes that are present in the rawCount and display the number of unique gene_biotypes present in the rawCount and geneMetadata
+
+```{r geneAnnotation, paged.print=5}
+geneMeta <- read_rds(here::here("0_data/rds_objects/gene_metadata.rds"))
+
+#prepare the gene data frame to contain the genes listed in the rownames of 'rawCount' data
+geneMeta <- data.frame(gene = rownames(rawCount)) %>% 
+  left_join(geneMeta %>% as.data.frame, 
+            by = c("gene"="gene_name")) %>% 
+  dplyr::distinct(gene, .keep_all=TRUE)  
+
+rownames(geneMeta) <- geneMeta$gene
+
+#Using the table function, the details of the genes present in the rawCount data can be summaried.
+genes <- geneMeta$gene_biotype %>% table %>% as.data.frame()
+colnames(genes) <- c("Gene Biotype", "Frequency")
+genes$`Gene Biotype` <- as.character(genes$`Gene Biotype`)
+genes$`Gene Biotype`[grep("_", genes$`Gene Biotype`)] <- str_to_sentence(str_replace_all(genes$`Gene Biotype`[grep("_", genes$`Gene Biotype`)], "_", " "))
+
+```
+
+#### Interactive pie chart
+```{r pieBiotype}
+pie <- plot_ly(genes, labels = ~`Gene Biotype`, values = ~`Frequency`, type = 'pie',
+               textposition = 'inside',
+               textinfo = 'label+percent',
+               # insidetextfont = list(color = '#FFFFFF'),
+               hoverinfo = 'text',
+               text = ~paste(`Frequency`, ' genes'),
+               marker = list(colors = colors,line = list(color = '#FFFFFF', width = 1)),
+               #The 'pull' attribute can also be used to create space between the sectors
+        showlegend = T)
+pie <- pie %>% layout(title = 'Frequency of gene biotype',
+         xaxis = list(showgrid = FALSE, zeroline = FALSE, showticklabels = FALSE),
+         yaxis = list(showgrid = FALSE, zeroline = FALSE, showticklabels = FALSE))
+
+pie
+```
+
+
+#### Table
+```{r biotypeTab}
+genes %>% DT(.,caption = "Table 1: Gene biotype")
+```
+
+
+## Create DGEList object
+
+Digital Gene Expression List (DGElist) is a R object class often used for differential gene expression analysis as it simplifies plotting, and interaction with data and metadata.
+
+The DGEList object holds the three dataset that have imported/created, including `rawCount` data and `sampleMeta` and `geneMeta` metadata.
+
+To further save time and memory, genes that were not expressed across all samples (i.e., `0` count across all columns) are all removed
+
+```{r createDGElist}
+#Create DGElist with rawCOunt and gene data. Remove all genes with 0 expression in all treatment groups
+dge <- DGEList(counts = rawCount, 
+               samples = sampleMeta,
+               genes = geneMeta,
+               remove.zeros = TRUE
+               ) 
+```
+
+`r nrow(rawCount)-nrow(dge$counts)` non-expressed genes were removed. 
+
+# Pre-processing and QC
+
+Pre-processing steps increased the power of the downstream DGE analysis by eliminating majority of unwanted variance that could obscure the true variance caused by the differences in sample conditions. There are several standard steps that are commonly followed to pre-process and QC raw read counts, including:
+
+1.  Checking Library Size
+
+2.  Removal of Undetectable Genes
+
+3.  Normalisation
+
+4.  QC through MDS/PCA
+
+## Checking Library Size
+
+A simple pre-processing/QC step is checking the quality of library size (total number of mapped and quantified reads) for each treatment. This enable identification of potentially mis-labelled or outlying samples. This is often visualised through `ggplot`.
+
+```{r libraryChecks, fig.cap = "Sample library size. Dash line represent average library size"}
+custom_labels <- function(data, y, x) {
+  exp <- exponent(df = data,y_column = y)
+  ifelse(x >= 1000 | x<= 0.001 & x!=0, {
+    l <- x / 10^exp
+    parse(text=l)
+  }, format(x, scientific = FALSE))
+}
+
+libSize <- ggplot(dge$samples,aes(x = sample, y = lib.size, fill = group)) +
+  geom_col(width = 0.8) +
+  geom_hline(aes(yintercept = lib.size), data = . %>% summarise_at(vars(lib.size), mean), linetype = 2) +
+  scale_y_continuous(expand = expansion(mult = c(0, 0)), 
+                     labels = function(x) custom_labels(data = dge$samples, y = "lib.size", x = x)) +
+  scale_fill_manual(values = groupColour)+
+  labs(x = "", 
+       title = "Sample Library Size", 
+       y = paste0("Library size (\u00D710", convert_to_superscript(exponent(dge$samples, "lib.size")), ")")) +
+  coord_flip() +
+  bossTheme_bar(base_size = 14)
+
+libSize
+
+#save the plot to .svg
+ggsave(here::here("2_plots/1_QC/library_size.svg"),
+       plot = libSize,
+       width = 10,
+       height = 9,
+       units = "cm")
+```
+
+
+## Removal of Low-Expressed Genes
+
+Filtering out low-expressed genes is a standard pre-processing step in DGE analysis as it can significantly increase the power to differentiate differentially expressed genes by eliminating the variance caused by genes that are lowly expressed in all samples.
+
+The threshold of removal is arbitrary and is often determined after visualisation of the count distribution. The count distribution can be illustrated in a density plot through `ggplot`. A common metric used to display the count distribution is *log Counts per Million* (logCPM)
+
+```{r beforeFiltering, results='hide'}
+cpm_filter <- 1.5
+beforeFiltering <- dge %>% 
+  #transform the raw count to logCPM 
+  edgeR::cpm(log = TRUE) %>% 
+
+  #melting (reorganising) the transformed logCPM data with respect to the id variable (i.e., the row and column names). Very similar to pivot_long function
+  melt %>%
+
+  #retain all rows where the logCPM (value) is finite. All of them in this case are finite
+  dplyr::filter(is.finite(value)) %>% 
+
+  #plot the long formated logCPM counts in a density plot with x the logCPM and colour by the sample_id
+  ggplot(aes(x = value,colour = Var2)) +
+  geom_density() +
+  
+  #add figure tittle and subtitle and labels
+  labs(title = "Before filtering low-expressed genes",
+       subtitle = paste0(nrow(dge), " genes"),
+       x = "logCPM",
+       y = "Density",
+       colour = "Sample Groups") +
+  bossTheme(base_size = 14, legend = "bottom")
+
+#save plot
+ggsave("counts_before_filtering.svg",
+       plot = beforeFiltering + bossTheme(base_size = 14),
+       width = 10,
+       height = 10,
+       units = "cm",
+       path = here::here("2_plots/1_QC/"))
+```
+
+Ideally, the filtering the low-expressed genes should remove the large peak with `logCPM < 0`, i.e., remove any genes which have less than one count per million. A common guideline is to keep all genes that have > 1-2 cpm in the smallest group on a treatment. In this case, both groups (`WT` and `KO`) have four replicates. 
+
+At CPM `> 2`, majority of the peak with `logCPM < 0` were removed, thus, the filtering were relaxed to CPM `> 1.5` to increase the number of genes. This may need adjustments later as increase genes may also decrease the power of the differential expression algorithm
+
+To to keep genes that are are more than `r cpm_filter` CPM in at least 4 samples. Mathematically this would be identifying genes (rows) with CPM > `r cpm_filter`; and identifying total row sum that is `>= 4`.
+
+
+
+```{r afterFiltering, fig.cap="Before and after removal of lowly expressed genes"}
+#the genes kept have >2 CPM for at least 4 samples
+keptGenes <- (rowSums(cpm(dge) > cpm_filter) >= 4) 
+afterFiltering <- dge %>% 
+  
+  #transform the raw count to logCPM 
+  edgeR::cpm(log = TRUE) %>% 
+  
+  #for var1 (gene names) extract only the keptGenes and discard all other genes in the logCPM data
+  magrittr::extract(keptGenes,) %>% 
+
+  #melting (reorganising) the transformed logCPM data with respect to the id variable (i.e., the row and column names). Very similar to pivot_long function
+  melt %>% 
+  
+  #retain all rows where the logCPM (value) is finite. All of them in this case are finite
+  dplyr::filter(is.finite(value)) %>% 
+
+  #ggplot
+  ggplot(aes(x = value,colour = Var2)) +
+  geom_density() +
+  
+  #add figure tittle and subtitle and labels. since keptGenes is a logic element, the second element represents the number of genes that were kept after the filtering
+  labs(title = "After filtering low-expressed genes", 
+       subtitle = paste0(table(keptGenes)[[2]], " genes"),
+       x = "logCPM",
+       y = "Density",
+       colour = "Sample Groups") + 
+  bossTheme(base_size = 14,legend = "bottom")
+
+#save plot
+ggsave("counts_after_filtering.svg",
+       plot = afterFiltering + bossTheme(base_size = 14),
+       width = 10,
+       height = 10,
+       units = "cm",
+       path = here::here("2_plots/1_QC/"))
+
+
+#display plot side by side
+beforeFiltering + afterFiltering + plot_layout(guides = "collect") & bossTheme(base_size = 14,legend = "bottom")
+
+ggsave(filename = "counts_before_after_filtering.svg",
+       path = here::here("2_plots/1_QC/"),
+       width = 20,
+       height = 14,
+       units = "cm")
+```
+
+Following the removal of **`r nrow(rawCount)-nrow(dge$counts)`** non-expressed and **`r table(keptGenes)[[1]]`** low-expressed genes (\< 1.5CPM in at least 4 samples), **`r table(keptGenes)[[2]]`** genes remained for downstream analysis
+
+### Subset the DGElist object
+
+After filtering the low-expressed genes, the DGElist object is updated to eliminate the low-expressed genes from future analysis
+
+```{r subsetDGE}
+#extract genes from keptGenes and recalculate the lib size
+dge <- dge[keptGenes,,keep.lib.sizes = FALSE]
+```
+
+
+## Normalisation {.tabset .tabset-pills}
+
+Using the TMM (trimmed mean of M value) method of normalisation through the `edgeR` package. The TMM approach creates a scaling factor as an offset to be supplied to Negative Binomial model. The `calcNormFactors` function calculate the normalisation and return the adjusted `norm.factor` to the `dge$samples` element.
+
+### Mean-difference (MD) plots {.tabset .tabset-pills}
+
+The following visualisation of the TMM normalisation is plotted using the mean-difference (MD) plot. The MD plot visualise the library size-adjusted logFC between two samples (the difference) against the log-expression across all samples (the mean). In this instance, `sample 1` is used to compare against an artificial library construct from the average of all the other samples
+
+Ideally, the bulk of gene expression following the TMM normalisation should be centred around `expression log-ratio` of 0, which indicates that library size bias between samples have been successfully removed. This should be repeated with all the samples in the dge object.
+
+#### Before 
+```{r beforeNorm, fig.cap="MA plot before TMM normalisation"}
+par(mfrow = c(2, 4), mar = c(2, 2, 1, 1))
+
+for (i in 1:8) {
+  limma::plotMD(cpm(dge, log = TRUE), column = i)
+  abline(h = 0, col = "red", lty = 2, lwd = 2)
+}
+```
+
+#### After 
+
+```{r afterNorm, fig.cap="MA plot after TMM normalisation"}
+#after normalisation
+dge <- edgeR::calcNormFactors(object = dge, 
+                              method = "TMM")
+
+par(mfrow = c(2, 4), mar = c(2, 2, 1, 1))
+
+for (i in 1:8) {
+  limma::plotMD(cpm(dge, log = TRUE), column = i)
+  abline(h = 0, col = "red", lty = 2, lwd = 2)
+}
+```
+
+### Normalisation factors
+```{r normTab}
+dge$samples %>% DT(.,caption = "Table: Normalised samples")
+```
+
+## Pinciple Component Analysis (PCA)
+
+Principal Component Analysis (PCA) is a dimensionality reduction technique widely employed to capture the intrinsic patterns and variability within high-dimensional datasets. By transforming the original gene expression data into a set of uncorrelated principal components, PCA helps reveal the major sources of variation in the dataset. This enables assessment of overall similarity between samples
+
+```{r pca, fig.cap="PCA plot"}
+# Perform PCA analysis:
+pca_analysis <- prcomp(t(cpm(dge, log = TRUE)))
+
+# Create the plot
+pca_2d <- lapply(list(`1_2` = c("PC1", "PC2"),
+                      `1_3` = c("PC1", "PC3"),
+                      `2_3` = c("PC2", "PC3")), 
+            function(i) {
+              p <- pca_analysis$x %>% 
+                cbind(dge$samples) %>%  
+                as_tibble() %>% 
+                ggplot(aes(x = .data[[i[1]]], y = .data[[i[2]]], colour = group, shape = rep)) +
+                geom_point(size=3) +
+                scale_color_manual(values = groupColour)+
+                scale_shape_manual(values = c(15:18)) +
+                labs(x = paste0(i[1], " (", percent(summary(pca_analysis)$importance["Proportion of Variance",i[1]]),")"),
+                     y = paste0(i[2], " (", percent(summary(pca_analysis)$importance["Proportion of Variance",i[2]]),")"),
+                     colour = "Groups",
+                     shape = "Replicate") +
+                bossTheme(base_size = 14,legend = "right")
+              
+              ggsave(paste0(i[1], "_", i[2],".svg"), plot = p,path = here::here("2_plots/1_QC/"),width = 11, height = 9, units = "cm")
+              return(p)
+            })
+
+wrap_plots(pca_2d) + plot_layout(guides = "collect") & bossTheme(base_size = 14,legend = "bottom")
+
+```
+
+```{r pca_3d}
+pc <- pca_analysis[["x"]][,1:3] %>% as.data.frame()
+
+pc$PC2 <- -pc$PC2
+pc$PC3 <- -pc$PC3
+
+pc = cbind(pc, dge$samples)
+
+totVar <- summary(pca_analysis)[["importance"]]['Proportion of Variance',]
+totVar <- 100 * sum(totVar[1:3])
+
+pca_3d <- plot_ly(pc, x = ~PC1, y = ~PC2, z = ~PC3, color = ~dge$samples$group, colors = c('#f58d5f','#73c1a6'),marker = list(size = 5)) %>%
+  add_markers(size = 5)
+
+pca_3d <- pca_3d %>%
+  layout(
+    title = paste0('Total Explained Variance = ', totVar),
+    scene = list(bgcolor = "#e5ecf6")
+)
+
+pca_3d
+
+```
+
+
+### Correlation plot
+
+A correlation matrix between principal components (PC) and metadata is crucial for understanding the relationship between the high-dimensional features represented by principal components and additional information about the samples. This analysis helps identify if and how the PC are related to experimental conditions, sample characteristics, or other relevant factors; thus, enabling assessment of the biological or technical factors driving the observed patterns in the principal components.
+
+**Until more metadata is supplied, correlation matrix is unnecessary**
+
+```{r corr_plot, fig.cap="Correlation between first three principle components and measured variables", eval=FALSE}
+corr_plot <- pca_analysis$x %>%
+  as.data.frame() %>% 
+  rownames_to_column("sampleName") %>% 
+  left_join(samples) %>% 
+  as_tibble() %>% 
+  dplyr::select(
+    PC1, 
+    PC2, 
+    PC3,
+    Groups=group,
+    Mated,
+    "Library size"=lib.size,
+    "Normalisation Factor"=norm.factors
+  ) %>% 
+  mutate(Groups = as.numeric(as.factor(Groups))) %>% 
+  cor(method = "spearman") %>% 
+  corrplot(
+    type = "lower",
+    diag = FALSE,
+    addCoef.col = 1, addCoefasPercent = TRUE
+  )
+```
+
+## Save DGElist object
+
+```{r savingDGElist}
+# Save DGElist object into the data/R directory 
+saveRDS(object = dge, file = here::here("0_data/rds_objects/dge.rds"))
+```
