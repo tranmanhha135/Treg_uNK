@@ -1,7 +1,7 @@
-name: "Beta-defensin 22"
+name: "Treg-uNK"
 output_dir: ../docs
 navbar:
-  title: "Beta-defensin 22"
+  title: "Treg-uNK"
   left:
   - text: "Home"
     href: index.html

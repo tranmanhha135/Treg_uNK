@@ -1,0 +1,604 @@
+---
+title: "Functions"
+author: "Ha Tran"
+date: "5-12-2023"
+editor_options: 
+  chunk_output_type: console
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(
+  echo = TRUE,
+  message = FALSE,
+  warning = FALSE,
+  fig.align = "center",
+  fig.width = 11)
+```
+
+```{r loadLibraries, include=FALSE}
+# Data manipulations
+library(dplyr)
+library(magrittr)
+library(readr)
+library(tibble)
+library(reshape2)
+library(tidyverse)
+library(bookdown)
+library(readxl)
+library(writexl)
+library(xtable)
+library(data.table)
+
+# Stats
+library(car)
+library(rstatix)
+
+# Core plotting
+library(ggplot2)
+library(ggpubr)
+library(RColorBrewer)
+library(viridis)
+library(ggrepel)
+library(corrplot)
+library(ggplotify)
+library(plotly)
+library(patchwork)
+library(DT)
+
+```
+
+# Plotting Functions
+
+## Themes
+
+```{r customThemes}
+groupColour <- c("Treg" = "#73c1a6", "PBS" = "#f58d5f", "DT" = "#8DA0CB")
+groupColour_dark <- c("Treg" = "#3a9d78", "PBS" = "#d25f00","DT" = "#828FAD")
+expressionCol <- c("up" = "#c6331f", "down" = "#4581b8", "insig" = alpha("grey90",alpha = 0.9))
+expressionCol_dark <- c("up" = "#A11315", "down" = "#21638B", "insig" = alpha("grey80",alpha = 0.9))
+
+## Sarah Robertson's theme
+bossTheme <- function(base_size, base_family="Arial Narrow", title_family = "Arial", legend = F){
+  theme_bw() %+replace% 
+    theme(
+      panel.background = element_blank(), # necessary to avoid drawing panel outline
+      panel.grid.major = element_blank(), # get rid of major grid
+      panel.grid.minor = element_blank(), # get rid of minor grid
+      plot.background = element_blank(), # necessary to avoid drawing plot outline
+      legend.background = element_blank(),
+      # line = element_line(colour="black", size = 0.15),
+      panel.border = element_rect(fill = NA,colour="black", size = 0.15),
+      
+      axis.ticks = element_line(colour="black", size = 0.15),
+      axis.ticks.length = unit(2, "mm"),
+      
+      legend.box.background = element_blank(),
+      legend.key = element_blank(),
+      legend.box.margin = margin(-5,0,0,0),
+      
+      plot.title = element_text(family = title_family, face = "plain", size = base_size, angle = 0, color = "gray15",hjust = 0.5,vjust = 1.4),
+      plot.subtitle = element_text(family = base_family,color = "gray20", size = base_size-1, angle = 0, hjust = 0.5, vjust = .75, face = "plain"),
+      
+      legend.title = element_text(family = base_family, color = "gray20", size = base_size-2, angle = 0, hjust = 0.5, vjust = .5, face = "plain"),
+      legend.text = element_text(family = base_family, color = "gray20", size = base_size-3, angle = 0, hjust = 0, vjust = .5, face = "plain"),
+      
+      axis.title.y = element_text(family = title_family, face = "plain", size = base_size-1, angle = 90, vjust = 1),
+      axis.title.x = element_text(family = title_family, face = "plain", size = base_size-1, angle = 0, vjust = 0),
+      
+      axis.text.x = element_text(family = base_family, face = "plain", size = base_size-2, angle = 0),
+      axis.text.y = element_text(family = base_family, face = "plain", size = base_size-3,hjust = 1),
+      legend.position = ifelse(legend != FALSE, legend, "none")
+    )
+  }
+
+## Sarah Robertson's theme
+bossTheme_bar <- function(base_size, base_family="Arial Narrow", title_family = "Arial", legend = F){
+  bossTheme(base_size = base_size, base_family=base_family, title_family = title_family, legend = legend) %+replace% 
+    theme(
+      panel.border = element_blank(),
+      axis.line = element_line(colour = "black", size = 0.15)
+    )
+}
+
+saveRDS(bossTheme_bar, here::here("0_data/functions/bossTheme_bar.rds"))
+saveRDS(bossTheme, here::here("0_data/functions/bossTheme.rds"))
+saveRDS(groupColour, here::here("0_data/functions/groupColour.rds"))
+saveRDS(groupColour_dark, here::here("0_data/functions/groupColour_dark.rds"))
+saveRDS(expressionCol, here::here("0_data/functions/expressionCol.rds"))
+saveRDS(expressionCol_dark, here::here("0_data/functions/expressionCol_dark.rds"))
+```
+
+## Plot adjustments
+```{r basicPlots}
+DT <- function(x, caption){
+  DT::datatable(x,caption = caption,
+                extensions = 'Buttons',
+                options = list(dom = 'Blfrtip', scrollX=T,
+                               buttons = c('copy', 'csv', 'excel', 'pdf', 'print'),
+                               lengthMenu = list(c(10,25,50,-1),
+                                                 c(10,25,50,"All"))))
+}
+## Function to obtain maximum y position depending on whether there are sig values then increase it to the closest base 10. 
+adj_ymax <- function(i){
+  # the minimum ypos if there are no significant comparison
+  min_nonSig_yPos <- min(i$y.position)
+  
+  # IF the sig table have any sig values, remove all rows except sig (and nearly sig) values and get the maximum ypos of sig value. ELSE retrun the min nonSig y pos
+  if(min(i$p.adj) < 0.05){
+    t <- dplyr::filter(i, p.adj <= 0.08)
+    max_height <- max(t$y.position) 
+  } else {
+    max_height <- min_nonSig_yPos
+  }
+  # Round up to closest base 10
+  plyr::round_any(max_height,
+            10 ^ (floor(log10(max_height))),
+            f = ceiling)
+}
+
+
+## Function for changing the y.axis.labels to scientific notation and pretifying it
+format_y_axis <- function(x) {
+  # If value >= 10^4, apply notation
+  ifelse(x >= 10000 | x<= 0.001 & x!=0, {
+    # apply notation
+    l <- format(x, scientific = TRUE)
+    ## quote the part before the exponent to keep all the digits
+    l <- gsub("^(.*)e", "'\\1'e", l)
+    # Zero remains 0
+    # l <- gsub("0e\\+00","",l)
+    # Remove "+" after exponent, if exists
+    l <- gsub("e\\+","e",l)
+    # Turn the 'e' into plotmath format
+    l <- gsub("e", "%*%10^", l)
+    # Convert 1x10^ or 1.000x10^ -> 10^
+    l <- gsub("\\'1[\\.0]*\\'\\%\\*\\%", "", l)
+    
+    # Return this pretty y.axis.lab as an expression to properly display in plot. 
+    # PROBLEMS: does not bold, and cannot get it to bold. SVG exports seems to convert the "x" into "." (only on Ubuntu)
+    parse(text=l)
+  }, format(x, scientific = FALSE))
+}
+
+
+exponent <- function(df, y_column) {
+  ifelse(df[[y_column]] >= 10000 | df[[y_column]]<= 0.001 & df[[y_column]]!=0, {
+    most_common_exponent <- df %>%
+    mutate(exponent = floor(log10(abs(df[[y_column]])))) %>%
+    group_by(exponent) %>%
+    summarise(count = n()) %>%
+    arrange(desc(count), exponent) %>%
+    slice(1) %>%
+    pull(exponent)
+  return(most_common_exponent)
+  }, return(0))
+  
+}
+
+convert_to_superscript <- function(number) {
+  superscripts <- c('\u2070', '\u00B9', '\u00B2', '\u00B3', '\u2074', '\u2075', '\u2076', '\u2077', '\u2078', '\u2079')
+  
+  if (number >= 0 && number <= 9) {
+    return(superscripts[number + 1])
+  } else {
+    stop("Input number must be between 0 and 9")
+  }
+}
+saveRDS(DT, here::here("0_data/functions/DT.rds"))
+saveRDS(adj_ymax, here::here("0_data/functions/adj_ymax.rds"))
+saveRDS(format_y_axis, here::here("0_data/functions/format_y_axis.rds"))
+saveRDS(exponent, here::here("0_data/functions/exponent.rds"))
+saveRDS(convert_to_superscript, here::here("0_data/functions/convert_to_superscript.rds"))
+```
+
+## Box plot
+```{r boxPlot}
+## Function for generating the boxplots
+prism_box <- function(data, x, y, group, pVal, ymin, ymax, breaks, ylab, theme){
+  exp <- exponent(data, y)
+  custom_labels <- function(x) {
+    ifelse(x >= 1000 | x<= 0.001 & x!=0, {
+      l <- x / 10^exp
+      parse(text=l)
+    }, format(x, scientific = FALSE))
+  }
+  
+  ggplot(data, aes(y = .data[[y]], x = .data[[x]])) +
+    stat_boxplot(aes(y = .data[[y]], x = .data[[x]]),  geom = 'errorbar', linetype = 1, width = 0.3, lwd = 0.3) +
+    geom_boxplot(aes(fill = .data[[group]]), alpha = 0.7, outlier.shape = 1, width = 0.6, lwd = 0.3) +
+    stat_summary(mapping = aes(x = .data[[x]]),fun.y = "mean", geom = "point", size = 1) +
+    scale_fill_manual(values = groupColour) +
+    scale_colour_manual(values = groupColour_dark,guide = "none") +
+    {
+      if (!missing(pVal)) {
+      # If there are sig values, plot, else skip
+        if (min(pVal$p.adj) < 0.05) {
+          add_pvalue(data = dplyr::filter(pVal, p.adj <= 0.05), y.position = "y.position", label = "p.adj.signif", label.size = 7, tip.length = 0.03, bracket.size = 0.3)
+        }
+      }
+    } + {
+      if (missing(ylab))
+        if (exp >=3) {
+          labs(x = "", title = paste0(y, " (\u00D710", convert_to_superscript(exp), ")"))
+        } else {
+          labs(x = "", title = y)
+        }
+      else
+        labs(x = "", title = ylab)
+    } + {
+      if (missing(ymin)) {
+        scale_y_continuous(labels = custom_labels) 
+      } else {
+        scale_y_continuous(limits = c(ymin, ymax), expand = expansion(mult = c(0, 0)), labels = custom_labels, breaks = seq(ymin, ymax, by = breaks))
+      }
+      
+    } +
+    theme +
+    theme(legend.position = "none") 
+  
+}
+
+saveRDS(prism_box, here::here("0_data/functions/prism_box.rds"))
+```
+
+## Raincloud Plot
+```{r raincloud}
+raincloud <- function(data, in.variable, by, pVal, pValAdj, ymin, ymax, breaks, ylab, theme) {
+  exp <- exponent(data, in.variable)
+  custom_labels <- function(x) {
+    ifelse(x >= 1000 | x<= 0.001 & x!=0, {
+      l <- x / 10^exp
+      parse(text=l)
+    }, format(x, scientific = FALSE))
+  }
+  
+  ggplot(data, aes(y = .data[[in.variable]], x = .data[[by]])) +
+    ggdist::stat_halfeye(aes(fill = .data[[by]]),
+                         alpha = 0.7,
+                         adjust = .5,
+                         width = .6,
+                         .width = 0,
+                         justification = -.3,
+                         point_colour = NA) +
+    geom_boxplot(aes(fill = .data[[by]], color = .data[[by]]), alpha = 0.7,
+                 width = .25,
+                 outlier.shape = NA) +
+    geom_point(aes(color = .data[[by]]),
+               fill = "white",
+               shape = 21,
+               stroke = .1,
+               size = 0.65,
+               position = position_jitter(seed = 1, width = .12)) +
+    geom_point(aes(fill = .data[[by]]),
+               color = "transparent",
+               shape = 21,
+               stroke = .1,
+               size = 0.65,
+               alpha = .3,
+               position = position_jitter(seed = 1, width = .12)) +
+    scale_fill_manual(values = groupColour) +
+    scale_colour_manual(values = groupColour_dark) +
+    {
+      # If there are sig values, plot, else skip
+      if (min(pVal$p.adj) < 0.05)
+        add_pvalue(data =  dplyr::filter(pVal, `.y` == in.variable), y.position = "y.position", label = "p.adj.signif", label.size = 7, tip.length = 0.03, bracket.size = 0.3, bracket.shorten = 0.05)
+    } + {
+      if (missing(ylab))
+        if (exp >3) {
+          labs(x = "", y = paste0(in.variable, " (\u00D710", convert_to_superscript(exp), ")"))
+        } else {
+          labs(x = "", y = in.variable)
+        }
+      else
+        labs(x = "", y = ylab)
+    } + {
+      if (missing(ymin))
+        scale_y_continuous(labels = custom_labels)
+      else {
+        scale_y_continuous(limits = c(ymin, ymax), expand = expansion(mult = c(0, 0)), labels = custom_labels, breaks = seq(ymin, ymax, by = breaks))
+      }
+    } +
+    theme +
+    theme(legend.position = "none")
+  
+}
+
+saveRDS(raincloud, here::here("0_data/functions/raincloud.rds"))
+```
+
+## Minimal plot
+```{r minPlot}
+summary_stats <- function(x) {
+  mean_val <- mean(x)
+  se_val <- sd(x) / sqrt(length(x))
+  return(data.frame(y = mean_val, ymin = mean_val - se_val, ymax = mean_val + se_val))
+}
+
+prism_min <- function(data, in.variable, by, pVal, pValAdj, ymin, ymax, breaks, ylab, theme){
+  exp <- exponent(data, in.variable)
+  custom_labels <- function(x) {
+    ifelse(x >= 1000 | x<= 0.001 & x!=0, {
+      l <- x / 10^exp
+      parse(text=l)
+    }, format(x, scientific = FALSE))
+  }
+  df <- data %>% dplyr::select(c(1, 2,in.variable)) 
+  # df <- type.convert(df,as.is = F)
+  df$`Sample ID` <- df$`Sample ID` %>%  as.character()
+
+  out <- df %>% group_by(Group) %>% identify_outliers(in.variable)
+  
+  df$out <- df$`Sample ID`
+  df$out <- ifelse(!df$out %in% out$`Sample ID`, NA,df$out)
+  
+  df$point <- df[[in.variable]]
+  df$point <- ifelse(!df$out %in% out$`Sample ID`, df[[in.variable]],NA)
+# return(df)
+  ggplot(df, aes(y = df[,in.variable], x = df[,by])) +
+    geom_point(aes(y = df[,"point"], color = .data[[by]]),
+               fill = "white",
+               shape = 21,
+               stroke = .5,
+               size = 2,
+               position = position_jitter(seed = 1, width = .18)) +
+    geom_point(aes(y = df[,"point"], fill = .data[[by]]),
+               color = "transparent",
+               shape = 21,
+               stroke = .5,
+               size = 2,
+               alpha = .5,
+               position = position_jitter(seed = 1, width = .18)) +
+    geom_text(aes(y = df[, in.variable], color = df[, by], label = df[,"out"]),
+              na.rm=TRUE,position = position_jitter(seed = 1, width = .18),  size = 3.5)+
+    geom_errorbar(stat = "summary",
+                  fun.data = summary_stats,
+                  width = 0.2, linewidth = .4) +
+    scale_fill_manual(values = groupColour) +
+    scale_colour_manual(values = groupColour_dark,guide = "none") +
+    
+    guides(fill = guide_legend(override.aes = list(size = 4))) +
+    stat_summary(mapping = aes(x=df[,by]),fun.y = "mean", geom = "point", size = 1.5) +
+    {
+      # If there are sig values, plot, else skip
+      if (min(pVal$p.adj) < 0.05)
+        add_pvalue(data = dplyr::filter(pVal, p.adj <= 0.05), y.position = "y.position", label = "p.adj.signif", label.size = 7, tip.length = 0.03, bracket.size = 0.3, bracket.shorten = 0.05)
+    } + {
+      if (missing(ylab))
+        if (exp >=3) {
+          labs(x = "", title = paste0(in.variable, " (\u00D710", convert_to_superscript(exp), ")"))
+        } else {
+          labs(x = "", title = in.variable)
+        }
+      else
+        labs(x = "", title = ylab)
+    } + {
+      if (missing(ymin)) {
+        scale_y_continuous(labels = custom_labels)
+      } else {
+        scale_y_continuous(limits = c(ymin, ymax), expand = expansion(mult = c(0, 0)), labels = custom_labels, breaks = seq(ymin, ymax, by = breaks))
+      }
+
+    } +
+    theme +
+    theme(legend.position = "none",
+          axis.title.y = element_blank())
+
+}
+
+saveRDS(summary_stats, here::here("0_data/functions/summary_stats.rds"))
+saveRDS(prism_min, here::here("0_data/functions/prism_min.rds"))
+```
+
+## Bar plot
+```{r barPlot}
+prism_bar <- function(data, x, y, group, pVal, ylab, theme){
+  
+  exp <- exponent(data, y)
+  custom_labels <- function(x) {
+    ifelse(x >= 1000 | x<= 0.001 & x!=0, {
+      l <- x / 10^exp
+      parse(text=l)
+    }, format(x, scientific = FALSE))
+  }
+  
+  ggplot(data, aes(x = as.factor(x = .data[[x]])) , y = .data[[y]]) +
+    geom_bar(mapping = aes(fill = as.factor(.data[[group]])), stat = "summary", fun.y = "mean", width = .7, alpha = 0.7) +
+    geom_errorbar(mapping = aes(y = .data[[y]]), stat = "summary", fun.ymin = function(x) {mean(x) - mean_se(x)}, fun.ymax = function(x) {mean(x) + mean_se(x)}, width = 0.4, size = .3) +
+    # geom_text(aes(y = .data[[y]], color = .data[[group]], label = .data[["Sample ID"]]),position = position_beeswarm(cex = 3),size = 2.5)+
+    # geom_quasirandom(aes(y = .data[[y]]), cex = 2.2, alpha = 0.7, size = 0.85, fill = "grey20", stroke = 0.15)+
+    # geom_label_repel(aes(y = .data[[y]], label = data[,"Sample ID"]]), position = position_quasirandom()) +
+    # geom_beeswarm(aes(y = .data[[y]]), cex = 2.2, alpha = 0.7, size = 0.85, fill = "grey20", stroke = 0.15) +
+    scale_fill_manual(values = groupColour) +
+    scale_colour_manual(values = groupColour_dark,guide = "none") + 
+    {
+      if (!missing(pVal)) {
+        scale_y_continuous(limits = c(0, adj_ymax(pVal)), 
+                           expand = expansion(mult = c(0, 0)), 
+                           labels = custom_labels, 
+                           breaks = seq(0, adj_ymax(pVal), group = adj_ymax(pVal) / 5)) 
+        if (min(pVal$p.adj) < 0.05) {
+        add_pvalue(data = dplyr::filter(pVal, p.adj <= 0.05), 
+                   y.position = "y.position", 
+                   label = "p.adj.signif", 
+                   label.size = 7, 
+                   tip.length = 0.03, 
+                   bracket.size = 0.3, 
+                   bracket.shorten = 0.05)
+        }
+      }
+    } + {
+      if (missing(ylab))
+        if (exp >=3) {
+          labs(x = "", y = paste0(y, " (\u00D710", convert_to_superscript(exp), ")"))
+        } else {
+          labs(x = "", y = y)
+        }
+      else
+        labs(x = "", y = ylab)
+    } +
+    theme +
+    theme(legend.position = "none") 
+}
+saveRDS(prism_bar, here::here("0_data/functions/prism_bar.rds"))
+
+```
+
+### Y axis gap
+```{r axisGap}
+## Function to create gaps in the yaxis, arguments are:
+# gg = ggplot to apply cutting,
+# y1, y2 = cut from this range
+# t1 = tick width
+# ylim = specify if ylim in orginal plot is too big
+adj_axisGap <- function(data, y1, y2, t1, ylim, pValMat){
+  plot <- data + theme(axis.line = element_blank())
+  gg.gap(plot = plot,
+         segments = c(y1, y2),
+         tick_width = c(t1, t1),
+         rel_heights = c(0.3, 0.1, 0.8),
+         vjust = -0.7,
+         margin = c(0.5,0.1,0.1,0.75),
+         if (missing(ylim)) {
+           print("currently broken, too lazy to fix")
+           ylim = c(0,adj_ymax(pValMat[[ggIndex]]))
+         } else {
+           ylim = c(0,ylim)
+         })
+}
+
+
+
+
+saveRDS(adj_axisGap, here::here("0_data/functions/adj_axisGap.rds"))
+```
+
+
+
+
+# Stat Functions
+
+## Categorical vs Numerical 
+
+### T-test & Mann-Whitney
+
+*Haven't encountered this yet so problem for another day*
+
+
+### ANOVA & Kruskall-Wallis
+```{r statFunctions}
+# Function to access assumptions of ANOVA
+statTest <- function(data, groupCol, sampleCol) {
+ inVar <- data %>% dplyr::select(-c(groupCol, sampleCol)) %>% colnames()
+ AOV <- purrr::map(data[,inVar], ~aov(.x ~ data[[groupCol]]))
+ 
+ lv <- lapply(inVar, function(x) data %>% levene_test(data[[x]] ~ data[[groupCol]])) %>% setNames(., inVar) # Homoscedasticity test, H0: homoscedastic
+ lv_simple <- sapply(inVar, function(x) ifelse(lv[[x]]$`p`[[1]] < 0.05, "sig", "not sig")) %>% setNames(inVar) %>% unlist() %>% as.data.frame()
+ 
+ sh <- lapply(inVar, function(x) shapiro_test(residuals(AOV[[x]]))) %>% setNames(., inVar) # Normality test, H0: Normally distributed
+ sh_simple <- sapply(inVar, function(x) ifelse(sh[[x]]$`p.value`[[1]] < 0.05, "sig", "not sig")) %>% setNames(inVar) %>% unlist() %>% as.data.frame()
+ 
+ merged <- cbind(lv_simple,sh_simple) 
+ colnames(merged) <- c("lv","sh")
+ print(merged)
+}
+
+# Function to perform post-hoc test and calculate pVal and pVal placement
+statRes <- function(data, groupCol, sampleCol, ...) {
+  inVar <- data %>% dplyr::select(-c(groupCol, sampleCol)) %>% colnames()
+  AOV <- purrr::map(data[,inVar], ~aov(.x ~ data[[groupCol]]))
+  sh <- lapply(inVar, function(x) shapiro_test(residuals(AOV[[x]]))) %>% setNames(., inVar)
+
+  res <- lapply(inVar, function(x) {
+    ifelse(sh[[x]]$p.value[[1]] < 0.05,
+           r <- data %>% kruskal_test(data[[x]] ~ data[[groupCol]]),
+           r <- aov(data[[x]] ~ data[[groupCol]]))
+    return(r)
+  }) %>% setNames(., inVar)
+
+  r.pv=list()
+  res.pv <- sapply(inVar, function(x) {
+    ifelse(sh[[x]]$p.value[[1]] < 0.05,
+           # print("sh sig"),
+           r.pv[[x]] <- data %>% dunn_test(formula(paste0("`", x, "` ~ ", groupCol)), p.adjust.method = "none") 
+           %>%
+             add_y_position(data = data, fun = "max", formula = formula(paste0("`", x, "` ~ ", groupCol))),
+           # print("sh nosig"))
+           r.pv[[x]] <- tukey_hsd(res[[x]]) %>%
+             add_y_position(data = data, fun = "max", formula = formula(paste0("`", x, "` ~ ", groupCol))))
+    return(r.pv)
+  }) %>% setNames(., inVar)
+  
+  return(res.pv)
+}
+# Function to plot
+statPlot <- function(data, groupCol, sampleCol, statRes, type, grid, save, w, h, u,...) {
+  inVar <- data %>% dplyr::select(-c(groupCol, sampleCol)) %>% colnames()
+  
+  
+  if (type == "bar"){
+    gg <- lapply(inVar, function(x) prism_bar(data = data, in.variable = x, by = groupCol, pVal = statRes[[x]], theme = bossTheme_bar)) %>% setNames(inVar)
+  } else if(type == "box"){
+    gg <- lapply(inVar, function(x) prism_box(data = data, in.variable = x, by = groupCol, pVal = statRes[[x]], theme = bossTheme)) %>% setNames(inVar)
+  } else {
+    gg <- lapply(inVar, function(x) prism_min(data = data, in.variable = x, by = groupCol, pVal = statRes[[x]], theme = bossTheme)) %>% setNames(inVar)
+  }
+  
+  if (save == TRUE) {
+    for (i in 1:length(inVar)) {
+      ggsave(filename = paste0(inVar[i],".svg"), plot = gg[[i]], path = here::here("2_plots/flowCyto/"), width = w, height = h, units = u)
+    }
+  }
+  
+  if (grid == TRUE) {
+    grid <- patchwork::wrap_plots(gg) & plot_annotation(tag_levels = "A") & theme(plot.tag = element_text(face='bold'))
+    return(grid)
+  } else {
+    return(gg)
+  }
+}
+
+saveRDS(statTest, here::here("0_data/functions/statTest.rds"))
+saveRDS(statRes, here::here("0_data/functions/statRes.rds"))
+saveRDS(statPlot, here::here("0_data/functions/statPlot.rds"))
+```
+
+## Categorical vs Grouped-Numerical
+
+
+```{r catvGroupedNum}
+# Example 
+catvGroupNum_assumptionsTest <- function(data, groupCol, inVar, groupBy) {
+  outliers <- data %>% group_by(!!sym(groupCol), !!sym(groupBy)) %>% identify_outliers(!!sym(inVar))
+  normal <- data %>% group_by(!!sym(groupCol), !!sym(groupBy)) %>% shapiro_test(!!sym(inVar)) # H0 = Normal
+  qq <- ggqqplot(data, inVar, ggtheme = theme_bw()) +  facet_grid(groupCol ~ groupBy) ## QQ plots
+  levene <- data %>% group_by(!!sym(groupBy)) %>% levene_test(.[[inVar]] ~ .[[groupCol]]) #H0 = Homoscedastic
+  
+  return(list(outliers = outliers, normal = normal, qq = qq, levene = levene))
+}
+
+catvGroupNum_statRes <- function(data, groupCol, inVar, groupBy)
+{
+  # data %>% group_by(!!sym(groupBy)) %>% anova_test(.[[inVar]] ~ .[[groupCol]]) # AOV
+  tukey <- data %>% group_by(!!sym(groupBy)) %>% tukey_hsd(formula(paste0("`", inVar, "` ~ ", groupCol))) %>% dplyr::mutate(term = "Count") %>% dplyr::filter(p.adj<= 0.05) %>% rstatix::add_xy_position(fun = "max", x = groupBy, step.increase = 0.05)
+}
+
+catvGroupNum_statPlot <- function(data, groupCol, inVar, groupBy, statRes, xlab, ylab, save, w, h) {
+  # inVar <- data %>% dplyr::select(-c(groupCol, sampleCol)) %>% colnames()
+  
+  p <- prism_groupBar(data = data, groupCol = groupCol, inVar = inVar, groupBy =  groupBy, pVal = statRes, xlab = xlab, ylab = ylab, theme = bossTheme_bar)
+  
+  if (save == TRUE) {
+    ggsave(filename = paste0(inVar,".svg"), plot = p, path = here::here("2_plots/"), width = w, height = h)
+  } else {
+    return(p)
+  }
+}
+
+saveRDS(catvGroupNum_assumptionsTest, here::here("0_data/functions/catvGroupNum_assumptionsTest.rds"))
+saveRDS(catvGroupNum_statRes, here::here("0_data/functions/catvGroupNum_statRes.rds"))
+saveRDS(catvGroupNum_statPlot, here::here("0_data/functions/catvGroupNum_statPlot.rds"))
+```

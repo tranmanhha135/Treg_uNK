@@ -1,7 +1,7 @@
 ---
 title: "Setting up for DGE analysis"
 author: "Ha Tran"
-date: "2023-12-07"
+date: "06-01-2024"
 output: html_document
 editor_options: 
   chunk_output_type: console
@@ -12,17 +12,15 @@ knitr::opts_chunk$set(
   echo = TRUE,
   message = FALSE,
   warning = FALSE,
-  fig.align = "center",
-  fig.width = 11)
+  fig.align = "center")
 ```
 
 # Data Setup
-
-Prior to this analysis, reads were:
+Prior to this analysis, Daniel Thompson (SAGC) performed:
 
 1. Trimmed using `cutAdapt`
 
-2. Aligned to **GRCm39/mm39** using `STAR`
+2. Aligned to **GRCm38/mm10** using `STAR`
 
 3. Reads quantification performed with `STAR` 
 
@@ -55,16 +53,15 @@ library(Glimma)
 
 # Fontlib
 library(extrafont)
-# loadfonts(device = "win")
-
 ```
 
 ```{r importData}
 rawCount <- readRDS(here::here("0_data/rds_objects/rawCount.rds"))
 DT <- readRDS(here::here("0_data/functions/DT.rds"))
-```
 
-```{r importFunctions}
+# to increase the knitting speed. change to T to save all plots
+savePlots <- F
+
 # Theme
 bossTheme <- readRDS(here::here("0_data/functions/bossTheme.rds"))
 bossTheme_bar <- readRDS(here::here("0_data/functions/bossTheme.rds"))
@@ -80,28 +77,11 @@ format_y_axis <- readRDS(here::here("0_data/functions/format_y_axis.rds"))
 ## Import raw count data
 
 To save time, this will only be performed once at the begining of the analysis. For subsequent analysis, the file will just be loaded.
+
 ```{r importRawcount, eval=FALSE}
-# Import sample-specific raw counts, extract only the "geneID" and the unstranded read counts
-files <- list.files(path = here::here("0_data/rawData/"),pattern = '.tab$', full =T)
-rawCount <- lapply(files, function(x) {
-  read_tsv(file = x,
-           skip = 3,
-           col_select = c(1,2))
-})
-rawCount <- lapply(rawCount, setNames, c("gene","count"))
+rawCount <- read_csv(here::here("0_data/rawData/all.counts.genes.csv"))  %>% setNames(c("GeneID", "DT1", "DT2", "DT3", "DT4", "DT6", "PBS1", "PBS2", "PBS3", "PBS4", "PBS5", "PBS6", "Treg1", "Treg2", "Treg3", "Treg4", "Treg5")) %>% column_to_rownames("GeneID")
 
-# merge all samples into a single large rawcount matrix
-merge_dataframes <- function(df1, df2) {
-  merged_df <- merge(df1, df2, by = "gene", all = TRUE)
-  return(merged_df)
-}
-
-# Use the Reduce function to merge all data frames in the list
-rawCount <- Reduce(merge_dataframes, rawCount) %>% setNames(c("GeneID", "Negtative Control", "WT-1", "WT-2", "WT-3", "WT-4", "KO-1", "KO-2", "KO-3", "KO-4")) %>% column_to_rownames("GeneID")
-
-# remove the negative control sample
-rawCount <- rawCount[,-1]
-
+rawCount <- rawCount[!rownames(rawCount) %in% c("ambiguous", "no_feature"),]
 saveRDS(rawCount, here::here("0_data/rds_objects/rawCount.rds"))
 ```
 
@@ -114,11 +94,12 @@ There are generally two metadata required for DGE analysis.
 
 ### Sample Metadata
 
-The sample metadata can be extracted from the `logCPM` column names. These data include `sample_id`, `sample_group`, `sample_type`.
+The sample metadata can be extracted from the `rawCount` column names. These data include `sample_id`, `sample_group`, `sample_type`.
 
 ```{r sampleMetadata}
-
-sampleMeta <- data.frame("sample" = colnames(rawCount), `group` = c(rep("WT",4),rep("KO",4)), `rep` = rep(c("1","2","3","4"), 2))
+sampleMeta <- data.frame("sample" = colnames(rawCount), 
+                         `group` = c(rep("DT",5),rep("PBS",6),rep("Treg",5)),
+                         `rep` = c(1,2,3,4,6,1,2,3,4,5,6,1,2,3,4,5))
 ```
 
 ### Gene Metadata {.tabset .tabset-pills}
@@ -169,6 +150,7 @@ genes$`Gene Biotype`[grep("_", genes$`Gene Biotype`)] <- str_to_sentence(str_rep
 ```
 
 #### Interactive pie chart
+
 ```{r pieBiotype}
 pie <- plot_ly(genes, labels = ~`Gene Biotype`, values = ~`Frequency`, type = 'pie',
                textposition = 'inside',
@@ -208,6 +190,8 @@ dge <- DGEList(counts = rawCount,
                genes = geneMeta,
                remove.zeros = TRUE
                ) 
+
+dge$samples$group <- factor(dge$samples$group, levels = c("PBS", "DT", "Treg"))
 ```
 
 `r nrow(rawCount)-nrow(dge$counts)` non-expressed genes were removed. 
@@ -251,14 +235,16 @@ libSize <- ggplot(dge$samples,aes(x = sample, y = lib.size, fill = group)) +
 
 libSize
 
-#save the plot to .svg
-ggsave(here::here("2_plots/1_QC/library_size.svg"),
-       plot = libSize,
-       width = 10,
-       height = 9,
-       units = "cm")
+if(savePlots){
+  ggsave(here::here("2_plots/1_QC/library_size.svg"),
+         plot = libSize,
+         width = 10,
+         height = 9,
+         units = "cm")
+}
 ```
 
+**NOTE:** The library size here is small because "ambiguous" and "no_feature" reads were removed
 
 ## Removal of Low-Expressed Genes
 
@@ -269,66 +255,45 @@ The threshold of removal is arbitrary and is often determined after visualisatio
 ```{r beforeFiltering, results='hide'}
 cpm_filter <- 1.5
 beforeFiltering <- dge %>% 
-  #transform the raw count to logCPM 
-  edgeR::cpm(log = TRUE) %>% 
-
-  #melting (reorganising) the transformed logCPM data with respect to the id variable (i.e., the row and column names). Very similar to pivot_long function
+  edgeR::cpm(log = TRUE) %>%
   melt %>%
-
-  #retain all rows where the logCPM (value) is finite. All of them in this case are finite
-  dplyr::filter(is.finite(value)) %>% 
-
-  #plot the long formated logCPM counts in a density plot with x the logCPM and colour by the sample_id
+  dplyr::filter(is.finite(value)) %>%
   ggplot(aes(x = value,colour = Var2)) +
   geom_density() +
-  
-  #add figure tittle and subtitle and labels
   labs(title = "Before filtering low-expressed genes",
        subtitle = paste0(nrow(dge), " genes"),
        x = "logCPM",
        y = "Density",
        colour = "Sample Groups") +
-  bossTheme(base_size = 14, legend = "bottom")
+  bossTheme(base_size = 14)
 
-#save plot
-ggsave("counts_before_filtering.svg",
-       plot = beforeFiltering + bossTheme(base_size = 14),
-       width = 10,
-       height = 10,
-       units = "cm",
-       path = here::here("2_plots/1_QC/"))
+if(savePlots){
+  ggsave("counts_before_filtering.svg",
+         plot = beforeFiltering + bossTheme(base_size = 14),
+         width = 10,
+         height = 10,
+         units = "cm",
+         path = here::here("2_plots/1_QC/"))
+}
 ```
 
 Ideally, the filtering the low-expressed genes should remove the large peak with `logCPM < 0`, i.e., remove any genes which have less than one count per million. A common guideline is to keep all genes that have > 1-2 cpm in the smallest group on a treatment. In this case, both groups (`WT` and `KO`) have four replicates. 
 
-At CPM `> 2`, majority of the peak with `logCPM < 0` were removed, thus, the filtering were relaxed to CPM `> 1.5` to increase the number of genes. This may need adjustments later as increase genes may also decrease the power of the differential expression algorithm
+At CPM `> 1`, majority of the peak with `logCPM < 0` were removed. This may need adjustments later as increase genes may also decrease the power of the differential expression algorithm
 
-To to keep genes that are are more than `r cpm_filter` CPM in at least 4 samples. Mathematically this would be identifying genes (rows) with CPM > `r cpm_filter`; and identifying total row sum that is `>= 4`.
-
-
+To to keep genes that are are more than `r cpm_filter` CPM in at least 5 samples. Mathematically this would be identifying genes (rows) with CPM > `r cpm_filter`; and identifying total row sum that is `>= 5`.
 
 ```{r afterFiltering, fig.cap="Before and after removal of lowly expressed genes"}
 #the genes kept have >2 CPM for at least 4 samples
-keptGenes <- (rowSums(cpm(dge) > cpm_filter) >= 4) 
-afterFiltering <- dge %>% 
-  
-  #transform the raw count to logCPM 
-  edgeR::cpm(log = TRUE) %>% 
-  
+keptGenes <- (rowSums(cpm(dge) > cpm_filter) >= 5) 
+afterFiltering <- dge %>%
+  edgeR::cpm(log = TRUE) %>%
   #for var1 (gene names) extract only the keptGenes and discard all other genes in the logCPM data
-  magrittr::extract(keptGenes,) %>% 
-
-  #melting (reorganising) the transformed logCPM data with respect to the id variable (i.e., the row and column names). Very similar to pivot_long function
-  melt %>% 
-  
-  #retain all rows where the logCPM (value) is finite. All of them in this case are finite
-  dplyr::filter(is.finite(value)) %>% 
-
-  #ggplot
+  magrittr::extract(keptGenes, ) %>%
+  melt %>%
+  dplyr::filter(is.finite(value)) %>%
   ggplot(aes(x = value,colour = Var2)) +
   geom_density() +
-  
-  #add figure tittle and subtitle and labels. since keptGenes is a logic element, the second element represents the number of genes that were kept after the filtering
   labs(title = "After filtering low-expressed genes", 
        subtitle = paste0(table(keptGenes)[[2]], " genes"),
        x = "logCPM",
@@ -336,26 +301,27 @@ afterFiltering <- dge %>%
        colour = "Sample Groups") + 
   bossTheme(base_size = 14,legend = "bottom")
 
-#save plot
-ggsave("counts_after_filtering.svg",
-       plot = afterFiltering + bossTheme(base_size = 14),
-       width = 10,
-       height = 10,
-       units = "cm",
-       path = here::here("2_plots/1_QC/"))
+if(savePlots){
+  ggsave("counts_after_filtering.svg",
+         plot = afterFiltering + bossTheme(base_size = 14),
+         width = 10,
+         height = 10,
+         units = "cm",
+         path = here::here("2_plots/1_QC/"))
+}
 
-
-#display plot side by side
 beforeFiltering + afterFiltering + plot_layout(guides = "collect") & bossTheme(base_size = 14,legend = "bottom")
 
-ggsave(filename = "counts_before_after_filtering.svg",
-       path = here::here("2_plots/1_QC/"),
-       width = 20,
-       height = 14,
-       units = "cm")
+if(savePlots){
+  ggsave(filename = "counts_before_after_filtering.svg",
+         path = here::here("2_plots/1_QC/"),
+         width = 20,
+         height = 14,
+         units = "cm")
+}
 ```
 
-Following the removal of **`r nrow(rawCount)-nrow(dge$counts)`** non-expressed and **`r table(keptGenes)[[1]]`** low-expressed genes (\< 1.5CPM in at least 4 samples), **`r table(keptGenes)[[2]]`** genes remained for downstream analysis
+Following the removal of **`r nrow(rawCount)-nrow(dge$counts)`** non-expressed and **`r table(keptGenes)[[1]]`** low-expressed genes (\< 0.5CPM in at least 5 samples), **`r table(keptGenes)[[2]]`** genes remained for downstream analysis
 
 ### Subset the DGElist object
 
@@ -423,10 +389,10 @@ pca_2d <- lapply(list(`1_2` = c("PC1", "PC2"),
               p <- pca_analysis$x %>% 
                 cbind(dge$samples) %>%  
                 as_tibble() %>% 
-                ggplot(aes(x = .data[[i[1]]], y = .data[[i[2]]], colour = group, shape = rep)) +
+                ggplot(aes(x = .data[[i[1]]], y = .data[[i[2]]], colour = group, shape = as.factor(rep))) +
                 geom_point(size=3) +
                 scale_color_manual(values = groupColour)+
-                scale_shape_manual(values = c(15:18)) +
+                # scale_shape_manual(values = c(15:21)) +
                 labs(x = paste0(i[1], " (", percent(summary(pca_analysis)$importance["Proportion of Variance",i[1]]),")"),
                      y = paste0(i[2], " (", percent(summary(pca_analysis)$importance["Proportion of Variance",i[2]]),")"),
                      colour = "Groups",
@@ -452,7 +418,7 @@ pc = cbind(pc, dge$samples)
 totVar <- summary(pca_analysis)[["importance"]]['Proportion of Variance',]
 totVar <- 100 * sum(totVar[1:3])
 
-pca_3d <- plot_ly(pc, x = ~PC1, y = ~PC2, z = ~PC3, color = ~dge$samples$group, colors = c('#f58d5f','#73c1a6'),marker = list(size = 5)) %>%
+pca_3d <- plot_ly(pc, x = ~PC1, y = ~PC2, z = ~PC3, color = ~dge$samples$group, colors = groupColour,marker = list(size = 5)) %>%
   add_markers(size = 5)
 
 pca_3d <- pca_3d %>%

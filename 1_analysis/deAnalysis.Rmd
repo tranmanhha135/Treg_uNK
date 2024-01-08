@@ -1,7 +1,7 @@
 ---
 title: "DGE Analysis"
 author: "Ha Tran"
-date: "2023-12-07"
+date: "08-01-2024"
 output: html_document
 editor_options: 
   chunk_output_type: console
@@ -12,9 +12,7 @@ knitr::opts_chunk$set(
   echo = TRUE,
   message = FALSE,
   warning = FALSE,
-  eval = TRUE,
-  fig.align = "center",
-  fig.width = 11
+  fig.align = "center"
 )
 ```
 
@@ -30,6 +28,7 @@ library(tibble)
 library(reshape2)
 library(tidyverse)
 library(ComplexHeatmap)
+
 # Visualisation:
 library(kableExtra)
 library(ggplot2)
@@ -42,6 +41,7 @@ library(DT)
 library(patchwork)
 library(kableExtra)
 library(extrafont)
+loadfonts(device = "all")
 
 # Custom ggplot
 library(ggplotify)
@@ -119,10 +119,7 @@ colnames(full_design) <- gsub(
   "",
   colnames(full_design))
 
-# display the full_design matrix
-# kable(full_design %>% as.data.frame(), caption = "Design matrix") %>% 
-#   kable_styling(bootstrap_options = c("striped", "hover")) %>% 
-#   scroll_box(height = "600px")
+
 
 full_design %>% as.data.frame() %>% DT(., "Table: Design matrix")
 
@@ -134,13 +131,12 @@ The contrast matrix is required to provide a coefficient to each comparison and 
 
 ```{r constrastMatrix}
 contrast <- limma::makeContrasts(
-  KOvsWT = KO - WT,
+  DTvPBS   = DT - PBS,
+  TregvPBS = Treg - PBS,
+  DTvTreg  = DT - Treg,
   levels = full_design)
 
-colnames(contrast) <- c("KO vs WT")
-
-# kable(contrast %>% as.data.frame(), caption = "Contrast matrix") %>% 
-#   kable_styling(bootstrap_options = c("striped", "hover"))
+colnames(contrast) <- c("DT vs PBS", "Treg vs PBS", "DT vs Treg")
 
 contrast %>% DT(., "Table: Contrast matrix")
 ```
@@ -172,6 +168,53 @@ voom1 <- limma::voomWithQualityWeights(counts = dge, design = full_design, plot 
 ```{r voom_sampleWeights, fig.cap = "Voom transformation with observational and sample-specific weights"}
 # voom transformation with sample weights using null design matrix
 voom2 <- limma::voomWithQualityWeights(counts = dge,design = null_design, plot = TRUE)
+```
+
+### PCA
+```{r voomPCA, fig.cap="PCA plots after voom quality weight transformations. Group-specific weights(left) and sample-specific weights (right)"}
+# Function for performing pca and generating plots
+voom_pca <- function(voom_trans){
+  pca <- voom_trans$E %>% 
+    t() %>% 
+    prcomp()
+  
+  voom_trans$targets <- voom_trans$targets %>% as.data.frame %>% rownames_to_column("Sample_Name")
+  
+  pca$x %>%
+    as.data.frame() %>%
+    rownames_to_column("Sample_Name") %>%
+    as_tibble() %>%
+    dplyr::select(Sample_Name, PC1, PC2) %>%
+    left_join(voom_trans$targets, by = "Sample_Name") %>%
+    mutate(sample.weights = round(sample.weights, 3)) %>%
+    ggplot(aes(PC1, PC2, colour = group, size = sample.weights, label = Sample_Name)) +
+    geom_label_repel(box.padding = grid::unit(0.5,"lines"), size = 3, label.size = 0.15, show.legend = F) +
+    geom_point(alpha = 0.5) +
+    labs(x = paste0("PC1 (", percent(summary(pca)$importance["Proportion of Variance","PC1"]),")"),
+         y = paste0("PC2 (", percent(summary(pca)$importance["Proportion of Variance","PC2"]),")"),
+         colour = "Groups",
+         size = "Weights",
+         shape = "Replicate") +
+    bossTheme(14,legend = "bottom") +
+    guides(colour = guide_legend(override.aes = list(size = 2.4)))
+}
+
+# iterate with lapply for voom 1 and 2
+voom_pca_plots <- lapply(1:2, function(y){
+  voom_pca(voom_trans = get(paste0('voom',y)))
+})
+
+# plot pca of voom1 and voom2 side by side
+plot_grid(
+  plot_grid(
+    voom_pca_plots[[1]] + theme(legend.position = "none"),
+    voom_pca_plots[[2]] + theme(legend.position = "none"), 
+    nrow = 1
+  ),
+  get_legend(voom_pca_plots[[1]] + theme(legend.position = "bottom")),
+  nrow = 2, 
+  rel_heights = c(10,1)
+)
 ```
 
 ## Apply linear model {.tabset .tabset-pills}
@@ -211,50 +254,49 @@ limmaFit <- function(x, fc, adjMethod, p.val, tableNum){
     kable_styling(bootstrap_options = c("striped", "hover")))
 }
 
+limmaFit(x = voom1, fc[1], adjMethod = "none", p.val = 0.01, 1)
 
-limmaFit(x = voom2, fc[1], adjMethod = "none", p.val = 0.01, 1)
+limmaFit(x = voom1, fc[1], adjMethod = "fdr", p.val = 0.1, 2)
 
-limmaFit(x = voom2, fc[1], adjMethod = "fdr", p.val = 0.1, 2)
-
-limmaFit(x = voom2, fc[1], adjMethod = "fdr", p.val = 0.05, 3)
+limmaFit(x = voom1, fc[1], adjMethod = "fdr", p.val = 0.05, 3)
 
 ```
 
 ### FC=`r fc[2]`
 
 ```{r, results='asis'}
-limmaFit(x = voom2, fc[2], adjMethod = "none", p.val = 0.01,4)
+limmaFit(x = voom1, fc[2], adjMethod = "none", p.val = 0.01,4)
 
-limmaFit(x = voom2, fc[2], adjMethod = "fdr", p.val = 0.1, 5)
+limmaFit(x = voom1, fc[2], adjMethod = "fdr", p.val = 0.1, 5)
 
-limmaFit(x = voom2, fc[2], adjMethod = "fdr", p.val = 0.05, 6)
+limmaFit(x = voom1, fc[2], adjMethod = "fdr", p.val = 0.05, 6)
 ```
 
 ### FC=`r fc[3]`
 
 ```{r, results='asis'}
-limmaFit(x = voom2, fc[3], adjMethod = "none", p.val = 0.01,7)
+limmaFit(x = voom1, fc[3], adjMethod = "none", p.val = 0.01,7)
 
-limmaFit(x = voom2, fc[3], adjMethod = "fdr", p.val = 0.1, 8)
+limmaFit(x = voom1, fc[3], adjMethod = "fdr", p.val = 0.1, 8)
 
-limmaFit(x = voom2, fc[3], adjMethod = "fdr", p.val = 0.05, 9)
+limmaFit(x = voom1, fc[3], adjMethod = "fdr", p.val = 0.05, 9)
 ```
 
 ### FC=`r fc[4]`
 
 ```{r, results='asis'}
-limmaFit(x = voom2, fc[4], adjMethod = "none", p.val = 0.01,10)
+limmaFit(x = voom1, fc[4], adjMethod = "none", p.val = 0.01,10)
 
-limmaFit(x = voom2, fc[4], adjMethod = "fdr", p.val = 0.1, 11)
+limmaFit(x = voom1, fc[4], adjMethod = "fdr", p.val = 0.1, 11)
 
-limmaFit(x = voom2, fc[4], adjMethod = "fdr", p.val = 0.05, 12)
+limmaFit(x = voom1, fc[4], adjMethod = "fdr", p.val = 0.05, 12)
 ```
 
 # Differential Gene Expression analysis {.tabset .tabset-pills}
 
-Due to the large variance in the WT group, the transformation with `observational and sample-level weights` were used. **Without** FC cut-off (using TREAT) and an `FDR < 0.05`, the `KO vs WT` comparison had 223 significant DE genes **(TABLE 3)**. This may be enough DE genes to perform meaningful functional enrichment analysis downstream. Using a fold-change cut-off through application of `TREAT` gives additional stringency at the costs of reducing the list of DE genes.
+Due to the large variance in the PBS group, the transformation with `observational and group-level weights` were used. **Without** FC cut-off (using TREAT) and an `FDR < 0.05`, the `DT vs Treg` comparison had 45 significant DE genes **(TABLE 3)**. This may **not** be enough DE genes to perform meaningful functional enrichment analysis downstream. Therefore, The FDR threshold is increased to `0.1`, in another word, we allow for 10% type I error, i.e. 1 in 10 genes may be a false positive for differential expression. Using a fold-change cut-off through application of `TREAT` gives additional stringency at the costs of reducing the list of DE genes.
 
-It is best practice to perform P value correction. So, for data exploratory purposes, the following visualisations are DE genes significantly below **FDR \< 0.1 or \< 0.05** with and without FC threshold (TREAT).
+<!-- It is best practice to perform P value correction. So, for data exploratory purposes, the following visualisations are DE genes significantly below **FDR \< 0.1 or \< 0.05** with and without FC threshold (TREAT). -->
 
 -   **P-value histogram:** illustrates the distribution of p-values. As the stringency increases (increasing FC threshold), the distribution shifts towards `1`, thus insignificant.
 
@@ -275,51 +317,36 @@ It is best practice to perform P value correction. So, for data exploratory purp
 - **Venn diagram:** visualises the significant DE gene overlap between the previous RNA-seq experiment and the current. 
 
 ```{r deAnalysis}
-fc <- c("none",1.1, 1.2)
-fdr <- c(0.1, 0.05)
-lm <- list()
-lm_all <- list()
-lm_sig <- list()
+fc = "none"
+fdr = 0.1
 
-lm_fit <- limma::lmFit(object = voom2, design = full_design) %>%
-  limma::contrasts.fit(contrasts = contrast)
+comp <- colnames(contrast)
 
-for (i in 1:length(fc)) {
-  for (j in 1:length(fdr)) {
-    name <- paste0(fc[i] %>% as.character(), "_", fdr[j] %>% as.character())
-    
-    if (fc[i] == "none") {
-      lm[[name]] <- lm_fit %>% limma::eBayes()
-      lm_all[[name]] <- limma::topTable(lm[[name]], coef = 1, number = Inf, adjust.method = "fdr")
-      lm_sig[[name]] <- limma::topTable(lm[[name]], coef = 1, number = Inf, adjust.method = "fdr", p.value = fdr[j])
-    } else {
-      lm[[name]] <- lm_fit %>% limma::treat(fc = as.numeric(fc[i]))
-      lm_all[[name]] <- topTreat(fit = lm[[name]], coef = 1, number = Inf, adjust.method = "fdr")
-      lm_sig[[name]] <- topTreat(fit = lm[[name]], coef = 1, number = Inf, adjust.method = "fdr", p.value = fdr[j])
-    }
-    
-    lm_all[[name]] <- lm_all[[name]] %>%
-      as.data.frame() %>%
-      dplyr::mutate(Expression = case_when(
-        adj.P.Val <= fdr[j] & logFC >= 0 ~ "up",
-        adj.P.Val <= fdr[j] & logFC < 0 ~ "down",
-        TRUE ~ "insig"
-      ))
-    
-     lm_sig[[name]] <- lm_sig[[name]] %>%
-      as.data.frame() %>%
-      dplyr::mutate(Expression = case_when(
-        adj.P.Val <= fdr[j] & logFC >= 0 ~ "up",
-        adj.P.Val <= fdr[j] & logFC < 0 ~ "down",
-        TRUE ~ "insig"
-      ))
-     
-    lm_all[[name]]$Expression <- factor(lm_all[[name]]$Expression, levels = c("insig", "down", "up"))
-    lm_all[[name]]$entrezid <- lm_all[[name]]$entrezid %>% as.character()
-    lm_sig[[name]]$entrezid <- lm_sig[[name]]$entrezid %>% as.character()
-
-  }
+if (fc == "none") {
+  lm_fit <- limma::lmFit(object = voom1, design = full_design) %>%
+    limma::contrasts.fit(contrasts = contrast) %>% limma::eBayes()  
+  lm_all <- lapply(1:ncol(lm), function(y){limma::topTable(lm, coef = y, number = Inf, adjust.method = "fdr")}) %>% setNames(.,comp)
+  } else {
+  lm_fit <- limma::lmFit(object = voom1, design = full_design) %>%
+    limma::contrasts.fit(contrasts = contrast) %>% limma::treat(fc = as.numeric(fc))
+  lm_all <- lapply(1:ncol(lm), function(y){limma::topTreat(fit = lm, coef = 1, number = Inf, adjust.method = "fdr")}) %>% setNames(.,comp)
 }
+
+lm_all <- lapply(lm_all, function(x) {
+  df <- x %>% as.data.frame() %>% 
+    dplyr::mutate(expression = case_when(
+      adj.P.Val <= fdr & logFC >=0 ~ "up",
+      adj.P.Val <= fdr & logFC <0 ~ "down",
+      TRUE ~ "insig"))
+  
+  df$expression <- factor(df$expression, levels = c("insig", "down", "up"))
+  df$entrezid <- df$entrezid %>% as.character()
+  
+  return(df)
+
+})
+
+lm_sig <- lapply(lm_all, function(x) {x %>% dplyr::filter(adj.P.Val <= fdr)})
 
 ```
 
@@ -329,10 +356,7 @@ for (i in 1:length(fc)) {
 
 ```{r hist}
 lm_hist <- list()
-for (i in 1:length(lm)) {
-  # print(i)
-  name <- names(lm)[i] %>% as.character()
-  # print(name)
+for (name in comp) {
   lm_hist[[name]] <- ggplot(lm_all[[name]] %>% as.data.frame(), aes(x = P.Value)) +
     geom_histogram(bins = 50, fill="#8DA0CB",colour= "white", linewidth = 0.2, alpha=0.9) +
     scale_y_continuous(expand = expansion(mult = c(0, .1))) +
@@ -348,78 +372,72 @@ for (i in 1:length(lm)) {
            units = "cm")
   }
 }
-
-lm_hist[[1]]
-
 ```
 
 ### MA plot
 
 ```{r ma}
 ma <- list()
-for (i in 1:length(fc)) {
-  for (j in 1:length(fdr)) {
-    name <- paste0(fc[i] %>% as.character(), "_", fdr[j] %>% as.character())
-    
-    # adding labels to top genes
-    top <- 3
-    top_limma <- bind_rows(
-      lm_all[[name]] %>%
-        dplyr::filter(Expression == "up") %>%
-        arrange(adj.P.Val, desc(abs(logFC))) %>%
-        head(top),
-      lm_all[[name]] %>%
-        dplyr::filter(Expression == "down") %>%
-        arrange(adj.P.Val, desc(abs(logFC))) %>%
-        head(top)
-    )
-    invisible(top_limma %>% as.data.frame())
-    
-    ma[[name]] <- lm_all[[name]] %>% dplyr::arrange(Expression) %>% 
-      ggplot(aes(x = AveExpr, y = logFC)) +
-      geom_point(aes(colour = Expression, size = Expression),
-                 show.legend = T
-      ) +
-      geom_label_repel(
-        data = top_limma,
-        mapping = aes(x = AveExpr, logFC, label = gene),
-        size = 3,
-        label.padding = 0.15,
-        box.padding = 0.15,
-        point.padding = 0.2
-      ) + 
-      labs(
-        x = expression("log"[2] * "CPM"),
-        y = expression("log"[2] * "FC"),
-        colour = "Expression") + 
-      {
-        if (fc[i] =="none") {
-          geom_hline(yintercept = 0, linetype = "solid")
-        } else {
-          geom_hline(yintercept = c(-as.numeric(fc[i]), 0, as.numeric(fc[i])), linetype = c("dashed", "solid", "dashed"))
-        }
-      } +
-      scale_y_continuous(limits = c(-8,8), expand = expansion(mult = c(0, 0)), breaks = c(-6,-3,0,3,6)) +
-      scale_size_manual(values = c(1.5,2.2,2.2), guide = "none") +
-      scale_fill_manual(values = expressionCol) +
-      scale_color_manual(labels = c(paste0("NS: ", sum(lm_all[[name]]$Expression == "insig"), "  "),
-                                    paste0("Down: ", sum(lm_all[[name]]$Expression == "down"), "  "),
-                                    paste0("Up: ", sum(lm_all[[name]]$Expression == "up"), " ")), 
-                         values = expressionCol_dark) +    
-      bossTheme(base_size = 14, legend = "bottom") +
-      guides(colour = guide_legend(override.aes = list(size = 2.4)))
-    
-    
-    if (savePlots == T) {
-      ggsave(paste0("ma_", name, ".png"),
-             plot = ma[[name]],
-             path = here::here("2_plots/2_DE/"),
-             width = 13,
-             height = 11,
-             units = "cm",
-             dpi = 900)
-    }
+for (name in comp) {
+  top <- 5
+  top_limma <- bind_rows(
+    lm_all[[name]] %>%
+      dplyr::filter(expression == "up") %>%
+      arrange(adj.P.Val, desc(abs(logFC))) %>%
+      head(top),
+    lm_all[[name]] %>%
+      dplyr::filter(expression == "down") %>%
+      arrange(adj.P.Val, desc(abs(logFC))) %>%
+      head(top)
+  )
+  invisible(top_limma %>% as.data.frame())
+  
+  ma[[name]] <- lm_all[[name]] %>% dplyr::arrange(expression) %>% 
+    ggplot(aes(x = AveExpr, y = logFC)) +
+    geom_point(aes(colour = expression, size = expression),show.legend = T, alpha = 0.7, stroke =0) +
+    geom_label_repel(data = top_limma, # map labels, visit ?geom_label_repel
+                     mapping = aes(label = gene),
+                     size = 3,
+                     label.padding = 0.15,
+                     label.size = 0,
+                     label.r = 0.15,
+                     box.padding = 0.9,
+                     point.padding = 0.5,
+                     segment.size = 0.3,
+                     segment.color = "grey50"
+                     ) +
+    labs(
+      x = expression("log"[2] * "CPM"),
+      y = expression("log"[2] * "FC"),
+      colour = "Expression") + 
+    {
+      if (fc =="none") {
+        geom_hline(yintercept = 0, linetype = "solid")
+      } else {
+        geom_hline(yintercept = c(-as.numeric(fc), 0, as.numeric(fc)), linetype = c("dashed", "solid", "dashed"))
+      }
+    } +
+    scale_y_continuous(limits = c(-5,5), expand = expansion(mult = c(0, 0)), breaks = c(-6,-4,-2,0,2,4,6)) +
+    scale_size_manual(values = c(1.5,2.4,2.4), guide = "none") +
+    scale_fill_manual(values = expressionCol) +
+    scale_color_manual(labels = c(paste0("NS: ", sum(lm_all[[name]]$expression == "insig"), "  "),
+                                  paste0("Down: ", sum(lm_all[[name]]$expression == "down"), "  "),
+                                  paste0("Up: ", sum(lm_all[[name]]$expression == "up"), " ")), 
+                       values = expressionCol_dark) +    
+    bossTheme(base_size = 14, legend = "bottom") +
+    guides(colour = guide_legend(override.aes = list(size = 2.4)))
+  
+  
+  if (savePlots) {
+    ggsave(paste0("ma_", name, ".png"),
+           plot = ma[[name]],
+           path = here::here("2_plots/2_DE/"),
+           width = 13,
+           height = 11,
+           units = "cm",
+           dpi = 900)
   }
+  
 }
 
 # display
@@ -430,48 +448,42 @@ ma[[1]]
 
 ```{r vol}
 vol <- list()
-for (i in 1:length(fc)) {
-  for (j in 1:length(fdr)) {
-    name <- paste0(fc[i] %>% as.character(), "_", fdr[j] %>% as.character())
-    
-    # adding labels to top genes
-    top <- 3
+for (name in comp) {
+    top <- 5
     top_limma <- bind_rows(
       lm_all[[name]] %>%
-        dplyr::filter(Expression == "up") %>%
+        dplyr::filter(expression == "up") %>%
         arrange(adj.P.Val, desc(abs(logFC))) %>%
         head(top),
       lm_all[[name]] %>%
-        dplyr::filter(Expression == "down") %>%
+        dplyr::filter(expression == "down") %>%
         arrange(adj.P.Val, desc(abs(logFC))) %>%
         head(top)
     )
     invisible(top_limma %>% as.data.frame())
     
-    # generate vol plot with the allDEgene data.frame
     vol[[name]] <- lm_all[[name]] %>%
       ggplot(aes(x = logFC,y = -log(adj.P.Val, 10))) +
-      geom_point(aes(colour = Expression, size = Expression),
-                 show.legend = T
-      ) +
-      geom_label_repel(
-        data = top_limma,
-        mapping = aes(logFC, -log(adj.P.Val, 10), label = gene),
-        size = 3,
-        label.padding = 0.15,
-        box.padding = 0.15,
-        point.padding = 0.2
-      ) + 
-      labs(
-        x = expression("log"[2] * "FC"),
-        y = expression("-log"[10] * "FDR"),
-        colour = "Expression") +
-      scale_x_continuous(limits = c(-8,8),expand = expansion(mult = c(0, 0)), breaks = c(-6,-3,0,3,6)) +
-      scale_size_manual(values = c(1.5,2.2,2.2), guide = "none") +
+      geom_point(aes(colour = expression, size = expression), show.legend = T, alpha =0.7, stroke =0 ) +
+      geom_label_repel(data = top_limma, 
+                       mapping = aes(label = gene),
+                       size = 3,
+                       label.padding = 0.15,
+                       label.size = 0,
+                       label.r = 0.15,
+                       box.padding = 0.9,
+                       point.padding = 0.5,
+                       segment.size = 0.3,
+                       segment.color = "grey50") +
+      labs(x = expression("log"[2] * "FC"),
+           y = expression("-log"[10] * "FDR"),
+           colour = "Expression") +
+      scale_x_continuous(limits = c(-5,5),expand = expansion(mult = c(0, 0)), breaks = c(-6,-4,-2,0,2,4,6)) +
+      scale_size_manual(values = c(1.5,2.4,2.4), guide = "none") +
       scale_fill_manual(values = expressionCol) +
-      scale_color_manual(labels = c(paste0("NS: ", sum(lm_all[[name]]$Expression == "insig"), "  "),
-                                    paste0("Down: ", sum(lm_all[[name]]$Expression == "down"), "  "),
-                                    paste0("Up: ", sum(lm_all[[name]]$Expression == "up"), " ")), 
+      scale_color_manual(labels = c(paste0("NS: ", sum(lm_all[[name]]$expression == "insig"), "  "),
+                                    paste0("Down: ", sum(lm_all[[name]]$expression == "down"), "  "),
+                                    paste0("Up: ", sum(lm_all[[name]]$expression == "up"), " ")), 
                          values = expressionCol_dark) +    
       bossTheme(base_size = 14, legend = "bottom") +
       guides(colour = guide_legend(override.aes = list(size = 2.4)))
@@ -486,7 +498,7 @@ for (i in 1:length(fc)) {
              units = "cm",
              dpi = 900)
     }
-  }
+  
 }
 
 # display
@@ -496,83 +508,89 @@ vol[[1]]
 ### Heatmap
 
 ```{r hmap, fig.height=10, fig.width=8}
-# create df with normalised read counts with an additional entrezid column for binding
-logCPM <- cpm(dge, prior.count = 4, log = TRUE) %>% subset(select = 1:8)
-rownames(logCPM) <- dge$genes$gene
-
-# df for heatmap annotation of sample group
-anno <- as.factor(dge$samples$group) %>% as.data.frame() %>% dplyr::slice(1:8)
-colnames(anno) <- "Groups"
-rownames(anno) <- colnames(logCPM)
-
-# sig_de <- lmeBayes_sig %>%
-#   arrange(sort(adj.P.Val, decreasing = F))
-# sig_de <- sig_de[1:30,]
-# sig_de <- logCPM[sig_de$gene,] %>% as.matrix()
-
-
 logCPM_sig=list()
-for (i in 1:length(fc)) {
-  for (j in 1:length(fdr)) {
-    name <- paste0(fc[i] %>% as.character(), "_", fdr[j] %>% as.character())
-    
-    # filtering top unregulated genes then filter the logCPM values of those genes.
-    sig_de <- lm_sig[[name]] %>%
-      arrange(sort(adj.P.Val, decreasing = F))
-    sig_de <- sig_de[1:30,]
-    logCPM_sig[[name]] <- logCPM[sig_de$gene,] %>% as.data.frame()
-  }
+anno=list()
+
+for (i in 1:length(comp)) {
+  name <- comp[i] %>% as.character()
+    # create df with normalised read counts with an additional entrezid column for binding
+  logCPM <- cpm(dge, prior.count = 2, log = TRUE)
+  rownames(logCPM) <- dge$genes$gene
+  
+  # df for heatmap annotation of sample group
+  anno[[name]] <- as.factor(dge$samples$group) %>% as.data.frame()
+  colnames(anno[[name]]) <- "Groups"
+  # rownames(anno) <- colnames(logCPM)
+  
+  if (i == 1) { # for the first comparison, extract just intact and control
+    logCPM <- subset(logCPM ,select = c(6:11,1:5))
+    anno[[name]] <- dplyr::slice(anno[[name]], c(6:11,1:5))
+    rownames(anno[[name]]) <- colnames(logCPM)
+    # anno_colours[[x]] <- anno_colours[[x]][1:2]
+  } else if (i == 2) { # for the second comapsion, extract intact and SVX_VAS
+    logCPM <- subset(logCPM, select = c(6:11,12:16))
+    anno[[name]] <- dplyr::slice(anno[[name]], c(6:11,12:16))
+    rownames(anno[[name]]) <- colnames(logCPM)
+    # anno_colours[[x]] <- anno_colours[[x]][c(2,4)]
+  } else if (i == 3) { # for the second comapsion, extract SVX and SVX_VAS
+    logCPM <- subset(logCPM, select = c(1:5,12:16))
+    anno[[name]] <- dplyr::slice(anno[[name]], c(1:5,12:16))
+    rownames(anno[[name]]) <- colnames(logCPM)
+    # anno_colours[[x]] <- anno_colours[[x]][3:4]
+  } 
+  
+  # filtering top unregulated genes then filter the logCPM values of those genes.
+  sig_de <- lm_sig[[name]] %>%
+    arrange(sort(adj.P.Val, decreasing = F))
+  sig_de <- sig_de[1:30,]
+  logCPM_sig[[name]] <- logCPM[sig_de$gene,] %>% as.data.frame()
 }
 
 lm_hmap = list()
-for (i in 1:length(fc)) {
-  for (j in 1:length(fdr)) {
-    name <- paste0(fc[i] %>% as.character(), "_", fdr[j] %>% as.character())
-    
-    lm_hmap[[name]] <- ComplexHeatmap::pheatmap(
-      mat = logCPM_sig[[name]],
-      color = colorRampPalette(rev(c("#FB8072","#FDB462","#ffffd5","#8DD3C7","#80B1D3")))(100),
-      scale = "row",
-      cluster_cols = F,
-      border_color = "white",
-      cutree_cols = 2,
-      cutree_rows = 5,
-      treeheight_row = 30,
-      # treeheight_col = 0,
-      show_colnames = F,gaps_col = 4,
-      clustering_distance_rows = "euclidean",
-      main = paste0("Top ", nrow(logCPM_sig[[name]]), " significant DEGs"),
-      
-      
-      legend = F,
-      
-      # heatmap_legend_param = list(title = "Z-score",
-      #                             legend_direction = "horizontal", 
-      #                             legend_width = unit(5, "cm")),
-      
-      # annotation = T,
-      annotation_legend = T,
-      annotation_col = anno,
-      annotation_colors = list("Groups" = groupColour),
-      annotation_names_col = F,
-      
-      fontfamily = "Arial Narrow",
-      fontsize = 14,
-      fontsize_col = 14,
-      fontsize_number = 14,
-      fontsize_row = 14,
-      labels_row = as.expression(lapply(rownames(sig_de), function(a) bquote(italic(.(a)))))
-    ) %>% as.ggplot()
-    
-    if (savePlots == T) {
-      ggsave(paste0("heat_",name,".svg"),
-             plot = lm_hmap[[name]],
-             path = here::here("2_plots/2_DE/"),
-             width = 12,
-             height = 16,
-             units = "cm")
-    }
-    
+for (name in comp) {
+
+  lm_hmap[[name]] <- ComplexHeatmap::pheatmap(
+    mat = logCPM_sig[[name]],
+    color = colorRampPalette(rev(c("#FB8072","#FDB462","#ffffd5","#8DD3C7","#80B1D3")))(100),
+    scale = "row",
+    cluster_cols = T,
+    border_color = "white",
+    cutree_cols = 2,
+    cutree_rows = 4,
+    treeheight_row = 40,
+    treeheight_col = 30,
+    show_colnames = F,
+    clustering_distance_rows = "euclidean",
+    main = paste0("Top ", nrow(logCPM_sig[[name]]), " significant DEGs"),
+
+
+    legend = F,
+
+    # heatmap_legend_param = list(title = "Z-score",
+    #                             legend_direction = "vertical",
+    #                             legend_width = unit(5, "cm")),
+
+    # annotation = T,
+    annotation_legend = T,
+    annotation_col = anno[[name]],
+    annotation_colors = list("Groups" = groupColour),
+    annotation_names_col = F,
+
+    fontfamily = "Arial Narrow",
+    fontsize = 14,
+    fontsize_col = 14,
+    fontsize_number = 14,
+    fontsize_row = 14,
+    labels_row = as.expression(lapply(rownames(sig_de), function(a) bquote(italic(.(a)))))
+  ) %>% as.ggplot()
+  
+  if (savePlots == T) {
+    ggsave(paste0("heat_",name,".svg"),
+           plot = lm_hmap[[name]],
+           path = here::here("2_plots/2_DE/"),
+           width = 12,
+           height = 16,
+           units = "cm")
   }
 }
 
@@ -580,69 +598,7 @@ lm_hmap[[1]]
 
 ```
 
-### Venn diagram
-
-```{r vennDiagram, fig.height=8, fig.width=8}
-old_deg <- read_excel(here::here("0_data/old_deg.xlsx"))
-colnames(old_deg) <- c("entrezid", "gene", "logFC", "adj.P.Val")
-# futile.logger::flog.threshold(futile.logger::ERROR, name = "VennDiagramLogger")
-
-for(i in names(lm_sig)) {
-  venn.diagram(x = list("Old DEGs"=old_deg$entrezid %>% as.character(),"New DEGs"=lm_sig[[i]]$entrezid %>% as.character()),
-               filename = here::here(paste0("2_plots/2_DE/venn_",i,".png")),
-               lwd = 2,
-               fill = c("#FDB462","#8DD3C7"),
-               alpha = 0.75,
-               lty = 'blank',
-               imagetype = "png",
-               
-               # Numbers
-               cex = 2,
-               fontface = "plain",
-               fontfamily = "Arial Narrow",
-               
-               # Set names
-               cat.cex = 2,
-               cat.fontface = "bold",
-               cat.fontfamily = "Arial Narrow",
-               cat.default.pos = "outer",
-               cat.dist = c(0.055, 0.055),
-               cat.pos = c(-10, 10)
-  )
-  
-}
-
-
-
-common <- list()
-for (i in 1:length(fc)) {
-  for (j in 1:length(fdr)) {
-    name <- paste0(fc[i] %>% as.character(), "_", fdr[j] %>% as.character())
-    
-    common_de <- intersect(lm_sig[[name]]$entrezid %>% as.character(), old_deg$entrezid%>% as.character())
-    new_uniq <- setdiff(lm_sig[[name]]$entrezid %>% as.character(), common_de)
-    old_uniq <- setdiff(old_deg$entrezid%>% as.character(), common_de)
-    
-    sets <- list(
-      "Common" = lm_all[[name]][lm_all[[name]]$entrezid %in% common_de,],
-      "New unique" = lm_sig[[name]][lm_sig[[name]]$entrezid %in% new_uniq,],
-      "Old unique" = lm_all[[name]][lm_all[[name]]$entrezid %in% old_uniq,]
-    )
-    common[[name]] <- bind_rows(
-      mutate(sets$Common, Type = "Common"),
-      mutate(sets$"New unique", Type = "New unique"),
-      mutate(sets$"Old unique", Type = "Old unique")
-    )
-  }
-}
-
-
-```
-
-![](figure/deAnalysis.Rmd/venn_none_0.1.png)
-
 ```{r loop, fig.width=8, fig.height=8,results="asis"}
-
 ## this function is basically creating chunks within chunks, and then
 ## I use results='asis' so that the html image code is rendered 
 kexpand <- function(wd, ht, cap) {
@@ -650,15 +606,13 @@ kexpand <- function(wd, ht, cap) {
      sprintf("```{r %s, fig.width=%s, fig.height=%s}\n.pl\n```", cap,wd, ht)
 )))}
 
-
 # Loop through each FC value
-headers <- c("FC=none, FDR<0.1", "FC=none, FDR<0.05", "FC=1.1, FDR<0.1", 
-             "FC=1.1, FDR<0.05", "FC=1.2, FDR<0.1"  , "FC=1.2, FDR<0.05")
-types <- c("P-val histogram", "MA plot", "Volcano plot", "Heatmap", "Venn diagram")
 
-for (i in 2:length(headers)) {
+types <- c("P-val histogram", "MA plot", "Volcano plot", "Heatmap")
+
+for (i in 2:length(comp)) {
   
-  cat(paste0("## ",headers[i],"{.tabset .tabset-pills} \n\n"))
+  cat(paste0("## ",comp[i],"{.tabset .tabset-pills} \n\n"))
 
   cat(paste0("### ",types[[1]]," \n"))
   .pl <- lm_hist[[i]] 
@@ -679,47 +633,74 @@ for (i in 2:length(headers)) {
   .pl <- lm_hmap[[i]] 
   kexpand(wd = 8,ht = 10,cap = paste0("hmap_",i))
   cat("\n\n")
-  
-  cat(paste0("### ",types[[5]]," \n"))
-  cat(paste0("![](figure/deAnalysis.Rmd/venn_", names(lm_sig)[i],".png)"))
-  # venn(names(lm_sig)[i])
-  cat("\n\n")
 }
 
 ```
 
+## Combined {.tabset .tabset-pills}
+```{r, eval=FALSE}
+#create matrix with log cpm counts
+logCPM <- cpm(dge, prior.count=2, log=TRUE)
+rownames(logCPM) <- dge$genes$gene
+# colnames(logCPM) <- paste(dge$samples$pretty_name, sep="-")
 
-# Export Data
- Data
-The following are exported:
-
--   **de_genes_all.xlsx** - This spreadsheet contains all DE genes. NOTE:
-
-    -   This file contains the same number of genes (rows) across all combination of FC threshold and FDR cut-off. The only difference lies in the `P.Value` and `adj.P.Val` columns.
-    -   However, `P.Value` and `adj.P.Val` columns is the same if only the FDR cut-off is changed.
-
--   **de_genes_sig.xlsx** - This spreadsheet contains only significant DE genes. NOTE:
-
-    -   The genes in this file have been filtered by the specified FDR cut-off, thus, the combination of FC threshold and FDR cut-off will affect number of significant DE genes.
-    
--   **common_deg.xlsx** - This spreadsheet contains all the overlapping and unique significant DE genes between the old and new RNA-seq experiment. NOTE:
-
-    -   The number of `New unique` will be slightly off from the Venn diagram because the `entrezid` column may contain multiple `NA` or `NULL` which may bind to mutliple entries
-    -   The number of `Old unique` will also be differerent compared to the Venn diagram because some old genes don't even appear in this experiment.
-
-```{r exportData, eval=export}
-lapply(lm_all, function(x) x %>% dplyr::select(c("gene", "logFC", "AveExpr", "P.Value", "adj.P.Val", "description", "entrezid","Expression"))) %>% writexl::write_xlsx(x = ., here::here("3_output/de_genes_all.xlsx"))
-lapply(lm_sig, function(x) x %>% dplyr::select(c("gene", "logFC", "AveExpr", "P.Value", "adj.P.Val", "description", "entrezid","Expression"))) %>% writexl::write_xlsx(x = ., here::here("3_output/de_genes_sig.xlsx"))
-lapply(common, function(x) x %>% dplyr::select(c("gene", "logFC", "AveExpr", "P.Value", "adj.P.Val", "description", "entrezid","Expression", "Type"))) %>% writexl::write_xlsx(x = ., here::here("3_output/common_deg.xlsx"))
+#join common significant DE genes into df
+common <- join_all(list(lm_sig[[1]], lm_sig[[2]], lm_sig[[3]]), by = 'gene', type = 'inner')
 ```
 
+### Venn diagram
 
+```{r vennDiagram, fig.height=8, fig.width=8}
+futile.logger::flog.threshold(futile.logger::ERROR, name = "VennDiagramLogger")
+
+# for(name in comp) {
+  venn.diagram(x = list("DT vs PBS"   = lm_sig[[1]]$gene %>% as.character(), 
+                        "Treg vs PBS" = lm_sig[[2]]$gene %>% as.character(),
+                        "DT vs Treg"  = lm_sig[[3]]$gene %>% as.character()),
+               filename = here::here(paste0("2_plots/2_DE/venn.png")),
+               lwd = 2,
+               fill = groupColour,
+               alpha = 0.75,
+               lty = 'blank',
+               imagetype = "png",
+               
+               # Numbers
+               cex = 2,
+               fontface = "plain",
+               fontfamily = "Arial Narrow",
+               
+               # Set names
+               cat.cex = 2,
+               cat.fontface = "bold",
+               cat.fontfamily = "Arial Narrow",
+               cat.default.pos = "outer",
+               cat.pos = c(-27, 27, 135),
+        cat.dist = c(0.055, 0.055, 0.085),
+  )
+ 
+```
+
+![](figure/deAnalysis.Rmd/venn.png)
+
+# Export Data
+
+The following are exported:
+
+-   **de_genes_all.xlsx** - This spreadsheet contains all DE genes. 
+
+-   **de_genes_sig.xlsx** - This spreadsheet contains only significant DE genes.
+
+```{r exportData, eval=export}
+lapply(lm_all, function(x) x %>% dplyr::select(c("gene", "logFC", "AveExpr", "P.Value", "adj.P.Val", "description", "entrezid","expression"))) %>% writexl::write_xlsx(x = ., here::here("3_output/de_genes_all.xlsx"))
+lapply(lm_sig, function(x) x %>% dplyr::select(c("gene", "logFC", "AveExpr", "P.Value", "adj.P.Val", "description", "entrezid","expression"))) %>% writexl::write_xlsx(x = ., here::here("3_output/de_genes_sig.xlsx"))
+# lapply(common, function(x) x %>% dplyr::select(c("gene", "logFC", "AveExpr", "P.Value", "adj.P.Val", "description", "entrezid","expression", "Type"))) %>% writexl::write_xlsx(x = ., here::here("3_output/common_deg.xlsx"))
+```
 
 ```{r saveRDS, include=FALSE}
 
-saveRDS(object = fc, file = here::here("0_data/rds_objects/fc.rds"))
+# saveRDS(object = fc, file = here::here("0_data/rds_objects/fc.rds"))
 
-saveRDS(object = fdr, file = here::here("0_data/rds_objects/fdr.rds"))
+# saveRDS(object = fdr, file = here::here("0_data/rds_objects/fdr.rds"))
 
 saveRDS(object = lm, file = here::here("0_data/rds_objects/lm.rds"))
 

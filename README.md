@@ -2,10 +2,6 @@
 
 ### Shanna L. Hosking<sup>1</sup>, Holly M. Groome<sup>1</sup>, Hon Y. Chan<sup>1</sup>, Lachlan M. Moldenhauer<sup>1</sup>, Ella S. Green<sup>1</sup>, Stephanie E. O’Hara<sup>1</sup>, Claire T. Roberts<sup>2</sup>, Sandra T. Davidge<sup>3</sup>, Sarah A. Robertson<sup>1</sup>, Alison S. Care<sup>1</sup>
 
-Ricky A. Matias<sup>1</sup>, Hon Yeung Chan<sup>1</sup>, Ha M. Tran<sup>1</sup>, John E. Schjenken<sup>1,2,3</sup>, Peck Y. Chin<sup>1</sup>, David J. Sharkey<sup>1</sup>, Lachlan M. Moldenhauer<sup>1</sup> and Sarah A. Robertson<sup>1\*</sup>
-
-**Keywords: Beta-defensin, uterus, embryo implantation, immune tolerance**
-
 **Author affiliations:**
 
 <sup>1</sup> The Robinson Research Institute and Adelaide Medical School, University of Adelaide, Adelaide, SA 5000, Australia.
