@@ -1,0 +1,1422 @@
+<!DOCTYPE html>
+
+<html>
+
+<head>
+
+<meta charset="utf-8" />
+<meta name="generator" content="pandoc" />
+<meta http-equiv="X-UA-Compatible" content="IE=EDGE" />
+
+
+<meta name="author" content="Ha Tran" />
+
+
+<title>Setting up for DGE analysis</title>
+
+<script src="site_libs/header-attrs-2.25/header-attrs.js"></script>
+<script src="site_libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link href="site_libs/bootstrap-3.3.5/css/sandstone.min.css" rel="stylesheet" />
+<script src="site_libs/bootstrap-3.3.5/js/bootstrap.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/html5shiv.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/respond.min.js"></script>
+<style>h1 {font-size: 34px;}
+       h1.title {font-size: 38px;}
+       h2 {font-size: 30px;}
+       h3 {font-size: 24px;}
+       h4 {font-size: 18px;}
+       h5 {font-size: 16px;}
+       h6 {font-size: 12px;}
+       code {color: inherit; background-color: rgba(0, 0, 0, 0.04);}
+       pre:not([class]) { background-color: white }</style>
+<script src="site_libs/jqueryui-1.13.2/jquery-ui.min.js"></script>
+<link href="site_libs/tocify-1.9.1/jquery.tocify.css" rel="stylesheet" />
+<script src="site_libs/tocify-1.9.1/jquery.tocify.js"></script>
+<script src="site_libs/navigation-1.1/tabsets.js"></script>
+<script src="site_libs/navigation-1.1/codefolding.js"></script>
+<link href="site_libs/highlightjs-9.12.0/textmate.css" rel="stylesheet" />
+<script src="site_libs/highlightjs-9.12.0/highlight.js"></script>
+<link href="site_libs/pagedtable-1.1/css/pagedtable.css" rel="stylesheet" />
+<script src="site_libs/pagedtable-1.1/js/pagedtable.js"></script>
+<script src="site_libs/htmlwidgets-1.6.4/htmlwidgets.js"></script>
+<script src="site_libs/plotly-binding-4.10.3/plotly.js"></script>
+<script src="site_libs/typedarray-0.1/typedarray.min.js"></script>
+<link href="site_libs/crosstalk-1.2.1/css/crosstalk.min.css" rel="stylesheet" />
+<script src="site_libs/crosstalk-1.2.1/js/crosstalk.min.js"></script>
+<link href="site_libs/plotly-htmlwidgets-css-2.11.1/plotly-htmlwidgets.css" rel="stylesheet" />
+<script src="site_libs/plotly-main-2.11.1/plotly-latest.min.js"></script>
+<link href="site_libs/datatables-css-0.0.0/datatables-crosstalk.css" rel="stylesheet" />
+<script src="site_libs/datatables-binding-0.31/datatables.js"></script>
+<link href="site_libs/dt-core-1.13.6/css/jquery.dataTables.min.css" rel="stylesheet" />
+<link href="site_libs/dt-core-1.13.6/css/jquery.dataTables.extra.css" rel="stylesheet" />
+<script src="site_libs/dt-core-1.13.6/js/jquery.dataTables.min.js"></script>
+<script src="site_libs/jszip-1.13.6/jszip.min.js"></script>
+<script src="site_libs/pdfmake-1.13.6/pdfmake.js"></script>
+<script src="site_libs/pdfmake-1.13.6/vfs_fonts.js"></script>
+<link href="site_libs/dt-ext-buttons-1.13.6/css/buttons.dataTables.min.css" rel="stylesheet" />
+<script src="site_libs/dt-ext-buttons-1.13.6/js/dataTables.buttons.min.js"></script>
+<script src="site_libs/dt-ext-buttons-1.13.6/js/buttons.html5.min.js"></script>
+<script src="site_libs/dt-ext-buttons-1.13.6/js/buttons.colVis.min.js"></script>
+<script src="site_libs/dt-ext-buttons-1.13.6/js/buttons.print.min.js"></script>
+<link href="site_libs/font-awesome-6.4.2/css/all.min.css" rel="stylesheet" />
+<link href="site_libs/font-awesome-6.4.2/css/v4-shims.min.css" rel="stylesheet" />
+
+<link rel="icon" href="https://github.com/workflowr/workflowr-assets/raw/main/img/reproducible.png">
+<!-- Add a small amount of space between sections. -->
+<style type="text/css">
+div.section {
+  padding-top: 12px;
+}
+</style>
+
+
+
+<style type="text/css">
+  code{white-space: pre-wrap;}
+  span.smallcaps{font-variant: small-caps;}
+  span.underline{text-decoration: underline;}
+  div.column{display: inline-block; vertical-align: top; width: 50%;}
+  div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+  ul.task-list{list-style: none;}
+    </style>
+
+<style type="text/css">code{white-space: pre;}</style>
+<script type="text/javascript">
+if (window.hljs) {
+  hljs.configure({languages: []});
+  hljs.initHighlightingOnLoad();
+  if (document.readyState && document.readyState === "complete") {
+    window.setTimeout(function() { hljs.initHighlighting(); }, 0);
+  }
+}
+</script>
+
+
+
+
+
+
+
+
+
+<style type = "text/css">
+.main-container {
+  max-width: 940px;
+  margin-left: auto;
+  margin-right: auto;
+}
+img {
+  max-width:100%;
+}
+.tabbed-pane {
+  padding-top: 12px;
+}
+.html-widget {
+  margin-bottom: 20px;
+}
+button.code-folding-btn:focus {
+  outline: none;
+}
+summary {
+  display: list-item;
+}
+details > summary > p:only-child {
+  display: inline;
+}
+pre code {
+  padding: 0;
+}
+</style>
+
+
+<style type="text/css">
+.dropdown-submenu {
+  position: relative;
+}
+.dropdown-submenu>.dropdown-menu {
+  top: 0;
+  left: 100%;
+  margin-top: -6px;
+  margin-left: -1px;
+  border-radius: 0 6px 6px 6px;
+}
+.dropdown-submenu:hover>.dropdown-menu {
+  display: block;
+}
+.dropdown-submenu>a:after {
+  display: block;
+  content: " ";
+  float: right;
+  width: 0;
+  height: 0;
+  border-color: transparent;
+  border-style: solid;
+  border-width: 5px 0 5px 5px;
+  border-left-color: #cccccc;
+  margin-top: 5px;
+  margin-right: -10px;
+}
+.dropdown-submenu:hover>a:after {
+  border-left-color: #adb5bd;
+}
+.dropdown-submenu.pull-left {
+  float: none;
+}
+.dropdown-submenu.pull-left>.dropdown-menu {
+  left: -100%;
+  margin-left: 10px;
+  border-radius: 6px 0 6px 6px;
+}
+</style>
+
+<script type="text/javascript">
+// manage active state of menu based on current page
+$(document).ready(function () {
+  // active menu anchor
+  href = window.location.pathname
+  href = href.substr(href.lastIndexOf('/') + 1)
+  if (href === "")
+    href = "index.html";
+  var menuAnchor = $('a[href="' + href + '"]');
+
+  // mark the anchor link active (and if it's in a dropdown, also mark that active)
+  var dropdown = menuAnchor.closest('li.dropdown');
+  if (window.bootstrap) { // Bootstrap 4+
+    menuAnchor.addClass('active');
+    dropdown.find('> .dropdown-toggle').addClass('active');
+  } else { // Bootstrap 3
+    menuAnchor.parent().addClass('active');
+    dropdown.addClass('active');
+  }
+
+  // Navbar adjustments
+  var navHeight = $(".navbar").first().height() + 15;
+  var style = document.createElement('style');
+  var pt = "padding-top: " + navHeight + "px; ";
+  var mt = "margin-top: -" + navHeight + "px; ";
+  var css = "";
+  // offset scroll position for anchor links (for fixed navbar)
+  for (var i = 1; i <= 6; i++) {
+    css += ".section h" + i + "{ " + pt + mt + "}\n";
+  }
+  style.innerHTML = "body {" + pt + "padding-bottom: 40px; }\n" + css;
+  document.head.appendChild(style);
+});
+</script>
+
+<!-- tabsets -->
+
+<style type="text/css">
+.tabset-dropdown > .nav-tabs {
+  display: inline-table;
+  max-height: 500px;
+  min-height: 44px;
+  overflow-y: auto;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+}
+
+.tabset-dropdown > .nav-tabs > li.active:before, .tabset-dropdown > .nav-tabs.nav-tabs-open:before {
+  content: "\e259";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li.active:before {
+  content: "\e258";
+  font-family: 'Glyphicons Halflings';
+  border: none;
+}
+
+.tabset-dropdown > .nav-tabs > li.active {
+  display: block;
+}
+
+.tabset-dropdown > .nav-tabs > li > a,
+.tabset-dropdown > .nav-tabs > li > a:focus,
+.tabset-dropdown > .nav-tabs > li > a:hover {
+  border: none;
+  display: inline-block;
+  border-radius: 4px;
+  background-color: transparent;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li {
+  display: block;
+  float: none;
+}
+
+.tabset-dropdown > .nav-tabs > li {
+  display: none;
+}
+</style>
+
+<!-- code folding -->
+<style type="text/css">
+.code-folding-btn { margin-bottom: 4px; }
+</style>
+
+
+
+<style type="text/css">
+
+#TOC {
+  margin: 25px 0px 20px 0px;
+}
+@media (max-width: 768px) {
+#TOC {
+  position: relative;
+  width: 100%;
+}
+}
+
+@media print {
+.toc-content {
+  /* see https://github.com/w3c/csswg-drafts/issues/4434 */
+  float: right;
+}
+}
+
+.toc-content {
+  padding-left: 30px;
+  padding-right: 40px;
+}
+
+div.main-container {
+  max-width: 1200px;
+}
+
+div.tocify {
+  width: 20%;
+  max-width: 260px;
+  max-height: 85%;
+}
+
+@media (min-width: 768px) and (max-width: 991px) {
+  div.tocify {
+    width: 25%;
+  }
+}
+
+@media (max-width: 767px) {
+  div.tocify {
+    width: 100%;
+    max-width: none;
+  }
+}
+
+.tocify ul, .tocify li {
+  line-height: 20px;
+}
+
+.tocify-subheader .tocify-item {
+  font-size: 0.90em;
+}
+
+.tocify .list-group-item {
+  border-radius: 0px;
+}
+
+
+</style>
+
+
+
+</head>
+
+<body>
+
+
+<div class="container-fluid main-container">
+
+
+<!-- setup 3col/9col grid for toc_float and main content  -->
+<div class="row">
+<div class="col-xs-12 col-sm-4 col-md-3">
+<div id="TOC" class="tocify">
+</div>
+</div>
+
+<div class="toc-content col-xs-12 col-sm-8 col-md-9">
+
+
+
+
+<div class="navbar navbar-default  navbar-fixed-top" role="navigation">
+  <div class="container">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-bs-toggle="collapse" data-target="#navbar" data-bs-target="#navbar">
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="index.html">Treg-uNK</a>
+    </div>
+    <div id="navbar" class="navbar-collapse collapse">
+      <ul class="nav navbar-nav">
+        <li>
+  <a href="index.html">Home</a>
+</li>
+<li>
+  <a href="setUp.html">Pre-processing</a>
+</li>
+<li>
+  <a href="deAnalysis.html">DE Analysis</a>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+    Over-representation Analysis (ORA)
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="go.html">Gene Ontology</a>
+    </li>
+    <li>
+      <a href="kegg.html">KEGG</a>
+    </li>
+  </ul>
+</li>
+      </ul>
+      <ul class="nav navbar-nav navbar-right">
+        <li>
+  <a href="https://www.linkedin.com/in/ha-tran-6973b5130/">
+    <span class="fa fa-linkedin"></span>
+     
+  </a>
+</li>
+<li>
+  <a href="https://github.com/tranmanhha135/">
+    <span class="fa fa-github"></span>
+     
+  </a>
+</li>
+      </ul>
+    </div><!--/.nav-collapse -->
+  </div><!--/.container -->
+</div><!--/.navbar -->
+
+<div id="header">
+
+<div class="btn-group pull-right float-right">
+<button type="button" class="btn btn-default btn-xs btn-secondary btn-sm dropdown-toggle" data-toggle="dropdown" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><span>Code</span> <span class="caret"></span></button>
+<ul class="dropdown-menu dropdown-menu-right" style="min-width: 50px;">
+<li><a id="rmd-show-all-code" href="#">Show All Code</a></li>
+<li><a id="rmd-hide-all-code" href="#">Hide All Code</a></li>
+</ul>
+</div>
+
+
+
+<h1 class="title toc-ignore">Setting up for DGE analysis</h1>
+<h4 class="author">Ha Tran</h4>
+<h4 class="date">06-01-2024</h4>
+
+</div>
+
+
+<p>
+<button type="button" class="btn btn-default btn-workflowr btn-workflowr-report" data-toggle="collapse" data-target="#workflowr-report">
+<span class="glyphicon glyphicon-list" aria-hidden="true"></span>
+workflowr <span class="glyphicon glyphicon-ok text-success"
+aria-hidden="true"></span>
+</button>
+</p>
+<div id="workflowr-report" class="collapse">
+<ul class="nav nav-tabs">
+<li class="active">
+<a data-toggle="tab" href="#summary">Summary</a>
+</li>
+<li>
+<a data-toggle="tab" href="#checks"> Checks <span
+class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span>
+</a>
+</li>
+<li>
+<a data-toggle="tab" href="#versions">Past versions</a>
+</li>
+</ul>
+<div class="tab-content">
+<div id="summary" class="tab-pane fade in active">
+<p>
+<strong>Last updated:</strong> 2024-01-09
+</p>
+<p>
+<strong>Checks:</strong> <span
+class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> 7
+<span class="glyphicon glyphicon-exclamation-sign text-danger"
+aria-hidden="true"></span> 0
+</p>
+<p>
+<strong>Knit directory:</strong> <code>140_treg_uNK/1_analysis/</code>
+<span class="glyphicon glyphicon-question-sign" aria-hidden="true"
+title="This is the local directory in which the code in this file was executed.">
+</span>
+</p>
+<p>
+This reproducible <a href="https://rmarkdown.rstudio.com">R Markdown</a>
+analysis was created with <a
+  href="https://github.com/workflowr/workflowr">workflowr</a> (version
+1.7.1). The <em>Checks</em> tab describes the reproducibility checks
+that were applied when the results were created. The <em>Past
+versions</em> tab lists the development history.
+</p>
+<hr>
+</div>
+<div id="checks" class="tab-pane fade">
+<div id="workflowr-checks" class="panel-group">
+<div class="panel panel-default">
+<div class="panel-heading">
+<p class="panel-title">
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRMarkdownfilestronguptodate">
+<span class="glyphicon glyphicon-ok text-success"
+aria-hidden="true"></span> <strong>R Markdown file:</strong> up-to-date
+</a>
+</p>
+</div>
+<div id="strongRMarkdownfilestronguptodate"
+class="panel-collapse collapse">
+<div class="panel-body">
+<p>Great! Since the R Markdown file has been committed to the Git
+repository, you know the exact version of the code that produced these
+results.</p>
+</div>
+</div>
+</div>
+<div class="panel panel-default">
+<div class="panel-heading">
+<p class="panel-title">
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongEnvironmentstrongempty">
+<span class="glyphicon glyphicon-ok text-success"
+aria-hidden="true"></span> <strong>Environment:</strong> empty </a>
+</p>
+</div>
+<div id="strongEnvironmentstrongempty" class="panel-collapse collapse">
+<div class="panel-body">
+<p>Great job! The global environment was empty. Objects defined in the
+global environment can affect the analysis in your R Markdown file in
+unknown ways. For reproduciblity it’s best to always run the code in an
+empty environment.</p>
+</div>
+</div>
+</div>
+<div class="panel panel-default">
+<div class="panel-heading">
+<p class="panel-title">
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongSeedstrongcodesetseed12345code">
+<span class="glyphicon glyphicon-ok text-success"
+aria-hidden="true"></span> <strong>Seed:</strong>
+<code>set.seed(12345)</code> </a>
+</p>
+</div>
+<div id="strongSeedstrongcodesetseed12345code"
+class="panel-collapse collapse">
+<div class="panel-body">
+<p>The command <code>set.seed(12345)</code> was run prior to running the
+code in the R Markdown file. Setting a seed ensures that any results
+that rely on randomness, e.g. subsampling or permutations, are
+reproducible.</p>
+</div>
+</div>
+</div>
+<div class="panel panel-default">
+<div class="panel-heading">
+<p class="panel-title">
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongSessioninformationstrongrecorded">
+<span class="glyphicon glyphicon-ok text-success"
+aria-hidden="true"></span> <strong>Session information:</strong>
+recorded </a>
+</p>
+</div>
+<div id="strongSessioninformationstrongrecorded"
+class="panel-collapse collapse">
+<div class="panel-body">
+<p>Great job! Recording the operating system, R version, and package
+versions is critical for reproducibility.</p>
+</div>
+</div>
+</div>
+<div class="panel panel-default">
+<div class="panel-heading">
+<p class="panel-title">
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongCachestrongnone">
+<span class="glyphicon glyphicon-ok text-success"
+aria-hidden="true"></span> <strong>Cache:</strong> none </a>
+</p>
+</div>
+<div id="strongCachestrongnone" class="panel-collapse collapse">
+<div class="panel-body">
+<p>Nice! There were no cached chunks for this analysis, so you can be
+confident that you successfully produced the results during this
+run.</p>
+</div>
+</div>
+</div>
+<div class="panel panel-default">
+<div class="panel-heading">
+<p class="panel-title">
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongFilepathsstrongrelative">
+<span class="glyphicon glyphicon-ok text-success"
+aria-hidden="true"></span> <strong>File paths:</strong> relative </a>
+</p>
+</div>
+<div id="strongFilepathsstrongrelative" class="panel-collapse collapse">
+<div class="panel-body">
+<p>Great job! Using relative paths to the files within your workflowr
+project makes it easier to run your code on other machines.</p>
+</div>
+</div>
+</div>
+<div class="panel panel-default">
+<div class="panel-heading">
+<p class="panel-title">
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRepositoryversionstrongahrefhttpsgithubcomtranmanhha135TreguNKtreec6d389fdf5eb43d638d31d9a9d6625aacfcca31ctargetblankc6d389fa">
+<span class="glyphicon glyphicon-ok text-success"
+aria-hidden="true"></span> <strong>Repository version:</strong>
+<a href="https://github.com/tranmanhha135/Treg_uNK/tree/c6d389fdf5eb43d638d31d9a9d6625aacfcca31c" target="_blank">c6d389f</a>
+</a>
+</p>
+</div>
+<div
+id="strongRepositoryversionstrongahrefhttpsgithubcomtranmanhha135TreguNKtreec6d389fdf5eb43d638d31d9a9d6625aacfcca31ctargetblankc6d389fa"
+class="panel-collapse collapse">
+<div class="panel-body">
+<p>
+Great! You are using Git for version control. Tracking code development
+and connecting the code version to the results is critical for
+reproducibility.
+</p>
+<p>
+The results in this page were generated with repository version
+<a href="https://github.com/tranmanhha135/Treg_uNK/tree/c6d389fdf5eb43d638d31d9a9d6625aacfcca31c" target="_blank">c6d389f</a>.
+See the <em>Past versions</em> tab to see a history of the changes made
+to the R Markdown and HTML files.
+</p>
+<p>
+Note that you need to be careful to ensure that all relevant files for
+the analysis have been committed to Git prior to generating the results
+(you can use <code>wflow_publish</code> or
+<code>wflow_git_commit</code>). workflowr only checks the R Markdown
+file, but you know if there are other scripts or data files that it
+depends on. Below is the status of the Git repository when the results
+were generated:
+</p>
+<pre><code>
+Ignored files:
+    Ignored:    .Rproj.user/
+    Ignored:    2_plots/3_FA/
+    Ignored:    2_plots/4_GSEA/
+
+Untracked files:
+    Untracked:  .gitignore
+    Untracked:  0_data/rds_objects/comp.rds
+    Untracked:  0_data/rds_objects/enrichGO.rds
+    Untracked:  0_data/rds_objects/enrichGO_sig.rds
+    Untracked:  0_data/rds_objects/enrichKEGG.rds
+    Untracked:  0_data/rds_objects/enrichKEGG_all.rds
+    Untracked:  0_data/rds_objects/enrichKEGG_sig.rds
+    Untracked:  0_data/rds_objects/pathway_details.rds
+    Untracked:  0_data/rds_objects/reducedTerms_ora.rds
+    Untracked:  0_data/rds_objects/scores_ora.rds
+    Untracked:  0_data/rds_objects/simMatrix_ora.rds
+    Untracked:  3_output/GO_sig.xlsx
+    Untracked:  3_output/KEGG_all.xlsx
+    Untracked:  3_output/KEGG_sig.xlsx
+    Untracked:  functions.Rmd
+    Untracked:  gsea.Rmd
+    Untracked:  ipa.Rmd
+    Untracked:  reactome.Rmd
+
+Unstaged changes:
+    Modified:   0_data/rds_objects/lm.rds
+    Modified:   1_analysis/_site.yml
+    Deleted:    1_analysis/functions.Rmd
+    Deleted:    1_analysis/gsea.Rmd
+    Deleted:    1_analysis/ipa.Rmd
+    Deleted:    1_analysis/reactome.Rmd
+    Modified:   2_plots/1_QC/PC1_PC2.svg
+    Modified:   2_plots/1_QC/PC1_PC3.svg
+    Modified:   2_plots/1_QC/PC2_PC3.svg
+
+</code></pre>
+<p>
+Note that any generated files, e.g. HTML, png, CSS, etc., are not
+included in this status report because it is ok for generated content to
+have uncommitted changes.
+</p>
+</div>
+</div>
+</div>
+</div>
+<hr>
+</div>
+<div id="versions" class="tab-pane fade">
+
+<p>
+These are the previous versions of the repository in which changes were
+made to the R Markdown (<code>1_analysis/setUp.Rmd</code>) and HTML
+(<code>docs/setUp.html</code>) files. If you’ve configured a remote Git
+repository (see <code>?wflow_git_remote</code>), click on the hyperlinks
+in the table below to view the files as they were in that past version.
+</p>
+<div class="table-responsive">
+<table class="table table-condensed table-hover">
+<thead>
+<tr>
+<th>
+File
+</th>
+<th>
+Version
+</th>
+<th>
+Author
+</th>
+<th>
+Date
+</th>
+<th>
+Message
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>
+Rmd
+</td>
+<td>
+<a href="https://github.com/tranmanhha135/Treg_uNK/blob/f2e375016d390445ea565e9ac67b3c8fb0a11567/1_analysis/setUp.Rmd" target="_blank">f2e3750</a>
+</td>
+<td>
+tranmanhha135
+</td>
+<td>
+2024-01-08
+</td>
+<td>
+completed DE
+</td>
+</tr>
+<tr>
+<td>
+Rmd
+</td>
+<td>
+<a href="https://github.com/tranmanhha135/Treg_uNK/blob/05fa0b3c36a50df8dd8259c61c82429bd7bf2033/1_analysis/setUp.Rmd" target="_blank">05fa0b3</a>
+</td>
+<td>
+tranmanhha135
+</td>
+<td>
+2024-01-06
+</td>
+<td>
+added description
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+<hr>
+</div>
+</div>
+</div>
+<div id="data-setup" class="section level1">
+<h1>Data Setup</h1>
+<p>Prior to this analysis, Daniel Thompson (SAGC) performed:</p>
+<ol style="list-style-type: decimal">
+<li><p>Trimmed using <code>cutAdapt</code></p></li>
+<li><p>Aligned to <strong>GRCm38/mm10</strong> using
+<code>STAR</code></p></li>
+<li><p>Reads quantification performed with <code>STAR</code></p></li>
+</ol>
+<pre class="r"><code># working with data
+library(dplyr)
+library(magrittr)
+library(readr)
+library(tibble)
+library(reshape2)
+library(tidyverse)
+library(bookdown)
+library(here)
+
+# Visualisation:
+library(ggbiplot)
+library(ggrepel)
+library(grid)
+library(cowplot)
+library(corrplot)
+library(DT)
+library(plotly)
+library(patchwork)
+
+# Bioconductor packages:
+library(AnnotationHub)
+library(edgeR)
+library(limma)
+library(Glimma)
+
+# Fontlib
+library(extrafont)</code></pre>
+<pre class="r"><code>rawCount &lt;- readRDS(here::here(&quot;0_data/rds_objects/rawCount.rds&quot;))
+DT &lt;- readRDS(here::here(&quot;0_data/functions/DT.rds&quot;))
+
+# to increase the knitting speed. change to T to save all plots
+savePlots &lt;- F
+
+# Theme
+bossTheme &lt;- readRDS(here::here(&quot;0_data/functions/bossTheme.rds&quot;))
+bossTheme_bar &lt;- readRDS(here::here(&quot;0_data/functions/bossTheme.rds&quot;))
+groupColour &lt;- readRDS(here::here(&quot;0_data/functions/groupColour.rds&quot;))
+groupColour_dark &lt;- readRDS(here::here(&quot;0_data/functions/groupColour_dark.rds&quot;))
+
+# Plotting
+convert_to_superscript &lt;- readRDS(here::here(&quot;0_data/functions/convert_to_superscript.rds&quot;))
+exponent &lt;- readRDS(here::here(&quot;0_data/functions/exponent.rds&quot;))
+format_y_axis &lt;- readRDS(here::here(&quot;0_data/functions/format_y_axis.rds&quot;))</code></pre>
+<div id="import-raw-count-data" class="section level2">
+<h2>Import raw count data</h2>
+<p>To save time, this will only be performed once at the begining of the
+analysis. For subsequent analysis, the file will just be loaded.</p>
+<pre class="r"><code>rawCount &lt;- read_csv(here::here(&quot;0_data/rawData/all.counts.genes.csv&quot;))  %&gt;% setNames(c(&quot;GeneID&quot;, &quot;DT1&quot;, &quot;DT2&quot;, &quot;DT3&quot;, &quot;DT4&quot;, &quot;DT6&quot;, &quot;PBS1&quot;, &quot;PBS2&quot;, &quot;PBS3&quot;, &quot;PBS4&quot;, &quot;PBS5&quot;, &quot;PBS6&quot;, &quot;Treg1&quot;, &quot;Treg2&quot;, &quot;Treg3&quot;, &quot;Treg4&quot;, &quot;Treg5&quot;)) %&gt;% column_to_rownames(&quot;GeneID&quot;)
+
+rawCount &lt;- rawCount[!rownames(rawCount) %in% c(&quot;ambiguous&quot;, &quot;no_feature&quot;),]
+saveRDS(rawCount, here::here(&quot;0_data/rds_objects/rawCount.rds&quot;))</code></pre>
+</div>
+<div id="importing-metadata" class="section level2">
+<h2>Importing Metadata</h2>
+<p>There are generally two metadata required for DGE analysis.</p>
+<ol style="list-style-type: decimal">
+<li><p>metadata about <em>each sample</em></p></li>
+<li><p>metadata about <em>each gene</em></p></li>
+</ol>
+<div id="sample-metadata" class="section level3">
+<h3>Sample Metadata</h3>
+<p>The sample metadata can be extracted from the <code>rawCount</code>
+column names. These data include <code>sample_id</code>,
+<code>sample_group</code>, <code>sample_type</code>.</p>
+<pre class="r"><code>sampleMeta &lt;- data.frame(&quot;sample&quot; = colnames(rawCount), 
+                         `group` = c(rep(&quot;DT&quot;,5),rep(&quot;PBS&quot;,6),rep(&quot;Treg&quot;,5)),
+                         `rep` = c(1,2,3,4,6,1,2,3,4,5,6,1,2,3,4,5))</code></pre>
+</div>
+<div id="gene-metadata" class="section level3 tabset tabset-pills">
+<h3 class="tabset tabset-pills">Gene Metadata</h3>
+<p>Gene annotation is useful for the DGE analysis as it will provide
+useful information about the genes. The annotated genes of <em>Mus
+musculus</em> can be pulled down by using Annotation Hub.</p>
+<p>Annotation Hub also has a web service that can be assessed through
+the display function. Pulling down the gene annotation can take a long
+time, so after the initial run, the annotated genes is saved to a
+<code>genes.rds</code> file. To save time, if <code>genes.rds</code> is
+already present, don’t run the code chunk.</p>
+<pre class="r"><code>ah &lt;- AnnotationHub()
+ah %&gt;% 
+  subset(grepl(&quot;musculus&quot;, species)) %&gt;%
+  subset(rdataclass == &quot;EnsDb&quot;)
+
+#viewing web service for annotation hub 
+BiocHubsShiny::BiocHubsShiny()
+
+# Annotation hub html site was used to identify ID for the latest mouse genome from Ensembl: 
+# Ensembl 110 EnsDb for Mus musculus (GRCm39/mm39)
+ensDb &lt;- ah[[&quot;AH113713&quot;]]
+
+genes &lt;- genes(ensDb) %&gt;% 
+  as.data.frame()
+
+#the annotated genes are saved into a RDS object to save computational time in subsequent run of the setUp.Rmd
+saveRDS(object = genes,file = here::here(&quot;0_data/rds_objects/gene_metadata.rds&quot;))</code></pre>
+<p>Using the annotated gene list through AnnotationHub(), load into
+object called <code>geneMetadata</code>. Filter out all genes that are
+present in the rawCount and display the number of unique gene_biotypes
+present in the rawCount and geneMetadata</p>
+<pre class="r"><code>geneMeta &lt;- read_rds(here::here(&quot;0_data/rds_objects/gene_metadata.rds&quot;))
+
+#prepare the gene data frame to contain the genes listed in the rownames of &#39;rawCount&#39; data
+geneMeta &lt;- data.frame(gene = rownames(rawCount)) %&gt;% 
+  left_join(geneMeta %&gt;% as.data.frame, 
+            by = c(&quot;gene&quot;=&quot;gene_name&quot;)) %&gt;% 
+  dplyr::distinct(gene, .keep_all=TRUE)  
+
+rownames(geneMeta) &lt;- geneMeta$gene
+
+#Using the table function, the details of the genes present in the rawCount data can be summaried.
+genes &lt;- geneMeta$gene_biotype %&gt;% table %&gt;% as.data.frame()
+colnames(genes) &lt;- c(&quot;Gene Biotype&quot;, &quot;Frequency&quot;)
+genes$`Gene Biotype` &lt;- as.character(genes$`Gene Biotype`)
+genes$`Gene Biotype`[grep(&quot;_&quot;, genes$`Gene Biotype`)] &lt;- str_to_sentence(str_replace_all(genes$`Gene Biotype`[grep(&quot;_&quot;, genes$`Gene Biotype`)], &quot;_&quot;, &quot; &quot;))</code></pre>
+<div id="interactive-pie-chart" class="section level4">
+<h4>Interactive pie chart</h4>
+<pre class="r"><code>pie &lt;- plot_ly(genes, labels = ~`Gene Biotype`, values = ~`Frequency`, type = &#39;pie&#39;,
+               textposition = &#39;inside&#39;,
+               textinfo = &#39;label+percent&#39;,
+               # insidetextfont = list(color = &#39;#FFFFFF&#39;),
+               hoverinfo = &#39;text&#39;,
+               text = ~paste(`Frequency`, &#39; genes&#39;),
+               marker = list(colors = colors,line = list(color = &#39;#FFFFFF&#39;, width = 1)),
+               #The &#39;pull&#39; attribute can also be used to create space between the sectors
+        showlegend = T)
+pie &lt;- pie %&gt;% layout(title = &#39;Frequency of gene biotype&#39;,
+         xaxis = list(showgrid = FALSE, zeroline = FALSE, showticklabels = FALSE),
+         yaxis = list(showgrid = FALSE, zeroline = FALSE, showticklabels = FALSE))
+
+pie</code></pre>
+<div class="plotly html-widget html-fill-item" id="htmlwidget-8d32cfd9db97395c4a5f" style="width:672px;height:480px;"></div>
+<script type="application/json" data-for="htmlwidget-8d32cfd9db97395c4a5f">{"x":{"visdat":{"37b2d1956df52":["function () ","plotlyVisDat"]},"cur_data":"37b2d1956df52","attrs":{"37b2d1956df52":{"labels":{},"values":{},"textposition":"inside","textinfo":"label+percent","hoverinfo":"text","text":{},"marker":{"colors":["function (distinct = FALSE) ","{","    c <- .Call(C_colors)","    if (distinct) ","        c[!duplicated(t(col2rgb(c)))]","    else c","}"],"line":{"color":"#FFFFFF","width":1}},"showlegend":true,"alpha_stroke":1,"sizes":[10,100],"spans":[1,20],"type":"pie"}},"layout":{"margin":{"b":40,"l":60,"t":25,"r":10},"title":"Frequency of gene biotype","xaxis":{"showgrid":false,"zeroline":false,"showticklabels":false},"yaxis":{"showgrid":false,"zeroline":false,"showticklabels":false},"hovermode":"closest","showlegend":true},"source":"A","config":{"modeBarButtonsToAdd":["hoverclosest","hovercompare"],"showSendToCloud":false},"data":[{"labels":["lncRNA","miRNA","Misc rna","Processed pseudogene","Protein coding","pseudogene","ribozyme","rRNA","scaRNA","snoRNA","snRNA","TEC","Transcribed processed pseudogene","Transcribed unitary pseudogene","Transcribed unprocessed pseudogene","Translated unprocessed pseudogene","Unitary pseudogene","Unprocessed pseudogene"],"values":[2290,1173,1,122,18844,2,4,6,7,116,4,26,80,15,38,1,1,52],"textposition":["inside","inside","inside","inside","inside","inside","inside","inside","inside","inside","inside","inside","inside","inside","inside","inside","inside","inside"],"textinfo":"label+percent","hoverinfo":["text","text","text","text","text","text","text","text","text","text","text","text","text","text","text","text","text","text"],"text":["2290  genes","1173  genes","1  genes","122  genes","18844  genes","2  genes","4  genes","6  genes","7  genes","116  genes","4  genes","26  genes","80  genes","15  genes","38  genes","1  genes","1  genes","52  genes"],"marker":{"color":"rgba(31,119,180,1)","colors":["structure(function (distinct = FALSE) ","{","    c <- .Call(C_colors)","    if (distinct) ","        c[!duplicated(t(col2rgb(c)))]","    else c","}, apiSrc = TRUE)"],"line":{"color":"#FFFFFF","width":1}},"showlegend":true,"type":"pie","frame":null}],"highlight":{"on":"plotly_click","persistent":false,"dynamic":false,"selectize":false,"opacityDim":0.20000000000000001,"selected":{"opacity":1},"debounce":0},"shinyEvents":["plotly_hover","plotly_click","plotly_selected","plotly_relayout","plotly_brushed","plotly_brushing","plotly_clickannotation","plotly_doubleclick","plotly_deselect","plotly_afterplot","plotly_sunburstclick"],"base_url":"https://plot.ly"},"evals":[],"jsHooks":[]}</script>
+</div>
+<div id="table" class="section level4">
+<h4>Table</h4>
+<pre class="r"><code>genes %&gt;% DT(.,caption = &quot;Table 1: Gene biotype&quot;)</code></pre>
+<div class="datatables html-widget html-fill-item" id="htmlwidget-d701554a25665d09d09f" style="width:100%;height:auto;"></div>
+<script type="application/json" data-for="htmlwidget-d701554a25665d09d09f">{"x":{"filter":"none","vertical":false,"extensions":["Buttons"],"caption":"<caption>Table 1: Gene biotype<\/caption>","data":[["1","2","3","4","5","6","7","8","9","10","11","12","13","14","15","16","17","18"],["lncRNA","miRNA","Misc rna","Processed pseudogene","Protein coding","pseudogene","ribozyme","rRNA","scaRNA","snoRNA","snRNA","TEC","Transcribed processed pseudogene","Transcribed unitary pseudogene","Transcribed unprocessed pseudogene","Translated unprocessed pseudogene","Unitary pseudogene","Unprocessed pseudogene"],[2290,1173,1,122,18844,2,4,6,7,116,4,26,80,15,38,1,1,52]],"container":"<table class=\"display\">\n  <thead>\n    <tr>\n      <th> <\/th>\n      <th>Gene Biotype<\/th>\n      <th>Frequency<\/th>\n    <\/tr>\n  <\/thead>\n<\/table>","options":{"dom":"Blfrtip","scrollX":true,"buttons":["copy","csv","excel","pdf","print"],"lengthMenu":[[10,25,50,-1],["10","25","50","All"]],"columnDefs":[{"className":"dt-right","targets":2},{"orderable":false,"targets":0},{"name":" ","targets":0},{"name":"Gene Biotype","targets":1},{"name":"Frequency","targets":2}],"order":[],"autoWidth":false,"orderClasses":false},"selection":{"mode":"multiple","selected":null,"target":"row","selectable":null}},"evals":[],"jsHooks":[]}</script>
+</div>
+</div>
+</div>
+<div id="create-dgelist-object" class="section level2">
+<h2>Create DGEList object</h2>
+<p>Digital Gene Expression List (DGElist) is a R object class often used
+for differential gene expression analysis as it simplifies plotting, and
+interaction with data and metadata.</p>
+<p>The DGEList object holds the three dataset that have
+imported/created, including <code>rawCount</code> data and
+<code>sampleMeta</code> and <code>geneMeta</code> metadata.</p>
+<p>To further save time and memory, genes that were not expressed across
+all samples (i.e., <code>0</code> count across all columns) are all
+removed</p>
+<pre class="r"><code>#Create DGElist with rawCOunt and gene data. Remove all genes with 0 expression in all treatment groups
+dge &lt;- DGEList(counts = rawCount, 
+               samples = sampleMeta,
+               genes = geneMeta,
+               remove.zeros = TRUE
+               ) 
+
+dge$samples$group &lt;- factor(dge$samples$group, levels = c(&quot;PBS&quot;, &quot;DT&quot;, &quot;Treg&quot;))</code></pre>
+<p>6583 non-expressed genes were removed.</p>
+</div>
+</div>
+<div id="pre-processing-and-qc" class="section level1">
+<h1>Pre-processing and QC</h1>
+<p>Pre-processing steps increased the power of the downstream DGE
+analysis by eliminating majority of unwanted variance that could obscure
+the true variance caused by the differences in sample conditions. There
+are several standard steps that are commonly followed to pre-process and
+QC raw read counts, including:</p>
+<ol style="list-style-type: decimal">
+<li><p>Checking Library Size</p></li>
+<li><p>Removal of Undetectable Genes</p></li>
+<li><p>Normalisation</p></li>
+<li><p>QC through MDS/PCA</p></li>
+</ol>
+<div id="checking-library-size" class="section level2">
+<h2>Checking Library Size</h2>
+<p>A simple pre-processing/QC step is checking the quality of library
+size (total number of mapped and quantified reads) for each treatment.
+This enable identification of potentially mis-labelled or outlying
+samples. This is often visualised through <code>ggplot</code>.</p>
+<pre class="r"><code>custom_labels &lt;- function(data, y, x) {
+  exp &lt;- exponent(df = data,y_column = y)
+  ifelse(x &gt;= 1000 | x&lt;= 0.001 &amp; x!=0, {
+    l &lt;- x / 10^exp
+    parse(text=l)
+  }, format(x, scientific = FALSE))
+}
+
+libSize &lt;- ggplot(dge$samples,aes(x = sample, y = lib.size, fill = group)) +
+  geom_col(width = 0.8) +
+  geom_hline(aes(yintercept = lib.size), data = . %&gt;% summarise_at(vars(lib.size), mean), linetype = 2) +
+  scale_y_continuous(expand = expansion(mult = c(0, 0)), 
+                     labels = function(x) custom_labels(data = dge$samples, y = &quot;lib.size&quot;, x = x)) +
+  scale_fill_manual(values = groupColour)+
+  labs(x = &quot;&quot;, 
+       title = &quot;Sample Library Size&quot;, 
+       y = paste0(&quot;Library size (\u00D710&quot;, convert_to_superscript(exponent(dge$samples, &quot;lib.size&quot;)), &quot;)&quot;)) +
+  coord_flip() +
+  bossTheme_bar(base_size = 14)
+
+libSize</code></pre>
+<div class="figure" style="text-align: center">
+<img src="figure/setUp.Rmd/libraryChecks-1.png" alt="Sample library size. Dash line represent average library size" width="672" />
+<p class="caption">
+Sample library size. Dash line represent average library size
+</p>
+</div>
+<pre class="r"><code>if(savePlots){
+  ggsave(here::here(&quot;2_plots/1_QC/library_size.svg&quot;),
+         plot = libSize,
+         width = 10,
+         height = 9,
+         units = &quot;cm&quot;)
+}</code></pre>
+<p><strong>NOTE:</strong> The library size here is small because
+“ambiguous” and “no_feature” reads were removed</p>
+</div>
+<div id="removal-of-low-expressed-genes" class="section level2">
+<h2>Removal of Low-Expressed Genes</h2>
+<p>Filtering out low-expressed genes is a standard pre-processing step
+in DGE analysis as it can significantly increase the power to
+differentiate differentially expressed genes by eliminating the variance
+caused by genes that are lowly expressed in all samples.</p>
+<p>The threshold of removal is arbitrary and is often determined after
+visualisation of the count distribution. The count distribution can be
+illustrated in a density plot through <code>ggplot</code>. A common
+metric used to display the count distribution is <em>log Counts per
+Million</em> (logCPM)</p>
+<pre class="r"><code>cpm_filter &lt;- 1.5
+beforeFiltering &lt;- dge %&gt;% 
+  edgeR::cpm(log = TRUE) %&gt;%
+  melt %&gt;%
+  dplyr::filter(is.finite(value)) %&gt;%
+  ggplot(aes(x = value,colour = Var2)) +
+  geom_density() +
+  labs(title = &quot;Before filtering low-expressed genes&quot;,
+       subtitle = paste0(nrow(dge), &quot; genes&quot;),
+       x = &quot;logCPM&quot;,
+       y = &quot;Density&quot;,
+       colour = &quot;Sample Groups&quot;) +
+  bossTheme(base_size = 14)
+
+if(savePlots){
+  ggsave(&quot;counts_before_filtering.svg&quot;,
+         plot = beforeFiltering + bossTheme(base_size = 14),
+         width = 10,
+         height = 10,
+         units = &quot;cm&quot;,
+         path = here::here(&quot;2_plots/1_QC/&quot;))
+}</code></pre>
+<p>Ideally, the filtering the low-expressed genes should remove the
+large peak with <code>logCPM &lt; 0</code>, i.e., remove any genes which
+have less than one count per million. A common guideline is to keep all
+genes that have &gt; 1-2 cpm in the smallest group on a treatment. In
+this case, both groups (<code>WT</code> and <code>KO</code>) have four
+replicates.</p>
+<p>At CPM <code>&gt; 1</code>, majority of the peak with
+<code>logCPM &lt; 0</code> were removed. This may need adjustments later
+as increase genes may also decrease the power of the differential
+expression algorithm</p>
+<p>To to keep genes that are are more than 1.5 CPM in at least 5
+samples. Mathematically this would be identifying genes (rows) with CPM
+&gt; 1.5; and identifying total row sum that is
+<code>&gt;= 5</code>.</p>
+<pre class="r"><code>#the genes kept have &gt;2 CPM for at least 4 samples
+keptGenes &lt;- (rowSums(cpm(dge) &gt; cpm_filter) &gt;= 5) 
+afterFiltering &lt;- dge %&gt;%
+  edgeR::cpm(log = TRUE) %&gt;%
+  #for var1 (gene names) extract only the keptGenes and discard all other genes in the logCPM data
+  magrittr::extract(keptGenes, ) %&gt;%
+  melt %&gt;%
+  dplyr::filter(is.finite(value)) %&gt;%
+  ggplot(aes(x = value,colour = Var2)) +
+  geom_density() +
+  labs(title = &quot;After filtering low-expressed genes&quot;, 
+       subtitle = paste0(table(keptGenes)[[2]], &quot; genes&quot;),
+       x = &quot;logCPM&quot;,
+       y = &quot;Density&quot;,
+       colour = &quot;Sample Groups&quot;) + 
+  bossTheme(base_size = 14,legend = &quot;bottom&quot;)
+
+if(savePlots){
+  ggsave(&quot;counts_after_filtering.svg&quot;,
+         plot = afterFiltering + bossTheme(base_size = 14),
+         width = 10,
+         height = 10,
+         units = &quot;cm&quot;,
+         path = here::here(&quot;2_plots/1_QC/&quot;))
+}
+
+beforeFiltering + afterFiltering + plot_layout(guides = &quot;collect&quot;) &amp; bossTheme(base_size = 14,legend = &quot;bottom&quot;)</code></pre>
+<div class="figure" style="text-align: center">
+<img src="figure/setUp.Rmd/afterFiltering-1.png" alt="Before and after removal of lowly expressed genes" width="672" />
+<p class="caption">
+Before and after removal of lowly expressed genes
+</p>
+</div>
+<pre class="r"><code>if(savePlots){
+  ggsave(filename = &quot;counts_before_after_filtering.svg&quot;,
+         path = here::here(&quot;2_plots/1_QC/&quot;),
+         width = 20,
+         height = 14,
+         units = &quot;cm&quot;)
+}</code></pre>
+<p>Following the removal of <strong>6583</strong> non-expressed and
+<strong>3651</strong> low-expressed genes (&lt; 0.5CPM in at least 5
+samples), <strong>14748</strong> genes remained for downstream
+analysis</p>
+<div id="subset-the-dgelist-object" class="section level3">
+<h3>Subset the DGElist object</h3>
+<p>After filtering the low-expressed genes, the DGElist object is
+updated to eliminate the low-expressed genes from future analysis</p>
+<pre class="r"><code>#extract genes from keptGenes and recalculate the lib size
+dge &lt;- dge[keptGenes,,keep.lib.sizes = FALSE]</code></pre>
+</div>
+</div>
+<div id="normalisation" class="section level2 tabset tabset-pills">
+<h2 class="tabset tabset-pills">Normalisation</h2>
+<p>Using the TMM (trimmed mean of M value) method of normalisation
+through the <code>edgeR</code> package. The TMM approach creates a
+scaling factor as an offset to be supplied to Negative Binomial model.
+The <code>calcNormFactors</code> function calculate the normalisation
+and return the adjusted <code>norm.factor</code> to the
+<code>dge$samples</code> element.</p>
+<div id="mean-difference-md-plots"
+class="section level3 tabset tabset-pills">
+<h3 class="tabset tabset-pills">Mean-difference (MD) plots</h3>
+<p>The following visualisation of the TMM normalisation is plotted using
+the mean-difference (MD) plot. The MD plot visualise the library
+size-adjusted logFC between two samples (the difference) against the
+log-expression across all samples (the mean). In this instance,
+<code>sample 1</code> is used to compare against an artificial library
+construct from the average of all the other samples</p>
+<p>Ideally, the bulk of gene expression following the TMM normalisation
+should be centred around <code>expression log-ratio</code> of 0, which
+indicates that library size bias between samples have been successfully
+removed. This should be repeated with all the samples in the dge
+object.</p>
+<div id="before" class="section level4">
+<h4>Before</h4>
+<pre class="r"><code>par(mfrow = c(2, 4), mar = c(2, 2, 1, 1))
+
+for (i in 1:8) {
+  limma::plotMD(cpm(dge, log = TRUE), column = i)
+  abline(h = 0, col = &quot;red&quot;, lty = 2, lwd = 2)
+}</code></pre>
+<div class="figure" style="text-align: center">
+<img src="figure/setUp.Rmd/beforeNorm-1.png" alt="MA plot before TMM normalisation" width="672" />
+<p class="caption">
+MA plot before TMM normalisation
+</p>
+</div>
+</div>
+<div id="after" class="section level4">
+<h4>After</h4>
+<pre class="r"><code>#after normalisation
+dge &lt;- edgeR::calcNormFactors(object = dge, 
+                              method = &quot;TMM&quot;)
+
+par(mfrow = c(2, 4), mar = c(2, 2, 1, 1))
+
+for (i in 1:8) {
+  limma::plotMD(cpm(dge, log = TRUE), column = i)
+  abline(h = 0, col = &quot;red&quot;, lty = 2, lwd = 2)
+}</code></pre>
+<div class="figure" style="text-align: center">
+<img src="figure/setUp.Rmd/afterNorm-1.png" alt="MA plot after TMM normalisation" width="672" />
+<p class="caption">
+MA plot after TMM normalisation
+</p>
+</div>
+</div>
+</div>
+<div id="normalisation-factors" class="section level3">
+<h3>Normalisation factors</h3>
+<pre class="r"><code>dge$samples %&gt;% DT(.,caption = &quot;Table: Normalised samples&quot;)</code></pre>
+<div class="datatables html-widget html-fill-item" id="htmlwidget-27a6251d00cbd347f90b" style="width:100%;height:auto;"></div>
+<script type="application/json" data-for="htmlwidget-27a6251d00cbd347f90b">{"x":{"filter":"none","vertical":false,"extensions":["Buttons"],"caption":"<caption>Table: Normalised samples<\/caption>","data":[["DT1","DT2","DT3","DT4","DT6","PBS1","PBS2","PBS3","PBS4","PBS5","PBS6","Treg1","Treg2","Treg3","Treg4","Treg5"],["DT","DT","DT","DT","DT","PBS","PBS","PBS","PBS","PBS","PBS","Treg","Treg","Treg","Treg","Treg"],[436332,515158,694435,589541,845485,607922,579533,583693,658871,697576,736027,710060,684532,701599,686048,726381],[1.0152771242442,0.9847617851907547,1.0313934252215,1.029502696974969,1.010487862189632,0.8679277021284219,0.9904344603508075,1.061786247735169,1.025202679883528,1.019686604617302,0.9928427000211208,0.9929536398296339,0.9947164070959589,0.9897874301245985,0.9991754724858054,1.007363077747785],["DT1","DT2","DT3","DT4","DT6","PBS1","PBS2","PBS3","PBS4","PBS5","PBS6","Treg1","Treg2","Treg3","Treg4","Treg5"],[1,2,3,4,6,1,2,3,4,5,6,1,2,3,4,5]],"container":"<table class=\"display\">\n  <thead>\n    <tr>\n      <th> <\/th>\n      <th>group<\/th>\n      <th>lib.size<\/th>\n      <th>norm.factors<\/th>\n      <th>sample<\/th>\n      <th>rep<\/th>\n    <\/tr>\n  <\/thead>\n<\/table>","options":{"dom":"Blfrtip","scrollX":true,"buttons":["copy","csv","excel","pdf","print"],"lengthMenu":[[10,25,50,-1],["10","25","50","All"]],"columnDefs":[{"className":"dt-right","targets":[2,3,5]},{"orderable":false,"targets":0},{"name":" ","targets":0},{"name":"group","targets":1},{"name":"lib.size","targets":2},{"name":"norm.factors","targets":3},{"name":"sample","targets":4},{"name":"rep","targets":5}],"order":[],"autoWidth":false,"orderClasses":false},"selection":{"mode":"multiple","selected":null,"target":"row","selectable":null}},"evals":[],"jsHooks":[]}</script>
+</div>
+</div>
+<div id="pinciple-component-analysis-pca" class="section level2">
+<h2>Pinciple Component Analysis (PCA)</h2>
+<p>Principal Component Analysis (PCA) is a dimensionality reduction
+technique widely employed to capture the intrinsic patterns and
+variability within high-dimensional datasets. By transforming the
+original gene expression data into a set of uncorrelated principal
+components, PCA helps reveal the major sources of variation in the
+dataset. This enables assessment of overall similarity between
+samples</p>
+<pre class="r"><code># Perform PCA analysis:
+pca_analysis &lt;- prcomp(t(cpm(dge, log = TRUE)))
+
+# Create the plot
+pca_2d &lt;- lapply(list(`1_2` = c(&quot;PC1&quot;, &quot;PC2&quot;),
+                      `1_3` = c(&quot;PC1&quot;, &quot;PC3&quot;),
+                      `2_3` = c(&quot;PC2&quot;, &quot;PC3&quot;)), 
+            function(i) {
+              p &lt;- pca_analysis$x %&gt;% 
+                cbind(dge$samples) %&gt;%  
+                as_tibble() %&gt;% 
+                ggplot(aes(x = .data[[i[1]]], y = .data[[i[2]]], colour = group, shape = as.factor(rep))) +
+                geom_point(size=3) +
+                scale_color_manual(values = groupColour)+
+                # scale_shape_manual(values = c(15:21)) +
+                labs(x = paste0(i[1], &quot; (&quot;, percent(summary(pca_analysis)$importance[&quot;Proportion of Variance&quot;,i[1]]),&quot;)&quot;),
+                     y = paste0(i[2], &quot; (&quot;, percent(summary(pca_analysis)$importance[&quot;Proportion of Variance&quot;,i[2]]),&quot;)&quot;),
+                     colour = &quot;Groups&quot;,
+                     shape = &quot;Replicate&quot;) +
+                bossTheme(base_size = 14,legend = &quot;right&quot;)
+              
+              ggsave(paste0(i[1], &quot;_&quot;, i[2],&quot;.svg&quot;), plot = p,path = here::here(&quot;2_plots/1_QC/&quot;),width = 11, height = 9, units = &quot;cm&quot;)
+              return(p)
+            })
+
+wrap_plots(pca_2d) + plot_layout(guides = &quot;collect&quot;) &amp; bossTheme(base_size = 14,legend = &quot;bottom&quot;)</code></pre>
+<div class="figure" style="text-align: center">
+<img src="figure/setUp.Rmd/pca-1.png" alt="PCA plot" width="672" />
+<p class="caption">
+PCA plot
+</p>
+</div>
+<pre class="r"><code>pc &lt;- pca_analysis[[&quot;x&quot;]][,1:3] %&gt;% as.data.frame()
+
+pc$PC2 &lt;- -pc$PC2
+pc$PC3 &lt;- -pc$PC3
+
+pc = cbind(pc, dge$samples)
+
+totVar &lt;- summary(pca_analysis)[[&quot;importance&quot;]][&#39;Proportion of Variance&#39;,]
+totVar &lt;- 100 * sum(totVar[1:3])
+
+pca_3d &lt;- plot_ly(pc, x = ~PC1, y = ~PC2, z = ~PC3, color = ~dge$samples$group, colors = groupColour,marker = list(size = 5)) %&gt;%
+  add_markers(size = 5)
+
+pca_3d &lt;- pca_3d %&gt;%
+  layout(
+    title = paste0(&#39;Total Explained Variance = &#39;, totVar),
+    scene = list(bgcolor = &quot;#e5ecf6&quot;)
+)
+
+pca_3d</code></pre>
+<div class="plotly html-widget html-fill-item" id="htmlwidget-02880d8cbf9369760f4f" style="width:672px;height:480px;"></div>
+<script type="application/json" data-for="htmlwidget-02880d8cbf9369760f4f">{"x":{"visdat":{"37b2d69c2aa36":["function () ","plotlyVisDat"]},"cur_data":"37b2d69c2aa36","attrs":{"37b2d69c2aa36":{"x":{},"y":{},"z":{},"marker":{"size":5},"color":{},"colors":["#73c1a6","#f58d5f","#8DA0CB"],"alpha_stroke":1,"sizes":[10,100],"spans":[1,20],"type":"scatter3d","mode":"markers","size":5,"inherit":true}},"layout":{"margin":{"b":40,"l":60,"t":25,"r":10},"title":"Total Explained Variance = 44.949","scene":{"bgcolor":"#e5ecf6","xaxis":{"title":"PC1"},"yaxis":{"title":"PC2"},"zaxis":{"title":"PC3"}},"hovermode":"closest","showlegend":true},"source":"A","config":{"modeBarButtonsToAdd":["hoverclosest","hovercompare"],"showSendToCloud":false},"data":[{"x":[82.919539075405169,-7.7885128767346368,-5.7268484889767635,-6.5690481787729231,-2.705146868243264,23.308620305021908],"y":[-28.147293743969495,26.181105179841797,31.657943651314199,15.913709430147351,34.837008319058931,35.823627675600044],"z":[15.631863570937847,2.3865278398344012,-6.9513391720528341,23.108649226665889,2.6180625671528279,11.674790060081387],"marker":{"color":"rgba(245,141,95,1)","size":5,"sizemode":"area","line":{"color":"rgba(245,141,95,1)"}},"type":"scatter3d","mode":"markers","name":"PBS","textfont":{"color":"rgba(245,141,95,1)","size":55},"error_y":{"color":"rgba(245,141,95,1)","width":55},"error_x":{"color":"rgba(245,141,95,1)","width":55},"line":{"color":"rgba(245,141,95,1)","width":55},"frame":null},{"x":[-9.4087924844131869,32.454312413406242,-19.259203856508599,-1.6381004770677636,-8.8928333203347911],"y":[-7.8404694858956621,-1.6742186035640052,-26.677377210099987,10.484603836844453,-10.15203026347095],"z":[-41.756200708727071,-35.596953076302889,-11.647360920231746,-3.9188291477213792,-7.0036148547760444],"marker":{"color":"rgba(141,160,203,1)","size":5,"sizemode":"area","line":{"color":"rgba(141,160,203,1)"}},"type":"scatter3d","mode":"markers","name":"DT","textfont":{"color":"rgba(141,160,203,1)","size":55},"error_y":{"color":"rgba(141,160,203,1)","width":55},"error_x":{"color":"rgba(141,160,203,1)","width":55},"line":{"color":"rgba(141,160,203,1)","width":55},"frame":null},{"x":[-18.678763461714457,-25.778547435475542,-12.069749969224631,-13.642956538087049,-6.5239678382798862],"y":[-26.808198540602767,-24.468495600098016,-16.779996691937672,-8.7117978281127275,-3.6381201250556789],"z":[10.97291450274116,21.914317735617143,6.4562089999895127,4.8395705144506476,7.271392862341143],"marker":{"color":"rgba(115,193,166,1)","size":5,"sizemode":"area","line":{"color":"rgba(115,193,166,1)"}},"type":"scatter3d","mode":"markers","name":"Treg","textfont":{"color":"rgba(115,193,166,1)","size":55},"error_y":{"color":"rgba(115,193,166,1)","width":55},"error_x":{"color":"rgba(115,193,166,1)","width":55},"line":{"color":"rgba(115,193,166,1)","width":55},"frame":null}],"highlight":{"on":"plotly_click","persistent":false,"dynamic":false,"selectize":false,"opacityDim":0.20000000000000001,"selected":{"opacity":1},"debounce":0},"shinyEvents":["plotly_hover","plotly_click","plotly_selected","plotly_relayout","plotly_brushed","plotly_brushing","plotly_clickannotation","plotly_doubleclick","plotly_deselect","plotly_afterplot","plotly_sunburstclick"],"base_url":"https://plot.ly"},"evals":[],"jsHooks":[]}</script>
+<div id="correlation-plot" class="section level3">
+<h3>Correlation plot</h3>
+<p>A correlation matrix between principal components (PC) and metadata
+is crucial for understanding the relationship between the
+high-dimensional features represented by principal components and
+additional information about the samples. This analysis helps identify
+if and how the PC are related to experimental conditions, sample
+characteristics, or other relevant factors; thus, enabling assessment of
+the biological or technical factors driving the observed patterns in the
+principal components.</p>
+<p><strong>Until more metadata is supplied, correlation matrix is
+unnecessary</strong></p>
+<pre class="r"><code>corr_plot &lt;- pca_analysis$x %&gt;%
+  as.data.frame() %&gt;% 
+  rownames_to_column(&quot;sampleName&quot;) %&gt;% 
+  left_join(samples) %&gt;% 
+  as_tibble() %&gt;% 
+  dplyr::select(
+    PC1, 
+    PC2, 
+    PC3,
+    Groups=group,
+    Mated,
+    &quot;Library size&quot;=lib.size,
+    &quot;Normalisation Factor&quot;=norm.factors
+  ) %&gt;% 
+  mutate(Groups = as.numeric(as.factor(Groups))) %&gt;% 
+  cor(method = &quot;spearman&quot;) %&gt;% 
+  corrplot(
+    type = &quot;lower&quot;,
+    diag = FALSE,
+    addCoef.col = 1, addCoefasPercent = TRUE
+  )</code></pre>
+</div>
+</div>
+<div id="save-dgelist-object" class="section level2">
+<h2>Save DGElist object</h2>
+<pre class="r"><code># Save DGElist object into the data/R directory 
+saveRDS(object = dge, file = here::here(&quot;0_data/rds_objects/dge.rds&quot;))</code></pre>
+<br>
+<p>
+<button type="button" class="btn btn-default btn-workflowr btn-workflowr-sessioninfo" data-toggle="collapse" data-target="#workflowr-sessioninfo" style="display: block;">
+<span class="glyphicon glyphicon-wrench" aria-hidden="true"></span>
+Session information
+</button>
+</p>
+<div id="workflowr-sessioninfo" class="collapse">
+<pre class="r"><code>sessionInfo()</code></pre>
+<pre><code>R version 4.3.2 (2023-10-31)
+Platform: x86_64-pc-linux-gnu (64-bit)
+Running under: Ubuntu 22.04.3 LTS
+
+Matrix products: default
+BLAS:   /usr/lib/x86_64-linux-gnu/blas/libblas.so.3.10.0 
+LAPACK: /usr/lib/x86_64-linux-gnu/lapack/liblapack.so.3.10.0
+
+locale:
+ [1] LC_CTYPE=en_AU.UTF-8       LC_NUMERIC=C              
+ [3] LC_TIME=en_AU.UTF-8        LC_COLLATE=en_AU.UTF-8    
+ [5] LC_MONETARY=en_AU.UTF-8    LC_MESSAGES=en_AU.UTF-8   
+ [7] LC_PAPER=en_AU.UTF-8       LC_NAME=C                 
+ [9] LC_ADDRESS=C               LC_TELEPHONE=C            
+[11] LC_MEASUREMENT=en_AU.UTF-8 LC_IDENTIFICATION=C       
+
+time zone: Australia/Adelaide
+tzcode source: system (glibc)
+
+attached base packages:
+[1] grid      stats     graphics  grDevices utils     datasets  methods  
+[8] base     
+
+other attached packages:
+ [1] extrafont_0.19      Glimma_2.10.0       edgeR_3.42.4       
+ [4] limma_3.56.2        AnnotationHub_3.8.0 BiocFileCache_2.8.0
+ [7] dbplyr_2.4.0        BiocGenerics_0.46.0 patchwork_1.1.3    
+[10] plotly_4.10.3       DT_0.31             corrplot_0.92      
+[13] cowplot_1.1.2       ggrepel_0.9.4       ggbiplot_0.55      
+[16] scales_1.3.0        plyr_1.8.9          here_1.0.1         
+[19] bookdown_0.37       lubridate_1.9.3     forcats_1.0.0      
+[22] stringr_1.5.1       purrr_1.0.2         tidyr_1.3.0        
+[25] ggplot2_3.4.4       tidyverse_2.0.0     reshape2_1.4.4     
+[28] tibble_3.2.1        readr_2.1.4         magrittr_2.0.3     
+[31] dplyr_1.1.4        
+
+loaded via a namespace (and not attached):
+  [1] rstudioapi_0.15.0             jsonlite_1.8.8               
+  [3] farver_2.1.1                  rmarkdown_2.25               
+  [5] fs_1.6.3                      zlibbioc_1.46.0              
+  [7] ragg_1.2.7                    vctrs_0.6.5                  
+  [9] memoise_2.0.1                 RCurl_1.98-1.13              
+ [11] htmltools_0.5.7               S4Arrays_1.0.6               
+ [13] curl_5.2.0                    sass_0.4.8                   
+ [15] bslib_0.6.1                   htmlwidgets_1.6.4            
+ [17] cachem_1.0.8                  whisker_0.4.1                
+ [19] mime_0.12                     lifecycle_1.0.4              
+ [21] pkgconfig_2.0.3               Matrix_1.6-3                 
+ [23] R6_2.5.1                      fastmap_1.1.1                
+ [25] GenomeInfoDbData_1.2.10       MatrixGenerics_1.12.3        
+ [27] shiny_1.8.0                   digest_0.6.33                
+ [29] colorspace_2.1-0              AnnotationDbi_1.62.2         
+ [31] S4Vectors_0.38.2              DESeq2_1.40.2                
+ [33] rprojroot_2.0.4               textshaping_0.3.7            
+ [35] crosstalk_1.2.1               GenomicRanges_1.52.1         
+ [37] RSQLite_2.3.4                 filelock_1.0.3               
+ [39] labeling_0.4.3                fansi_1.0.6                  
+ [41] timechange_0.2.0              httr_1.4.7                   
+ [43] abind_1.4-5                   compiler_4.3.2               
+ [45] bit64_4.0.5                   withr_2.5.2                  
+ [47] BiocParallel_1.34.2           DBI_1.2.0                    
+ [49] highr_0.10                    Rttf2pt1_1.3.12              
+ [51] rappdirs_0.3.3                DelayedArray_0.26.7          
+ [53] tools_4.3.2                   interactiveDisplayBase_1.38.0
+ [55] httpuv_1.6.13                 extrafontdb_1.0              
+ [57] glue_1.6.2                    promises_1.2.1               
+ [59] generics_0.1.3                gtable_0.3.4                 
+ [61] tzdb_0.4.0                    data.table_1.14.10           
+ [63] hms_1.1.3                     utf8_1.2.4                   
+ [65] XVector_0.40.0                BiocVersion_3.17.1           
+ [67] pillar_1.9.0                  later_1.3.2                  
+ [69] lattice_0.22-5                bit_4.0.5                    
+ [71] tidyselect_1.2.0              locfit_1.5-9.8               
+ [73] Biostrings_2.68.1             knitr_1.45                   
+ [75] git2r_0.33.0                  IRanges_2.34.1               
+ [77] SummarizedExperiment_1.30.2   svglite_2.1.3                
+ [79] stats4_4.3.2                  xfun_0.41                    
+ [81] Biobase_2.60.0                matrixStats_1.2.0            
+ [83] stringi_1.8.3                 workflowr_1.7.1              
+ [85] lazyeval_0.2.2                yaml_2.3.8                   
+ [87] evaluate_0.23                 codetools_0.2-19             
+ [89] BiocManager_1.30.22           cli_3.6.2                    
+ [91] systemfonts_1.0.5             xtable_1.8-4                 
+ [93] munsell_0.5.0                 jquerylib_0.1.4              
+ [95] Rcpp_1.0.11                   GenomeInfoDb_1.36.4          
+ [97] png_0.1-8                     parallel_4.3.2               
+ [99] ellipsis_0.3.2                blob_1.2.4                   
+[101] bitops_1.0-7                  viridisLite_0.4.2            
+[103] crayon_1.5.2                  rlang_1.1.2                  
+[105] KEGGREST_1.40.1              </code></pre>
+</div>
+</div>
+</div>
+
+
+<!-- Adjust MathJax settings so that all math formulae are shown using
+TeX fonts only; see
+https://docs.mathjax.org/en/latest/web/configuration.html. This will make
+the presentation more consistent at the cost of the webpage sometimes
+taking slightly longer to load. Note that this only works because the
+footer is added to webpages before the MathJax javascript. -->
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+    "HTML-CSS": { availableFonts: ["TeX"] }
+  });
+</script>
+
+
+
+
+</div>
+</div>
+
+</div>
+
+<script>
+
+// add bootstrap table styles to pandoc tables
+function bootstrapStylePandocTables() {
+  $('tr.odd').parent('tbody').parent('table').addClass('table table-condensed');
+}
+$(document).ready(function () {
+  bootstrapStylePandocTables();
+});
+
+
+</script>
+
+<!-- tabsets -->
+
+<script>
+$(document).ready(function () {
+  window.buildTabsets("TOC");
+});
+
+$(document).ready(function () {
+  $('.tabset-dropdown > .nav-tabs > li').click(function () {
+    $(this).parent().toggleClass('nav-tabs-open');
+  });
+});
+</script>
+
+<!-- code folding -->
+<script>
+$(document).ready(function () {
+  window.initializeCodeFolding("hide" === "show");
+});
+</script>
+
+<script>
+$(document).ready(function ()  {
+
+    // temporarily add toc-ignore selector to headers for the consistency with Pandoc
+    $('.unlisted.unnumbered').addClass('toc-ignore')
+
+    // move toc-ignore selectors from section div to header
+    $('div.section.toc-ignore')
+        .removeClass('toc-ignore')
+        .children('h1,h2,h3,h4,h5').addClass('toc-ignore');
+
+    // establish options
+    var options = {
+      selectors: "h1,h2,h3",
+      theme: "bootstrap3",
+      context: '.toc-content',
+      hashGenerator: function (text) {
+        return text.replace(/[.\\/?&!#<>]/g, '').replace(/\s/g, '_');
+      },
+      ignoreSelector: ".toc-ignore",
+      scrollTo: 0
+    };
+    options.showAndHide = true;
+    options.smoothScroll = true;
+
+    // tocify
+    var toc = $("#TOC").tocify(options).data("toc-tocify");
+});
+</script>
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+
+</body>
+</html>

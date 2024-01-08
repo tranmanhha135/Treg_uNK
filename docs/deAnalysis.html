@@ -1,0 +1,2031 @@
+<!DOCTYPE html>
+
+<html>
+
+<head>
+
+<meta charset="utf-8" />
+<meta name="generator" content="pandoc" />
+<meta http-equiv="X-UA-Compatible" content="IE=EDGE" />
+
+
+<meta name="author" content="Ha Tran" />
+
+
+<title>DGE Analysis</title>
+
+<script src="site_libs/header-attrs-2.25/header-attrs.js"></script>
+<script src="site_libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link href="site_libs/bootstrap-3.3.5/css/sandstone.min.css" rel="stylesheet" />
+<script src="site_libs/bootstrap-3.3.5/js/bootstrap.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/html5shiv.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/respond.min.js"></script>
+<style>h1 {font-size: 34px;}
+       h1.title {font-size: 38px;}
+       h2 {font-size: 30px;}
+       h3 {font-size: 24px;}
+       h4 {font-size: 18px;}
+       h5 {font-size: 16px;}
+       h6 {font-size: 12px;}
+       code {color: inherit; background-color: rgba(0, 0, 0, 0.04);}
+       pre:not([class]) { background-color: white }</style>
+<script src="site_libs/jqueryui-1.13.2/jquery-ui.min.js"></script>
+<link href="site_libs/tocify-1.9.1/jquery.tocify.css" rel="stylesheet" />
+<script src="site_libs/tocify-1.9.1/jquery.tocify.js"></script>
+<script src="site_libs/navigation-1.1/tabsets.js"></script>
+<script src="site_libs/navigation-1.1/codefolding.js"></script>
+<link href="site_libs/highlightjs-9.12.0/textmate.css" rel="stylesheet" />
+<script src="site_libs/highlightjs-9.12.0/highlight.js"></script>
+<link href="site_libs/pagedtable-1.1/css/pagedtable.css" rel="stylesheet" />
+<script src="site_libs/pagedtable-1.1/js/pagedtable.js"></script>
+<script src="site_libs/htmlwidgets-1.6.4/htmlwidgets.js"></script>
+<link href="site_libs/datatables-css-0.0.0/datatables-crosstalk.css" rel="stylesheet" />
+<script src="site_libs/datatables-binding-0.31/datatables.js"></script>
+<link href="site_libs/dt-core-1.13.6/css/jquery.dataTables.min.css" rel="stylesheet" />
+<link href="site_libs/dt-core-1.13.6/css/jquery.dataTables.extra.css" rel="stylesheet" />
+<script src="site_libs/dt-core-1.13.6/js/jquery.dataTables.min.js"></script>
+<script src="site_libs/jszip-1.13.6/jszip.min.js"></script>
+<script src="site_libs/pdfmake-1.13.6/pdfmake.js"></script>
+<script src="site_libs/pdfmake-1.13.6/vfs_fonts.js"></script>
+<link href="site_libs/dt-ext-buttons-1.13.6/css/buttons.dataTables.min.css" rel="stylesheet" />
+<script src="site_libs/dt-ext-buttons-1.13.6/js/dataTables.buttons.min.js"></script>
+<script src="site_libs/dt-ext-buttons-1.13.6/js/buttons.html5.min.js"></script>
+<script src="site_libs/dt-ext-buttons-1.13.6/js/buttons.colVis.min.js"></script>
+<script src="site_libs/dt-ext-buttons-1.13.6/js/buttons.print.min.js"></script>
+<link href="site_libs/crosstalk-1.2.1/css/crosstalk.min.css" rel="stylesheet" />
+<script src="site_libs/crosstalk-1.2.1/js/crosstalk.min.js"></script>
+<link href="site_libs/font-awesome-6.4.2/css/all.min.css" rel="stylesheet" />
+<link href="site_libs/font-awesome-6.4.2/css/v4-shims.min.css" rel="stylesheet" />
+
+<link rel="icon" href="https://github.com/workflowr/workflowr-assets/raw/main/img/reproducible.png">
+<!-- Add a small amount of space between sections. -->
+<style type="text/css">
+div.section {
+  padding-top: 12px;
+}
+</style>
+
+
+
+<style type="text/css">
+  code{white-space: pre-wrap;}
+  span.smallcaps{font-variant: small-caps;}
+  span.underline{text-decoration: underline;}
+  div.column{display: inline-block; vertical-align: top; width: 50%;}
+  div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+  ul.task-list{list-style: none;}
+    </style>
+
+<style type="text/css">code{white-space: pre;}</style>
+<script type="text/javascript">
+if (window.hljs) {
+  hljs.configure({languages: []});
+  hljs.initHighlightingOnLoad();
+  if (document.readyState && document.readyState === "complete") {
+    window.setTimeout(function() { hljs.initHighlighting(); }, 0);
+  }
+}
+</script>
+
+
+
+
+
+
+
+
+
+<style type = "text/css">
+.main-container {
+  max-width: 940px;
+  margin-left: auto;
+  margin-right: auto;
+}
+img {
+  max-width:100%;
+}
+.tabbed-pane {
+  padding-top: 12px;
+}
+.html-widget {
+  margin-bottom: 20px;
+}
+button.code-folding-btn:focus {
+  outline: none;
+}
+summary {
+  display: list-item;
+}
+details > summary > p:only-child {
+  display: inline;
+}
+pre code {
+  padding: 0;
+}
+</style>
+
+
+<style type="text/css">
+.dropdown-submenu {
+  position: relative;
+}
+.dropdown-submenu>.dropdown-menu {
+  top: 0;
+  left: 100%;
+  margin-top: -6px;
+  margin-left: -1px;
+  border-radius: 0 6px 6px 6px;
+}
+.dropdown-submenu:hover>.dropdown-menu {
+  display: block;
+}
+.dropdown-submenu>a:after {
+  display: block;
+  content: " ";
+  float: right;
+  width: 0;
+  height: 0;
+  border-color: transparent;
+  border-style: solid;
+  border-width: 5px 0 5px 5px;
+  border-left-color: #cccccc;
+  margin-top: 5px;
+  margin-right: -10px;
+}
+.dropdown-submenu:hover>a:after {
+  border-left-color: #adb5bd;
+}
+.dropdown-submenu.pull-left {
+  float: none;
+}
+.dropdown-submenu.pull-left>.dropdown-menu {
+  left: -100%;
+  margin-left: 10px;
+  border-radius: 6px 0 6px 6px;
+}
+</style>
+
+<script type="text/javascript">
+// manage active state of menu based on current page
+$(document).ready(function () {
+  // active menu anchor
+  href = window.location.pathname
+  href = href.substr(href.lastIndexOf('/') + 1)
+  if (href === "")
+    href = "index.html";
+  var menuAnchor = $('a[href="' + href + '"]');
+
+  // mark the anchor link active (and if it's in a dropdown, also mark that active)
+  var dropdown = menuAnchor.closest('li.dropdown');
+  if (window.bootstrap) { // Bootstrap 4+
+    menuAnchor.addClass('active');
+    dropdown.find('> .dropdown-toggle').addClass('active');
+  } else { // Bootstrap 3
+    menuAnchor.parent().addClass('active');
+    dropdown.addClass('active');
+  }
+
+  // Navbar adjustments
+  var navHeight = $(".navbar").first().height() + 15;
+  var style = document.createElement('style');
+  var pt = "padding-top: " + navHeight + "px; ";
+  var mt = "margin-top: -" + navHeight + "px; ";
+  var css = "";
+  // offset scroll position for anchor links (for fixed navbar)
+  for (var i = 1; i <= 6; i++) {
+    css += ".section h" + i + "{ " + pt + mt + "}\n";
+  }
+  style.innerHTML = "body {" + pt + "padding-bottom: 40px; }\n" + css;
+  document.head.appendChild(style);
+});
+</script>
+
+<!-- tabsets -->
+
+<style type="text/css">
+.tabset-dropdown > .nav-tabs {
+  display: inline-table;
+  max-height: 500px;
+  min-height: 44px;
+  overflow-y: auto;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+}
+
+.tabset-dropdown > .nav-tabs > li.active:before, .tabset-dropdown > .nav-tabs.nav-tabs-open:before {
+  content: "\e259";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li.active:before {
+  content: "\e258";
+  font-family: 'Glyphicons Halflings';
+  border: none;
+}
+
+.tabset-dropdown > .nav-tabs > li.active {
+  display: block;
+}
+
+.tabset-dropdown > .nav-tabs > li > a,
+.tabset-dropdown > .nav-tabs > li > a:focus,
+.tabset-dropdown > .nav-tabs > li > a:hover {
+  border: none;
+  display: inline-block;
+  border-radius: 4px;
+  background-color: transparent;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li {
+  display: block;
+  float: none;
+}
+
+.tabset-dropdown > .nav-tabs > li {
+  display: none;
+}
+</style>
+
+<!-- code folding -->
+<style type="text/css">
+.code-folding-btn { margin-bottom: 4px; }
+</style>
+
+
+
+<style type="text/css">
+
+#TOC {
+  margin: 25px 0px 20px 0px;
+}
+@media (max-width: 768px) {
+#TOC {
+  position: relative;
+  width: 100%;
+}
+}
+
+@media print {
+.toc-content {
+  /* see https://github.com/w3c/csswg-drafts/issues/4434 */
+  float: right;
+}
+}
+
+.toc-content {
+  padding-left: 30px;
+  padding-right: 40px;
+}
+
+div.main-container {
+  max-width: 1200px;
+}
+
+div.tocify {
+  width: 20%;
+  max-width: 260px;
+  max-height: 85%;
+}
+
+@media (min-width: 768px) and (max-width: 991px) {
+  div.tocify {
+    width: 25%;
+  }
+}
+
+@media (max-width: 767px) {
+  div.tocify {
+    width: 100%;
+    max-width: none;
+  }
+}
+
+.tocify ul, .tocify li {
+  line-height: 20px;
+}
+
+.tocify-subheader .tocify-item {
+  font-size: 0.90em;
+}
+
+.tocify .list-group-item {
+  border-radius: 0px;
+}
+
+
+</style>
+
+
+
+</head>
+
+<body>
+
+
+<div class="container-fluid main-container">
+
+
+<!-- setup 3col/9col grid for toc_float and main content  -->
+<div class="row">
+<div class="col-xs-12 col-sm-4 col-md-3">
+<div id="TOC" class="tocify">
+</div>
+</div>
+
+<div class="toc-content col-xs-12 col-sm-8 col-md-9">
+
+
+
+
+<div class="navbar navbar-default  navbar-fixed-top" role="navigation">
+  <div class="container">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-bs-toggle="collapse" data-target="#navbar" data-bs-target="#navbar">
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="index.html">Treg-uNK</a>
+    </div>
+    <div id="navbar" class="navbar-collapse collapse">
+      <ul class="nav navbar-nav">
+        <li>
+  <a href="index.html">Home</a>
+</li>
+<li>
+  <a href="setUp.html">Pre-processing</a>
+</li>
+<li>
+  <a href="deAnalysis.html">DE Analysis</a>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+    Over-representation Analysis (ORA)
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="go.html">Gene Ontology</a>
+    </li>
+    <li>
+      <a href="kegg.html">KEGG</a>
+    </li>
+  </ul>
+</li>
+      </ul>
+      <ul class="nav navbar-nav navbar-right">
+        <li>
+  <a href="https://www.linkedin.com/in/ha-tran-6973b5130/">
+    <span class="fa fa-linkedin"></span>
+     
+  </a>
+</li>
+<li>
+  <a href="https://github.com/tranmanhha135/">
+    <span class="fa fa-github"></span>
+     
+  </a>
+</li>
+      </ul>
+    </div><!--/.nav-collapse -->
+  </div><!--/.container -->
+</div><!--/.navbar -->
+
+<div id="header">
+
+<div class="btn-group pull-right float-right">
+<button type="button" class="btn btn-default btn-xs btn-secondary btn-sm dropdown-toggle" data-toggle="dropdown" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><span>Code</span> <span class="caret"></span></button>
+<ul class="dropdown-menu dropdown-menu-right" style="min-width: 50px;">
+<li><a id="rmd-show-all-code" href="#">Show All Code</a></li>
+<li><a id="rmd-hide-all-code" href="#">Hide All Code</a></li>
+</ul>
+</div>
+
+
+
+<h1 class="title toc-ignore">DGE Analysis</h1>
+<h4 class="author">Ha Tran</h4>
+<h4 class="date">08-01-2024</h4>
+
+</div>
+
+
+<p>
+<button type="button" class="btn btn-default btn-workflowr btn-workflowr-report" data-toggle="collapse" data-target="#workflowr-report">
+<span class="glyphicon glyphicon-list" aria-hidden="true"></span>
+workflowr <span class="glyphicon glyphicon-ok text-success"
+aria-hidden="true"></span>
+</button>
+</p>
+<div id="workflowr-report" class="collapse">
+<ul class="nav nav-tabs">
+<li class="active">
+<a data-toggle="tab" href="#summary">Summary</a>
+</li>
+<li>
+<a data-toggle="tab" href="#checks"> Checks <span
+class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span>
+</a>
+</li>
+<li>
+<a data-toggle="tab" href="#versions">Past versions</a>
+</li>
+</ul>
+<div class="tab-content">
+<div id="summary" class="tab-pane fade in active">
+<p>
+<strong>Last updated:</strong> 2024-01-09
+</p>
+<p>
+<strong>Checks:</strong> <span
+class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> 7
+<span class="glyphicon glyphicon-exclamation-sign text-danger"
+aria-hidden="true"></span> 0
+</p>
+<p>
+<strong>Knit directory:</strong> <code>140_treg_uNK/1_analysis/</code>
+<span class="glyphicon glyphicon-question-sign" aria-hidden="true"
+title="This is the local directory in which the code in this file was executed.">
+</span>
+</p>
+<p>
+This reproducible <a href="https://rmarkdown.rstudio.com">R Markdown</a>
+analysis was created with <a
+  href="https://github.com/workflowr/workflowr">workflowr</a> (version
+1.7.1). The <em>Checks</em> tab describes the reproducibility checks
+that were applied when the results were created. The <em>Past
+versions</em> tab lists the development history.
+</p>
+<hr>
+</div>
+<div id="checks" class="tab-pane fade">
+<div id="workflowr-checks" class="panel-group">
+<div class="panel panel-default">
+<div class="panel-heading">
+<p class="panel-title">
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRMarkdownfilestronguptodate">
+<span class="glyphicon glyphicon-ok text-success"
+aria-hidden="true"></span> <strong>R Markdown file:</strong> up-to-date
+</a>
+</p>
+</div>
+<div id="strongRMarkdownfilestronguptodate"
+class="panel-collapse collapse">
+<div class="panel-body">
+<p>Great! Since the R Markdown file has been committed to the Git
+repository, you know the exact version of the code that produced these
+results.</p>
+</div>
+</div>
+</div>
+<div class="panel panel-default">
+<div class="panel-heading">
+<p class="panel-title">
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongEnvironmentstrongempty">
+<span class="glyphicon glyphicon-ok text-success"
+aria-hidden="true"></span> <strong>Environment:</strong> empty </a>
+</p>
+</div>
+<div id="strongEnvironmentstrongempty" class="panel-collapse collapse">
+<div class="panel-body">
+<p>Great job! The global environment was empty. Objects defined in the
+global environment can affect the analysis in your R Markdown file in
+unknown ways. For reproduciblity it’s best to always run the code in an
+empty environment.</p>
+</div>
+</div>
+</div>
+<div class="panel panel-default">
+<div class="panel-heading">
+<p class="panel-title">
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongSeedstrongcodesetseed12345code">
+<span class="glyphicon glyphicon-ok text-success"
+aria-hidden="true"></span> <strong>Seed:</strong>
+<code>set.seed(12345)</code> </a>
+</p>
+</div>
+<div id="strongSeedstrongcodesetseed12345code"
+class="panel-collapse collapse">
+<div class="panel-body">
+<p>The command <code>set.seed(12345)</code> was run prior to running the
+code in the R Markdown file. Setting a seed ensures that any results
+that rely on randomness, e.g. subsampling or permutations, are
+reproducible.</p>
+</div>
+</div>
+</div>
+<div class="panel panel-default">
+<div class="panel-heading">
+<p class="panel-title">
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongSessioninformationstrongrecorded">
+<span class="glyphicon glyphicon-ok text-success"
+aria-hidden="true"></span> <strong>Session information:</strong>
+recorded </a>
+</p>
+</div>
+<div id="strongSessioninformationstrongrecorded"
+class="panel-collapse collapse">
+<div class="panel-body">
+<p>Great job! Recording the operating system, R version, and package
+versions is critical for reproducibility.</p>
+</div>
+</div>
+</div>
+<div class="panel panel-default">
+<div class="panel-heading">
+<p class="panel-title">
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongCachestrongnone">
+<span class="glyphicon glyphicon-ok text-success"
+aria-hidden="true"></span> <strong>Cache:</strong> none </a>
+</p>
+</div>
+<div id="strongCachestrongnone" class="panel-collapse collapse">
+<div class="panel-body">
+<p>Nice! There were no cached chunks for this analysis, so you can be
+confident that you successfully produced the results during this
+run.</p>
+</div>
+</div>
+</div>
+<div class="panel panel-default">
+<div class="panel-heading">
+<p class="panel-title">
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongFilepathsstrongrelative">
+<span class="glyphicon glyphicon-ok text-success"
+aria-hidden="true"></span> <strong>File paths:</strong> relative </a>
+</p>
+</div>
+<div id="strongFilepathsstrongrelative" class="panel-collapse collapse">
+<div class="panel-body">
+<p>Great job! Using relative paths to the files within your workflowr
+project makes it easier to run your code on other machines.</p>
+</div>
+</div>
+</div>
+<div class="panel panel-default">
+<div class="panel-heading">
+<p class="panel-title">
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRepositoryversionstrongahrefhttpsgithubcomtranmanhha135TreguNKtreec6d389fdf5eb43d638d31d9a9d6625aacfcca31ctargetblankc6d389fa">
+<span class="glyphicon glyphicon-ok text-success"
+aria-hidden="true"></span> <strong>Repository version:</strong>
+<a href="https://github.com/tranmanhha135/Treg_uNK/tree/c6d389fdf5eb43d638d31d9a9d6625aacfcca31c" target="_blank">c6d389f</a>
+</a>
+</p>
+</div>
+<div
+id="strongRepositoryversionstrongahrefhttpsgithubcomtranmanhha135TreguNKtreec6d389fdf5eb43d638d31d9a9d6625aacfcca31ctargetblankc6d389fa"
+class="panel-collapse collapse">
+<div class="panel-body">
+<p>
+Great! You are using Git for version control. Tracking code development
+and connecting the code version to the results is critical for
+reproducibility.
+</p>
+<p>
+The results in this page were generated with repository version
+<a href="https://github.com/tranmanhha135/Treg_uNK/tree/c6d389fdf5eb43d638d31d9a9d6625aacfcca31c" target="_blank">c6d389f</a>.
+See the <em>Past versions</em> tab to see a history of the changes made
+to the R Markdown and HTML files.
+</p>
+<p>
+Note that you need to be careful to ensure that all relevant files for
+the analysis have been committed to Git prior to generating the results
+(you can use <code>wflow_publish</code> or
+<code>wflow_git_commit</code>). workflowr only checks the R Markdown
+file, but you know if there are other scripts or data files that it
+depends on. Below is the status of the Git repository when the results
+were generated:
+</p>
+<pre><code>
+Ignored files:
+    Ignored:    .Rproj.user/
+    Ignored:    2_plots/3_FA/
+    Ignored:    2_plots/4_GSEA/
+
+Untracked files:
+    Untracked:  .gitignore
+    Untracked:  0_data/rds_objects/comp.rds
+    Untracked:  0_data/rds_objects/enrichGO.rds
+    Untracked:  0_data/rds_objects/enrichGO_sig.rds
+    Untracked:  0_data/rds_objects/enrichKEGG.rds
+    Untracked:  0_data/rds_objects/enrichKEGG_all.rds
+    Untracked:  0_data/rds_objects/enrichKEGG_sig.rds
+    Untracked:  0_data/rds_objects/pathway_details.rds
+    Untracked:  0_data/rds_objects/reducedTerms_ora.rds
+    Untracked:  0_data/rds_objects/scores_ora.rds
+    Untracked:  0_data/rds_objects/simMatrix_ora.rds
+    Untracked:  3_output/GO_sig.xlsx
+    Untracked:  3_output/KEGG_all.xlsx
+    Untracked:  3_output/KEGG_sig.xlsx
+    Untracked:  functions.Rmd
+    Untracked:  gsea.Rmd
+    Untracked:  ipa.Rmd
+    Untracked:  reactome.Rmd
+
+Unstaged changes:
+    Modified:   0_data/rds_objects/lm.rds
+    Modified:   1_analysis/_site.yml
+    Deleted:    1_analysis/functions.Rmd
+    Deleted:    1_analysis/gsea.Rmd
+    Deleted:    1_analysis/ipa.Rmd
+    Deleted:    1_analysis/reactome.Rmd
+    Modified:   2_plots/1_QC/PC1_PC2.svg
+    Modified:   2_plots/1_QC/PC1_PC3.svg
+    Modified:   2_plots/1_QC/PC2_PC3.svg
+
+</code></pre>
+<p>
+Note that any generated files, e.g. HTML, png, CSS, etc., are not
+included in this status report because it is ok for generated content to
+have uncommitted changes.
+</p>
+</div>
+</div>
+</div>
+</div>
+<hr>
+</div>
+<div id="versions" class="tab-pane fade">
+
+<p>
+These are the previous versions of the repository in which changes were
+made to the R Markdown (<code>1_analysis/deAnalysis.Rmd</code>) and HTML
+(<code>docs/deAnalysis.html</code>) files. If you’ve configured a remote
+Git repository (see <code>?wflow_git_remote</code>), click on the
+hyperlinks in the table below to view the files as they were in that
+past version.
+</p>
+<div class="table-responsive">
+<table class="table table-condensed table-hover">
+<thead>
+<tr>
+<th>
+File
+</th>
+<th>
+Version
+</th>
+<th>
+Author
+</th>
+<th>
+Date
+</th>
+<th>
+Message
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>
+Rmd
+</td>
+<td>
+<a href="https://github.com/tranmanhha135/Treg_uNK/blob/c6d389fdf5eb43d638d31d9a9d6625aacfcca31c/1_analysis/deAnalysis.Rmd" target="_blank">c6d389f</a>
+</td>
+<td>
+tranmanhha135
+</td>
+<td>
+2024-01-09
+</td>
+<td>
+workflowr::wflow_publish(here::here("1_analysis/*.Rmd"))
+</td>
+</tr>
+<tr>
+<td>
+Rmd
+</td>
+<td>
+<a href="https://github.com/tranmanhha135/Treg_uNK/blob/f2e375016d390445ea565e9ac67b3c8fb0a11567/1_analysis/deAnalysis.Rmd" target="_blank">f2e3750</a>
+</td>
+<td>
+tranmanhha135
+</td>
+<td>
+2024-01-08
+</td>
+<td>
+completed DE
+</td>
+</tr>
+<tr>
+<td>
+Rmd
+</td>
+<td>
+<a href="https://github.com/tranmanhha135/Treg_uNK/blob/05fa0b3c36a50df8dd8259c61c82429bd7bf2033/1_analysis/deAnalysis.Rmd" target="_blank">05fa0b3</a>
+</td>
+<td>
+tranmanhha135
+</td>
+<td>
+2024-01-06
+</td>
+<td>
+added description
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+<hr>
+</div>
+</div>
+</div>
+<div id="data-setup" class="section level1">
+<h1>Data Setup</h1>
+<pre class="r"><code># working with data
+library(readxl)
+library(dplyr)
+library(magrittr)
+library(readr)
+library(tibble)
+library(reshape2)
+library(tidyverse)
+library(ComplexHeatmap)
+library(scales)
+
+# Visualisation:
+library(kableExtra)
+library(ggplot2)
+library(grid)
+library(pander)
+library(cowplot)
+library(pheatmap)
+library(VennDiagram)
+library(DT)
+library(patchwork)
+library(kableExtra)
+library(extrafont)
+loadfonts(device = &quot;all&quot;)
+
+# Custom ggplot
+library(ggplotify)
+library(ggpubr)
+library(ggrepel)
+library(viridis)
+
+# Bioconductor packages:
+library(edgeR)
+library(limma)
+library(Glimma)
+
+library(pandoc)
+library(knitr)
+opts_knit$set(progress = FALSE, verbose = FALSE)
+opts_chunk$set(warning=FALSE, message=FALSE, echo=FALSE)</code></pre>
+<div id="import-dgelist-data" class="section level3">
+<h3>Import DGElist Data</h3>
+<p>DGElist object containing the raw feature count, sample metadata, and
+gene metadata, created in the Set Up stage.</p>
+</div>
+<div id="initial-parameterisation"
+class="section level2 tabset tabset-pills">
+<h2 class="tabset tabset-pills">Initial Parameterisation</h2>
+<p>The varying methods used to identify differential expression all rely
+on similar initial parameters. These include:</p>
+<ol style="list-style-type: decimal">
+<li><p>The Design Matrix,</p></li>
+<li><p>Estimation of Dispersion, and</p></li>
+<li><p>Contrast Matrix</p></li>
+</ol>
+<div id="design-matrix" class="section level3">
+<h3>Design Matrix</h3>
+<p>The experimental design can be parameterised in a one-way layout
+where one coefficient is assigned to each group. The design matrix
+formulated below contains the predictors of each sample</p>
+<div class="datatables html-widget html-fill-item" id="htmlwidget-8d32cfd9db97395c4a5f" style="width:100%;height:auto;"></div>
+<script type="application/json" data-for="htmlwidget-8d32cfd9db97395c4a5f">{"x":{"filter":"none","vertical":false,"extensions":["Buttons"],"caption":"<caption>Table: Design matrix<\/caption>","data":[["DT1","DT2","DT3","DT4","DT6","PBS1","PBS2","PBS3","PBS4","PBS5","PBS6","Treg1","Treg2","Treg3","Treg4","Treg5"],[0,0,0,0,0,1,1,1,1,1,1,0,0,0,0,0],[1,1,1,1,1,0,0,0,0,0,0,0,0,0,0,0],[0,0,0,0,0,0,0,0,0,0,0,1,1,1,1,1]],"container":"<table class=\"display\">\n  <thead>\n    <tr>\n      <th> <\/th>\n      <th>PBS<\/th>\n      <th>DT<\/th>\n      <th>Treg<\/th>\n    <\/tr>\n  <\/thead>\n<\/table>","options":{"dom":"Blfrtip","scrollX":true,"buttons":["copy","csv","excel","pdf","print"],"lengthMenu":[[10,25,50,-1],["10","25","50","All"]],"columnDefs":[{"className":"dt-right","targets":[1,2,3]},{"orderable":false,"targets":0},{"name":" ","targets":0},{"name":"PBS","targets":1},{"name":"DT","targets":2},{"name":"Treg","targets":3}],"order":[],"autoWidth":false,"orderClasses":false}},"evals":[],"jsHooks":[]}</script>
+</div>
+<div id="contrast-matrix" class="section level3">
+<h3>Contrast Matrix</h3>
+<p>The contrast matrix is required to provide a coefficient to each
+comparison and later used to test for significant differential
+expression with each comparison group</p>
+<div class="datatables html-widget html-fill-item" id="htmlwidget-d701554a25665d09d09f" style="width:100%;height:auto;"></div>
+<script type="application/json" data-for="htmlwidget-d701554a25665d09d09f">{"x":{"filter":"none","vertical":false,"extensions":["Buttons"],"caption":"<caption>Table: Contrast matrix<\/caption>","data":[["PBS","DT","Treg"],[-1,1,0],[-1,0,1],[0,1,-1]],"container":"<table class=\"display\">\n  <thead>\n    <tr>\n      <th> <\/th>\n      <th>DT vs PBS<\/th>\n      <th>Treg vs PBS<\/th>\n      <th>DT vs Treg<\/th>\n    <\/tr>\n  <\/thead>\n<\/table>","options":{"dom":"Blfrtip","scrollX":true,"buttons":["copy","csv","excel","pdf","print"],"lengthMenu":[[10,25,50,-1],["10","25","50","All"]],"columnDefs":[{"className":"dt-right","targets":[1,2,3]},{"orderable":false,"targets":0},{"name":" ","targets":0},{"name":"DT vs PBS","targets":1},{"name":"Treg vs PBS","targets":2},{"name":"DT vs Treg","targets":3}],"order":[],"autoWidth":false,"orderClasses":false}},"evals":[],"jsHooks":[]}</script>
+</div>
+</div>
+</div>
+<div id="limma-voom" class="section level1">
+<h1>Limma-Voom</h1>
+<div id="apply-voom-transformation"
+class="section level2 tabset tabset-pills">
+<h2 class="tabset tabset-pills">Apply voom transformation</h2>
+<p>Voom is used to estimate the mean-variance relationship of the data,
+which is then used to calculate and assign a precision weight for each
+of the observation (gene). This observational level weights are then
+used in a linear modelling process to adjust for heteroscedasticity. Log
+count (logCPM) data typically show a decreasing mean-variance trend with
+increasing count size (expression).</p>
+<p>However, for some dataset with potential sample outliers,
+<code>voomWithQualityWeights</code> can be used to calculate
+sample-specific quality weights. The application of observational and
+sample-specific weights can objectively and systematically correct for
+outliers and better than manually removing samples in cases where there
+are no clear-cut reasons for replicate variations. Thus, linear model
+will be applied to the voom transformation with observational and
+sample-specific weights.</p>
+<div id="observational-level-weights" class="section level3">
+<h3>Observational level weights</h3>
+<div class="figure" style="text-align: center">
+<img src="figure/deAnalysis.Rmd/voom-1.png" alt="Voom transformation with observational weights" width="672" />
+<p class="caption">
+Voom transformation with observational weights
+</p>
+</div>
+</div>
+<div id="observational-group-level-weights" class="section level3">
+<h3>Observational &amp; group level weights</h3>
+<div class="figure" style="text-align: center">
+<img src="figure/deAnalysis.Rmd/voom_groupWeights-1.png" alt="Voom transformation with observational and group-specific weights" width="672" />
+<p class="caption">
+Voom transformation with observational and group-specific weights
+</p>
+</div>
+</div>
+<div id="observational-sample-level-weights" class="section level3">
+<h3>Observational &amp; sample level weights</h3>
+<div class="figure" style="text-align: center">
+<img src="figure/deAnalysis.Rmd/voom_sampleWeights-1.png" alt="Voom transformation with observational and sample-specific weights" width="672" />
+<p class="caption">
+Voom transformation with observational and sample-specific weights
+</p>
+</div>
+</div>
+<div id="pca" class="section level3">
+<h3>PCA</h3>
+<div class="figure" style="text-align: center">
+<img src="figure/deAnalysis.Rmd/voomPCA-1.png" alt="PCA plots after voom quality weight transformations. Group-specific weights(left) and sample-specific weights (right)" width="672" />
+<p class="caption">
+PCA plots after voom quality weight transformations. Group-specific
+weights(left) and sample-specific weights (right)
+</p>
+</div>
+</div>
+</div>
+<div id="apply-linear-model" class="section level2 tabset tabset-pills">
+<h2 class="tabset tabset-pills">Apply linear model</h2>
+<p>When the list of DE genes is large, we can apply a fold change
+cut-off through application of <code>TREAT</code> to prioritise the
+genes with greater fold changes and potentially more biologically
+relevant. Ideally, we are aiming for ~300 genes <span
+class="math inline">\(\pm\)</span> 100 genes. Functional enrichment
+analysis with this number of genes should generate meaningful
+results.</p>
+<p>Importantly, the FC threshold used in <code>TREAT</code> should be
+chosen as a small value below which results should be ignored, instead
+of a target fold-change. In general, a modest fold-change of 1.1 - 1.5
+is recommended. However, it is more important to select a fold-change
+cut-off that generates a sufficiently small list of DE genes.</p>
+<p>A quick aside on the definition and interpretation of fold change and
+<code>log2FC</code>. A fold-change (FC) refers to the
+<strong>ratio</strong> of two values.</p>
+<ul>
+<li>If there is a <strong>two</strong> fold increase
+(<code>FC = 2</code>, <code>log2FC = 1</code>) between
+<code>A vs B</code>, then <code>A</code> is twice as big as
+<code>B</code> (or <code>A</code> is <code>200%</code> of
+<code>B</code>)</li>
+<li>If there is a <strong>two</strong> fold decrease
+(<code>FC = 0.5</code>, <code>log2FC = -1</code>) between
+<code>A vs B</code>, then <code>A</code> is halfas big as <code>B</code>
+(or <code>A</code> is <code>50%</code> of <code>B</code>)</li>
+</ul>
+<div id="fcnone" class="section level3">
+<h3>FC=none</h3>
+<table class="table table-striped table-hover" style="margin-left: auto; margin-right: auto;">
+<caption>
+TABLE 1: Number of significant DE genes with ‘none’ adjusment method,
+and at a p-value/adj.p-value of 0.01
+</caption>
+<thead>
+<tr>
+<th style="text-align:left;">
+</th>
+<th style="text-align:right;">
+DT vs PBS
+</th>
+<th style="text-align:right;">
+Treg vs PBS
+</th>
+<th style="text-align:right;">
+DT vs Treg
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left;">
+Down
+</td>
+<td style="text-align:right;">
+454
+</td>
+<td style="text-align:right;">
+648
+</td>
+<td style="text-align:right;">
+315
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+NotSig
+</td>
+<td style="text-align:right;">
+13935
+</td>
+<td style="text-align:right;">
+13758
+</td>
+<td style="text-align:right;">
+14148
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Up
+</td>
+<td style="text-align:right;">
+359
+</td>
+<td style="text-align:right;">
+342
+</td>
+<td style="text-align:right;">
+285
+</td>
+</tr>
+</tbody>
+</table>
+<table class="table table-striped table-hover" style="margin-left: auto; margin-right: auto;">
+<caption>
+TABLE 2: Number of significant DE genes with ‘fdr’ adjusment method, and
+at a p-value/adj.p-value of 0.1
+</caption>
+<thead>
+<tr>
+<th style="text-align:left;">
+</th>
+<th style="text-align:right;">
+DT vs PBS
+</th>
+<th style="text-align:right;">
+Treg vs PBS
+</th>
+<th style="text-align:right;">
+DT vs Treg
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left;">
+Down
+</td>
+<td style="text-align:right;">
+254
+</td>
+<td style="text-align:right;">
+503
+</td>
+<td style="text-align:right;">
+64
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+NotSig
+</td>
+<td style="text-align:right;">
+14302
+</td>
+<td style="text-align:right;">
+14000
+</td>
+<td style="text-align:right;">
+14624
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Up
+</td>
+<td style="text-align:right;">
+192
+</td>
+<td style="text-align:right;">
+245
+</td>
+<td style="text-align:right;">
+60
+</td>
+</tr>
+</tbody>
+</table>
+<table class="table table-striped table-hover" style="margin-left: auto; margin-right: auto;">
+<caption>
+TABLE 3: Number of significant DE genes with ‘fdr’ adjusment method, and
+at a p-value/adj.p-value of 0.05
+</caption>
+<thead>
+<tr>
+<th style="text-align:left;">
+</th>
+<th style="text-align:right;">
+DT vs PBS
+</th>
+<th style="text-align:right;">
+Treg vs PBS
+</th>
+<th style="text-align:right;">
+DT vs Treg
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left;">
+Down
+</td>
+<td style="text-align:right;">
+137
+</td>
+<td style="text-align:right;">
+352
+</td>
+<td style="text-align:right;">
+29
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+NotSig
+</td>
+<td style="text-align:right;">
+14507
+</td>
+<td style="text-align:right;">
+14274
+</td>
+<td style="text-align:right;">
+14703
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Up
+</td>
+<td style="text-align:right;">
+104
+</td>
+<td style="text-align:right;">
+122
+</td>
+<td style="text-align:right;">
+16
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div id="fc1.1" class="section level3">
+<h3>FC=1.1</h3>
+<table class="table table-striped table-hover" style="margin-left: auto; margin-right: auto;">
+<caption>
+TABLE 4: Number of significant DE genes with ‘none’ adjusment method,
+and at a p-value/adj.p-value of 0.01
+</caption>
+<thead>
+<tr>
+<th style="text-align:left;">
+</th>
+<th style="text-align:right;">
+DT vs PBS
+</th>
+<th style="text-align:right;">
+Treg vs PBS
+</th>
+<th style="text-align:right;">
+DT vs Treg
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left;">
+Down
+</td>
+<td style="text-align:right;">
+365
+</td>
+<td style="text-align:right;">
+531
+</td>
+<td style="text-align:right;">
+150
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+NotSig
+</td>
+<td style="text-align:right;">
+14159
+</td>
+<td style="text-align:right;">
+14049
+</td>
+<td style="text-align:right;">
+14435
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Up
+</td>
+<td style="text-align:right;">
+224
+</td>
+<td style="text-align:right;">
+168
+</td>
+<td style="text-align:right;">
+163
+</td>
+</tr>
+</tbody>
+</table>
+<table class="table table-striped table-hover" style="margin-left: auto; margin-right: auto;">
+<caption>
+TABLE 5: Number of significant DE genes with ‘fdr’ adjusment method, and
+at a p-value/adj.p-value of 0.1
+</caption>
+<thead>
+<tr>
+<th style="text-align:left;">
+</th>
+<th style="text-align:right;">
+DT vs PBS
+</th>
+<th style="text-align:right;">
+Treg vs PBS
+</th>
+<th style="text-align:right;">
+DT vs Treg
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left;">
+Down
+</td>
+<td style="text-align:right;">
+151
+</td>
+<td style="text-align:right;">
+364
+</td>
+<td style="text-align:right;">
+14
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+NotSig
+</td>
+<td style="text-align:right;">
+14518
+</td>
+<td style="text-align:right;">
+14313
+</td>
+<td style="text-align:right;">
+14728
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Up
+</td>
+<td style="text-align:right;">
+79
+</td>
+<td style="text-align:right;">
+71
+</td>
+<td style="text-align:right;">
+6
+</td>
+</tr>
+</tbody>
+</table>
+<table class="table table-striped table-hover" style="margin-left: auto; margin-right: auto;">
+<caption>
+TABLE 6: Number of significant DE genes with ‘fdr’ adjusment method, and
+at a p-value/adj.p-value of 0.05
+</caption>
+<thead>
+<tr>
+<th style="text-align:left;">
+</th>
+<th style="text-align:right;">
+DT vs PBS
+</th>
+<th style="text-align:right;">
+Treg vs PBS
+</th>
+<th style="text-align:right;">
+DT vs Treg
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left;">
+Down
+</td>
+<td style="text-align:right;">
+76
+</td>
+<td style="text-align:right;">
+264
+</td>
+<td style="text-align:right;">
+11
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+NotSig
+</td>
+<td style="text-align:right;">
+14634
+</td>
+<td style="text-align:right;">
+14445
+</td>
+<td style="text-align:right;">
+14735
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Up
+</td>
+<td style="text-align:right;">
+38
+</td>
+<td style="text-align:right;">
+39
+</td>
+<td style="text-align:right;">
+2
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div id="fc1.2" class="section level3">
+<h3>FC=1.2</h3>
+<table class="table table-striped table-hover" style="margin-left: auto; margin-right: auto;">
+<caption>
+TABLE 7: Number of significant DE genes with ‘none’ adjusment method,
+and at a p-value/adj.p-value of 0.01
+</caption>
+<thead>
+<tr>
+<th style="text-align:left;">
+</th>
+<th style="text-align:right;">
+DT vs PBS
+</th>
+<th style="text-align:right;">
+Treg vs PBS
+</th>
+<th style="text-align:right;">
+DT vs Treg
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left;">
+Down
+</td>
+<td style="text-align:right;">
+263
+</td>
+<td style="text-align:right;">
+427
+</td>
+<td style="text-align:right;">
+63
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+NotSig
+</td>
+<td style="text-align:right;">
+14376
+</td>
+<td style="text-align:right;">
+14262
+</td>
+<td style="text-align:right;">
+14590
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Up
+</td>
+<td style="text-align:right;">
+109
+</td>
+<td style="text-align:right;">
+59
+</td>
+<td style="text-align:right;">
+95
+</td>
+</tr>
+</tbody>
+</table>
+<table class="table table-striped table-hover" style="margin-left: auto; margin-right: auto;">
+<caption>
+TABLE 8: Number of significant DE genes with ‘fdr’ adjusment method, and
+at a p-value/adj.p-value of 0.1
+</caption>
+<thead>
+<tr>
+<th style="text-align:left;">
+</th>
+<th style="text-align:right;">
+DT vs PBS
+</th>
+<th style="text-align:right;">
+Treg vs PBS
+</th>
+<th style="text-align:right;">
+DT vs Treg
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left;">
+Down
+</td>
+<td style="text-align:right;">
+65
+</td>
+<td style="text-align:right;">
+267
+</td>
+<td style="text-align:right;">
+0
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+NotSig
+</td>
+<td style="text-align:right;">
+14666
+</td>
+<td style="text-align:right;">
+14469
+</td>
+<td style="text-align:right;">
+14748
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Up
+</td>
+<td style="text-align:right;">
+17
+</td>
+<td style="text-align:right;">
+12
+</td>
+<td style="text-align:right;">
+0
+</td>
+</tr>
+</tbody>
+</table>
+<table class="table table-striped table-hover" style="margin-left: auto; margin-right: auto;">
+<caption>
+TABLE 9: Number of significant DE genes with ‘fdr’ adjusment method, and
+at a p-value/adj.p-value of 0.05
+</caption>
+<thead>
+<tr>
+<th style="text-align:left;">
+</th>
+<th style="text-align:right;">
+DT vs PBS
+</th>
+<th style="text-align:right;">
+Treg vs PBS
+</th>
+<th style="text-align:right;">
+DT vs Treg
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left;">
+Down
+</td>
+<td style="text-align:right;">
+14
+</td>
+<td style="text-align:right;">
+177
+</td>
+<td style="text-align:right;">
+0
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+NotSig
+</td>
+<td style="text-align:right;">
+14730
+</td>
+<td style="text-align:right;">
+14566
+</td>
+<td style="text-align:right;">
+14748
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Up
+</td>
+<td style="text-align:right;">
+4
+</td>
+<td style="text-align:right;">
+5
+</td>
+<td style="text-align:right;">
+0
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div id="fc1.3" class="section level3">
+<h3>FC=1.3</h3>
+<table class="table table-striped table-hover" style="margin-left: auto; margin-right: auto;">
+<caption>
+TABLE 10: Number of significant DE genes with ‘none’ adjusment method,
+and at a p-value/adj.p-value of 0.01
+</caption>
+<thead>
+<tr>
+<th style="text-align:left;">
+</th>
+<th style="text-align:right;">
+DT vs PBS
+</th>
+<th style="text-align:right;">
+Treg vs PBS
+</th>
+<th style="text-align:right;">
+DT vs Treg
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left;">
+Down
+</td>
+<td style="text-align:right;">
+188
+</td>
+<td style="text-align:right;">
+357
+</td>
+<td style="text-align:right;">
+28
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+NotSig
+</td>
+<td style="text-align:right;">
+14495
+</td>
+<td style="text-align:right;">
+14372
+</td>
+<td style="text-align:right;">
+14670
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Up
+</td>
+<td style="text-align:right;">
+65
+</td>
+<td style="text-align:right;">
+19
+</td>
+<td style="text-align:right;">
+50
+</td>
+</tr>
+</tbody>
+</table>
+<table class="table table-striped table-hover" style="margin-left: auto; margin-right: auto;">
+<caption>
+TABLE 11: Number of significant DE genes with ‘fdr’ adjusment method,
+and at a p-value/adj.p-value of 0.1
+</caption>
+<thead>
+<tr>
+<th style="text-align:left;">
+</th>
+<th style="text-align:right;">
+DT vs PBS
+</th>
+<th style="text-align:right;">
+Treg vs PBS
+</th>
+<th style="text-align:right;">
+DT vs Treg
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left;">
+Down
+</td>
+<td style="text-align:right;">
+17
+</td>
+<td style="text-align:right;">
+195
+</td>
+<td style="text-align:right;">
+0
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+NotSig
+</td>
+<td style="text-align:right;">
+14728
+</td>
+<td style="text-align:right;">
+14552
+</td>
+<td style="text-align:right;">
+14748
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Up
+</td>
+<td style="text-align:right;">
+3
+</td>
+<td style="text-align:right;">
+1
+</td>
+<td style="text-align:right;">
+0
+</td>
+</tr>
+</tbody>
+</table>
+<table class="table table-striped table-hover" style="margin-left: auto; margin-right: auto;">
+<caption>
+TABLE 12: Number of significant DE genes with ‘fdr’ adjusment method,
+and at a p-value/adj.p-value of 0.05
+</caption>
+<thead>
+<tr>
+<th style="text-align:left;">
+</th>
+<th style="text-align:right;">
+DT vs PBS
+</th>
+<th style="text-align:right;">
+Treg vs PBS
+</th>
+<th style="text-align:right;">
+DT vs Treg
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left;">
+Down
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+124
+</td>
+<td style="text-align:right;">
+0
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+NotSig
+</td>
+<td style="text-align:right;">
+14748
+</td>
+<td style="text-align:right;">
+14623
+</td>
+<td style="text-align:right;">
+14748
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Up
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+1
+</td>
+<td style="text-align:right;">
+0
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+</div>
+<div id="differential-gene-expression-analysis"
+class="section level1 tabset tabset-pills">
+<h1 class="tabset tabset-pills">Differential Gene Expression
+analysis</h1>
+<p>Due to the large variance in the PBS group, the transformation with
+<code>observational and group-level weights</code> were used.
+<strong>Without</strong> FC cut-off (using TREAT) and an
+<code>FDR &lt; 0.05</code>, the <code>DT vs Treg</code> comparison had
+45 significant DE genes <strong>(TABLE 3)</strong>. This may
+<strong>not</strong> be enough DE genes to perform meaningful functional
+enrichment analysis downstream. Therefore, The FDR threshold is
+increased to <code>0.1</code>, in another word, we allow for 10% type I
+error, i.e. 1 in 10 genes may be a false positive for differential
+expression. Using a fold-change cut-off through application of
+<code>TREAT</code> gives additional stringency at the costs of reducing
+the list of DE genes.</p>
+<!-- It is best practice to perform P value correction. So, for data exploratory purposes, the following visualisations are DE genes significantly below **FDR \< 0.1 or \< 0.05** with and without FC threshold (TREAT). -->
+<ul>
+<li><p><strong>P-value histogram:</strong> illustrates the distribution
+of p-values. As the stringency increases (increasing FC threshold), the
+distribution shifts towards <code>1</code>, thus insignificant.</p></li>
+<li><p><strong>MA plot:</strong> helps visualise and identify genes with
+significant changes in expression. Points deviating from the central
+axis often indicate differentially expressed genes, allowing assessment
+of the magnitude and consistency of expression changes across
+conditions.</p>
+<ul>
+<li><span class="math inline">\(x-axis =\)</span> average expression, in
+log counts per million (CPM)</li>
+<li><span class="math inline">\(y-axis =\)</span> log fold change
+between conditions</li>
+</ul></li>
+<li><p><strong>Volcano plot:</strong> shows significantly differentially
+expressed genes appearing as points that are both statistically
+significant (located at the top) and have substantial fold changes
+(located on the left or right sides). This visualization enables
+identification of genes that are statistically and biologically
+significant.</p>
+<ul>
+<li><span class="math inline">\(x-axis =\)</span> log fold change
+between conditions</li>
+<li><span class="math inline">\(y-axis =\)</span> negative logarithm of
+the FDR-adjusted p-values</li>
+</ul></li>
+<li><p><strong>Heatmap:</strong> visualize gene expression patterns
+across different experimental conditions. Rows are genes, columns
+represent samples, and the colour intensity indicates the expression
+level of a gene in a specific sample. The genes are also clustered based
+on similar expression patterns, which provides insights into the overall
+structure and relationships within large datasets.</p>
+<ul>
+<li>These heatmaps illustrates the top 30 most significant DE genes</li>
+</ul></li>
+<li><p><strong>Venn diagram:</strong> visualises the significant DE gene
+overlap between the previous RNA-seq experiment and the
+current.</p></li>
+</ul>
+<div id="fc-none" class="section level2 tabset tabset-pills">
+<h2 class="tabset tabset-pills">FC= none</h2>
+<div id="p-val-histogram" class="section level3">
+<h3>P-val histogram</h3>
+</div>
+<div id="ma-plot" class="section level3">
+<h3>MA plot</h3>
+<p><img src="figure/deAnalysis.Rmd/ma-1.png" width="672" style="display: block; margin: auto;" /></p>
+</div>
+<div id="volcano-plot" class="section level3">
+<h3>Volcano plot</h3>
+<p><img src="figure/deAnalysis.Rmd/vol-1.png" width="672" style="display: block; margin: auto;" /></p>
+</div>
+<div id="heatmap" class="section level3">
+<h3>Heatmap</h3>
+<p><img src="figure/deAnalysis.Rmd/hmap-1.png" width="768" style="display: block; margin: auto;" /></p>
+</div>
+</div>
+<div id="treg-vs-pbs" class="section level2 tabset tabset-pills">
+<h2 class="tabset tabset-pills">Treg vs PBS</h2>
+<div id="p-val-histogram-1" class="section level3">
+<h3>P-val histogram</h3>
+<p><img src="figure/deAnalysis.Rmd/hist_2-1.png" width="1056" style="display: block; margin: auto;" /></p>
+</div>
+<div id="ma-plot-1" class="section level3">
+<h3>MA plot</h3>
+<p><img src="figure/deAnalysis.Rmd/ma_2-1.png" width="1056" style="display: block; margin: auto;" /></p>
+</div>
+<div id="volcano-plot-1" class="section level3">
+<h3>Volcano plot</h3>
+<p><img src="figure/deAnalysis.Rmd/vol_2-1.png" width="1056" style="display: block; margin: auto;" /></p>
+</div>
+<div id="heatmap-1" class="section level3">
+<h3>Heatmap</h3>
+<p><img src="figure/deAnalysis.Rmd/hmap_2-1.png" width="768" style="display: block; margin: auto;" /></p>
+</div>
+</div>
+<div id="dt-vs-treg" class="section level2 tabset tabset-pills">
+<h2 class="tabset tabset-pills">DT vs Treg</h2>
+<div id="p-val-histogram-2" class="section level3">
+<h3>P-val histogram</h3>
+<p><img src="figure/deAnalysis.Rmd/hist_3-1.png" width="1056" style="display: block; margin: auto;" /></p>
+</div>
+<div id="ma-plot-2" class="section level3">
+<h3>MA plot</h3>
+<p><img src="figure/deAnalysis.Rmd/ma_3-1.png" width="1056" style="display: block; margin: auto;" /></p>
+</div>
+<div id="volcano-plot-2" class="section level3">
+<h3>Volcano plot</h3>
+<p><img src="figure/deAnalysis.Rmd/vol_3-1.png" width="1056" style="display: block; margin: auto;" /></p>
+</div>
+<div id="heatmap-2" class="section level3">
+<h3>Heatmap</h3>
+<p><img src="figure/deAnalysis.Rmd/hmap_3-1.png" width="768" style="display: block; margin: auto;" /></p>
+</div>
+</div>
+<div id="combined" class="section level2 tabset tabset-pills">
+<h2 class="tabset tabset-pills">Combined</h2>
+<div id="venn-diagram" class="section level3">
+<h3>Venn diagram</h3>
+<pre><code>NULL</code></pre>
+<pre><code>[1] 1</code></pre>
+<p><img src="figure/deAnalysis.Rmd/venn.png" /></p>
+</div>
+</div>
+</div>
+<div id="export-data" class="section level1">
+<h1>Export Data</h1>
+<p>The following are exported:</p>
+<ul>
+<li><p><strong>de_genes_all.xlsx</strong> - This spreadsheet contains
+all DE genes.</p></li>
+<li><p><strong>de_genes_sig.xlsx</strong> - This spreadsheet contains
+only significant DE genes.</p></li>
+</ul>
+<br>
+<p>
+<button type="button" class="btn btn-default btn-workflowr btn-workflowr-sessioninfo" data-toggle="collapse" data-target="#workflowr-sessioninfo" style="display: block;">
+<span class="glyphicon glyphicon-wrench" aria-hidden="true"></span>
+Session information
+</button>
+</p>
+<div id="workflowr-sessioninfo" class="collapse">
+<pre><code>R version 4.3.2 (2023-10-31)
+Platform: x86_64-pc-linux-gnu (64-bit)
+Running under: Ubuntu 22.04.3 LTS
+
+Matrix products: default
+BLAS:   /usr/lib/x86_64-linux-gnu/blas/libblas.so.3.10.0 
+LAPACK: /usr/lib/x86_64-linux-gnu/lapack/liblapack.so.3.10.0
+
+locale:
+ [1] LC_CTYPE=en_AU.UTF-8       LC_NUMERIC=C              
+ [3] LC_TIME=en_AU.UTF-8        LC_COLLATE=en_AU.UTF-8    
+ [5] LC_MONETARY=en_AU.UTF-8    LC_MESSAGES=en_AU.UTF-8   
+ [7] LC_PAPER=en_AU.UTF-8       LC_NAME=C                 
+ [9] LC_ADDRESS=C               LC_TELEPHONE=C            
+[11] LC_MEASUREMENT=en_AU.UTF-8 LC_IDENTIFICATION=C       
+
+time zone: Australia/Adelaide
+tzcode source: system (glibc)
+
+attached base packages:
+[1] grid      stats     graphics  grDevices utils     datasets  methods  
+[8] base     
+
+other attached packages:
+ [1] knitr_1.45            pandoc_0.2.0          Glimma_2.10.0        
+ [4] edgeR_3.42.4          limma_3.56.2          viridis_0.6.4        
+ [7] viridisLite_0.4.2     ggrepel_0.9.4         ggpubr_0.6.0         
+[10] ggplotify_0.1.2       extrafont_0.19        patchwork_1.1.3      
+[13] DT_0.31               VennDiagram_1.7.3     futile.logger_1.4.3  
+[16] pheatmap_1.0.12       cowplot_1.1.2         pander_0.6.5         
+[19] kableExtra_1.3.4      scales_1.3.0          ComplexHeatmap_2.16.0
+[22] lubridate_1.9.3       forcats_1.0.0         stringr_1.5.1        
+[25] purrr_1.0.2           tidyr_1.3.0           ggplot2_3.4.4        
+[28] tidyverse_2.0.0       reshape2_1.4.4        tibble_3.2.1         
+[31] readr_2.1.4           magrittr_2.0.3        dplyr_1.1.4          
+[34] readxl_1.4.3         
+
+loaded via a namespace (and not attached):
+  [1] RColorBrewer_1.1-3          rstudioapi_0.15.0          
+  [3] jsonlite_1.8.8              shape_1.4.6                
+  [5] magick_2.8.2                farver_2.1.1               
+  [7] rmarkdown_2.25              zlibbioc_1.46.0            
+  [9] GlobalOptions_0.1.2         fs_1.6.3                   
+ [11] vctrs_0.6.5                 memoise_2.0.1              
+ [13] RCurl_1.98-1.13             rstatix_0.7.2              
+ [15] webshot_0.5.5               S4Arrays_1.0.6             
+ [17] htmltools_0.5.7             lambda.r_1.2.4             
+ [19] broom_1.0.5                 cellranger_1.1.0           
+ [21] gridGraphics_0.5-1          sass_0.4.8                 
+ [23] bslib_0.6.1                 htmlwidgets_1.6.4          
+ [25] plyr_1.8.9                  futile.options_1.0.1       
+ [27] cachem_1.0.8                whisker_0.4.1              
+ [29] lifecycle_1.0.4             iterators_1.0.14           
+ [31] pkgconfig_2.0.3             Matrix_1.6-3               
+ [33] R6_2.5.1                    fastmap_1.1.1              
+ [35] MatrixGenerics_1.12.3       GenomeInfoDbData_1.2.10    
+ [37] clue_0.3-65                 digest_0.6.33              
+ [39] colorspace_2.1-0            S4Vectors_0.38.2           
+ [41] DESeq2_1.40.2               rprojroot_2.0.4            
+ [43] crosstalk_1.2.1             GenomicRanges_1.52.1       
+ [45] labeling_0.4.3              fansi_1.0.6                
+ [47] timechange_0.2.0            httr_1.4.7                 
+ [49] abind_1.4-5                 compiler_4.3.2             
+ [51] here_1.0.1                  withr_2.5.2                
+ [53] doParallel_1.0.17           backports_1.4.1            
+ [55] BiocParallel_1.34.2         carData_3.0-5              
+ [57] highr_0.10                  Rttf2pt1_1.3.12            
+ [59] ggsignif_0.6.4              rappdirs_0.3.3             
+ [61] DelayedArray_0.26.7         rjson_0.2.21               
+ [63] tools_4.3.2                 httpuv_1.6.13              
+ [65] extrafontdb_1.0             glue_1.6.2                 
+ [67] promises_1.2.1              cluster_2.1.6              
+ [69] generics_0.1.3              gtable_0.3.4               
+ [71] tzdb_0.4.0                  hms_1.1.3                  
+ [73] XVector_0.40.0              xml2_1.3.6                 
+ [75] car_3.1-2                   utf8_1.2.4                 
+ [77] BiocGenerics_0.46.0         foreach_1.5.2              
+ [79] pillar_1.9.0                yulab.utils_0.1.2          
+ [81] later_1.3.2                 circlize_0.4.15            
+ [83] lattice_0.22-5              tidyselect_1.2.0           
+ [85] locfit_1.5-9.8              git2r_0.33.0               
+ [87] gridExtra_2.3               IRanges_2.34.1             
+ [89] SummarizedExperiment_1.30.2 svglite_2.1.3              
+ [91] stats4_4.3.2                xfun_0.41                  
+ [93] Biobase_2.60.0              matrixStats_1.2.0          
+ [95] stringi_1.8.3               workflowr_1.7.1            
+ [97] yaml_2.3.8                  evaluate_0.23              
+ [99] codetools_0.2-19            cli_3.6.2                  
+[101] systemfonts_1.0.5           munsell_0.5.0              
+[103] jquerylib_0.1.4             Rcpp_1.0.11                
+[105] GenomeInfoDb_1.36.4         png_0.1-8                  
+[107] parallel_4.3.2              ellipsis_0.3.2             
+[109] bitops_1.0-7                crayon_1.5.2               
+[111] GetoptLong_1.0.5            rlang_1.1.2                
+[113] rvest_1.0.3                 formatR_1.14               </code></pre>
+</div>
+</div>
+
+
+<!-- Adjust MathJax settings so that all math formulae are shown using
+TeX fonts only; see
+https://docs.mathjax.org/en/latest/web/configuration.html. This will make
+the presentation more consistent at the cost of the webpage sometimes
+taking slightly longer to load. Note that this only works because the
+footer is added to webpages before the MathJax javascript. -->
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+    "HTML-CSS": { availableFonts: ["TeX"] }
+  });
+</script>
+
+
+
+
+</div>
+</div>
+
+</div>
+
+<script>
+
+// add bootstrap table styles to pandoc tables
+function bootstrapStylePandocTables() {
+  $('tr.odd').parent('tbody').parent('table').addClass('table table-condensed');
+}
+$(document).ready(function () {
+  bootstrapStylePandocTables();
+});
+
+
+</script>
+
+<!-- tabsets -->
+
+<script>
+$(document).ready(function () {
+  window.buildTabsets("TOC");
+});
+
+$(document).ready(function () {
+  $('.tabset-dropdown > .nav-tabs > li').click(function () {
+    $(this).parent().toggleClass('nav-tabs-open');
+  });
+});
+</script>
+
+<!-- code folding -->
+<script>
+$(document).ready(function () {
+  window.initializeCodeFolding("hide" === "show");
+});
+</script>
+
+<script>
+$(document).ready(function ()  {
+
+    // temporarily add toc-ignore selector to headers for the consistency with Pandoc
+    $('.unlisted.unnumbered').addClass('toc-ignore')
+
+    // move toc-ignore selectors from section div to header
+    $('div.section.toc-ignore')
+        .removeClass('toc-ignore')
+        .children('h1,h2,h3,h4,h5').addClass('toc-ignore');
+
+    // establish options
+    var options = {
+      selectors: "h1,h2,h3",
+      theme: "bootstrap3",
+      context: '.toc-content',
+      hashGenerator: function (text) {
+        return text.replace(/[.\\/?&!#<>]/g, '').replace(/\s/g, '_');
+      },
+      ignoreSelector: ".toc-ignore",
+      scrollTo: 0
+    };
+    options.showAndHide = true;
+    options.smoothScroll = true;
+
+    // tocify
+    var toc = $("#TOC").tocify(options).data("toc-tocify");
+});
+</script>
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+
+</body>
+</html>
