@@ -15,12 +15,6 @@ navbar:
       href: go.html
     - text: "KEGG"
       href: kegg.html
-    - text: "Reactome"
-      href: reactome.html
-    - text: "IPA"
-      href: ipa.html
-  - text: "Gene Set Enrichment Analysis (GSEA)"
-    href: gsea.html
   right:
   - icon: fa-linkedin
     href: https://www.linkedin.com/in/ha-tran-6973b5130/

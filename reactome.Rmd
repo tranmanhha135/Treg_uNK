@@ -1,0 +1,249 @@
+---
+title: "Reactome analysis"
+author: "Ha M. Tran"
+date: "2023-12-07"
+editor_options: 
+  chunk_output_type: console
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(
+  echo = TRUE,
+  message = FALSE,
+  warning = FALSE,
+  eval = TRUE,
+  fig.align = "center"
+)
+```
+
+```{r load libraries}
+# working with data
+library(dplyr)
+library(magrittr)
+library(readr)
+library(tibble)
+library(reshape2)
+library(tidyverse)
+
+# Visualisation:
+library(kableExtra)
+library(ggplot2)
+library(grid)
+library(pander)
+library(cowplot)
+library(pheatmap)
+library(DT)
+library(extrafont)
+# Custom ggplot
+library(ggbiplot)
+library(ggrepel)
+
+# Bioconductor packages:
+library(edgeR)
+library(limma)
+library(Glimma)
+library(clusterProfiler)
+library(org.Mm.eg.db)
+library(enrichplot)
+library(ReactomePA)
+library(pandoc)
+library(knitr)
+opts_knit$set(progress = FALSE, verbose = FALSE)
+opts_chunk$set(warning=FALSE, message=FALSE, echo=FALSE)
+```
+
+```{r importData}
+# load DGElist previously created in the set up
+dge <- readRDS(here::here("0_data/rds_objects/dge.rds"))
+fc <- readRDS(here::here("0_data/rds_objects/fc.rds"))
+fdr <- readRDS(here::here("0_data/rds_objects/fdr.rds"))
+lm <- readRDS(here::here("0_data/rds_objects/lm.rds"))
+lm_sig <- readRDS(here::here("0_data/rds_objects/lm_sig.rds"))
+
+# to increase the knitting speed. change to T to save all plots
+savePlots <- F
+export <- F
+```
+
+```{r importFunctions}
+# Theme
+bossTheme <- readRDS(here::here("0_data/functions/bossTheme.rds"))
+bossTheme_bar <- readRDS(here::here("0_data/functions/bossTheme.rds"))
+groupColour <- readRDS(here::here("0_data/functions/groupColour.rds"))
+groupColour_dark <- readRDS(here::here("0_data/functions/groupColour_dark.rds"))
+expressionCol <- readRDS(here::here("0_data/functions/expressionCol.rds"))
+expressionCol_dark <- readRDS(here::here("0_data/functions/expressionCol_dark.rds"))
+
+
+DT <- readRDS(here::here("0_data/functions/DT.rds"))
+
+# Plotting
+convert_to_superscript <- readRDS(here::here("0_data/functions/convert_to_superscript.rds"))
+exponent <- readRDS(here::here("0_data/functions/exponent.rds"))
+format_y_axis <- readRDS(here::here("0_data/functions/format_y_axis.rds"))
+```
+
+# Reactome 
+
+Reactome database provides curated information about biological pathways, including molecular events and reactions within cells. It focuses on human biology and is widely used for pathway analysis and functional interpretation of high-throughput data.
+
+KEGG and Reactome both include approximately the same number of genes. The difference lies in KEGG's use of broader terms, while Reactome employs similar terms but with multiple detailed entries.
+
+In the Reactome database, terms are organized hierarchically based on the classification of biological pathways. The organization follows a tree-like structure, where terms represent different levels of granularity in understanding molecular events and reactions within cells
+
+
+```{r reactome, eval=F}
+reactome=list()
+reactome_all=list()
+reactome_sig=list()
+for (i in 1:length(fc)) {
+  for (j in 1:length(fdr)) {
+    name <- paste0(fc[i] %>% as.character(), "_", fdr[j] %>% as.character())    
+    
+    reactome[[name]] <- enrichPathway(gene = lm_sig[[name]]$entrezid, organism = "mouse", pvalueCutoff = 0.1, pAdjustMethod = "fdr",qvalueCutoff = 1, readable = T)
+    
+  }
+}
+
+for (i in 1:length(fc)) {
+  for (j in 1:length(fdr)) {
+    name <- paste0(fc[i] %>% as.character(), "_", fdr[j] %>% as.character())    
+    
+    reactome[[name]]@result$Description <- sub(pattern = "Regulation of Insulin-like Growth Factor \\(IGF\\) transport and uptake by Insulin-like Growth Factor Binding Proteins \\(IGFBPs\\)",
+                                               replacement = "Regulation of IGF transport and uptake by IGFBPs", 
+                                               x = reactome[[name]]@result$Description)
+    
+    # at the beginnning of a word (after 35 characters), add a newline. shorten the y axis for dot plot 
+    reactome[[name]]@result$Description <- sub(pattern = "(.{1,45})(?:$| )", 
+                                               replacement = "\\1\n", 
+                                               x = reactome[[name]]@result$Description)
+    
+    # remove the additional newline at the end of the string
+    reactome[[name]]@result$Description <- sub(pattern = "\n$", 
+                                               replacement = "", 
+                                               x = reactome[[name]]@result$Description)
+    
+    reactome_all[[name]] <- reactome[[name]]@result
+    
+    
+    reactome_sig[[name]] <- reactome_all[[name]] %>% dplyr::filter(p.adjust <= 0.1) %>% 
+      separate(col = BgRatio, sep = "/", into = c("Total", "Universe")) %>%
+      dplyr::mutate(
+        logFDR = -log(p.adjust, 10),
+        GeneRatio = Count / as.numeric(Total))%>%
+      dplyr::select(c("Description", "GeneRatio", "pvalue", "p.adjust", "logFDR", "qvalue", "geneID", "Count"))
+   
+  }
+}
+
+```
+
+## Visualisation{.tabset .tabset-pills}
+```{r dotplot}
+reactome <- readRDS(here::here("0_data/rds_objects/reactome.rds"))
+reactome_all <- readRDS(here::here("0_data/rds_objects/reactome_all.rds"))
+reactome_sig <- readRDS(here::here("0_data/rds_objects/reactome_sig.rds"))
+
+react_dot=list()
+react_tab = list()
+react_upset=list()
+for (i in 1:length(lm)) {
+  name <- names(lm)[i]
+  react_dot[[name]] <- reactome_all[[name]][1:20,] %>% 
+    separate(col = BgRatio, sep = "/", into = c("Total", "Universe")) %>%
+    dplyr::mutate(
+      Significant = ifelse(p.adjust <= 0.1, TRUE, FALSE),
+      GeneRatio = Count / as.numeric(Total)) %>% 
+    ggplot() +
+    geom_point(aes(x = GeneRatio, y = reorder(Description, GeneRatio), colour = Significant, size = Count)) +
+
+  scale_size(range = c(2,5)) +
+      labs(x = "Gene ratio", y = "", color = "Significant", size = "Gene Counts") +
+      bossTheme(base_size = 14,legend = "right")
+
+  
+  react_tab[[name]] <- reactome_sig[[name]] %>% 
+      dplyr::mutate_if(is.numeric, funs(as.character(signif(.,3)))) %>% 
+      DT(., caption = "Significantly enriched Reactome Pathways")
+  
+  react_upset[[name]] <- upsetplot(x = reactome[[name]])
+  
+  if(savePlots == TRUE) {
+      ggsave(filename = paste0("react_dot_", name, ".svg"), plot = react_dot[[name]], path = here::here("2_plots/3_FA/reactome/"),
+             width = 18, height = 16, units = "cm")
+      ggsave(filename = paste0("react_upset_", name, ".svg"), plot = react_upset[[name]], path = here::here("2_plots/3_FA/reactome/"), 
+             width = 20, height = 12, units = "cm")
+      
+    }
+}
+
+```
+
+For data exploratory purposes, the following visualisations are Reactome enrichment analysis performed with set of DE genes significantly below **FDR \< 0.1 or \< 0.05** with and without FC threshold (TREAT). **IMPORTANTLY**, significant Reactome pathways are significantly if FDR < 0.1
+
+-   **Dot plot:** illustrates the enriched Reactome pathways
+
+    -   $Gene ratio =$ the number of significant DE gene in the term / the total of number of genes in the term as indicated by the size
+
+-   **Table:** list of all the significant Reactome pathways
+
+-   **Upset:** illustrate the overlap of gene between different pathways
+
+**I recommend reading through the full list of significant Reactome pathways and selecting the most biologically relevant for more in-depth visualisation**
+
+
+
+```{r loop, results="asis"}
+## this function is basically creating chunks within chunks, and then
+## I use results='asis' so that the html image code is rendered 
+kexpand <- function(wd, ht, cap) {
+  cat(knit(text = knit_expand(text = 
+     sprintf("```{r %s, fig.width=%s, fig.height=%s}\n.pl\n```", cap,wd, ht)
+)))}
+
+
+# Loop through each FC value
+headers <- c("FC=none, FDR<0.1", "FC=none, FDR<0.05", "FC=1.1, FDR<0.1", 
+             "FC=1.1, FDR<0.05", "FC=1.2, FDR<0.1"  , "FC=1.2, FDR<0.05")
+types <- c("Dot plot", "Table", "Upset plot")
+
+for (i in 1:length(headers)) {
+  cat(paste0("### ",headers[i],"{.tabset .tabset-pills} \n\n"))
+  
+  cat(paste0("#### ",types[[1]]," \n"))
+  .pl <- react_dot[[i]] 
+  kexpand(wd = 8,ht = 8,cap = paste0("dot",i))
+  cat("\n\n")
+  
+  cat(paste0("#### ",types[[2]]," \n"))
+  .pl <- react_tab[[i]]
+  kexpand(wd = 11,ht = 8,cap = paste0("tab",i))
+  cat("\n\n")
+  
+  cat(paste0("#### ",types[[3]]," \n"))
+  .pl <- react_upset[[i]] 
+  kexpand(wd = 11,ht = 9,cap = paste0("upset",i))
+  cat("\n\n")
+}
+```
+
+# Export Data
+
+The following are exported:
+
+-   **reactome_all.xlsx** - This spreadsheet contains all Reactome pathways
+
+-   **reactome_sig.xlsx** - This spreadsheet contains all significant (FDR < 0.1) Reactome pathways
+
+```{r exportData, eval=export}
+# save to csv
+writexl::write_xlsx(x = reactome_all, here::here("3_output/reactome_all.xlsx"))
+writexl::write_xlsx(x = reactome_sig, here::here("3_output/reactome_sig.xlsx"))
+```
+
+```{r saveRDS}
+saveRDS(reactome, here::here("0_data/rds_objects/reactome.rds"))
+saveRDS(reactome_all, here::here("0_data/rds_objects/reactome_all.rds"))
+saveRDS(reactome_sig, here::here("0_data/rds_objects/reactome_sig.rds"))
+```
+
