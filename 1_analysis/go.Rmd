@@ -1,7 +1,7 @@
 ---
 title: "Gene ontology (GO) analysis"
 author: "Ha M. Tran"
-date: "2023-12-07"
+date: "08-01-2024"
 editor_options: 
   chunk_output_type: console
 ---
@@ -61,10 +61,9 @@ opts_chunk$set(warning=FALSE, message=FALSE, echo=FALSE)
 ```{r importData}
 # load DGElist previously created in the set up
 dge <- readRDS(here::here("0_data/rds_objects/dge.rds"))
-fc <- readRDS(here::here("0_data/rds_objects/fc.rds"))
-fdr <- readRDS(here::here("0_data/rds_objects/fdr.rds"))
 lm <- readRDS(here::here("0_data/rds_objects/lm.rds"))
 lm_sig <- readRDS(here::here("0_data/rds_objects/lm_sig.rds"))
+comp <- readRDS(here::here("0_data/rds_objects/comp.rds"))
 
 # to increase the knitting speed. change to T to save all plots
 savePlots <- F
@@ -117,62 +116,47 @@ minPath <- 3
 mmGO <- godata('org.Mm.eg.db', ont="BP")
 enrichGO=list()
 enrichGO_sig <- list()
-for (i in 1:length(fc)) {
-  for (j in 1:length(fdr)) {
-    name <- paste0(fc[i] %>% as.character(), "_", fdr[j] %>% as.character())
-    # x <- fc[i] %>% as.character()
-    # find enriched GO terms
-    enrichGO[[name]] <- clusterProfiler::enrichGO(
-      gene =lm_sig[[name]]$entrezid,
-      OrgDb = org.Mm.eg.db,
-      keyType = "ENTREZID",
-      ont = "ALL",
-      pAdjustMethod = "fdr",
-      pvalueCutoff = 0.05
-    )
-    
-    
-    enrichGO[[name]] <- pairwise_termsim(enrichGO[[name]], method = "Wang",semData = mmGO, showCategory = nrow(enrichGO[[name]]@result))
-  }
+for (name in comp) {
+  # find enriched GO terms
+  enrichGO[[name]] <- clusterProfiler::enrichGO(
+    gene =lm_sig[[name]]$entrezid,
+    OrgDb = org.Mm.eg.db,
+    keyType = "ENTREZID",
+    ont = "ALL",
+    pAdjustMethod = "fdr",
+    pvalueCutoff = 0.05
+  )
+  
+  
+  enrichGO[[name]] <- pairwise_termsim(enrichGO[[name]], method = "Wang",semData = mmGO, showCategory = nrow(enrichGO[[name]]@result))
+  
 }
 
-for (i in 1:length(fc)) {
-  for (j in 1:length(fdr)) {
-    name <- paste0(fc[i] %>% as.character(), "_", fdr[j] %>% as.character())
-
-    # bind to goSummaries to elminate go terms with ontology levels 1 and 2.
-    enrichGO_sig[[name]] <- enrichGO[[name]] %>% 
-      clusterProfiler::setReadable(OrgDb = org.Mm.eg.db, keyType = "auto")
-    
-    enrichGO_sig[[name]] <- enrichGO_sig[[name]] %>%
-      as.data.frame() %>%
-      rownames_to_column("id") %>%
-      left_join(goSummaries) %>%
-      dplyr::filter(shortest_path >= minPath) %>%
-      column_to_rownames("id")
-    
-    # adjust go results, separate compound column, add FDR column, adjust the GeneRatio column
-    enrichGO_sig[[name]] <- enrichGO_sig[[name]] %>%
-      separate(col = BgRatio, sep = "/", into = c("Total", "Universe")) %>%
-      dplyr::mutate(
-        logFDR = -log(p.adjust, 10),
-        GeneRatio = Count / as.numeric(Total)) %>% 
-      dplyr::select(c("Description", "ontology", "GeneRatio", "pvalue", "p.adjust", "logFDR", "qvalue", "geneID", "Count"))
-    
-    
-    enrichGO_sig[[name]]$Description <- enrichGO_sig[[name]]$Description %>% str_to_sentence()
-    
-    # at the beginnning of a word (after 35 characters), add a newline. shorten the y axis for dot plot
-    enrichGO_sig[[name]]$Description <- sub(pattern = "(.{1,45})(?:$| )",
-                                         replacement = "\\1\n",
-                                         x = enrichGO_sig[[name]]$Description)
-
-    # # remove the additional newline at the end of the string
-    enrichGO_sig[[name]]$Description <- sub(pattern = "\n$",
-                                         replacement = "",
-                                         x = enrichGO_sig[[name]]$Description)
-    
-  }
+for (name in comp) {
+  # bind to goSummaries to elminate go terms with ontology levels 1 and 2.
+  enrichGO_sig[[name]] <- enrichGO[[name]] %>% 
+    clusterProfiler::setReadable(OrgDb = org.Mm.eg.db, keyType = "auto")
+  
+  enrichGO_sig[[name]] <- enrichGO_sig[[name]] %>%
+    as.data.frame() %>%
+    rownames_to_column("id") %>%
+    left_join(goSummaries) %>%
+    dplyr::filter(shortest_path >= minPath) %>%
+    column_to_rownames("id")
+  
+  # adjust go results, separate compound column, add FDR column, adjust the GeneRatio column
+  enrichGO_sig[[name]] <- enrichGO_sig[[name]] %>%
+    separate(col = BgRatio, sep = "/", into = c("Total", "Universe")) %>%
+    dplyr::mutate(
+      logFDR = -log(p.adjust, 10),
+      GeneRatio = Count / as.numeric(Total))
+  # %>% 
+  #   dplyr::select(c("Description", "ontology", "GeneRatio", "pvalue", "p.adjust", "logFDR", "qvalue", "geneID", "Count"))
+  
+  
+  enrichGO_sig[[name]]$Description <- enrichGO_sig[[name]]$Description %>% str_to_sentence() %>% str_wrap(width = 45)
+  
+  
 }
 ```
 
@@ -196,13 +180,9 @@ for(name in names(enrichGO)){
                              threshold=0.7,
                              orgdb="org.Mm.eg.db")
   
-  reducedTerms[[name]]$parentTerm <- reducedTerms[[name]]$parentTerm %>% str_to_sentence()
-  reducedTerms[[name]]$parentTerm <- sub(pattern = "(.{1,35})(?:$| )", replacement = "\\1\n", x = reducedTerms[[name]]$parentTerm)
-  reducedTerms[[name]]$parentTerm <- sub(pattern = "\n$", replacement = "", x = reducedTerms[[name]]$parentTerm)
+  reducedTerms[[name]]$parentTerm <- reducedTerms[[name]]$parentTerm %>% str_to_sentence() %>% str_wrap(width = 35)
   
-  reducedTerms[[name]]$term <- reducedTerms[[name]]$term %>% str_to_sentence()
-  reducedTerms[[name]]$term <- sub(pattern = "(.{1,35})(?:$| )", replacement = "\\1\n", x = reducedTerms[[name]]$term)
-  reducedTerms[[name]]$term <- sub(pattern = "\n$", replacement = "", x = reducedTerms[[name]]$term)
+  reducedTerms[[name]]$term <- reducedTerms[[name]]$term %>% str_to_sentence()%>% str_wrap(width = 35)
   
   
 }
@@ -214,7 +194,7 @@ saveRDS(reducedTerms, here::here("0_data/rds_objects/reducedTerms_ora.rds"))
 
 ## Visualisations {.tabset .tabset-pills}
 
-Again, for data exploratory purposes, the following visualisations are GO enrichment analysis performed with set of DE genes significantly below **FDR \< 0.1 or \< 0.05** with and without FC threshold (TREAT). IMPORTANTLY, these GO terms are all significantly enriched (FDR <0.05)
+The following visualisations are GO enrichment analysis performed with set of DE genes significantly below **FDR 0.1**  without FC threshold (TREAT). IMPORTANTLY, these GO terms are all significantly enriched (FDR <0.05)
 
 -   **Dot plot:** illustrates the top 25 enriched GO terms.
 
@@ -255,40 +235,36 @@ NOTE: the following semantic similarity analyses are performed using Graph-based
 ### FC=none, FDR<0.1 {.tabset .tabset-pills}
 
 #### Dot plot
-```{r dot, fig.width=8, fig.height=10}
+```{r dot_og, fig.width=8, fig.height=10}
 dot <- list()
 tab <- list()
 upset <- list()
 
-for (i in 1:length(fc)) {
-  for (j in 1:length(fdr)) {
-    name <- paste0(fc[i] %>% as.character(), "_", fdr[j] %>% as.character())
-    
-    
-    dot[[name]] <- ggplot(enrichGO_sig[[name]][1:25, ]) +
-      geom_point(aes(x = GeneRatio, y = reorder(Description, GeneRatio), colour = logFDR, size = Count, shape = ontology %>% as.factor())) +
-      scale_color_gradientn(colors = rev(c("#FB8072","#FDB462","#ffffd5","#8DD3C7","#80B1D3")),
-                            values = scales::rescale(c(min(enrichGO_sig[[name]]$logFDR), max(enrichGO_sig[[name]]$logFDR))),
-                            breaks = scales::pretty_breaks(n = 5)) +
-      scale_size(range = c(2,5)) +
-      labs(x = "Gene ratio", y = "", color = expression("-log"[10] * "FDR"), size = "Gene Counts", shape = "Ontology")+
-      bossTheme(base_size = 14,legend = "right")
-    
-    tab[[name]] <- enrichGO_sig[[name]] %>% 
-      dplyr::mutate_if(is.numeric, funs(as.character(signif(.,3)))) %>% 
-      DT(., caption = "Significantly enriched GO terms")
-    
-    
-    upset[[name]] <- upsetplot(x = enrichGO[[name]], 10)
-    
-    if(savePlots == TRUE) {
-      ggsave(filename = paste0("dot_", name, ".svg"), plot = dot[[name]], path = here::here("2_plots/3_FA/go/"),
-             width = 18, height = 20, units = "cm")
-      ggsave(filename = paste0("upset_", name, ".svg"), plot = upset[[name]], path = here::here("2_plots/3_FA/go/"), width = 20, height = 14, units = "cm")
-      
-    }
+for (name in comp) {
+  dot[[name]] <- ggplot(enrichGO_sig[[name]][1:20, ]) +
+    geom_point(aes(x = GeneRatio, y = reorder(Description, GeneRatio), colour = logFDR, size = Count, shape = ontology %>% as.factor())) +
+    scale_color_gradientn(colors = rev(c("#FB8072","#FDB462","#ffffd5","#8DD3C7","#80B1D3")),
+                          values = scales::rescale(c(min(enrichGO_sig[[name]]$logFDR), max(enrichGO_sig[[name]]$logFDR))),
+                          breaks = scales::pretty_breaks(n = 5)) +
+    scale_size(range = c(2,5)) +
+    labs(x = "Gene ratio", y = "", color = expression("-log"[10] * "FDR"), size = "Gene Counts", shape = "Ontology")+
+    bossTheme(base_size = 14,legend = "right")
+  
+  tab[[name]] <- enrichGO_sig[[name]] %>% 
+    dplyr::mutate_if(is.numeric, funs(as.character(signif(.,3)))) %>% 
+    DT(., caption = "Significantly enriched GO terms")
+  
+  
+  upset[[name]] <- upsetplot(x = enrichGO[[name]], 10)
+  
+  if(savePlots == TRUE) {
+    ggsave(filename = paste0("dot_", name, ".svg"), plot = dot[[name]], path = here::here("2_plots/3_FA/go/"),
+           width = 18, height = 20, units = "cm")
+    ggsave(filename = paste0("upset_", name, ".svg"), plot = upset[[name]], path = here::here("2_plots/3_FA/go/"), width = 20, height = 14, units = "cm")
     
   }
+  
+  
 }
 
 dot[[1]]
@@ -310,17 +286,17 @@ upset[[1]]
 #### Dendrogram
 
 ```{r semSim_den, fig.width=8, fig.height=11}
-# den <- lapply(enrichGO, function(x) {
-#   treeplot(x,showCategory = 50, fontsize = 3, cex_category = 0.5,
-#          cluster.params      = list(method = "ward.D", n = 9, label_words_n = 4, label_format = 30),
-#          hilight.params      = list(hilight = F, align = "both"),
-#          clusterPanel.params = list(clusterPanel = "heatMap", pie = "equal", legend_n = 3),
-#          offset.params       = list(bar_tree = rel(3), tiplab = rel(4), extend = 0.1, hexpand = 0.4)) +
-#   theme(legend.position = "bottom")
-# }) %>% setNames(enrichGO)
+den <- lapply(enrichGO, function(x) {
+  treeplot(x,showCategory = 50, fontsize = 3, cex_category = 0.5,
+         cluster.params      = list(method = "ward.D", n = 9, label_words_n = 4, label_format = 30),
+         hilight.params      = list(hilight = F, align = "both"),
+         clusterPanel.params = list(clusterPanel = "heatMap", pie = "equal", legend_n = 3),
+         offset.params       = list(bar_tree = rel(3), tiplab = rel(4), extend = 0.1, hexpand = 0.4)) +
+  theme(legend.position = "bottom")
+}) %>% setNames(enrichGO)
 
 # saveRDS(den, here::here("0_data/rds_objects/ora_dendrogram.rds"))
-den <- readRDS(here::here("0_data/rds_objects/ora_dendrogram.rds"))
+# den <- readRDS(here::here("0_data/rds_objects/ora_dendrogram.rds"))
 
 den[[1]]
 ```
@@ -447,6 +423,40 @@ for(name in names(enrichGO)){
 scatter_3d[[1]]
 ```
 
+#### Parent terms
+
+```{r parentTerms, fig.width=9, fig.height=12}
+semSim_dot <- list()
+
+
+for (name in comp) {
+  subset_df <- subset(reducedTerms[[name]], parent == rownames(reducedTerms[[name]]))
+  parentTerm_size <- reducedTerms[[name]]$parentTerm %>% as.factor() %>% summary(500) 
+  semSim_df <- cbind(subset_df,parentTerm_size)
+  # return(semSim_df)
+  semSim_dot[[name]] <- ggplot(semSim_df[1:30,]) +
+    geom_point(aes(x = parentTerm_size, y = reorder(parentTerm, score), colour = score, size = parentTerm_size)) +
+    scale_color_gradientn(colors = rev(c("#FB8072","#FDB462","#ffffd5","#8DD3C7","#80B1D3")),
+                          values = scales::rescale(c(min(semSim_df$score), max(semSim_df$score))),
+                          breaks = scales::pretty_breaks(n = 5)) +
+    scale_size(range = c(2,5), guide = F) +
+    labs(x = "Term size", y = "", color = expression("-log"[10] * "FDR"))+
+    bossTheme(base_size = 14,legend = "right")
+  
+  # if(savePlots == TRUE) {
+  #   ggsave(filename = paste0("dot_", name, ".svg"), plot = dot[[name]], path = here::here("2_plots/3_FA/go/"),
+  #          width = 18, height = 20, units = "cm")
+  #   ggsave(filename = paste0("upset_", name, ".svg"), plot = upset[[name]], path = here::here("2_plots/3_FA/go/"), width = 20, height = 14, units = "cm")
+
+  # }
+  
+  
+}
+
+semSim_dot[1]
+```
+
+
 #### Treemap plot
 
 ```{r semSim_tree, fig.width=8, fig.height=8}
@@ -506,9 +516,8 @@ special_kexpand <- function(wd, ht, cap, res, echo) {
 )))}
 
 # Loop through each FC value
-headers <- c("FC=none, FDR<0.1", "FC=none, FDR<0.05", "FC=1.1, FDR<0.1", 
-             "FC=1.1, FDR<0.05", "FC=1.2, FDR<0.1"  , "FC=1.2, FDR<0.05")
-types <- c("Dot plot", "Table", "Upset plot", "Dendrogram", "Scatter", "Treemap")
+headers <- comp
+types <- c("Dot plot", "Table", "Upset plot", "Dendrogram", "Scatter", "Parent term", "Treemap")
 
 for (i in 2:length(headers)) {
   cat(paste0("### ",headers[i],"{.tabset .tabset-pills} \n\n"))
@@ -549,8 +558,13 @@ for (i in 2:length(headers)) {
   cat("\n\n")
   
   cat(paste0("#### ",types[[6]]," \n"))
+  .pl <- semSim_df[[i]]
+  kexpand(wd = 9,ht = 12 ,cap = paste0("parentTerm",i),res = "markup",echo = "TRUE")
+  cat("\n\n")
+  
+  cat(paste0("#### ",types[[7]]," \n"))
   # adjTreemap(x = reducedTerms[[i]])
-  special_kexpand(wd = 9,ht = 9,cap = paste0("upset",i),res = "hide",echo = "FALSE")
+  special_kexpand(wd = 9,ht = 9,cap = paste0("treemap",i),res = "hide",echo = "FALSE")
   cat("\n\n")
   
   # cat(paste0("Interactive Treemap\n"))
@@ -559,6 +573,7 @@ for (i in 2:length(headers)) {
   # cat("\n\n")
 }
 ```
+
 # Export Data
 
 The following are exported:

@@ -28,6 +28,7 @@ library(tibble)
 library(reshape2)
 library(tidyverse)
 library(ComplexHeatmap)
+library(scales)
 
 # Visualisation:
 library(kableExtra)
@@ -325,11 +326,11 @@ comp <- colnames(contrast)
 if (fc == "none") {
   lm_fit <- limma::lmFit(object = voom1, design = full_design) %>%
     limma::contrasts.fit(contrasts = contrast) %>% limma::eBayes()  
-  lm_all <- lapply(1:ncol(lm), function(y){limma::topTable(lm, coef = y, number = Inf, adjust.method = "fdr")}) %>% setNames(.,comp)
+  lm_all <- lapply(1:ncol(lm_fit), function(y){limma::topTable(lm_fit, coef = y, number = Inf, adjust.method = "fdr")}) %>% setNames(.,comp)
   } else {
   lm_fit <- limma::lmFit(object = voom1, design = full_design) %>%
     limma::contrasts.fit(contrasts = contrast) %>% limma::treat(fc = as.numeric(fc))
-  lm_all <- lapply(1:ncol(lm), function(y){limma::topTreat(fit = lm, coef = 1, number = Inf, adjust.method = "fdr")}) %>% setNames(.,comp)
+  lm_all <- lapply(1:ncol(lm_fit), function(y){limma::topTreat(fit = lm_fit, coef = 1, number = Inf, adjust.method = "fdr")}) %>% setNames(.,comp)
 }
 
 lm_all <- lapply(lm_all, function(x) {
@@ -708,5 +709,5 @@ saveRDS(object = lm_all, file = here::here("0_data/rds_objects/lm_all.rds"))
 
 saveRDS(object = lm_sig, file = here::here("0_data/rds_objects/lm_sig.rds"))
 
-
+saveRDS(comp, here::here("0_data/rds_objects/comp.rds"))
 ```
