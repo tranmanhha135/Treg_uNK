@@ -2,9 +2,8 @@
 title: "Regulatory T cells promote decidual vascular remodeling by modulating uterine natural killer cells to support pregnancy in mice"
 site: workflowr::wflow_site
 ---
-### Ricky A. Matias^1^, Hon Yeung Chan^1^, Ha M. Tran^1^, John E. Schjenken^1,2,3^, Peck Y. Chin^1^, David J. Sharkey^1^, Lachlan M. Moldenhauer^1^, and Sarah A. Robertson^1\*^
 
-### Shanna L. Hosking^1^, Holly M. Groome^1^, Hon Y. Chan^1^, Lachlan M. Moldenhauer^1^, Ella S. Green^1^, Stephanie E. O’Hara^1^, Claire T. Roberts^2^, Sandra T. Davidge^3^, Sarah A. Robertson^1^, Alison S. Care^1\*^
+### Shanna L. Hosking^1^, Hon Y. Chan^1^, Ha M. Tran^1^, Holly M. Groome^1^, Lachlan M. Moldenhauer^1^, Ella S. Green^1^, Stephanie E. O’Hara^1^, Claire T. Roberts^2^, Sandra T. Davidge^3^, Sarah A. Robertson^1^, Alison S. Care^1\*^
 
 ^1^ The Robinson Research Institute and Adelaide Medical School, University of Adelaide, Adelaide, SA 5000, Australia.
 ^2^ Flinders Health and Medical Research Institute, Flinders University, Adelaide, SA 5042, Australia.

@@ -12,7 +12,8 @@ knitr::opts_chunk$set(
   echo = TRUE,
   message = FALSE,
   warning = FALSE,
-  fig.align = "center"
+  fig.align = "center",
+  fig.width = 10
 )
 ```
 
@@ -29,6 +30,7 @@ library(reshape2)
 library(tidyverse)
 library(ComplexHeatmap)
 library(scales)
+library(plyr)
 
 # Visualisation:
 library(kableExtra)
@@ -111,16 +113,10 @@ The experimental design can be parameterised in a one-way layout where one coeff
 null_design <- matrix(1, ncol = 1, nrow = ncol(dge))
 
 # setup full design matrix with sample_group
-full_design <- model.matrix(~ 0 + group,
-  data = dge$samples)
+full_design <- model.matrix(~ 0 + group,data = dge$samples)
 
 # remove "sample_group" from each column names
-colnames(full_design) <- gsub(
-  "group",
-  "",
-  colnames(full_design))
-
-
+colnames(full_design) <- gsub("group","",colnames(full_design))
 
 full_design %>% as.data.frame() %>% DT(., "Table: Design matrix")
 
@@ -134,10 +130,10 @@ The contrast matrix is required to provide a coefficient to each comparison and 
 contrast <- limma::makeContrasts(
   DTvPBS   = DT - PBS,
   TregvPBS = Treg - PBS,
-  DTvTreg  = DT - Treg,
+  TregvDT  = Treg - DT,
   levels = full_design)
 
-colnames(contrast) <- c("DT vs PBS", "Treg vs PBS", "DT vs Treg")
+colnames(contrast) <- c("DT vs PBS", "Treg vs PBS", "Treg vs DT")
 
 contrast %>% DT(., "Table: Contrast matrix")
 ```
@@ -172,9 +168,10 @@ voom2 <- limma::voomWithQualityWeights(counts = dge,design = null_design, plot =
 ```
 
 ### PCA
-```{r voomPCA, fig.cap="PCA plots after voom quality weight transformations. Group-specific weights(left) and sample-specific weights (right)"}
+```{r voomPCA, fig.width=11,fig.cap="PCA plots after voom quality weight transformations. Group-specific weights(left) and sample-specific weights (right)"}
 # Function for performing pca and generating plots
-voom_pca <- function(voom_trans){
+voom_pca <- function(voom_trans, titleIndex){
+  title <- c("Group-level weights", "Sample-level weights")
   pca <- voom_trans$E %>% 
     t() %>% 
     prcomp()
@@ -195,25 +192,26 @@ voom_pca <- function(voom_trans){
          y = paste0("PC2 (", percent(summary(pca)$importance["Proportion of Variance","PC2"]),")"),
          colour = "Groups",
          size = "Weights",
-         shape = "Replicate") +
+         shape = "Replicate",
+         title = title[titleIndex]) +
     bossTheme(14,legend = "bottom") +
-    guides(colour = guide_legend(override.aes = list(size = 2.4)))
+    guides(colour = guide_legend(override.aes = list(size = 3)))
 }
 
 # iterate with lapply for voom 1 and 2
 voom_pca_plots <- lapply(1:2, function(y){
-  voom_pca(voom_trans = get(paste0('voom',y)))
+  voom_pca(voom_trans = get(paste0('voom',y)), titleIndex = y)
 })
 
 # plot pca of voom1 and voom2 side by side
 plot_grid(
   plot_grid(
     voom_pca_plots[[1]] + theme(legend.position = "none"),
-    voom_pca_plots[[2]] + theme(legend.position = "none"), 
+    voom_pca_plots[[2]] + theme(legend.position = "none"),
     nrow = 1
   ),
   get_legend(voom_pca_plots[[1]] + theme(legend.position = "bottom")),
-  nrow = 2, 
+  nrow = 2,
   rel_heights = c(10,1)
 )
 ```
@@ -297,8 +295,6 @@ limmaFit(x = voom1, fc[4], adjMethod = "fdr", p.val = 0.05, 12)
 
 Due to the large variance in the PBS group, the transformation with `observational and group-level weights` were used. **Without** FC cut-off (using TREAT) and an `FDR < 0.05`, the `DT vs Treg` comparison had 45 significant DE genes **(TABLE 3)**. This may **not** be enough DE genes to perform meaningful functional enrichment analysis downstream. Therefore, The FDR threshold is increased to `0.1`, in another word, we allow for 10% type I error, i.e. 1 in 10 genes may be a false positive for differential expression. Using a fold-change cut-off through application of `TREAT` gives additional stringency at the costs of reducing the list of DE genes.
 
-<!-- It is best practice to perform P value correction. So, for data exploratory purposes, the following visualisations are DE genes significantly below **FDR \< 0.1 or \< 0.05** with and without FC threshold (TREAT). -->
-
 -   **P-value histogram:** illustrates the distribution of p-values. As the stringency increases (increasing FC threshold), the distribution shifts towards `1`, thus insignificant.
 
 -   **MA plot:** helps visualise and identify genes with significant changes in expression. Points deviating from the central axis often indicate differentially expressed genes, allowing assessment of the magnitude and consistency of expression changes across conditions.
@@ -351,7 +347,7 @@ lm_sig <- lapply(lm_all, function(x) {x %>% dplyr::filter(adj.P.Val <= fdr)})
 
 ```
 
-## FC= `r fc[1]` {.tabset .tabset-pills}
+## `r comp[1]` {.tabset .tabset-pills}
 
 ### P-val histogram
 
@@ -373,6 +369,8 @@ for (name in comp) {
            units = "cm")
   }
 }
+
+lm_hist[[1]]
 ```
 
 ### MA plot
@@ -582,7 +580,7 @@ for (name in comp) {
     fontsize_col = 14,
     fontsize_number = 14,
     fontsize_row = 14,
-    labels_row = as.expression(lapply(rownames(sig_de), function(a) bquote(italic(.(a)))))
+    labels_row = as.expression(lapply(sig_de$gene, function(a) bquote(italic(.(a)))))
   ) %>% as.ggplot()
   
   if (savePlots == T) {
@@ -617,17 +615,17 @@ for (i in 2:length(comp)) {
 
   cat(paste0("### ",types[[1]]," \n"))
   .pl <- lm_hist[[i]] 
-  kexpand(wd = 11,ht = 6,cap = paste0("hist_",i))
+  kexpand(wd = 10,ht = 6,cap = paste0("hist_",i))
   cat("\n\n")
   
   cat(paste0("### ",types[[2]]," \n"))
   .pl <- ma[[i]] 
-  kexpand(wd = 11,ht = 6,cap = paste0("ma_",i))
+  kexpand(wd = 10,ht = 6,cap = paste0("ma_",i))
   cat("\n\n")
   
   cat(paste0("### ",types[[3]]," \n"))
   .pl <- vol[[i]]
-  kexpand(wd = 11,ht = 6,cap = paste0("vol_",i))
+  kexpand(wd = 10,ht = 6,cap = paste0("vol_",i))
   cat("\n\n")
   
   cat(paste0("### ",types[[4]]," \n"))
@@ -643,7 +641,6 @@ for (i in 2:length(comp)) {
 #create matrix with log cpm counts
 logCPM <- cpm(dge, prior.count=2, log=TRUE)
 rownames(logCPM) <- dge$genes$gene
-# colnames(logCPM) <- paste(dge$samples$pretty_name, sep="-")
 
 #join common significant DE genes into df
 common <- join_all(list(lm_sig[[1]], lm_sig[[2]], lm_sig[[3]]), by = 'gene', type = 'inner')
@@ -651,13 +648,13 @@ common <- join_all(list(lm_sig[[1]], lm_sig[[2]], lm_sig[[3]]), by = 'gene', typ
 
 ### Venn diagram
 
-```{r vennDiagram, fig.height=8, fig.width=8}
+```{r vennDiagram, fig.height=8, fig.width=8, echo=FALSE,results='hide'}
 futile.logger::flog.threshold(futile.logger::ERROR, name = "VennDiagramLogger")
 
 # for(name in comp) {
   venn.diagram(x = list("DT vs PBS"   = lm_sig[[1]]$gene %>% as.character(), 
                         "Treg vs PBS" = lm_sig[[2]]$gene %>% as.character(),
-                        "DT vs Treg"  = lm_sig[[3]]$gene %>% as.character()),
+                        "Treg vs DT"  = lm_sig[[3]]$gene %>% as.character()),
                filename = here::here(paste0("2_plots/2_DE/venn.png")),
                lwd = 2,
                fill = groupColour,
@@ -676,12 +673,84 @@ futile.logger::flog.threshold(futile.logger::ERROR, name = "VennDiagramLogger")
                cat.fontfamily = "Arial Narrow",
                cat.default.pos = "outer",
                cat.pos = c(-27, 27, 135),
-        cat.dist = c(0.055, 0.055, 0.085),
+               cat.dist = c(0.055, 0.055, 0.085),
   )
  
 ```
 
 ![](figure/deAnalysis.Rmd/venn.png)
+
+### Heatmap
+
+```{r heat_combined, fig.width=9, fig.height=11}
+logCPM_combined <- cpm(dge, prior.count=3, log=TRUE)
+rownames(logCPM_combined) <- dge$genes$gene
+
+#join common significant DE genes into df
+common <- join_all(list(lm_sig[[1]], lm_sig[[3]]), by = 'gene', type = 'inner')
+
+#merge the log cpm counts with the top 30 common de genes
+logCPM_combined <- logCPM_combined[common$gene[1:nrow(common)],]
+logCPM_combined <- logCPM_combined[,c(6,7,8,9,10,11,1,2,3,4,5,12,13,14,15,16)]
+
+#df for heatmap annotation of sample type
+anno_combined <- factor(dge$samples$group, levels = c("PBS", "DT", "Treg")) %>% as.data.frame()
+anno_combined <- anno_combined[c(6,7,8,9,10,11,1,2,3,4,5,12,13,14,15,16),]%>% as.data.frame()
+
+colnames(anno_combined) <- "Groups"
+
+
+heat_combined <- ComplexHeatmap::pheatmap(
+    mat = logCPM_combined,
+    color = colorRampPalette(rev(c("#FB8072","#FDB462","#ffffd5","#8DD3C7","#80B1D3")))(300),
+    scale = "row",
+    cluster_cols = F,
+    border_color = "white",
+    gaps_col = c(6,11),
+    # cutree_cols = 3,
+    cutree_rows = 6,
+    treeheight_row = 40,
+    treeheight_col = 30,
+    show_colnames = T,
+    clustering_distance_rows = "euclidean",
+    main = paste0("Top ", nrow(logCPM_combined), " significant DEGs"),
+
+
+    legend = T,
+
+    heatmap_legend_param = list(title = "Expression Z-score",
+                                direction= "horizontal",
+                                # merge_legend = TRUE,
+                                legend_direction = "horizontal",
+                                legend_width = unit(5, "cm")),
+
+    # annotation = T,
+    annotation_legend = T,
+    annotation_col = anno_combined,
+    annotation_colors = list("Groups" = groupColour),
+    annotation_names_col = T,
+    # annotation_legend_param = list(direction = "horizontal"),
+
+    fontfamily = "Arial Narrow",
+    fontsize = 14,
+    fontsize_col = 14,
+    fontsize_number = 14,
+    fontsize_row = 14,
+    labels_row = as.expression(lapply(rownames(logCPM_combined), function(a) bquote(italic(.(a)))))
+  )
+
+draw(heat_combined, merge_legend = T, heatmap_legend_side = "bottom", 
+    annotation_legend_side = "bottom")
+
+if (savePlots == T) {
+  svg(filename = here::here("2_plots/2_DE/heat_combined.svg"),width = 8,height = 12)
+  draw(heat_combined, merge_legend = T, heatmap_legend_side = "bottom", 
+       annotation_legend_side = "bottom")
+  dev.off()
+  }
+
+```
+
 
 # Export Data
 
@@ -693,16 +762,13 @@ The following are exported:
 
 ```{r exportData, eval=export}
 lapply(lm_all, function(x) x %>% dplyr::select(c("gene", "logFC", "AveExpr", "P.Value", "adj.P.Val", "description", "entrezid","expression"))) %>% writexl::write_xlsx(x = ., here::here("3_output/de_genes_all.xlsx"))
+
 lapply(lm_sig, function(x) x %>% dplyr::select(c("gene", "logFC", "AveExpr", "P.Value", "adj.P.Val", "description", "entrezid","expression"))) %>% writexl::write_xlsx(x = ., here::here("3_output/de_genes_sig.xlsx"))
+
 # lapply(common, function(x) x %>% dplyr::select(c("gene", "logFC", "AveExpr", "P.Value", "adj.P.Val", "description", "entrezid","expression", "Type"))) %>% writexl::write_xlsx(x = ., here::here("3_output/common_deg.xlsx"))
 ```
 
 ```{r saveRDS, include=FALSE}
-
-# saveRDS(object = fc, file = here::here("0_data/rds_objects/fc.rds"))
-
-# saveRDS(object = fdr, file = here::here("0_data/rds_objects/fdr.rds"))
-
 saveRDS(object = lm, file = here::here("0_data/rds_objects/lm.rds"))
 
 saveRDS(object = lm_all, file = here::here("0_data/rds_objects/lm_all.rds"))

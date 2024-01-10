@@ -151,7 +151,7 @@ genes$`Gene Biotype`[grep("_", genes$`Gene Biotype`)] <- str_to_sentence(str_rep
 
 #### Interactive pie chart
 
-```{r pieBiotype}
+```{r pieBiotype, fig.width=8}
 pie <- plot_ly(genes, labels = ~`Gene Biotype`, values = ~`Frequency`, type = 'pie',
                textposition = 'inside',
                textinfo = 'label+percent',
@@ -212,7 +212,7 @@ Pre-processing steps increased the power of the downstream DGE analysis by elimi
 
 A simple pre-processing/QC step is checking the quality of library size (total number of mapped and quantified reads) for each treatment. This enable identification of potentially mis-labelled or outlying samples. This is often visualised through `ggplot`.
 
-```{r libraryChecks, fig.cap = "Sample library size. Dash line represent average library size"}
+```{r libraryChecks, fig.width=8, fig.cap = "Sample library size. Dash line represent average library size"}
 custom_labels <- function(data, y, x) {
   exp <- exponent(df = data,y_column = y)
   ifelse(x >= 1000 | x<= 0.001 & x!=0, {
@@ -283,7 +283,7 @@ At CPM `> 1`, majority of the peak with `logCPM < 0` were removed. This may need
 
 To to keep genes that are are more than `r cpm_filter` CPM in at least 5 samples. Mathematically this would be identifying genes (rows) with CPM > `r cpm_filter`; and identifying total row sum that is `>= 5`.
 
-```{r afterFiltering, fig.cap="Before and after removal of lowly expressed genes"}
+```{r afterFiltering, fig.width=11, fig.cap="Before and after removal of lowly expressed genes"}
 #the genes kept have >2 CPM for at least 4 samples
 keptGenes <- (rowSums(cpm(dge) > cpm_filter) >= 5) 
 afterFiltering <- dge %>%
@@ -310,7 +310,7 @@ if(savePlots){
          path = here::here("2_plots/1_QC/"))
 }
 
-beforeFiltering + afterFiltering + plot_layout(guides = "collect") & bossTheme(base_size = 14,legend = "bottom")
+beforeFiltering + afterFiltering + plot_layout(guides = "collect") & bossTheme(base_size = 14,legend = "none")
 
 if(savePlots){
   ggsave(filename = "counts_before_after_filtering.svg",
@@ -344,7 +344,7 @@ The following visualisation of the TMM normalisation is plotted using the mean-d
 Ideally, the bulk of gene expression following the TMM normalisation should be centred around `expression log-ratio` of 0, which indicates that library size bias between samples have been successfully removed. This should be repeated with all the samples in the dge object.
 
 #### Before 
-```{r beforeNorm, fig.cap="MA plot before TMM normalisation"}
+```{r beforeNorm, fig.width=11, fig.cap="MA plot before TMM normalisation"}
 par(mfrow = c(2, 4), mar = c(2, 2, 1, 1))
 
 for (i in 1:8) {
@@ -355,7 +355,7 @@ for (i in 1:8) {
 
 #### After 
 
-```{r afterNorm, fig.cap="MA plot after TMM normalisation"}
+```{r afterNorm, fig.width=11, fig.cap="MA plot after TMM normalisation"}
 #after normalisation
 dge <- edgeR::calcNormFactors(object = dge, 
                               method = "TMM")
@@ -377,7 +377,7 @@ dge$samples %>% DT(.,caption = "Table: Normalised samples")
 
 Principal Component Analysis (PCA) is a dimensionality reduction technique widely employed to capture the intrinsic patterns and variability within high-dimensional datasets. By transforming the original gene expression data into a set of uncorrelated principal components, PCA helps reveal the major sources of variation in the dataset. This enables assessment of overall similarity between samples
 
-```{r pca, fig.cap="PCA plot"}
+```{r pca, fig.width=11,fig.cap="PCA plot"}
 # Perform PCA analysis:
 pca_analysis <- prcomp(t(cpm(dge, log = TRUE)))
 
@@ -407,7 +407,7 @@ wrap_plots(pca_2d) + plot_layout(guides = "collect") & bossTheme(base_size = 14,
 
 ```
 
-```{r pca_3d}
+```{r pca_3d, fig.width=8}
 pc <- pca_analysis[["x"]][,1:3] %>% as.data.frame()
 
 pc$PC2 <- -pc$PC2
@@ -418,14 +418,36 @@ pc = cbind(pc, dge$samples)
 totVar <- summary(pca_analysis)[["importance"]]['Proportion of Variance',]
 totVar <- 100 * sum(totVar[1:3])
 
-pca_3d <- plot_ly(pc, x = ~PC1, y = ~PC2, z = ~PC3, color = ~dge$samples$group, colors = groupColour,marker = list(size = 5)) %>%
-  add_markers(size = 5)
-
-pca_3d <- pca_3d %>%
-  layout(
-    title = paste0('Total Explained Variance = ', totVar),
-    scene = list(bgcolor = "#e5ecf6")
-)
+# pca_3d <- plot_ly(pc, x = ~PC1, y = ~PC2, z = ~PC3, color = ~dge$samples$group, colors = groupColour,marker = list(size = 5)) %>%
+#   add_markers(size = 5)
+# 
+# pca_3d <- pca_3d %>%
+#   layout(
+#     title = paste0('Total Explained Variance = ', totVar),
+#     scene = list(bgcolor = "#e5ecf6")
+# )
+pca_3d <- plot_ly(pc, x = ~PC1, y = ~PC2, z = ~PC3, color = ~dge$samples$group, colors = groupColour,
+                  marker = list(symbol = 'circle', sizemode = 'diameter', size =5),
+                  # sizes = c(5, 70),
+                  # text = ~paste('Term    :', term,'<br>P. Term:', parentTerm, '<br>Sig       :', score),
+                  hoverinfo = 'text') %>% 
+  layout(showlegend = FALSE,
+         title = paste0('Total Explained Variance = ', totVar),
+         scene = list(xaxis = list(title = 'PC 1 (20%)',
+                                   gridcolor = 'rgb(255, 255, 255)',
+                                   zerolinewidth = 1,
+                                   ticklen = 5,
+                                   gridwidth = 2),
+                      yaxis = list(title = 'PC 2 (15%)',
+                                   gridcolor = 'rgb(255, 255, 255)',
+                                   zerolinewidth = 1,
+                                   ticklen = 5,
+                                   gridwith = 2),
+                      zaxis = list(title = 'PC 3 (9%)',
+                                   gridcolor = 'rgb(255, 255, 255)',
+                                   zerolinewidth = 1,
+                                   ticklen = 5,
+                                   gridwith = 2)))
 
 pca_3d
 

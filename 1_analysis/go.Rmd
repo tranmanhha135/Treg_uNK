@@ -32,7 +32,7 @@ library(ggplot2)
 library(grid)
 library(DT)
 library(extrafont)
-
+library(VennDiagram)
 # Custom ggplot
 library(gridExtra)
 library(ggbiplot)
@@ -41,7 +41,7 @@ library(rrvgo)
 library(d3treeR)
 library(plotly)
 library(GOSemSim)
-
+library(data.table)
 
 # Bioconductor packages:
 library(edgeR)
@@ -50,6 +50,7 @@ library(Glimma)
 library(clusterProfiler)
 library(org.Mm.eg.db)
 library(enrichplot)
+library(patchwork)
 
 library(pandoc)
 library(knitr)
@@ -63,10 +64,10 @@ opts_chunk$set(warning=FALSE, message=FALSE, echo=FALSE)
 dge <- readRDS(here::here("0_data/rds_objects/dge.rds"))
 lm <- readRDS(here::here("0_data/rds_objects/lm.rds"))
 lm_sig <- readRDS(here::here("0_data/rds_objects/lm_sig.rds"))
-comp <- readRDS(here::here("0_data/rds_objects/comp.rds"))
-
+Comp <- readRDS(here::here("0_data/rds_objects/comp.rds"))
+Ont <- c("BP","MF","CC")
 # to increase the knitting speed. change to T to save all plots
-savePlots <- F
+savePlots <- T
 export <- F
 ```
 
@@ -86,6 +87,12 @@ DT <- readRDS(here::here("0_data/functions/DT.rds"))
 convert_to_superscript <- readRDS(here::here("0_data/functions/convert_to_superscript.rds"))
 exponent <- readRDS(here::here("0_data/functions/exponent.rds"))
 format_y_axis <- readRDS(here::here("0_data/functions/format_y_axis.rds"))
+
+firstCap <- function(x) {
+  substr(x, 1, 1) <- toupper(substr(x, 1, 1))
+  x
+}
+
 ```
 
 # Gene ontology (GO) Analysis 
@@ -113,13 +120,17 @@ enrichGO_sig <- readRDS(here::here("0_data/rds_objects/enrichGO_sig.rds"))
 goSummaries <- url("https://uofabioinformaticshub.github.io/summaries2GO/data/goSummaries.RDS") %>%
   readRDS()
 minPath <- 3
-mmGO <- godata('org.Mm.eg.db', ont="BP")
+
+mmGO <- lapply(c("BP","MF","CC"), function(ont){godata('org.Mm.eg.db', ont=ont)}) %>% setNames(c("BP","MF","CC"))
+
 enrichGO=list()
 enrichGO_sig <- list()
-for (name in comp) {
+
+for (comp in Comp) {
   # find enriched GO terms
-  enrichGO[[name]] <- clusterProfiler::enrichGO(
-    gene =lm_sig[[name]]$entrezid,
+  enrichGO[[comp]] <- clusterProfiler::enrichGO(
+    gene =lm_sig[[comp]]$entrezid,
+    universe = lm_all[[comp]]$entrezid,
     OrgDb = org.Mm.eg.db,
     keyType = "ENTREZID",
     ont = "ALL",
@@ -127,25 +138,24 @@ for (name in comp) {
     pvalueCutoff = 0.05
   )
   
-  
-  enrichGO[[name]] <- pairwise_termsim(enrichGO[[name]], method = "Wang",semData = mmGO, showCategory = nrow(enrichGO[[name]]@result))
+  enrichGO[[comp]] <- pairwise_termsim(enrichGO[[comp]], method = "Wang",semData = mmGO[[1]], showCategory = nrow(enrichGO[[comp]]@result))
   
 }
 
-for (name in comp) {
+for (comp in Comp) {
   # bind to goSummaries to elminate go terms with ontology levels 1 and 2.
-  enrichGO_sig[[name]] <- enrichGO[[name]] %>% 
+  enrichGO_sig[[comp]] <- enrichGO[[comp]] %>% 
     clusterProfiler::setReadable(OrgDb = org.Mm.eg.db, keyType = "auto")
   
-  enrichGO_sig[[name]] <- enrichGO_sig[[name]] %>%
+  enrichGO_sig[[comp]] <- enrichGO_sig[[comp]] %>%
     as.data.frame() %>%
     rownames_to_column("id") %>%
     left_join(goSummaries) %>%
-    dplyr::filter(shortest_path >= minPath) %>%
+    # dplyr::filter(shortest_path >= minPath) %>%
     column_to_rownames("id")
   
   # adjust go results, separate compound column, add FDR column, adjust the GeneRatio column
-  enrichGO_sig[[name]] <- enrichGO_sig[[name]] %>%
+  enrichGO_sig[[comp]] <- enrichGO_sig[[comp]] %>%
     separate(col = BgRatio, sep = "/", into = c("Total", "Universe")) %>%
     dplyr::mutate(
       logFDR = -log(p.adjust, 10),
@@ -154,42 +164,72 @@ for (name in comp) {
   #   dplyr::select(c("Description", "ontology", "GeneRatio", "pvalue", "p.adjust", "logFDR", "qvalue", "geneID", "Count"))
   
   
-  enrichGO_sig[[name]]$Description <- enrichGO_sig[[name]]$Description %>% str_to_sentence() %>% str_wrap(width = 45)
+  enrichGO_sig[[comp]]$Description <- enrichGO_sig[[comp]]$Description %>% firstCap() %>% str_wrap(width = 45)
   
   
 }
 ```
 
 ```{r semanticSim, eval=FALSE}
-simMatrix <- lapply(enrichGO, function(x) {
-  calculateSimMatrix(x@result$ID,
-                     orgdb="org.Mm.eg.db",
-                     ont="BP",
-                     method="Wang")
-}) %>% setNames(names(enrichGO))
-
-scores <- lapply(enrichGO, function(x) {setNames(-log10(x@result$p.adjust), x@result$ID)}) %>% setNames(names(enrichGO))
-
+simMatrix <- list()
+scores <- list()
 reducedTerms <- list()
 
-for(name in names(enrichGO)){
 
-  # scores <- setNames(-log10(x@result$p.adjust), x@result$ID)
-  reducedTerms[[name]] <- reduceSimMatrix(simMatrix[[name]],
-                             scores[[name]],
-                             threshold=0.7,
-                             orgdb="org.Mm.eg.db")
+for(ont in Ont) {
   
-  reducedTerms[[name]]$parentTerm <- reducedTerms[[name]]$parentTerm %>% str_to_sentence() %>% str_wrap(width = 35)
+  simMatrix[[ont]] <- lapply(Comp, function(comp) {
+    calculateSimMatrix(enrichGO[[comp]]@result$ID,
+                       orgdb="org.Mm.eg.db",
+                       ont=ont,
+                       method="Wang",
+                       semdata = mmGO[[ont]])
+  }) %>% setNames(Comp)
   
-  reducedTerms[[name]]$term <- reducedTerms[[name]]$term %>% str_to_sentence()%>% str_wrap(width = 35)
+  scores[[ont]] <- lapply(enrichGO, function(x) {setNames(-log10(x@result$p.adjust), x@result$ID)}) %>% setNames(names(enrichGO))
   
+  reducedTerms[[ont]] <- lapply(Comp, function(comp) {
+    reduced_tb <- reduceSimMatrix(simMatrix[[ont]][[comp]],
+                                    scores[[ont]][[comp]],
+                                    threshold=0.7,
+                                    orgdb="org.Mm.eg.db")
+
+    reduced_tb$parentTerm <- reduced_tb$parentTerm %>% firstCap() %>% str_wrap(width = 45)
+    reduced_tb$term <- reduced_tb$term %>% firstCap() %>% str_wrap(width = 35)
+
+    return(reduced_tb)
+  }) %>% setNames(Comp)
   
 }
+
+
+
+semSim_df <- list()
+reduced_semSim_df <- list()
+for(ont in Ont) {
+  for (comp in Comp) {
+    subset_df <- subset(reducedTerms[[ont]][[comp]], parent == rownames(reducedTerms[[ont]][[comp]]))
+    parentTerm_size <- reducedTerms[[ont]][[comp]]$parentTerm %>% as.factor() %>% summary(500)
+    semSim_df[[ont]][[comp]] <- cbind(subset_df, parentTerm_size)
+  }
+  
+  reduced_semSim_df[[ont]] <- as.data.frame(do.call(rbind, semSim_df[[ont]])) %>%
+    rownames_to_column("comparison")
+  reduced_semSim_df[[ont]]$comparison <- gsub(pattern = "\\..*", "", reduced_semSim_df[[ont]]$comparison) %>% as.factor()
+}
+
+reducedTerms_all <- as.data.frame(do.call(rbind, reduced_semSim_df)) %>%
+  rownames_to_column("ont")
+
+reducedTerms_all$ont <- gsub(pattern = "\\..*", "", reducedTerms_all$ont) %>% as.factor()
+
 
 saveRDS(simMatrix, here::here("0_data/rds_objects/simMatrix_ora.rds"))
 saveRDS(scores, here::here("0_data/rds_objects/scores_ora.rds"))
 saveRDS(reducedTerms, here::here("0_data/rds_objects/reducedTerms_ora.rds"))
+saveRDS(semSim_df, here::here("0_data/rds_objects/semSim_df.rds"))
+saveRDS(reduced_semSim_df, here::here("0_data/rds_objects/reduced_semSim_df.rds"))
+saveRDS(reducedTerms_all, here::here("0_data/rds_objects/reducedTerms_all.rds"))
 ```
 
 ## Visualisations {.tabset .tabset-pills}
@@ -232,7 +272,7 @@ NOTE: the following semantic similarity analyses are performed using Graph-based
 **I recommend reading through the full list of significant GO terms and selecting the most biologically relevant for better visualisation**
 
 
-### FC=none, FDR<0.1 {.tabset .tabset-pills}
+### `r Comp[1]` {.tabset .tabset-pills}
 
 #### Dot plot
 ```{r dot_og, fig.width=8, fig.height=10}
@@ -240,31 +280,29 @@ dot <- list()
 tab <- list()
 upset <- list()
 
-for (name in comp) {
-  dot[[name]] <- ggplot(enrichGO_sig[[name]][1:20, ]) +
+for (comp in Comp) {
+  dot[[comp]] <- ggplot(enrichGO_sig[[comp]][1:20, ]) +
     geom_point(aes(x = GeneRatio, y = reorder(Description, GeneRatio), colour = logFDR, size = Count, shape = ontology %>% as.factor())) +
     scale_color_gradientn(colors = rev(c("#FB8072","#FDB462","#ffffd5","#8DD3C7","#80B1D3")),
-                          values = scales::rescale(c(min(enrichGO_sig[[name]]$logFDR), max(enrichGO_sig[[name]]$logFDR))),
+                          values = scales::rescale(c(min(enrichGO_sig[[comp]]$logFDR), max(enrichGO_sig[[comp]]$logFDR))),
                           breaks = scales::pretty_breaks(n = 5)) +
     scale_size(range = c(2,5)) +
     labs(x = "Gene ratio", y = "", color = expression("-log"[10] * "FDR"), size = "Gene Counts", shape = "Ontology")+
     bossTheme(base_size = 14,legend = "right")
   
-  tab[[name]] <- enrichGO_sig[[name]] %>% 
+  tab[[comp]] <- enrichGO_sig[[comp]] %>% 
     dplyr::mutate_if(is.numeric, funs(as.character(signif(.,3)))) %>% 
     DT(., caption = "Significantly enriched GO terms")
   
   
-  upset[[name]] <- upsetplot(x = enrichGO[[name]], 10)
+  upset[[comp]] <- upsetplot(x = enrichGO[[comp]], 10)
   
   if(savePlots == TRUE) {
-    ggsave(filename = paste0("dot_", name, ".svg"), plot = dot[[name]], path = here::here("2_plots/3_FA/go/"),
+    ggsave(filename = paste0("dot_", comp, ".svg"), plot = dot[[comp]], path = here::here("2_plots/3_FA/go/"),
            width = 18, height = 20, units = "cm")
-    ggsave(filename = paste0("upset_", name, ".svg"), plot = upset[[name]], path = here::here("2_plots/3_FA/go/"), width = 20, height = 14, units = "cm")
+    ggsave(filename = paste0("upset_", comp, ".svg"), plot = upset[[comp]], path = here::here("2_plots/3_FA/go/"), width = 20, height = 14, units = "cm")
     
   }
-  
-  
 }
 
 dot[[1]]
@@ -272,7 +310,6 @@ dot[[1]]
 
 #### Table
 ```{r tab}
-# display the top 30 most sig
 tab[[1]]
 ```
 
@@ -303,14 +340,12 @@ den[[1]]
 
 #### Scatter plot
 
-Static scatter
-
 ```{r semSim_scatter, fig.width = 8, fig.height=8}
 simMatrix <- readRDS(here::here("0_data/rds_objects/simMatrix_ora.rds"))
 scores <- readRDS(here::here("0_data/rds_objects/scores_ora.rds"))
 reducedTerms <- readRDS(here::here("0_data/rds_objects/reducedTerms_ora.rds"))
 
-revigo_dimReduction <- function (simMatrix, reducedTerms, algorithm = c("pca", "umap"), size = "score") {
+revigo_dimReduction <- function(simMatrix, reducedTerms, algorithm = c("pca", "umap"), size = "score") {
   
   x <- switch(match.arg(algorithm), pca = cmdscale(as.matrix(as.dist(1 - simMatrix)), eig = TRUE, k = 3)$points, umap = umap::umap(as.matrix(as.dist(1 - simMatrix)),n_components = 3)$layout)
   df <- cbind(as.data.frame(x), reducedTerms[match(rownames(x), reducedTerms$go), c("term", "parent", "parentTerm", size)])
@@ -319,13 +354,13 @@ revigo_dimReduction <- function (simMatrix, reducedTerms, algorithm = c("pca", "
 }
 dimReduced <- list()
 scatter <- list()
-for (name in names(enrichGO)){
+for (comp in Comp){
   set.seed(3)
-  dimReduced[[name]] <- revigo_dimReduction(simMatrix[[name]], reducedTerms[[name]], algorithm = "umap")
+  dimReduced[[comp]] <- revigo_dimReduction(simMatrix[["BP"]][[comp]], reducedTerms[["BP"]][[comp]], algorithm = "umap")
   
-  m <- subset(dimReduced[[name]], parent == rownames(dimReduced[[name]]))[1:15,]
+  m <- subset(dimReduced[[comp]], parent == rownames(dimReduced[[comp]]))[1:15,]
   
-  scatter[[name]] <- ggplot(dimReduced[[name]], aes(x = V1, y = V2, color = parentTerm)) +
+  scatter[[comp]] <- ggplot(dimReduced[[comp]], aes(x = V1, y = V2, color = parentTerm)) +
     geom_point(aes_string(size = "score"), alpha = 0.5, stroke = 0) + 
     scale_color_discrete(guide = "none") +
     # scale_fill_discrete(guide = "none") +
@@ -370,18 +405,9 @@ scatter[[1]]
 Interactive scatter
 
 ```{r interactiveScatter, fig.width = 9, fig.height=9}
-# a <- list(
-#   x = m$V1,
-#   y = m$V2,
-#   text = m$parentTerm,
-#   xref = "x",
-#   yref = "y",
-#   showarrow = TRUE,
-#   arrowhead = 0
-# )
 scatter_plotly <- list()
-for (name in names(enrichGO)){
-  scatter_plotly[[name]] <- ggplotly(scatter[[name]] + bossTheme(14)) %>% add_markers(size = 5) %>% layout(showlegend = FALSE)
+for (comp in Comp){
+  scatter_plotly[[comp]] <- ggplotly(scatter[[comp]] + bossTheme(14)) %>% add_markers(size = 5) %>% layout(showlegend = FALSE)
 }
 
 scatter_plotly[[1]]
@@ -394,8 +420,8 @@ scatter_plotly[[1]]
 ```{r 3d interactive scatter, fig.width = 9, fig.height=9}
 scatter_3d <- list()
 
-for(name in names(enrichGO)){
-  scatter_3d[[name]] <- plot_ly(dimReduced[[name]], x = ~ V1, y = ~ V2, z = ~ V3, color = ~ parentTerm, size = ~ score,
+for(comp in Comp){
+  scatter_3d[[comp]] <- plot_ly(dimReduced[[comp]], x = ~ V1, y = ~ V2, z = ~ V3, color = ~ parentTerm, size = ~ score,
   marker = list(symbol = 'circle', sizemode = 'diameter'),
   sizes = c(5, 70),
   text = ~paste('Term    :', term,'<br>P. Term:', parentTerm, '<br>Sig       :', score),
@@ -425,33 +451,32 @@ scatter_3d[[1]]
 
 #### Parent terms
 
-```{r parentTerms, fig.width=9, fig.height=12}
-semSim_dot <- list()
+```{r parentTerms, fig.width=9, fig.height=14}
+semSim_df <- readRDS(here::here("0_data/rds_objects/semSim_df.rds"))
 
-
-for (name in comp) {
-  subset_df <- subset(reducedTerms[[name]], parent == rownames(reducedTerms[[name]]))
-  parentTerm_size <- reducedTerms[[name]]$parentTerm %>% as.factor() %>% summary(500) 
-  semSim_df <- cbind(subset_df,parentTerm_size)
-  # return(semSim_df)
-  semSim_dot[[name]] <- ggplot(semSim_df[1:30,]) +
+semSim_dot <- lapply(Comp, function(comp){
+  
+  df <- semSim_df[["BP"]][[comp]]
+  df$parentTerm <- df$parentTerm %>% str_wrap(50)
+  
+  plot <- ggplot(df) +
     geom_point(aes(x = parentTerm_size, y = reorder(parentTerm, score), colour = score, size = parentTerm_size)) +
     scale_color_gradientn(colors = rev(c("#FB8072","#FDB462","#ffffd5","#8DD3C7","#80B1D3")),
-                          values = scales::rescale(c(min(semSim_df$score), max(semSim_df$score))),
+                          values = scales::rescale(c(min(df$score), max(df$score))),
                           breaks = scales::pretty_breaks(n = 5)) +
     scale_size(range = c(2,5), guide = F) +
     labs(x = "Term size", y = "", color = expression("-log"[10] * "FDR"))+
     bossTheme(base_size = 14,legend = "right")
   
-  # if(savePlots == TRUE) {
-  #   ggsave(filename = paste0("dot_", name, ".svg"), plot = dot[[name]], path = here::here("2_plots/3_FA/go/"),
-  #          width = 18, height = 20, units = "cm")
-  #   ggsave(filename = paste0("upset_", name, ".svg"), plot = upset[[name]], path = here::here("2_plots/3_FA/go/"), width = 20, height = 14, units = "cm")
+  if(savePlots == TRUE) {
+    ggsave(filename = paste0("parTerm_dot_", comp, ".svg"), plot = plot, path = here::here("2_plots/3_FA/go/"),
+           width = 18, height = 20, units = "cm")
+  }
+  
+  return(plot)
+  
+}) 
 
-  # }
-  
-  
-}
 
 semSim_dot[1]
 ```
@@ -476,6 +501,7 @@ adjTreemap <- function (x, size = "score", title = "", ...) {
   )
 }
 
+adjTreemap(reducedTerms[[1]][[1]])
 
 ```
 
@@ -499,7 +525,7 @@ interactive_treemap <- function(x){
   )
 }
 
-interactive_treemap(reducedTerms[[1]])
+interactive_treemap(reducedTerms[[1]][[1]])
 ```
 
 ```{r loop, results="asis"}
@@ -512,11 +538,11 @@ kexpand <- function(wd, ht, cap, res, echo) {
 
 special_kexpand <- function(wd, ht, cap, res, echo) {
   cat(knit(text = knit_expand(text = 
-     sprintf("```{r %s, results='%s', echo = '%s',fig.keep='all', fig.width=%s, fig.height=%s}\nadjTreemap(x = reducedTerms[[i]])\n```", cap, res, echo, wd, ht)
+     sprintf("```{r %s, results='%s', echo = '%s',fig.keep='all', fig.width=%s, fig.height=%s}\ninteractive_treemap(reducedTerms[[1]][[i]])\n```", cap, res, echo, wd, ht)
 )))}
 
 # Loop through each FC value
-headers <- comp
+headers <- Comp
 types <- c("Dot plot", "Table", "Upset plot", "Dendrogram", "Scatter", "Parent term", "Treemap")
 
 for (i in 2:length(headers)) {
@@ -558,20 +584,213 @@ for (i in 2:length(headers)) {
   cat("\n\n")
   
   cat(paste0("#### ",types[[6]]," \n"))
-  .pl <- semSim_df[[i]]
+  .pl <- semSim_dot[[i]]
   kexpand(wd = 9,ht = 12 ,cap = paste0("parentTerm",i),res = "markup",echo = "TRUE")
   cat("\n\n")
   
   cat(paste0("#### ",types[[7]]," \n"))
-  # adjTreemap(x = reducedTerms[[i]])
-  special_kexpand(wd = 9,ht = 9,cap = paste0("treemap",i),res = "hide",echo = "FALSE")
-  cat("\n\n")
+  # special_kexpand(wd = 9,ht = 9,cap = paste0("treemap",i),res = "hide",echo = "FALSE")
+  # cat("\n\n")
   
   # cat(paste0("Interactive Treemap\n"))
   # .pl <- interactive_treemap(reducedTerms[[i]])
-  # kexpand(wd = 9,ht = 9,cap = paste0("upset",i),res = "hide",echo = "FALSE")
-  # cat("\n\n")
+  special_kexpand(wd = 9,ht = 9,cap = paste0("treemap",i),res = "markup",echo = "FALSE")
+  cat("\n\n")
 }
+```
+
+
+
+### Combined {.tabset .tabset-pills}
+
+#### Venn diagram
+
+```{r combined_venn, fig.height=8, fig.width=8, echo=FALSE, results='hide'}
+futile.logger::flog.threshold(futile.logger::ERROR, name = "VennDiagramLogger")
+
+venn.diagram(x = list("DT vs PBS"   = enrichGO_sig[[1]]$ID %>% as.character(), 
+                      "Treg vs PBS" = enrichGO_sig[[2]]$ID %>% as.character(),
+                      "Treg vs DT"  = enrichGO_sig[[3]]$ID %>% as.character()),
+             filename = here::here(paste0("2_plots/3_FA/go/venn.png")),
+             lwd = 2,
+             disable.logging = T,
+             fill = groupColour,
+             alpha = 0.75,
+             lty = 'blank',
+             imagetype = "png",
+             
+             # Numbers
+             cex = 2,
+             fontface = "plain",
+             fontfamily = "Arial Narrow",
+             
+             # Set names
+             cat.cex = 2,
+             cat.fontface = "bold",
+             cat.fontfamily = "Arial Narrow",
+             cat.default.pos = "outer",
+             cat.pos = c(-27, 27, 135),
+             cat.dist = c(0.055, 0.055, 0.085)
+)
+
+```
+
+![](figure/go.Rmd/venn.png)
+
+
+#### Dot plot
+
+```{r combined_dot, fig.width=9, fig.height=13}
+# combine all df in list into one df
+go_dot_all <- as.data.frame(do.call(rbind, enrichGO_sig)) %>%
+  rownames_to_column("group")
+
+# clean group names and change to factor
+go_dot_all$group <- gsub(pattern = "\\..*", "", go_dot_all$group) %>% as.factor()
+
+# factor the descriptions
+top10 <- as.data.frame(do.call(rbind, lapply(enrichGO_sig, "[", 1:15,3))) %>% rownames_to_column("group")
+top10 <- melt(top10, "group")
+terms <- top10$value %>% as.factor() %>% levels()
+go_dot_all <- go_dot_all[go_dot_all$Description %in% terms,]
+go_dot_all$group <- factor(go_dot_all$group,levels = c("DT vs PBS", "Treg vs PBS", "Treg vs DT" ))
+go_dot_all$Description <- go_dot_all$Description %>% str_wrap(55)
+combine_go <- ggplot(go_dot_all) +
+    geom_point(aes(x = group, y = reorder(Description, logFDR), colour = logFDR, size = Count, shape = ONTOLOGY %>% as.factor())) +
+    scale_color_gradientn(colors = rev(c("#FB8072","#FDB462","#ffffd5","#8DD3C7","#80B1D3")),
+                          values = scales::rescale(c(min(go_dot_all$logFDR), max(go_dot_all$logFDR))),
+                          breaks = scales::pretty_breaks(n = 5)) +
+    scale_size(range = c(2,5)) +
+    labs(x = "", y = "", color = expression("-log"[10] * "FDR"), size = "Counts", shape = "Ontology")+
+    bossTheme(base_size = 14,legend = "right")
+  
+  
+  if(savePlots == TRUE) {
+    ggsave(filename = paste0("combine_go_dot.svg"), plot = combine_go, path = here::here("2_plots/3_FA/go/"),
+           width = 18, height = 20, units = "cm")
+  }
+
+combine_go
+```
+
+
+#### Parent term Venn
+
+```{r parTermVenn}
+ # cat.pos = c(-27, 27, 135),
+ #               cat.dist = c(0.055, 0.055, 0.085)
+futile.logger::flog.threshold(futile.logger::ERROR, name = "VennDiagramLogger")
+cat.pos <- list(BP =c(-15,180,15),
+                MF =c(-170,170,0),
+                CC =c(-27, 27, 135))
+cat.dist <- list(BP =c(0.05, .09, .045),
+                 MF =c(0.085, 0.06, 0.085),
+                 CC =c(0.055, 0.055, 0.085))
+for(ont in Ont){
+  venn.diagram(x = list("DT vs PBS"   = reducedTerms[[ont]][[1]]$parentTerm %>% as.character(), 
+                        "Treg vs PBS" = reducedTerms[[ont]][[2]]$parentTerm %>% as.character(),
+                        "Treg vs DT"  = reducedTerms[[ont]][[3]]$parentTerm %>% as.character()),
+               filename = here::here(paste0("2_plots/3_FA/go/parTerm_",ont,"_venn.png")),
+               lwd = 2,
+               disable.logging = T,
+               fill = groupColour,
+               alpha = 0.75,
+               lty = 'blank',
+               imagetype = "png",
+               # main = paste0(ont, "parent terms"),
+               
+               # Numbers
+               cex = 2,
+               fontface = "plain",
+               fontfamily = "Arial Narrow",
+               
+               # Set names
+               cat.cex = 2,
+               cat.fontface = "bold",
+               cat.fontfamily = "Arial Narrow",
+               cat.default.pos = "outer",
+               cat.pos = cat.pos[[ont]],
+               cat.dist = cat.dist[[ont]]
+  )
+}
+
+```
+
+![Biological Processes parent terms](figure/go.Rmd/parTerm_BP_venn.png)
+
+![Molecular Functions parent terms](figure/go.Rmd/parTerm_MF_venn.png)
+
+![Cellular Components parent terms](figure/go.Rmd/parTerm_CC_venn.png)
+
+#### Parent term dot
+```{r combined_parent, fig.width=9, fig.height=14, fig.cap="Biological processes parent terms"}
+reducedTerms_all <- readRDS(here::here("0_data/rds_objects/reducedTerms_all.rds"))
+reducedTerms_all_BP <- reducedTerms_all[!reducedTerms_all$ont %in% c("MF", "CC"),] %>% dplyr::arrange(desc(score))
+reducedTerms_all_BP$parentTerm <- reducedTerms_all_BP$parentTerm %>% str_wrap(45)
+
+dotplot <- function(data){
+  ggplot(data) +
+    geom_point(aes(x = comparison, y = reorder(parentTerm, score), colour = score, size = parentTerm_size), alpha=0.8) +
+    scale_color_gradientn(colours = rev(c("#FB8072","#FDB462","#ffffd5","#8DD3C7","#80B1D3")),
+                          limits = c(min(reducedTerms_all_BP$score), max(reducedTerms_all_BP$score)),
+                          breaks = scales::pretty_breaks(n = 5)) +
+    scale_size(range = c(2,7),limits = c(min(reducedTerms_all_BP$parentTerm_size), max(reducedTerms_all_BP$parentTerm_size))) +
+    labs(x = "", y = "", color = expression("-log"[10] * "FDR"), size = "Term size")+
+    bossTheme(base_size = 14,legend = "bottom")
+}
+
+
+t <- wrap_plots(list(dotplot(reducedTerms_all_BP[1:42, ]), dotplot(reducedTerms_all_BP[42:84, ]))) + 
+  plot_layout(guides = "collect") &
+  bossTheme(base_size = 12, legend = "bottom") &
+  theme(legend.box.margin = margin(-5, 0, 0, 0, unit = "mm"),
+        # plot.margin = margin(1, 1, 1, 0, unit = "pt"),
+        axis.text.y = element_text(family = "Arial narrow", face = "plain", size = 9, hjust = 1),
+        axis.text.x = element_text(family =  "Arial", face = "plain", size = 10, hjust = 1, vjust = 0.8, angle = 30))
+
+t
+
+ggsave(filename = "parentTerm_all.svg", plot = t, path = here::here("2_plots/3_FA/go/"),
+           width = 21, height = 29.7, units = "cm")
+```
+
+
+
+## Extra Figures
+
+```{r functionalHeat}
+go_id <- c("GO:0042267", "GO:0002228", "GO:0045953", "GO:0002716", "GO:0046703", "GO:0046641", "GO:0140507")
+
+
+partial <- enrichGO_sig[[1]][, c("ID", "geneID")]
+partial <- partial[go_id, "geneID"] %>% as.data.frame()
+partial <- separate_rows(partial, ., sep = "/")
+
+
+colnames(partial) <- "entrezid"
+heatplot(enrichGO[[1]], showCategory=5,)
+
+
+entrezID=list()
+matrix_all=list()
+for (x in comp){
+  #at each iteration, let x = name of each contrast group
+  # x=comparison_group[i,]
+  
+  entrezID[[x]] <- kegg_pathway[[1]]$GENE %>% as.data.frame()
+  entrezID[[x]] <- entrezID[[x]][seq(1, nrow(entrezID[[x]]), 2),] %>% as.data.frame()
+  colnames(entrezID[[x]]) <- "entrezid"
+  
+  match <- treat_sig[[x]]$entrezid %in% entrezID[[x]]$entrezid
+  matrix_all[[x]] <- treat_sig[[x]][match, c("gene_name", "logFC")]
+}
+
+big_matrix <- as.data.frame(do.call(rbind, lapply(matrix_all, as.data.frame))) %>% rownames_to_column("group") 
+big_matrix$group <- gsub(pattern = "\\..*", "", big_matrix$group)
+
+big_matrix <- pivot_wider(big_matrix, names_from = group, values_from = logFC) %>% column_to_rownames("gene_name")
+# big_matrix[is.na(big_matrix)]=-0.7305
+summary(big_matrix)
 ```
 
 # Export Data

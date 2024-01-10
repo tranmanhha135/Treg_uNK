@@ -418,7 +418,7 @@ div.tocify {
 <p>
 <button type="button" class="btn btn-default btn-workflowr btn-workflowr-report" data-toggle="collapse" data-target="#workflowr-report">
 <span class="glyphicon glyphicon-list" aria-hidden="true"></span>
-workflowr <span class="glyphicon glyphicon-ok text-success"
+workflowr <span class="glyphicon glyphicon-exclamation-sign text-danger"
 aria-hidden="true"></span>
 </button>
 </p>
@@ -429,8 +429,8 @@ aria-hidden="true"></span>
 </li>
 <li>
 <a data-toggle="tab" href="#checks"> Checks <span
-class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span>
-</a>
+class="glyphicon glyphicon-exclamation-sign text-danger"
+aria-hidden="true"></span> </a>
 </li>
 <li>
 <a data-toggle="tab" href="#versions">Past versions</a>
@@ -443,9 +443,9 @@ class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span>
 </p>
 <p>
 <strong>Checks:</strong> <span
-class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> 7
+class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> 6
 <span class="glyphicon glyphicon-exclamation-sign text-danger"
-aria-hidden="true"></span> 0
+aria-hidden="true"></span> 1
 </p>
 <p>
 <strong>Knit directory:</strong> <code>140_treg_uNK/1_analysis/</code>
@@ -468,18 +468,21 @@ versions</em> tab lists the development history.
 <div class="panel panel-default">
 <div class="panel-heading">
 <p class="panel-title">
-<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRMarkdownfilestronguptodate">
-<span class="glyphicon glyphicon-ok text-success"
-aria-hidden="true"></span> <strong>R Markdown file:</strong> up-to-date
-</a>
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRMarkdownfilestronguncommittedchanges">
+<span class="glyphicon glyphicon-exclamation-sign text-danger"
+aria-hidden="true"></span> <strong>R Markdown file:</strong> uncommitted
+changes </a>
 </p>
 </div>
-<div id="strongRMarkdownfilestronguptodate"
+<div id="strongRMarkdownfilestronguncommittedchanges"
 class="panel-collapse collapse">
 <div class="panel-body">
-<p>Great! Since the R Markdown file has been committed to the Git
-repository, you know the exact version of the code that produced these
-results.</p>
+<p>The R Markdown file has unstaged changes. To know which version of
+the R Markdown file created these results, you’ll want to first commit
+it to the Git repo. If you’re still working on the analysis, you can
+ignore this warning. When you’re finished, you can run
+<code>wflow_publish</code> to commit the R Markdown file and build the
+HTML.</p>
 </div>
 </div>
 </div>
@@ -570,15 +573,15 @@ project makes it easier to run your code on other machines.</p>
 <div class="panel panel-default">
 <div class="panel-heading">
 <p class="panel-title">
-<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRepositoryversionstrongahrefhttpsgithubcomtranmanhha135TreguNKtreec6d389fdf5eb43d638d31d9a9d6625aacfcca31ctargetblankc6d389fa">
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRepositoryversionstrongahrefhttpsgithubcomtranmanhha135TreguNKtree7d64f8265e12ec535d65395322bea399b0c5813ctargetblank7d64f82a">
 <span class="glyphicon glyphicon-ok text-success"
 aria-hidden="true"></span> <strong>Repository version:</strong>
-<a href="https://github.com/tranmanhha135/Treg_uNK/tree/c6d389fdf5eb43d638d31d9a9d6625aacfcca31c" target="_blank">c6d389f</a>
+<a href="https://github.com/tranmanhha135/Treg_uNK/tree/7d64f8265e12ec535d65395322bea399b0c5813c" target="_blank">7d64f82</a>
 </a>
 </p>
 </div>
 <div
-id="strongRepositoryversionstrongahrefhttpsgithubcomtranmanhha135TreguNKtreec6d389fdf5eb43d638d31d9a9d6625aacfcca31ctargetblankc6d389fa"
+id="strongRepositoryversionstrongahrefhttpsgithubcomtranmanhha135TreguNKtree7d64f8265e12ec535d65395322bea399b0c5813ctargetblank7d64f82a"
 class="panel-collapse collapse">
 <div class="panel-body">
 <p>
@@ -588,7 +591,7 @@ reproducibility.
 </p>
 <p>
 The results in this page were generated with repository version
-<a href="https://github.com/tranmanhha135/Treg_uNK/tree/c6d389fdf5eb43d638d31d9a9d6625aacfcca31c" target="_blank">c6d389f</a>.
+<a href="https://github.com/tranmanhha135/Treg_uNK/tree/7d64f8265e12ec535d65395322bea399b0c5813c" target="_blank">7d64f82</a>.
 See the <em>Past versions</em> tab to see a history of the changes made
 to the R Markdown and HTML files.
 </p>
@@ -609,34 +612,41 @@ Ignored files:
 
 Untracked files:
     Untracked:  .gitignore
-    Untracked:  0_data/rds_objects/comp.rds
-    Untracked:  0_data/rds_objects/enrichGO.rds
-    Untracked:  0_data/rds_objects/enrichGO_sig.rds
-    Untracked:  0_data/rds_objects/enrichKEGG.rds
-    Untracked:  0_data/rds_objects/enrichKEGG_all.rds
-    Untracked:  0_data/rds_objects/enrichKEGG_sig.rds
-    Untracked:  0_data/rds_objects/pathway_details.rds
-    Untracked:  0_data/rds_objects/reducedTerms_ora.rds
-    Untracked:  0_data/rds_objects/scores_ora.rds
-    Untracked:  0_data/rds_objects/simMatrix_ora.rds
-    Untracked:  3_output/GO_sig.xlsx
-    Untracked:  3_output/KEGG_all.xlsx
-    Untracked:  3_output/KEGG_sig.xlsx
-    Untracked:  functions.Rmd
-    Untracked:  gsea.Rmd
-    Untracked:  ipa.Rmd
-    Untracked:  reactome.Rmd
+    Untracked:  0_data/rawData/multiqc_report.html
+    Untracked:  1_analysis/gsea.Rmd
+    Untracked:  1_analysis/ipa.Rmd
+    Untracked:  1_analysis/reactome.Rmd
+    Untracked:  2_plots/2_DE/heat_DT vs PBS.svg
+    Untracked:  2_plots/2_DE/heat_Treg vs DT.svg
+    Untracked:  2_plots/2_DE/heat_Treg vs PBS.svg
+    Untracked:  2_plots/2_DE/heat_combined.svg
+    Untracked:  2_plots/2_DE/hist_DT vs PBS.svg
+    Untracked:  2_plots/2_DE/hist_Treg vs DT.svg
+    Untracked:  2_plots/2_DE/hist_Treg vs PBS.svg
+    Untracked:  2_plots/2_DE/ma_DT vs PBS.png
+    Untracked:  2_plots/2_DE/ma_Treg vs DT.png
+    Untracked:  2_plots/2_DE/ma_Treg vs PBS.png
+    Untracked:  2_plots/2_DE/vol_DT vs PBS.png
+    Untracked:  2_plots/2_DE/vol_Treg vs DT.png
+    Untracked:  2_plots/2_DE/vol_Treg vs PBS.png
+    Untracked:  3_output/reactome_all.xlsx
+    Untracked:  3_output/reactome_sig.xlsx
 
 Unstaged changes:
-    Modified:   0_data/rds_objects/lm.rds
-    Modified:   1_analysis/_site.yml
-    Deleted:    1_analysis/functions.Rmd
-    Deleted:    1_analysis/gsea.Rmd
-    Deleted:    1_analysis/ipa.Rmd
-    Deleted:    1_analysis/reactome.Rmd
-    Modified:   2_plots/1_QC/PC1_PC2.svg
-    Modified:   2_plots/1_QC/PC1_PC3.svg
-    Modified:   2_plots/1_QC/PC2_PC3.svg
+    Modified:   0_data/rds_objects/comp.rds
+    Modified:   0_data/rds_objects/lm_all.rds
+    Modified:   0_data/rds_objects/lm_sig.rds
+    Modified:   1_analysis/deAnalysis.Rmd
+    Modified:   1_analysis/go.Rmd
+    Modified:   1_analysis/index.Rmd
+    Modified:   1_analysis/kegg.Rmd
+    Modified:   1_analysis/setUp.Rmd
+    Modified:   3_output/de_genes_all.xlsx
+    Modified:   3_output/de_genes_sig.xlsx
+    Modified:   README.md
+    Deleted:    gsea.Rmd
+    Deleted:    ipa.Rmd
+    Deleted:    reactome.Rmd
 
 </code></pre>
 <p>
@@ -682,6 +692,23 @@ Message
 </tr>
 </thead>
 <tbody>
+<tr>
+<td>
+html
+</td>
+<td>
+<a href="https://rawcdn.githack.com/tranmanhha135/Treg_uNK/762020e5b1bc3664ab92da69ebba8ad38169515d/docs/deAnalysis.html" target="_blank">762020e</a>
+</td>
+<td>
+tranmanhha135
+</td>
+<td>
+2024-01-09
+</td>
+<td>
+Build site.
+</td>
+</tr>
 <tr>
 <td>
 Rmd
@@ -752,6 +779,7 @@ library(reshape2)
 library(tidyverse)
 library(ComplexHeatmap)
 library(scales)
+library(plyr)
 
 # Visualisation:
 library(kableExtra)
@@ -811,7 +839,7 @@ formulated below contains the predictors of each sample</p>
 comparison and later used to test for significant differential
 expression with each comparison group</p>
 <div class="datatables html-widget html-fill-item" id="htmlwidget-d701554a25665d09d09f" style="width:100%;height:auto;"></div>
-<script type="application/json" data-for="htmlwidget-d701554a25665d09d09f">{"x":{"filter":"none","vertical":false,"extensions":["Buttons"],"caption":"<caption>Table: Contrast matrix<\/caption>","data":[["PBS","DT","Treg"],[-1,1,0],[-1,0,1],[0,1,-1]],"container":"<table class=\"display\">\n  <thead>\n    <tr>\n      <th> <\/th>\n      <th>DT vs PBS<\/th>\n      <th>Treg vs PBS<\/th>\n      <th>DT vs Treg<\/th>\n    <\/tr>\n  <\/thead>\n<\/table>","options":{"dom":"Blfrtip","scrollX":true,"buttons":["copy","csv","excel","pdf","print"],"lengthMenu":[[10,25,50,-1],["10","25","50","All"]],"columnDefs":[{"className":"dt-right","targets":[1,2,3]},{"orderable":false,"targets":0},{"name":" ","targets":0},{"name":"DT vs PBS","targets":1},{"name":"Treg vs PBS","targets":2},{"name":"DT vs Treg","targets":3}],"order":[],"autoWidth":false,"orderClasses":false}},"evals":[],"jsHooks":[]}</script>
+<script type="application/json" data-for="htmlwidget-d701554a25665d09d09f">{"x":{"filter":"none","vertical":false,"extensions":["Buttons"],"caption":"<caption>Table: Contrast matrix<\/caption>","data":[["PBS","DT","Treg"],[-1,1,0],[-1,0,1],[0,-1,1]],"container":"<table class=\"display\">\n  <thead>\n    <tr>\n      <th> <\/th>\n      <th>DT vs PBS<\/th>\n      <th>Treg vs PBS<\/th>\n      <th>Treg vs DT<\/th>\n    <\/tr>\n  <\/thead>\n<\/table>","options":{"dom":"Blfrtip","scrollX":true,"buttons":["copy","csv","excel","pdf","print"],"lengthMenu":[[10,25,50,-1],["10","25","50","All"]],"columnDefs":[{"className":"dt-right","targets":[1,2,3]},{"orderable":false,"targets":0},{"name":" ","targets":0},{"name":"DT vs PBS","targets":1},{"name":"Treg vs PBS","targets":2},{"name":"Treg vs DT","targets":3}],"order":[],"autoWidth":false,"orderClasses":false}},"evals":[],"jsHooks":[]}</script>
 </div>
 </div>
 </div>
@@ -837,38 +865,186 @@ sample-specific weights.</p>
 <div id="observational-level-weights" class="section level3">
 <h3>Observational level weights</h3>
 <div class="figure" style="text-align: center">
-<img src="figure/deAnalysis.Rmd/voom-1.png" alt="Voom transformation with observational weights" width="672" />
+<img src="figure/deAnalysis.Rmd/voom-1.png" alt="Voom transformation with observational weights" width="960" />
 <p class="caption">
 Voom transformation with observational weights
 </p>
+</div>
+<p>
+<button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-voom-1">
+Past versions of voom-1.png
+</button>
+</p>
+<div id="fig-voom-1" class="collapse">
+<div class="table-responsive">
+<table class="table table-condensed table-hover">
+<thead>
+<tr>
+<th>
+Version
+</th>
+<th>
+Author
+</th>
+<th>
+Date
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>
+<a href="https://github.com/tranmanhha135/Treg_uNK/blob/762020e5b1bc3664ab92da69ebba8ad38169515d/docs/figure/deAnalysis.Rmd/voom-1.png" target="_blank">762020e</a>
+</td>
+<td>
+tranmanhha135
+</td>
+<td>
+2024-01-09
+</td>
+</tr>
+</tbody>
+</table>
+</div>
 </div>
 </div>
 <div id="observational-group-level-weights" class="section level3">
 <h3>Observational &amp; group level weights</h3>
 <div class="figure" style="text-align: center">
-<img src="figure/deAnalysis.Rmd/voom_groupWeights-1.png" alt="Voom transformation with observational and group-specific weights" width="672" />
+<img src="figure/deAnalysis.Rmd/voom_groupWeights-1.png" alt="Voom transformation with observational and group-specific weights" width="960" />
 <p class="caption">
 Voom transformation with observational and group-specific weights
 </p>
+</div>
+<p>
+<button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-voom_groupWeights-1">
+Past versions of voom_groupWeights-1.png
+</button>
+</p>
+<div id="fig-voom_groupWeights-1" class="collapse">
+<div class="table-responsive">
+<table class="table table-condensed table-hover">
+<thead>
+<tr>
+<th>
+Version
+</th>
+<th>
+Author
+</th>
+<th>
+Date
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>
+<a href="https://github.com/tranmanhha135/Treg_uNK/blob/762020e5b1bc3664ab92da69ebba8ad38169515d/docs/figure/deAnalysis.Rmd/voom_groupWeights-1.png" target="_blank">762020e</a>
+</td>
+<td>
+tranmanhha135
+</td>
+<td>
+2024-01-09
+</td>
+</tr>
+</tbody>
+</table>
+</div>
 </div>
 </div>
 <div id="observational-sample-level-weights" class="section level3">
 <h3>Observational &amp; sample level weights</h3>
 <div class="figure" style="text-align: center">
-<img src="figure/deAnalysis.Rmd/voom_sampleWeights-1.png" alt="Voom transformation with observational and sample-specific weights" width="672" />
+<img src="figure/deAnalysis.Rmd/voom_sampleWeights-1.png" alt="Voom transformation with observational and sample-specific weights" width="960" />
 <p class="caption">
 Voom transformation with observational and sample-specific weights
 </p>
+</div>
+<p>
+<button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-voom_sampleWeights-1">
+Past versions of voom_sampleWeights-1.png
+</button>
+</p>
+<div id="fig-voom_sampleWeights-1" class="collapse">
+<div class="table-responsive">
+<table class="table table-condensed table-hover">
+<thead>
+<tr>
+<th>
+Version
+</th>
+<th>
+Author
+</th>
+<th>
+Date
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>
+<a href="https://github.com/tranmanhha135/Treg_uNK/blob/762020e5b1bc3664ab92da69ebba8ad38169515d/docs/figure/deAnalysis.Rmd/voom_sampleWeights-1.png" target="_blank">762020e</a>
+</td>
+<td>
+tranmanhha135
+</td>
+<td>
+2024-01-09
+</td>
+</tr>
+</tbody>
+</table>
+</div>
 </div>
 </div>
 <div id="pca" class="section level3">
 <h3>PCA</h3>
 <div class="figure" style="text-align: center">
-<img src="figure/deAnalysis.Rmd/voomPCA-1.png" alt="PCA plots after voom quality weight transformations. Group-specific weights(left) and sample-specific weights (right)" width="672" />
+<img src="figure/deAnalysis.Rmd/voomPCA-1.png" alt="PCA plots after voom quality weight transformations. Group-specific weights(left) and sample-specific weights (right)" width="1056" />
 <p class="caption">
 PCA plots after voom quality weight transformations. Group-specific
 weights(left) and sample-specific weights (right)
 </p>
+</div>
+<p>
+<button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-voomPCA-1">
+Past versions of voomPCA-1.png
+</button>
+</p>
+<div id="fig-voomPCA-1" class="collapse">
+<div class="table-responsive">
+<table class="table table-condensed table-hover">
+<thead>
+<tr>
+<th>
+Version
+</th>
+<th>
+Author
+</th>
+<th>
+Date
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>
+<a href="https://github.com/tranmanhha135/Treg_uNK/blob/762020e5b1bc3664ab92da69ebba8ad38169515d/docs/figure/deAnalysis.Rmd/voomPCA-1.png" target="_blank">762020e</a>
+</td>
+<td>
+tranmanhha135
+</td>
+<td>
+2024-01-09
+</td>
+</tr>
+</tbody>
+</table>
+</div>
 </div>
 </div>
 </div>
@@ -918,7 +1094,7 @@ DT vs PBS
 Treg vs PBS
 </th>
 <th style="text-align:right;">
-DT vs Treg
+Treg vs DT
 </th>
 </tr>
 </thead>
@@ -934,7 +1110,7 @@ Down
 648
 </td>
 <td style="text-align:right;">
-315
+285
 </td>
 </tr>
 <tr>
@@ -962,7 +1138,7 @@ Up
 342
 </td>
 <td style="text-align:right;">
-285
+315
 </td>
 </tr>
 </tbody>
@@ -983,7 +1159,7 @@ DT vs PBS
 Treg vs PBS
 </th>
 <th style="text-align:right;">
-DT vs Treg
+Treg vs DT
 </th>
 </tr>
 </thead>
@@ -999,7 +1175,7 @@ Down
 503
 </td>
 <td style="text-align:right;">
-64
+60
 </td>
 </tr>
 <tr>
@@ -1027,7 +1203,7 @@ Up
 245
 </td>
 <td style="text-align:right;">
-60
+64
 </td>
 </tr>
 </tbody>
@@ -1048,7 +1224,7 @@ DT vs PBS
 Treg vs PBS
 </th>
 <th style="text-align:right;">
-DT vs Treg
+Treg vs DT
 </th>
 </tr>
 </thead>
@@ -1064,7 +1240,7 @@ Down
 352
 </td>
 <td style="text-align:right;">
-29
+16
 </td>
 </tr>
 <tr>
@@ -1092,7 +1268,7 @@ Up
 122
 </td>
 <td style="text-align:right;">
-16
+29
 </td>
 </tr>
 </tbody>
@@ -1116,7 +1292,7 @@ DT vs PBS
 Treg vs PBS
 </th>
 <th style="text-align:right;">
-DT vs Treg
+Treg vs DT
 </th>
 </tr>
 </thead>
@@ -1132,7 +1308,7 @@ Down
 531
 </td>
 <td style="text-align:right;">
-150
+163
 </td>
 </tr>
 <tr>
@@ -1160,7 +1336,7 @@ Up
 168
 </td>
 <td style="text-align:right;">
-163
+150
 </td>
 </tr>
 </tbody>
@@ -1181,7 +1357,7 @@ DT vs PBS
 Treg vs PBS
 </th>
 <th style="text-align:right;">
-DT vs Treg
+Treg vs DT
 </th>
 </tr>
 </thead>
@@ -1197,7 +1373,7 @@ Down
 364
 </td>
 <td style="text-align:right;">
-14
+6
 </td>
 </tr>
 <tr>
@@ -1225,7 +1401,7 @@ Up
 71
 </td>
 <td style="text-align:right;">
-6
+14
 </td>
 </tr>
 </tbody>
@@ -1246,7 +1422,7 @@ DT vs PBS
 Treg vs PBS
 </th>
 <th style="text-align:right;">
-DT vs Treg
+Treg vs DT
 </th>
 </tr>
 </thead>
@@ -1262,7 +1438,7 @@ Down
 264
 </td>
 <td style="text-align:right;">
-11
+2
 </td>
 </tr>
 <tr>
@@ -1290,7 +1466,7 @@ Up
 39
 </td>
 <td style="text-align:right;">
-2
+11
 </td>
 </tr>
 </tbody>
@@ -1314,7 +1490,7 @@ DT vs PBS
 Treg vs PBS
 </th>
 <th style="text-align:right;">
-DT vs Treg
+Treg vs DT
 </th>
 </tr>
 </thead>
@@ -1330,7 +1506,7 @@ Down
 427
 </td>
 <td style="text-align:right;">
-63
+95
 </td>
 </tr>
 <tr>
@@ -1358,7 +1534,7 @@ Up
 59
 </td>
 <td style="text-align:right;">
-95
+63
 </td>
 </tr>
 </tbody>
@@ -1379,7 +1555,7 @@ DT vs PBS
 Treg vs PBS
 </th>
 <th style="text-align:right;">
-DT vs Treg
+Treg vs DT
 </th>
 </tr>
 </thead>
@@ -1444,7 +1620,7 @@ DT vs PBS
 Treg vs PBS
 </th>
 <th style="text-align:right;">
-DT vs Treg
+Treg vs DT
 </th>
 </tr>
 </thead>
@@ -1512,7 +1688,7 @@ DT vs PBS
 Treg vs PBS
 </th>
 <th style="text-align:right;">
-DT vs Treg
+Treg vs DT
 </th>
 </tr>
 </thead>
@@ -1528,7 +1704,7 @@ Down
 357
 </td>
 <td style="text-align:right;">
-28
+50
 </td>
 </tr>
 <tr>
@@ -1556,7 +1732,7 @@ Up
 19
 </td>
 <td style="text-align:right;">
-50
+28
 </td>
 </tr>
 </tbody>
@@ -1577,7 +1753,7 @@ DT vs PBS
 Treg vs PBS
 </th>
 <th style="text-align:right;">
-DT vs Treg
+Treg vs DT
 </th>
 </tr>
 </thead>
@@ -1642,7 +1818,7 @@ DT vs PBS
 Treg vs PBS
 </th>
 <th style="text-align:right;">
-DT vs Treg
+Treg vs DT
 </th>
 </tr>
 </thead>
@@ -1710,7 +1886,6 @@ error, i.e. 1 in 10 genes may be a false positive for differential
 expression. Using a fold-change cut-off through application of
 <code>TREAT</code> gives additional stringency at the costs of reducing
 the list of DE genes.</p>
-<!-- It is best practice to perform P value correction. So, for data exploratory purposes, the following visualisations are DE genes significantly below **FDR \< 0.1 or \< 0.05** with and without FC threshold (TREAT). -->
 <ul>
 <li><p><strong>P-value histogram:</strong> illustrates the distribution
 of p-values. As the stringency increases (increasing FC threshold), the
@@ -1751,69 +1926,481 @@ structure and relationships within large datasets.</p>
 overlap between the previous RNA-seq experiment and the
 current.</p></li>
 </ul>
-<div id="fc-none" class="section level2 tabset tabset-pills">
-<h2 class="tabset tabset-pills">FC= none</h2>
+<div id="dt-vs-pbs" class="section level2 tabset tabset-pills">
+<h2 class="tabset tabset-pills">DT vs PBS</h2>
 <div id="p-val-histogram" class="section level3">
 <h3>P-val histogram</h3>
+<p><img src="figure/deAnalysis.Rmd/hist-1.png" width="960" style="display: block; margin: auto;" /></p>
 </div>
 <div id="ma-plot" class="section level3">
 <h3>MA plot</h3>
-<p><img src="figure/deAnalysis.Rmd/ma-1.png" width="672" style="display: block; margin: auto;" /></p>
+<p><img src="figure/deAnalysis.Rmd/ma-1.png" width="960" style="display: block; margin: auto;" /></p>
+<p>
+<button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-ma-1">
+Past versions of ma-1.png
+</button>
+</p>
+<div id="fig-ma-1" class="collapse">
+<div class="table-responsive">
+<table class="table table-condensed table-hover">
+<thead>
+<tr>
+<th>
+Version
+</th>
+<th>
+Author
+</th>
+<th>
+Date
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>
+<a href="https://github.com/tranmanhha135/Treg_uNK/blob/762020e5b1bc3664ab92da69ebba8ad38169515d/docs/figure/deAnalysis.Rmd/ma-1.png" target="_blank">762020e</a>
+</td>
+<td>
+tranmanhha135
+</td>
+<td>
+2024-01-09
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
 </div>
 <div id="volcano-plot" class="section level3">
 <h3>Volcano plot</h3>
-<p><img src="figure/deAnalysis.Rmd/vol-1.png" width="672" style="display: block; margin: auto;" /></p>
+<p><img src="figure/deAnalysis.Rmd/vol-1.png" width="960" style="display: block; margin: auto;" /></p>
+<p>
+<button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-vol-1">
+Past versions of vol-1.png
+</button>
+</p>
+<div id="fig-vol-1" class="collapse">
+<div class="table-responsive">
+<table class="table table-condensed table-hover">
+<thead>
+<tr>
+<th>
+Version
+</th>
+<th>
+Author
+</th>
+<th>
+Date
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>
+<a href="https://github.com/tranmanhha135/Treg_uNK/blob/762020e5b1bc3664ab92da69ebba8ad38169515d/docs/figure/deAnalysis.Rmd/vol-1.png" target="_blank">762020e</a>
+</td>
+<td>
+tranmanhha135
+</td>
+<td>
+2024-01-09
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
 </div>
 <div id="heatmap" class="section level3">
 <h3>Heatmap</h3>
 <p><img src="figure/deAnalysis.Rmd/hmap-1.png" width="768" style="display: block; margin: auto;" /></p>
+<p>
+<button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-hmap-1">
+Past versions of hmap-1.png
+</button>
+</p>
+<div id="fig-hmap-1" class="collapse">
+<div class="table-responsive">
+<table class="table table-condensed table-hover">
+<thead>
+<tr>
+<th>
+Version
+</th>
+<th>
+Author
+</th>
+<th>
+Date
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>
+<a href="https://github.com/tranmanhha135/Treg_uNK/blob/762020e5b1bc3664ab92da69ebba8ad38169515d/docs/figure/deAnalysis.Rmd/hmap-1.png" target="_blank">762020e</a>
+</td>
+<td>
+tranmanhha135
+</td>
+<td>
+2024-01-09
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
 </div>
 </div>
 <div id="treg-vs-pbs" class="section level2 tabset tabset-pills">
 <h2 class="tabset tabset-pills">Treg vs PBS</h2>
 <div id="p-val-histogram-1" class="section level3">
 <h3>P-val histogram</h3>
-<p><img src="figure/deAnalysis.Rmd/hist_2-1.png" width="1056" style="display: block; margin: auto;" /></p>
+<p><img src="figure/deAnalysis.Rmd/hist_2-1.png" width="960" style="display: block; margin: auto;" /></p>
+<p>
+<button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-hist_2-1">
+Past versions of hist_2-1.png
+</button>
+</p>
+<div id="fig-hist_2-1" class="collapse">
+<div class="table-responsive">
+<table class="table table-condensed table-hover">
+<thead>
+<tr>
+<th>
+Version
+</th>
+<th>
+Author
+</th>
+<th>
+Date
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>
+<a href="https://github.com/tranmanhha135/Treg_uNK/blob/762020e5b1bc3664ab92da69ebba8ad38169515d/docs/figure/deAnalysis.Rmd/hist_2-1.png" target="_blank">762020e</a>
+</td>
+<td>
+tranmanhha135
+</td>
+<td>
+2024-01-09
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
 </div>
 <div id="ma-plot-1" class="section level3">
 <h3>MA plot</h3>
-<p><img src="figure/deAnalysis.Rmd/ma_2-1.png" width="1056" style="display: block; margin: auto;" /></p>
+<p><img src="figure/deAnalysis.Rmd/ma_2-1.png" width="960" style="display: block; margin: auto;" /></p>
+<p>
+<button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-ma_2-1">
+Past versions of ma_2-1.png
+</button>
+</p>
+<div id="fig-ma_2-1" class="collapse">
+<div class="table-responsive">
+<table class="table table-condensed table-hover">
+<thead>
+<tr>
+<th>
+Version
+</th>
+<th>
+Author
+</th>
+<th>
+Date
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>
+<a href="https://github.com/tranmanhha135/Treg_uNK/blob/762020e5b1bc3664ab92da69ebba8ad38169515d/docs/figure/deAnalysis.Rmd/ma_2-1.png" target="_blank">762020e</a>
+</td>
+<td>
+tranmanhha135
+</td>
+<td>
+2024-01-09
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
 </div>
 <div id="volcano-plot-1" class="section level3">
 <h3>Volcano plot</h3>
-<p><img src="figure/deAnalysis.Rmd/vol_2-1.png" width="1056" style="display: block; margin: auto;" /></p>
+<p><img src="figure/deAnalysis.Rmd/vol_2-1.png" width="960" style="display: block; margin: auto;" /></p>
+<p>
+<button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-vol_2-1">
+Past versions of vol_2-1.png
+</button>
+</p>
+<div id="fig-vol_2-1" class="collapse">
+<div class="table-responsive">
+<table class="table table-condensed table-hover">
+<thead>
+<tr>
+<th>
+Version
+</th>
+<th>
+Author
+</th>
+<th>
+Date
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>
+<a href="https://github.com/tranmanhha135/Treg_uNK/blob/762020e5b1bc3664ab92da69ebba8ad38169515d/docs/figure/deAnalysis.Rmd/vol_2-1.png" target="_blank">762020e</a>
+</td>
+<td>
+tranmanhha135
+</td>
+<td>
+2024-01-09
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
 </div>
 <div id="heatmap-1" class="section level3">
 <h3>Heatmap</h3>
 <p><img src="figure/deAnalysis.Rmd/hmap_2-1.png" width="768" style="display: block; margin: auto;" /></p>
+<p>
+<button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-hmap_2-1">
+Past versions of hmap_2-1.png
+</button>
+</p>
+<div id="fig-hmap_2-1" class="collapse">
+<div class="table-responsive">
+<table class="table table-condensed table-hover">
+<thead>
+<tr>
+<th>
+Version
+</th>
+<th>
+Author
+</th>
+<th>
+Date
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>
+<a href="https://github.com/tranmanhha135/Treg_uNK/blob/762020e5b1bc3664ab92da69ebba8ad38169515d/docs/figure/deAnalysis.Rmd/hmap_2-1.png" target="_blank">762020e</a>
+</td>
+<td>
+tranmanhha135
+</td>
+<td>
+2024-01-09
+</td>
+</tr>
+</tbody>
+</table>
 </div>
 </div>
-<div id="dt-vs-treg" class="section level2 tabset tabset-pills">
-<h2 class="tabset tabset-pills">DT vs Treg</h2>
+</div>
+</div>
+<div id="treg-vs-dt" class="section level2 tabset tabset-pills">
+<h2 class="tabset tabset-pills">Treg vs DT</h2>
 <div id="p-val-histogram-2" class="section level3">
 <h3>P-val histogram</h3>
-<p><img src="figure/deAnalysis.Rmd/hist_3-1.png" width="1056" style="display: block; margin: auto;" /></p>
+<p><img src="figure/deAnalysis.Rmd/hist_3-1.png" width="960" style="display: block; margin: auto;" /></p>
+<p>
+<button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-hist_3-1">
+Past versions of hist_3-1.png
+</button>
+</p>
+<div id="fig-hist_3-1" class="collapse">
+<div class="table-responsive">
+<table class="table table-condensed table-hover">
+<thead>
+<tr>
+<th>
+Version
+</th>
+<th>
+Author
+</th>
+<th>
+Date
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>
+<a href="https://github.com/tranmanhha135/Treg_uNK/blob/762020e5b1bc3664ab92da69ebba8ad38169515d/docs/figure/deAnalysis.Rmd/hist_3-1.png" target="_blank">762020e</a>
+</td>
+<td>
+tranmanhha135
+</td>
+<td>
+2024-01-09
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
 </div>
 <div id="ma-plot-2" class="section level3">
 <h3>MA plot</h3>
-<p><img src="figure/deAnalysis.Rmd/ma_3-1.png" width="1056" style="display: block; margin: auto;" /></p>
+<p><img src="figure/deAnalysis.Rmd/ma_3-1.png" width="960" style="display: block; margin: auto;" /></p>
+<p>
+<button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-ma_3-1">
+Past versions of ma_3-1.png
+</button>
+</p>
+<div id="fig-ma_3-1" class="collapse">
+<div class="table-responsive">
+<table class="table table-condensed table-hover">
+<thead>
+<tr>
+<th>
+Version
+</th>
+<th>
+Author
+</th>
+<th>
+Date
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>
+<a href="https://github.com/tranmanhha135/Treg_uNK/blob/762020e5b1bc3664ab92da69ebba8ad38169515d/docs/figure/deAnalysis.Rmd/ma_3-1.png" target="_blank">762020e</a>
+</td>
+<td>
+tranmanhha135
+</td>
+<td>
+2024-01-09
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
 </div>
 <div id="volcano-plot-2" class="section level3">
 <h3>Volcano plot</h3>
-<p><img src="figure/deAnalysis.Rmd/vol_3-1.png" width="1056" style="display: block; margin: auto;" /></p>
+<p><img src="figure/deAnalysis.Rmd/vol_3-1.png" width="960" style="display: block; margin: auto;" /></p>
+<p>
+<button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-vol_3-1">
+Past versions of vol_3-1.png
+</button>
+</p>
+<div id="fig-vol_3-1" class="collapse">
+<div class="table-responsive">
+<table class="table table-condensed table-hover">
+<thead>
+<tr>
+<th>
+Version
+</th>
+<th>
+Author
+</th>
+<th>
+Date
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>
+<a href="https://github.com/tranmanhha135/Treg_uNK/blob/762020e5b1bc3664ab92da69ebba8ad38169515d/docs/figure/deAnalysis.Rmd/vol_3-1.png" target="_blank">762020e</a>
+</td>
+<td>
+tranmanhha135
+</td>
+<td>
+2024-01-09
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
 </div>
 <div id="heatmap-2" class="section level3">
 <h3>Heatmap</h3>
 <p><img src="figure/deAnalysis.Rmd/hmap_3-1.png" width="768" style="display: block; margin: auto;" /></p>
+<p>
+<button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-hmap_3-1">
+Past versions of hmap_3-1.png
+</button>
+</p>
+<div id="fig-hmap_3-1" class="collapse">
+<div class="table-responsive">
+<table class="table table-condensed table-hover">
+<thead>
+<tr>
+<th>
+Version
+</th>
+<th>
+Author
+</th>
+<th>
+Date
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>
+<a href="https://github.com/tranmanhha135/Treg_uNK/blob/762020e5b1bc3664ab92da69ebba8ad38169515d/docs/figure/deAnalysis.Rmd/hmap_3-1.png" target="_blank">762020e</a>
+</td>
+<td>
+tranmanhha135
+</td>
+<td>
+2024-01-09
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
 </div>
 </div>
 <div id="combined" class="section level2 tabset tabset-pills">
 <h2 class="tabset tabset-pills">Combined</h2>
 <div id="venn-diagram" class="section level3">
 <h3>Venn diagram</h3>
-<pre><code>NULL</code></pre>
-<pre><code>[1] 1</code></pre>
 <p><img src="figure/deAnalysis.Rmd/venn.png" /></p>
+</div>
+<div id="heatmap-3" class="section level3">
+<h3>Heatmap</h3>
+<p><img src="figure/deAnalysis.Rmd/heat_combined-1.png" width="864" style="display: block; margin: auto;" /></p>
+<pre><code>png 
+  2 </code></pre>
 </div>
 </div>
 </div>
@@ -1864,27 +2451,27 @@ other attached packages:
 [10] ggplotify_0.1.2       extrafont_0.19        patchwork_1.1.3      
 [13] DT_0.31               VennDiagram_1.7.3     futile.logger_1.4.3  
 [16] pheatmap_1.0.12       cowplot_1.1.2         pander_0.6.5         
-[19] kableExtra_1.3.4      scales_1.3.0          ComplexHeatmap_2.16.0
-[22] lubridate_1.9.3       forcats_1.0.0         stringr_1.5.1        
-[25] purrr_1.0.2           tidyr_1.3.0           ggplot2_3.4.4        
-[28] tidyverse_2.0.0       reshape2_1.4.4        tibble_3.2.1         
-[31] readr_2.1.4           magrittr_2.0.3        dplyr_1.1.4          
-[34] readxl_1.4.3         
+[19] kableExtra_1.3.4      plyr_1.8.9            scales_1.3.0         
+[22] ComplexHeatmap_2.16.0 lubridate_1.9.3       forcats_1.0.0        
+[25] stringr_1.5.1         purrr_1.0.2           tidyr_1.3.0          
+[28] ggplot2_3.4.4         tidyverse_2.0.0       reshape2_1.4.4       
+[31] tibble_3.2.1          readr_2.1.4           magrittr_2.0.3       
+[34] dplyr_1.1.4           readxl_1.4.3         
 
 loaded via a namespace (and not attached):
   [1] RColorBrewer_1.1-3          rstudioapi_0.15.0          
   [3] jsonlite_1.8.8              shape_1.4.6                
   [5] magick_2.8.2                farver_2.1.1               
-  [7] rmarkdown_2.25              zlibbioc_1.46.0            
-  [9] GlobalOptions_0.1.2         fs_1.6.3                   
- [11] vctrs_0.6.5                 memoise_2.0.1              
- [13] RCurl_1.98-1.13             rstatix_0.7.2              
- [15] webshot_0.5.5               S4Arrays_1.0.6             
- [17] htmltools_0.5.7             lambda.r_1.2.4             
- [19] broom_1.0.5                 cellranger_1.1.0           
- [21] gridGraphics_0.5-1          sass_0.4.8                 
- [23] bslib_0.6.1                 htmlwidgets_1.6.4          
- [25] plyr_1.8.9                  futile.options_1.0.1       
+  [7] rmarkdown_2.25              ragg_1.2.7                 
+  [9] zlibbioc_1.46.0             GlobalOptions_0.1.2        
+ [11] fs_1.6.3                    vctrs_0.6.5                
+ [13] memoise_2.0.1               RCurl_1.98-1.13            
+ [15] rstatix_0.7.2               webshot_0.5.5              
+ [17] S4Arrays_1.0.6              htmltools_0.5.7            
+ [19] lambda.r_1.2.4              broom_1.0.5                
+ [21] cellranger_1.1.0            gridGraphics_0.5-1         
+ [23] sass_0.4.8                  bslib_0.6.1                
+ [25] htmlwidgets_1.6.4           futile.options_1.0.1       
  [27] cachem_1.0.8                whisker_0.4.1              
  [29] lifecycle_1.0.4             iterators_1.0.14           
  [31] pkgconfig_2.0.3             Matrix_1.6-3               
@@ -1893,42 +2480,43 @@ loaded via a namespace (and not attached):
  [37] clue_0.3-65                 digest_0.6.33              
  [39] colorspace_2.1-0            S4Vectors_0.38.2           
  [41] DESeq2_1.40.2               rprojroot_2.0.4            
- [43] crosstalk_1.2.1             GenomicRanges_1.52.1       
- [45] labeling_0.4.3              fansi_1.0.6                
- [47] timechange_0.2.0            httr_1.4.7                 
- [49] abind_1.4-5                 compiler_4.3.2             
- [51] here_1.0.1                  withr_2.5.2                
- [53] doParallel_1.0.17           backports_1.4.1            
- [55] BiocParallel_1.34.2         carData_3.0-5              
- [57] highr_0.10                  Rttf2pt1_1.3.12            
- [59] ggsignif_0.6.4              rappdirs_0.3.3             
- [61] DelayedArray_0.26.7         rjson_0.2.21               
- [63] tools_4.3.2                 httpuv_1.6.13              
- [65] extrafontdb_1.0             glue_1.6.2                 
- [67] promises_1.2.1              cluster_2.1.6              
- [69] generics_0.1.3              gtable_0.3.4               
- [71] tzdb_0.4.0                  hms_1.1.3                  
- [73] XVector_0.40.0              xml2_1.3.6                 
- [75] car_3.1-2                   utf8_1.2.4                 
- [77] BiocGenerics_0.46.0         foreach_1.5.2              
- [79] pillar_1.9.0                yulab.utils_0.1.2          
- [81] later_1.3.2                 circlize_0.4.15            
- [83] lattice_0.22-5              tidyselect_1.2.0           
- [85] locfit_1.5-9.8              git2r_0.33.0               
- [87] gridExtra_2.3               IRanges_2.34.1             
- [89] SummarizedExperiment_1.30.2 svglite_2.1.3              
- [91] stats4_4.3.2                xfun_0.41                  
- [93] Biobase_2.60.0              matrixStats_1.2.0          
- [95] stringi_1.8.3               workflowr_1.7.1            
- [97] yaml_2.3.8                  evaluate_0.23              
- [99] codetools_0.2-19            cli_3.6.2                  
-[101] systemfonts_1.0.5           munsell_0.5.0              
-[103] jquerylib_0.1.4             Rcpp_1.0.11                
-[105] GenomeInfoDb_1.36.4         png_0.1-8                  
-[107] parallel_4.3.2              ellipsis_0.3.2             
-[109] bitops_1.0-7                crayon_1.5.2               
-[111] GetoptLong_1.0.5            rlang_1.1.2                
-[113] rvest_1.0.3                 formatR_1.14               </code></pre>
+ [43] textshaping_0.3.7           crosstalk_1.2.1            
+ [45] GenomicRanges_1.52.1        labeling_0.4.3             
+ [47] fansi_1.0.6                 timechange_0.2.0           
+ [49] httr_1.4.7                  abind_1.4-5                
+ [51] compiler_4.3.2              here_1.0.1                 
+ [53] withr_2.5.2                 doParallel_1.0.17          
+ [55] backports_1.4.1             BiocParallel_1.34.2        
+ [57] carData_3.0-5               highr_0.10                 
+ [59] Rttf2pt1_1.3.12             ggsignif_0.6.4             
+ [61] rappdirs_0.3.3              DelayedArray_0.26.7        
+ [63] rjson_0.2.21                tools_4.3.2                
+ [65] httpuv_1.6.13               extrafontdb_1.0            
+ [67] glue_1.6.2                  promises_1.2.1             
+ [69] cluster_2.1.6               generics_0.1.3             
+ [71] gtable_0.3.4                tzdb_0.4.0                 
+ [73] hms_1.1.3                   XVector_0.40.0             
+ [75] xml2_1.3.6                  car_3.1-2                  
+ [77] utf8_1.2.4                  BiocGenerics_0.46.0        
+ [79] foreach_1.5.2               pillar_1.9.0               
+ [81] yulab.utils_0.1.2           later_1.3.2                
+ [83] circlize_0.4.15             lattice_0.22-5             
+ [85] tidyselect_1.2.0            locfit_1.5-9.8             
+ [87] git2r_0.33.0                gridExtra_2.3              
+ [89] IRanges_2.34.1              SummarizedExperiment_1.30.2
+ [91] svglite_2.1.3               stats4_4.3.2               
+ [93] xfun_0.41                   Biobase_2.60.0             
+ [95] matrixStats_1.2.0           stringi_1.8.3              
+ [97] workflowr_1.7.1             yaml_2.3.8                 
+ [99] evaluate_0.23               codetools_0.2-19           
+[101] cli_3.6.2                   systemfonts_1.0.5          
+[103] munsell_0.5.0               jquerylib_0.1.4            
+[105] Rcpp_1.0.11                 GenomeInfoDb_1.36.4        
+[107] png_0.1-8                   parallel_4.3.2             
+[109] ellipsis_0.3.2              bitops_1.0-7               
+[111] crayon_1.5.2                GetoptLong_1.0.5           
+[113] rlang_1.1.2                 rvest_1.0.3                
+[115] formatR_1.14               </code></pre>
 </div>
 </div>
 

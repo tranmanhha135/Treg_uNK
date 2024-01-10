@@ -1,6 +1,6 @@
 # Regulatory T cells promote decidual vascular remodeling by modulating uterine natural killer cells to support pregnancy in mice
 
-### Shanna L. Hosking<sup>1</sup>, Holly M. Groome<sup>1</sup>, Hon Y. Chan<sup>1</sup>, Lachlan M. Moldenhauer<sup>1</sup>, Ella S. Green<sup>1</sup>, Stephanie E. O’Hara<sup>1</sup>, Claire T. Roberts<sup>2</sup>, Sandra T. Davidge<sup>3</sup>, Sarah A. Robertson<sup>1</sup>, Alison S. Care<sup>1</sup>
+### Shanna L. Hosking<sup>1</sup>, Hon Y. Chan<sup>1</sup>, Ha M. Tran<sup>1</sup>, Holly M. Groome<sup>1</sup>,  Lachlan M. Moldenhauer<sup>1</sup>, Ella S. Green<sup>1</sup>, Stephanie E. O’Hara<sup>1</sup>, Claire T. Roberts<sup>2</sup>, Sandra T. Davidge<sup>3</sup>, Sarah A. Robertson<sup>1</sup>, Alison S. Care<sup>1</sup>
 
 **Author affiliations:**
 

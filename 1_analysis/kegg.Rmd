@@ -62,11 +62,11 @@ opts_chunk$set(warning=FALSE, message=FALSE, echo=FALSE)
 ```{r importData}
 # load DGElist previously created in the set up
 dge <- readRDS(here::here("0_data/rds_objects/dge.rds"))
-# fc <- readRDS(here::here("0_data/rds_objects/fc.rds"))
-# fdr <- readRDS(here::here("0_data/rds_objects/fdr.rds"))
 lm <- readRDS(here::here("0_data/rds_objects/lm.rds"))
+lm_all <- readRDS(here::here("0_data/rds_objects/lm_all.rds"))
 lm_sig <- readRDS(here::here("0_data/rds_objects/lm_sig.rds"))
-comp <- readRDS(here::here("0_data/rds_objects/comp.rds"))
+
+Comp <- readRDS(here::here("0_data/rds_objects/comp.rds"))
 # to increase the knitting speed. change to T to save all plots
 savePlots <- F
 export <- F
@@ -88,6 +88,11 @@ DT <- readRDS(here::here("0_data/functions/DT.rds"))
 convert_to_superscript <- readRDS(here::here("0_data/functions/convert_to_superscript.rds"))
 exponent <- readRDS(here::here("0_data/functions/exponent.rds"))
 format_y_axis <- readRDS(here::here("0_data/functions/format_y_axis.rds"))
+
+firstCap <- function(x) {
+  substr(x, 1, 1) <- toupper(substr(x, 1, 1))
+  x
+}
 ```
 
 # KEGG Analysis
@@ -128,19 +133,20 @@ For this analysis, only KEGG pathway database will be used. This database is fur
 enrichKEGG <- list()
 enrichKEGG_all <- list()
 enrichKEGG_sig <- list()
-for (name in comp) {
+for (name in Comp) {
   # find enriched KEGG pathways
   enrichKEGG[[name]] <- clusterProfiler::enrichKEGG(
     gene = lm_sig[[name]]$entrezid,
+    universe = lm_all[[name]]$entrezid,
     keyType = "kegg",
     organism = "mmu",
-    pvalueCutoff = 0.01,
-    pAdjustMethod = "none"
+    pvalueCutoff = 0.2,
+    pAdjustMethod = "fdr"
   )
   
 }
 
-for (name in comp) {
+for (name in Comp) {
     enrichKEGG[[name]] <- enrichKEGG[[name]] %>% 
       clusterProfiler::setReadable(OrgDb = org.Mm.eg.db, keyType = "ENTREZID")
     
@@ -149,19 +155,18 @@ for (name in comp) {
                                                  replacement = "",
                                                  x = enrichKEGG[[name]]@result$Description)
     
-    enrichKEGG[[name]]@result$Description <- enrichKEGG[[name]]@result$Description %>% str_to_sentence() %>% str_wrap(width = 45)
+    enrichKEGG[[name]]@result$Description <- enrichKEGG[[name]]@result$Description %>% firstCap() %>% str_wrap(width = 45)
     
     enrichKEGG_all[[name]] <- enrichKEGG[[name]]@result
     
     # filter the significant and print top 30
     enrichKEGG_sig[[name]] <- enrichKEGG_all[[name]] %>%
-      dplyr::filter(pvalue <= 0.01) %>%
+      dplyr::filter(p.adjust <= 0.2) %>%
       separate(col = BgRatio, sep = "/", into = c("Total", "Universe")) %>%
       dplyr::mutate(
-        logPval = -log(pvalue, 10),
+        logFDR = -log(p.adjust, 10),
         GeneRatio = Count / as.numeric(Total)
-      ) %>%
-      dplyr::select(c("Description", "GeneRatio", "pvalue", "logPval", "p.adjust", "qvalue", "geneID", "Count"))
+      ) 
 
 }
 ```
@@ -174,11 +179,11 @@ id_groups <- split(uniq_id$., (seq_along(uniq_id$.) - 1) %/% 10 + 1)
 pathways <- flatten(map(id_groups, ~keggGet(.x)))
 
 
-lapply(id_groups, function(ids) keggGet(ids))
-  
-  c(keggGet(uniq_id$.[1:10]),
-              keggGet(uniq_id$.[11:20]),
-              keggGet(uniq_id$.[21:29]))
+# lapply(id_groups, function(ids) keggGet(ids))
+#   
+#   c(keggGet(uniq_id$.[1:10]),
+#               keggGet(uniq_id$.[11:20]),
+#               keggGet(uniq_id$.[21:29]))
 
 # Extract relevant information and create a data frame
 pathways_details <- map_df(pathways, ~{
@@ -219,7 +224,7 @@ For data exploratory purposes, the following visualisations are KEGG enrichment 
 
 **I recommend reading through the full list of significant KEGG pathways and selecting the most biologically relevant for better visualisation**
 
-### FC=none, FDR\<0.1 {.tabset .tabset-pills}
+### `r Comp[1]` {.tabset .tabset-pills}
 
 #### Dot plot
 
@@ -231,12 +236,13 @@ enrichKEGG_sig <- readRDS(here::here("0_data/rds_objects/enrichKEGG_sig.rds"))
 kegg_dot <- list()
 kegg_tab <- list()
 kegg_upset <- list()
-for (name in comp) {
+
+for (name in Comp) {
   # dot plot, save
   kegg_dot[[name]] <- ggplot(enrichKEGG_sig[[name]][1:nrow(enrichKEGG_sig[[name]]), ]) +
-    geom_point(aes(x = GeneRatio, y = reorder(Description, GeneRatio), colour = logPval, size = Count)) +
+    geom_point(aes(x = GeneRatio, y = reorder(Description, GeneRatio), colour = logFDR, size = Count)) +
     scale_color_gradientn(colors = rev(c("#FB8072","#FDB462","#ffffd5","#8DD3C7","#80B1D3")),
-                          values = scales::rescale(c(min(enrichKEGG_sig[[name]]$logPval), max(enrichKEGG_sig[[name]]$logPval))),
+                          values = scales::rescale(c(min(enrichKEGG_sig[[name]]$logFDR), max(enrichKEGG_sig[[name]]$logFDR))),
                           breaks = scales::pretty_breaks(n = 5)) +
     scale_size(range = c(2,5)) +
     labs(x = "Gene ratio", y = "", color = expression("-log"[10] * "P value"), size = "Gene Counts") +
@@ -258,8 +264,9 @@ for (name in comp) {
   }
   
 }
-
+kegg_dot[[2]] <- NULL
 kegg_dot[[1]]
+
 ```
 
 #### Table
@@ -284,7 +291,7 @@ kexpand <- function(wd, ht, cap) {
 
 
 # Loop through each FC value
-headers <- comp
+headers <- Comp
 types <- c("Dot plot", "Table", "Upset plot")
 
 for (i in 2:length(headers)) {
@@ -307,189 +314,292 @@ for (i in 2:length(headers)) {
 }
 ```
 
+### Combined {.tabset .tabset-pills}
+
+#### Venn diagram
+
+```{r combined_venn, fig.height=8, fig.width=8, echo=FALSE, results='hide'}
+futile.logger::flog.threshold(futile.logger::ERROR, name = "VennDiagramLogger")
+
+venn.diagram(x = list("DT vs PBS"   = enrichKEGG_sig[[1]]$ID %>% as.character(), 
+                      "Treg vs PBS" = enrichKEGG_sig[[2]]$ID %>% as.character(),
+                      "Treg vs DT"  = enrichKEGG_sig[[3]]$ID %>% as.character()),
+             filename = here::here(paste0("2_plots/3_FA/kegg/venn.png")),
+             lwd = 2,
+             disable.logging = T,
+             fill = groupColour,
+             alpha = 0.75,
+             lty = 'blank',
+             imagetype = "png",
+             
+             # Numbers
+             cex = 2,
+             fontface = "plain",
+             fontfamily = "Arial Narrow",
+             
+             # Set names
+             cat.cex = 2,
+             cat.fontface = "bold",
+             cat.fontfamily = "Arial Narrow",
+             cat.default.pos = "outer",
+             cat.pos = c(-180, 20, 180),
+             cat.dist = c(0.055, 0.025, 0.055)
+)
+
+```
+
+![](figure/kegg.Rmd/venn.png)
+
+
+#### Dot plot
+
+```{r combined_dot, fig.width=9, fig.height=13}
+# combine all df in list into one df
+kegg_dot_all <- as.data.frame(do.call(rbind, enrichKEGG_sig)) %>%
+  rownames_to_column("group")
+
+# clean group names and change to factor
+kegg_dot_all$group <- gsub(pattern = "\\..*", "", kegg_dot_all$group) %>% as.factor()
+
+kegg_dot_all$group <- factor(kegg_dot_all$group,levels = c("DT vs PBS", "Treg vs PBS", "Treg vs DT" ))
+kegg_dot_all$Description <- kegg_dot_all$Description %>% str_wrap(55)
+combine_kegg <- ggplot(kegg_dot_all) +
+    geom_point(aes(x = group, y = reorder(Description, logFDR), colour = logFDR, size = Count)) +
+    scale_color_gradientn(colors = rev(c("#FB8072","#FDB462","#ffffd5","#8DD3C7","#80B1D3")),
+                          values = scales::rescale(c(min(go_dot_all$logFDR), max(go_dot_all$logFDR))),
+                          breaks = scales::pretty_breaks(n = 5)) +
+    scale_size(range = c(2,5)) +
+    labs(x = "", y = "", color = expression("-log"[10] * "FDR"), size = "Counts")+
+    bossTheme(base_size = 14,legend = "right")
+  
+  
+  if(savePlots == TRUE) {
+    ggsave(filename = paste0("combine_kegg_dot.svg"), plot = combine_go, path = here::here("2_plots/3_FA/kegg/"),
+           width = 18, height = 20, units = "cm")
+  }
+
+combine_kegg
+```
+
 # Pathway specific heatmaps {.tabset .tabset-pills}
 
 ```{r}
 # chosing the pathways of interest
-kegg_id <- c("mmu04612", "mmu04650", "mmu04658","mmu05330","mmu04145")
+kegg_id <- c("mmu04612", "mmu04650", "mmu04658","mmu04145")
 
 # t <- sapply(enrichKEGG_sig, function(x) rownames(x))
 kegg_pathway <- KEGGREST::keggGet(kegg_id)
-
-
 ```
 
-<!-- Here the top `r length(kegg_id)` most interesting KEGG pathways were selected for further visualisations. -->
+Here the top `r length(kegg_id)` most interesting KEGG pathways were selected for further visualisations.
 
-<!-- These visualisations are similarly performed with set of DE genes significantly below **FDR \< 0.1 or \< 0.05** with and without FC threshold (TREAT). **IMPORTANTLY**, these KEGG terms are all significantly enriched but only with P-value \< 0.05 and no P-value correction method. -->
+These visualisations are similarly performed with set of DE genes significantly below **FDR \< 0.1 or \< 0.05** with and without FC threshold (TREAT). **IMPORTANTLY**, these KEGG terms are all significantly enriched but only with P-value \< 0.05 and no P-value correction method.
 
-<!-- -   **Heatmap:** illustrates the expression of genes in specific KEGG pathways. -->
+-   **Heatmap:** illustrates the expression of genes in specific KEGG pathways.
 
-<!--     -   The genes (rows) and samples (columns) are heirachirally clusterd based on their expression profile. -->
+    -   The genes (rows) and samples (columns) are heirachirally clusterd based on their expression profile.
 
-<!-- -   **Table:** list of all the significant DE genes in the specified KEGG pathway -->
+-   **Table:** list of all the significant DE genes in the specified KEGG pathway
 
-<!-- -   **Pathview:** maps gene expression data onto the specified KEGG pathways, allowing users to see where genes in their dataset are located within specific pathways, and potential upstream and downstream elements. -->
+-   **Pathview:** maps gene expression data onto the specified KEGG pathways, allowing users to see where genes in their dataset are located within specific pathways, and potential upstream and downstream elements.
 
-<!-- ```{r heatmap} -->
-<!-- # create df with normalised read counts with an additional entrezid column for binding -->
-<!-- logCPM <- cpm(dge, prior.count = 4, log = TRUE) %>% subset(select = 1:8) -->
-<!-- rownames(logCPM) <- dge$genes$gene -->
+```{r heatmap}
+# create df with normalised read counts with an additional entrezid column for binding
+logCPM <- cpm(dge, prior.count = 3, log = TRUE) 
+rownames(logCPM) <- dge$genes$gene
+logCPM <- logCPM[,c(6,7,8,9,10,11,1,2,3,4,5,12,13,14,15,16)]
+# df for heatmap annotation of sample group
+anno <- as.factor(dge$samples$group) %>% as.data.frame()
+anno <- anno[c(6,7,8,9,10,11,1,2,3,4,5,12,13,14,15,16),]%>% as.data.frame()
+colnames(anno) <- "Groups"
 
-<!-- # df for heatmap annotation of sample group -->
-<!-- anno <- as.factor(dge$samples$group) %>% as.data.frame() %>% dplyr::slice(1:8) -->
-<!-- colnames(anno) <- "Groups" -->
-<!-- rownames(anno) <- colnames(logCPM) -->
+matrix <- list()
+display_matrix <- list()
+kegg_heat=list()
+matrix_fc_sig <- list()
+for (name in Comp) {
+  
+  for (j in 1:length(kegg_id)) {
+    pathName <- kegg_pathway[[j]]$PATHWAY_MAP
+    
+    partial <- enrichKEGG_all[[name]][, c("ID", "geneID")]
+    partial <- partial[kegg_id[j], "geneID"] %>% as.data.frame()
+    partial <- separate_rows(partial, ., sep = "/")
+    colnames(partial) <- "entrezid"
+    
+    # heatmap matrix
+    match <- rownames(logCPM) %in% partial$entrezid
+    matrix[[name]][[pathName]] <- logCPM[match, ] %>% as.matrix()
+    
+    
+    # boolean, true if entrezid in the significant gene list match the entrezid of the pathway
+    match_fc_sig <- lm_sig[[name]][, "gene"] %in% partial$entrezid
+    # where there is a true value, include the respective gene name and fc value...
+    matrix_fc_sig[[pathName]][[name]] <- lm_sig[[name]][match_fc_sig, ] %>% as.data.frame() 
+    
+    
+    # display matrix
+    match2 <- lm_sig[[name]][, "gene"] %in% partial$entrezid
+    display_matrix[[name]][[pathName]] <- lm_sig[[name]][match2, c("gene", "logFC", "P.Value", "adj.P.Val", "description","entrezid")] %>%
+      dplyr::mutate_if(is.numeric, funs(as.character(signif(.,3)))) %>%
+      DT(.,caption = "DE genes")
+    
+    kegg_heat[[name]][[pathName]] <- ComplexHeatmap::pheatmap(
+      # MAIN
+      mat = matrix[[name]][[pathName]],
+      color = colorRampPalette(rev(c("#FB8072","#FDB462","#ffffd5","#8DD3C7","#80B1D3")))(100),
+      scale = "row",
+      
+      # Col
+      cluster_cols = F,
+      gaps_col = c(6,11),
+      # cutree_cols = 2,
+      border_color = "white",
+      angle_col = "0",
+      # treeheight_col = 20,
+      
+      # Row
+      cutree_rows = 2,
+      treeheight_row = 30,
+      clustering_distance_rows = "euclidean",
+      labels_row = as.expression(lapply(rownames(matrix[[name]][[pathName]]), function(a) bquote(italic(.(a))))),
+      
+      # Labs
+      main = paste0(pathName, "\n"),
+      show_colnames = F,
+      legend = T,
+      heatmap_legend_param = list(title = "Z-score", legend_width = unit(3, "cm")),
+      
+      # Annotation
+      annotation_legend = T,
+      # legend_labels = T,
+      annotation_col = anno,
+      annotation_colors = list("Groups" = groupColour),
+      annotation_names_col = F,
 
-<!-- matrix <- list() -->
-<!-- display_matrix <- list() -->
-<!-- kegg_heat=list() -->
+      # Fonts
+      fontfamily = "Arial Narrow",
+      fontsize = 14,
+      fontsize_col = 14,
+      fontsize_number = 14,
+      fontsize_row = 14
 
-<!-- for (i in 1:length(lm)) { -->
-<!--   name <- names(lm[i]) -->
+    ) %>% as.ggplot()
 
-<!--   for (j in 1:length(kegg_id)) { -->
-<!--     pathName <- kegg_pathway[[j]]$PATHWAY_MAP -->
+    if (savePlots == T) {
+      ggsave(filename = paste0("heat_", name, "_", pathName, ".svg"),
+           plot = kegg_heat[[name]][[pathName]],
+           path = here::here("2_plots/3_FA/kegg/"),
+           width = 12,
+           height = 14,
+           units = "cm")
+    }
+  }
+}
+```
 
-<!--     partial <- enrichKEGG_all[[name]][, c("ID", "geneID")] -->
-<!--     partial <- partial[kegg_id[j], "geneID"] %>% as.data.frame() -->
-<!--     partial <- separate_rows(partial, ., sep = "/") -->
-<!--     colnames(partial) <- "entrezid" -->
+```{r pathview, eval=FALSE}
+pathview_table <- list()
+# adjusting the kegg id to suit the parameters of the pathview funtion
+adj.keggID <- gsub("mmu", "", kegg_id)
 
-<!--     # heatmap matrix -->
-<!--     match <- rownames(logCPM) %in% partial$entrezid -->
-<!--     matrix[[name]][[pathName]] <- logCPM[match, ] %>% as.matrix() -->
+for (j in 1:length(kegg_id)){
+  y <- kegg_pathway[[j]]$PATHWAY_MAP %>% as.character()
+  
 
-<!--     # display matrix -->
-<!--     match2 <- lm_sig[[name]][, "gene"] %in% partial$entrezid -->
-<!--     display_matrix[[name]][[pathName]] <- lm_sig[[name]][match2, c("gene", "logFC", "P.Value", "adj.P.Val", "description","entrezid")] %>% -->
-<!--       dplyr::mutate_if(is.numeric, funs(as.character(signif(.,3)))) %>% -->
-<!--       DT(.,caption = "DE genes") -->
-
-<!--     kegg_heat[[name]][[pathName]] <- ComplexHeatmap::pheatmap( -->
-<!--       # MAIN -->
-<!--       mat = matrix[[name]][[pathName]], -->
-<!--       color = colorRampPalette(rev(c("#FB8072","#FDB462","#ffffd5","#8DD3C7","#80B1D3")))(100), -->
-<!--       scale = "row", -->
-
-<!--       # Col -->
-<!--       cluster_cols = T, -->
-<!--       cutree_cols = 2, -->
-<!--       border_color = "white", -->
-<!--       # gaps_col = 4, -->
-<!--       angle_col = "0", -->
-<!--       treeheight_col = 20, -->
-
-<!--       # Row -->
-<!--       cutree_rows = 4, -->
-<!--       treeheight_row = 30, -->
-<!--       clustering_distance_rows = "euclidean", -->
-<!--       labels_row = as.expression(lapply(rownames(matrix[[name]][[pathName]]), function(a) bquote(italic(.(a))))), -->
-
-<!--       # Labs -->
-<!--       main = paste0(pathName, "\n"), -->
-<!--       show_colnames = T, -->
-<!--       legend = T, -->
-<!--       heatmap_legend_param = list(title = "Z-score", legend_width = unit(3, "cm")), -->
-
-<!--       # Annotation -->
-<!--       annotation_legend = T, -->
-<!--       # legend_labels = T, -->
-<!--       annotation_col = anno, -->
-<!--       annotation_colors = list("Groups" = groupColour), -->
-<!--       annotation_names_col = T, -->
-
-<!--       # Fonts -->
-<!--       fontfamily = "Arial Narrow", -->
-<!--       fontsize = 14, -->
-<!--       fontsize_col = 14, -->
-<!--       fontsize_number = 14, -->
-<!--       fontsize_row = 14 -->
-
-<!--     ) %>% as.ggplot() -->
-
-<!--     if (savePlots == T) { -->
-<!--       ggsave(filename = paste0("heat_", name, "_", pathName, ".svg"),  -->
-<!--            plot = kegg_heat[[name]][[pathName]],  -->
-<!--            path = here::here("2_plots/3_FA/kegg/"), -->
-<!--            width = 12, -->
-<!--            height = 14, -->
-<!--            units = "cm") -->
-<!--     } -->
-<!--   } -->
-<!-- } -->
-<!-- ``` -->
-
-<!-- ```{r pathview, eval=FALSE} -->
-<!-- # adjusting the kegg id to suit the parameters of the pathview funtion -->
-<!-- adj.keggID <- gsub("mmu", "", kegg_id) -->
-
-<!-- for (i in 1:length(lm)) { -->
-<!--   name <- names(lm[i]) -->
-
-<!--   # extract the logFC from the DE gene list -->
-<!--   pathview_table <- dplyr::select(.data = lm_sig[[name]], c("logFC")) %>% as.matrix() -->
-<!--   # run pathview with Ensembl ID instead of entrezID -->
-<!--   pathview <- pathview( -->
-<!--     gene.data = pathview_table[, 1], -->
-<!--     gene.idtype = "SYMBOL", -->
-<!--     pathway.id = adj.keggID, -->
-<!--     species = "mmu", -->
-<!--     out.suffix = "pv", -->
-<!--     kegg.dir = here::here("2_plots/3_FA/"), -->
-<!--     kegg.native = T -->
-<!--   ) -->
-
-<!--   # move the result file to the plot directory -->
-<!--   file.rename( -->
-<!--     from = paste0("mmu", adj.keggID, ".pv.png"), -->
-<!--     to = here::here(paste0("2_plots/3_FA/kegg/pv_", name, "_", kegg_id, ".png")) -->
-<!--   ) -->
-<!-- } -->
-<!-- ``` -->
-
-
-<!-- ```{r loop2, results="asis"} -->
-<!-- ## this function is basically creating chunks within chunks, and then -->
-<!-- ## I use results='asis' so that the html image code is rendered  -->
-<!-- kexpand <- function(wd, ht, cap) { -->
-<!--   cat(knit(text = knit_expand(text = sprintf("```{r %s, fig.width=%s, fig.height=%s}\n.pl\n```", cap,wd, ht) -->
-<!--   ))) -->
-<!--   } -->
+    # run pathview with Ensembl ID instead of entrezID
+    pathview <- pathview(
+      gene.data = matrix_fc_sig[[y]] %>% as.matrix(),
+      gene.idtype = "SYMBOL",
+      pathway.id = adj.keggID[j],
+      species = "mmu",
+      out.suffix = "pv",
+      kegg.dir = here::here("2_plots/3_FA/kegg/"),
+      keys.align = "y",
+      kegg.native = T,
+      match.data = T,
+      multi.state = T,
+      same.layer = T,
+    )
+    
+    # # move the result file to the plot directory
+    # file.rename(
+    #   from = here::here(paste0("mmu", adj.keggID[j], ".pv.multi.png")),
+    #   to = here::here(paste0("docs/figure/kegg.Rmd/pathview", j, "-1.png"))
+    # )
+}
 
 
-<!-- # Loop through each FC value -->
-<!-- headers <- c("FC=none, FDR<0.1", "FC=none, FDR<0.05", "FC=1.1, FDR<0.1",  -->
-<!--              "FC=1.1, FDR<0.05", "FC=1.2, FDR<0.1"  , "FC=1.2, FDR<0.05") -->
-<!-- # subheaders <-  -->
-<!-- types <- c("Heatmap", "Table", "Pathview") -->
 
-<!-- for (i in 1:length(headers)) { -->
-<!--   cat(paste0("## ",headers[i],"{.tabset .tabset-pills} \n\n")) -->
+# adjusting the kegg id to suit the parameters of the pathview funtion
+adj.keggID <- gsub("mmu", "", kegg_id)
 
-<!--   for (j in 1:length(kegg_pathway)) { -->
-<!--     cat(paste0("### ",kegg_pathway[[j]]$PATHWAY_MAP,"{.tabset .tabset-pills} \n\n")) -->
+for (name in Comp) {
+  # name <- names(lm[i])
 
-<!--     cat(paste0("#### ",types[[1]]," \n")) -->
-<!--     .pl <- kegg_heat[[i]][[j]]  -->
-<!--     kexpand(wd = 8,ht = 9,cap = paste0("heat",i,j)) -->
-<!--     cat("\n\n") -->
+  # extract the logFC from the DE gene list
+  pathview_table <- dplyr::select(.data = lm_sig[[name]], c("logFC")) %>% as.matrix()
+  # run pathview with Ensembl ID instead of entrezID
+  pathview <- pathview(
+    gene.data = pathview_table[, 1],
+    gene.idtype = "SYMBOL",
+    pathway.id = adj.keggID,
+    species = "mmu",
+    out.suffix = "pv",
+    kegg.dir = here::here("2_plots/3_FA/"),
+    kegg.native = T
+  )
 
-<!--     cat(paste0("#### ",types[[2]]," \n")) -->
-<!--     .pl <- display_matrix[[i]][[j]] -->
-<!--     kexpand(wd = 11,ht = 8,cap = paste0("specficTab",i,j)) -->
-<!--     cat("\n\n") -->
+  # move the result file to the plot directory
+  file.rename(
+    from = paste0("mmu", adj.keggID, ".pv.png"),
+    to = here::here(paste0("2_plots/3_FA/kegg/pv_", name, "_", kegg_id, ".png"))
+  )
+}
+```
 
-<!--     cat(paste0("#### ",types[[3]]," \n")) -->
-<!--     cat(paste0("![](figure/kegg.Rmd/pv_", names(kegg_heat)[i], "_", kegg_id[j], ".png)")) -->
-<!--     # .pl <- knitr::include_graphics(here::here(paste0("figure/kegg.Rmd/pv_", names(kegg_heat)[i], "_", kegg_id[j], ".png"))) -->
-<!--     # kexpand(wd = 9,ht = 9,cap = paste0("pathview",i,j)) -->
-<!--     cat("\n\n") -->
 
-<!--   } -->
-<!-- } -->
+```{r loop2, results="asis"}
+## this function is basically creating chunks within chunks, and then
+## I use results='asis' so that the html image code is rendered
+kexpand <- function(wd, ht, cap) {
+  cat(knit(text = knit_expand(text = sprintf("```{r %s, fig.width=%s, fig.height=%s}\n.pl\n```", cap,wd, ht)
+  )))
+  }
 
-<!-- ``` -->
+
+# Loop through each FC value
+headers <- c("FC=none, FDR<0.1", "FC=none, FDR<0.05", "FC=1.1, FDR<0.1",
+             "FC=1.1, FDR<0.05", "FC=1.2, FDR<0.1"  , "FC=1.2, FDR<0.05")
+# subheaders <-
+types <- c("Heatmap", "Table", "Pathview")
+
+for (i in 1:length(headers)) {
+  cat(paste0("## ",headers[i],"{.tabset .tabset-pills} \n\n"))
+
+  for (j in 1:length(kegg_pathway)) {
+    cat(paste0("### ",kegg_pathway[[j]]$PATHWAY_MAP,"{.tabset .tabset-pills} \n\n"))
+
+    cat(paste0("#### ",types[[1]]," \n"))
+    .pl <- kegg_heat[[i]][[j]]
+    kexpand(wd = 8,ht = 9,cap = paste0("heat",i,j))
+    cat("\n\n")
+
+    cat(paste0("#### ",types[[2]]," \n"))
+    .pl <- display_matrix[[i]][[j]]
+    kexpand(wd = 11,ht = 8,cap = paste0("specficTab",i,j))
+    cat("\n\n")
+
+    cat(paste0("#### ",types[[3]]," \n"))
+    cat(paste0("![](figure/kegg.Rmd/pv_", names(kegg_heat)[i], "_", kegg_id[j], ".png)"))
+    # .pl <- knitr::include_graphics(here::here(paste0("figure/kegg.Rmd/pv_", names(kegg_heat)[i], "_", kegg_id[j], ".png")))
+    # kexpand(wd = 9,ht = 9,cap = paste0("pathview",i,j))
+    cat("\n\n")
+
+  }
+}
+
+```
 
 # Export Data
 
