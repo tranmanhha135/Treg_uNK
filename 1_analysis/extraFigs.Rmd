@@ -1,0 +1,212 @@
+---
+title: "Extra figures"
+author: "Ha Tran"
+date: "2024-01-12"
+output: html_document
+editor_options: 
+  chunk_output_type: console
+---
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(
+  echo = TRUE,
+  message = FALSE,
+  warning = FALSE,
+  eval = TRUE,
+  fig.align = "center"
+)
+```
+
+
+```{r load libraries}
+# working with data
+library(dplyr)
+library(magrittr)
+library(readr)
+library(tibble)
+library(reshape2)
+library(tidyverse)
+
+# Visualisation:
+library(kableExtra)
+library(ggplot2)
+library(grid)
+library(DT)
+library(extrafont)
+library(VennDiagram)
+
+# Custom ggplot
+library(gridExtra)
+library(ggbiplot)
+library(ggrepel)
+library(rrvgo)
+library(d3treeR)
+library(plotly)
+library(GOSemSim)
+library(data.table)
+
+# Bioconductor packages:
+library(edgeR)
+library(limma)
+library(Glimma)
+library(clusterProfiler)
+library(org.Mm.eg.db)
+library(enrichplot)
+library(patchwork)
+
+library(pandoc)
+library(knitr)
+opts_knit$set(progress = FALSE, verbose = FALSE)
+opts_chunk$set(warning=FALSE, message=FALSE, echo=FALSE)
+
+```
+
+```{r importData}
+# load DGElist previously created in the set up
+dge <- readRDS(here::here("0_data/rds_objects/dge.rds"))
+# lm <- readRDS(here::here("0_data/rds_objects/lm.rds"))
+lm_all <- readRDS(here::here("0_data/rds_objects/lm_all.rds"))
+lm_sig <- readRDS(here::here("0_data/rds_objects/lm_sig.rds"))
+Comp <- readRDS(here::here("0_data/rds_objects/comp.rds"))
+Ont <- c("BP","MF","CC")
+# to increase the knitting speed. change to T to save all plots
+savePlots <- F
+export <- F
+```
+
+```{r importFunctions}
+# Theme
+bossTheme <- readRDS(here::here("0_data/functions/bossTheme.rds"))
+bossTheme_bar <- readRDS(here::here("0_data/functions/bossTheme.rds"))
+groupColour <- readRDS(here::here("0_data/functions/groupColour.rds"))
+groupColour_dark <- readRDS(here::here("0_data/functions/groupColour_dark.rds"))
+expressionCol <- readRDS(here::here("0_data/functions/expressionCol.rds"))
+expressionCol_dark <- readRDS(here::here("0_data/functions/expressionCol_dark.rds"))
+
+
+DT <- readRDS(here::here("0_data/functions/DT.rds"))
+
+# Plotting
+convert_to_superscript <- readRDS(here::here("0_data/functions/convert_to_superscript.rds"))
+exponent <- readRDS(here::here("0_data/functions/exponent.rds"))
+format_y_axis <- readRDS(here::here("0_data/functions/format_y_axis.rds"))
+
+firstCap <- function(x) {
+  substr(x, 1, 1) <- toupper(substr(x, 1, 1))
+  x
+}
+
+```
+
+## Extra Figures
+
+```{r functionalHeat}
+enrichGO_sig <-  readRDS(here::here("0_data/rds_objects/enrichGO_sig.rds"))
+enrichKEGG_sig <-  readRDS(here::here("0_data/rds_objects/enrichKEGG_sig.rds"))
+reactome_sig <-  readRDS(here::here("0_data/rds_objects/reactome_sig.rds"))
+
+go <- lapply(enrichGO_sig, function(x) {x %>% dplyr::select(c("ID","Description", "geneID"))})
+kegg <- lapply(enrichKEGG_sig, function(x) {x %>% dplyr::select(c("ID","Description", "geneID"))})
+react <- lapply(reactome_sig, function(x) {x %>% rownames_to_column("ID") %>% dplyr::select(c("ID","Description", "geneID"))})
+
+
+all_ora_DTvPBS <- rbind(go[[1]],kegg[[1]], react[[1]])
+all_ora_TregvDT <- rbind(go[[3]],kegg[[3]], react[[3]])
+
+
+library(ComplexHeatmap)
+ora_id <- c("GO:0140507", "GO:0042267", "GO:0001910", "GO:0046703", "GO:0001913","GO:0019835","mmu04612","R-MMU-1474228")
+
+generateMat <- function(data,index){
+  
+  res <- data[data$ID %in% ora_id,]
+  # res_DTvPBS[res_DTvPBS$ID == "mmu04650", 2] <- "KEGG: Natural killer cell mediated cytotoxicity"
+  pathways <- res[["Description"]]
+  
+  genes <- sort(unique(unlist(strsplit(res[["geneID"]], "/"))))
+  
+  mat <- matrix(0, nrow = length(pathways), ncol = length(genes))
+  rownames(mat) <- pathways
+  colnames(mat) <- genes
+  
+  for (i in seq_along(pathways)) {
+    gns <- sort(unique(unlist(strsplit(res[i, "geneID"], "/"))))
+    print(gns)
+    mat[i, which(colnames(mat) %in% gns)] <- lm_sig[[index]][ gns, "logFC"]
+  }
+  
+  rownames(mat) <- rownames(mat) %>% str_wrap(30)
+  return(mat)
+}
+
+mat1 <- generateMat(all_ora_DTvPBS, 1) %>% as.data.frame()
+mat2 <- generateMat(all_ora_TregvDT,3) %>% as.data.frame()
+
+mat1[setdiff(names(mat2), names(mat1))] <- 0
+mat2[setdiff(names(mat1), names(mat2))] <- 0
+
+mat <- rbind(mat1,mat2)
+
+library(RColorBrewer)
+
+anno_col <-  brewer.pal(3,"Set1")%>% setNames(c("GO", "KEGG", "Reactome"))
+anno_col_2 <-  groupColour %>% setNames(Comp)
+
+library(ggplotify)
+
+createHeat <- function(matrix, compIndex){
+  anno <- data.frame("Database" = c(rep("GO",6), rep("KEGG", 1), "Reactome"),
+                   "Constrast" = rep(Comp[compIndex], 8)) 
+  p <- ComplexHeatmap::pheatmap(
+    # MAIN
+    mat = matrix,
+    color = colorRampPalette(rev(c("#FB8072","#FDB462","grey98","grey98","#8DD3C7","#80B1D3")))(30),
+    scale = "none",
+    
+    # Col
+    cluster_cols = F,
+    # gaps_col = c(6,11),
+    # cutree_cols = 2,
+    border_color = "white",
+    angle_col = "45",
+    # treeheight_col = 20,
+    
+    # Row
+    cluster_rows = F,
+    # cutree_rows = 2,
+    # treeheight_row = 30,
+    # clustering_distance_rows = "euclidean",
+    labels_col = as.expression(lapply(colnames(matrix), function(a) bquote(italic(.(a))))),
+    
+    # Labs
+    # main = paste0(pathName, "\n"),
+    show_colnames = T,
+    legend = T,
+    heatmap_legend_param = list(title = "LogFC", legend_width = unit(3, "cm")),
+    
+    # Annotation
+    annotation_legend = T,
+    # legend_labels = T,
+    annotation_row = anno,
+    annotation_colors = list("Database" = anno_col, "Constrast" = anno_col_2),
+    annotation_names_row = F,
+    
+    # Fonts
+    fontfamily = "Arial Narrow",
+    fontsize = 14,
+    fontsize_col = 14,
+    fontsize_number = 14,
+    fontsize_row = 14,row_names_side = "left", row_dend_side = "right"
+    
+  ) %>% as.ggplot()
+  
+}
+
+
+p1 <- createHeat(mat[1:8,] %>% as.matrix(), 1)
+p2 <- createHeat(mat[9:16,] %>% as.matrix(), 3)
+
+sampleHeatmap <- p1/ p2
+
+ggsave(filename = "sampleHeat.svg",plot = sampleHeatmap,path = here::here("2_plots/"),width = 21.5,height = 20,units = "cm")
+
+```

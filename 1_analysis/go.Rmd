@@ -67,7 +67,7 @@ lm_sig <- readRDS(here::here("0_data/rds_objects/lm_sig.rds"))
 Comp <- readRDS(here::here("0_data/rds_objects/comp.rds"))
 Ont <- c("BP","MF","CC")
 # to increase the knitting speed. change to T to save all plots
-savePlots <- T
+savePlots <- F
 export <- F
 ```
 
@@ -752,126 +752,6 @@ t
 
 ggsave(filename = "parentTerm_all.svg", plot = t, path = here::here("2_plots/3_FA/go/"),
            width = 21, height = 29.7, units = "cm")
-```
-
-
-
-## Extra Figures
-
-```{r functionalHeat}
-go_id <- c("GO:0042267", "GO:0002228", "GO:0045953", "GO:0002716", "GO:0046703", "GO:0046641", "GO:0140507")
-
-res <- enrichGO_sig[[1]][enrichGO_sig[[1]]$ID %in% go_id,]
-
-pathways <- res[["Description"]]
-
-genes <- sort(unique(unlist(strsplit(res[["geneID"]], "/"))))
-
-mat <- matrix(0, nrow = length(pathways), ncol = length(genes))
-rownames(mat) <- pathways
-colnames(mat) <- genes
-
-for (i in seq_along(pathways)) {
-  gns <- sort(unique(unlist(strsplit(res[i, "geneID"], "/"))))
-  print(gns)
-  mat[i, which(colnames(mat) %in% gns)] <- lm_sig[[1]][ gns, "logFC"]
-}
-
-pheatmap(mat)
-
-partial <- enrichGO_sig[[1]][, c("ID", "geneID")]
-partial <- partial[go_id, "geneID"] %>% as.data.frame()
-partial <- separate_rows(partial, ., sep = "/")
-genes <- partial$. %>% as.factor() %>% levels()
-
-
-logfc <- lm_sig[[1]][lm_sig[[1]]$gene %in% genes, c("gene", "gene_id", "entrezid", "logFC", "adj.P.Val")]
-
-colnames(partial) <- "entrezid"
-heatplot(enrichGO[[1]], showCategory=5,)
-
-
-entrezID=list()
-matrix_all=list()
-for (x in comp){
-  #at each iteration, let x = name of each contrast group
-  # x=comparison_group[i,]
-  
-  entrezID[[x]] <- kegg_pathway[[1]]$GENE %>% as.data.frame()
-  entrezID[[x]] <- entrezID[[x]][seq(1, nrow(entrezID[[x]]), 2),] %>% as.data.frame()
-  colnames(entrezID[[x]]) <- "entrezid"
-  
-  match <- treat_sig[[x]]$entrezid %in% entrezID[[x]]$entrezid
-  matrix_all[[x]] <- treat_sig[[x]][match, c("gene_name", "logFC")]
-}
-
-big_matrix <- as.data.frame(do.call(rbind, lapply(matrix_all, as.data.frame))) %>% rownames_to_column("group") 
-big_matrix$group <- gsub(pattern = "\\..*", "", big_matrix$group)
-
-big_matrix <- pivot_wider(big_matrix, names_from = group, values_from = logFC) %>% column_to_rownames("gene_name")
-# big_matrix[is.na(big_matrix)]=-0.7305
-summary(big_matrix)
-
-
-
-heatPlot <- function(res, diff, showCategory = 10, font_size = 6) {
-    if (missing(res)) {
-        stop("res must be a dataframe with enrichment results")
-    }
-    if (missing(diff)) {
-        stop("res must be a dataframe with differential expression values")
-    }
-    if (showCategory == 1) {
-        stop("showCategory must be greater than 1")
-    }
-    
-    res <- head(res, showCategory)
-    
-    pathways <- res[["description"]]
-    genes <- sort(unique(unlist(strsplit(res[["geneID"]], ";"))))
-    
-    mat <- matrix(0, nrow = length(pathways), ncol = length(genes))
-    rownames(mat) <- pathways
-    colnames(mat) <- genes
-    
-    for (i in seq_along(pathways)) {
-        gns <- sort(unique(unlist(strsplit(res[i, "geneID"], ";"))))
-        mat[i, which(colnames(mat) %in% gns)] <- diff[gns, 3]
-    }
-    
-    is_sig = res[["FDR"]] < 0.05
-    pch = rep("*", length(res[["FDR"]]))
-    pch[!is_sig] <- NA
-    pvalue_col_fun <- colorRamp2(c(0, 1, 2), c("green", "white", "red"))
-    
-    clust1 <- hclust(dist(mat))
-    clust2 <- hclust(dist(t(mat)))
-    
-    mat[mat == 0] <- NA
-    cn = colnames(mat)
-    
-    breaks <- seq(-4, 4, by = 0.1)
-    ht <- Heatmap(mat, show_column_names = FALSE, bottom_annotation = HeatmapAnnotation(text = anno_text(cn, 
-        rot = 45, location = unit(1, "npc"), just = "right", gp = gpar(fontsize = font_size)), 
-        annotation_height = max_text_width(cn)), cluster_rows = clust1, 
-        cluster_columns = clust2, rect_gp = gpar(col = "darkgrey"), heatmap_legend_param = list(nrow = 1, 
-            title = "Diff"), show_column_dend = FALSE, show_row_dend = FALSE, 
-        row_names_gp = gpar(fontsize = 10))
-    
-    ann1 <- rowAnnotation(enrichmentRatio = anno_barplot(res[["enrichmentRatio"]], 
-        width = unit(3, "cm"), axis_param = list(direction = "reverse")))
-    ann2 <- rowAnnotation(FDR = anno_simple(-log10(res[["FDR"]]), col = pvalue_col_fun, 
-        pch = pch))
-    
-    total <- ann1 + ann2 + ht
-    
-    lgd_pvalue = Legend(title = "FDR", col_fun = pvalue_col_fun, at = c(0, 
-        1, 2), labels = c("0.1", "0.01", "0.001"), title_gp = gpar(fontsize = 8))
-    lgd_sig = Legend(pch = "*", type = "points", labels = "< 0.05", title_gp = gpar(fontsize = 8))
-    
-    return(draw(total, annotation_legend_list = list(lgd_pvalue, lgd_sig), 
-        merge_legends = TRUE, heatmap_legend_side = "right"))
-}
 ```
 
 # Export Data

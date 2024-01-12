@@ -1,7 +1,7 @@
 ---
 title: "Reactome analysis"
 author: "Ha M. Tran"
-date: "2023-12-07"
+date: "12-01-2024"
 editor_options: 
   chunk_output_type: console
 ---
@@ -58,6 +58,7 @@ dge <- readRDS(here::here("0_data/rds_objects/dge.rds"))
 # fc <- readRDS(here::here("0_data/rds_objects/fc.rds"))
 # fdr <- readRDS(here::here("0_data/rds_objects/fdr.rds"))
 lm <- readRDS(here::here("0_data/rds_objects/lm.rds"))
+lm_all <- readRDS(here::here("0_data/rds_objects/lm_all.rds"))
 lm_sig <- readRDS(here::here("0_data/rds_objects/lm_sig.rds"))
 Comp <- readRDS(here::here("0_data/rds_objects/comp.rds"))
 # to increase the knitting speed. change to T to save all plots
@@ -81,6 +82,11 @@ DT <- readRDS(here::here("0_data/functions/DT.rds"))
 convert_to_superscript <- readRDS(here::here("0_data/functions/convert_to_superscript.rds"))
 exponent <- readRDS(here::here("0_data/functions/exponent.rds"))
 format_y_axis <- readRDS(here::here("0_data/functions/format_y_axis.rds"))
+
+firstCap <- function(x) {
+  substr(x, 1, 1) <- toupper(substr(x, 1, 1))
+  x
+}
 ```
 
 # Reactome 
@@ -97,8 +103,7 @@ reactome=list()
 reactome_all=list()
 reactome_sig=list()
 for (name in Comp) {    
-  reactome[[name]] <- enrichPathway(gene = lm_sig[[name]]$entrezid, organism = "mouse", pvalueCutoff = 0.1, pAdjustMethod = "fdr",qvalueCutoff = 1, readable = T)
-  
+  reactome[[name]] <- enrichPathway(gene = lm_sig[[name]]$entrezid, universe = lm_all[[name]]$entrezid, organism = "mouse", pvalueCutoff = 0.1, pAdjustMethod = "fdr",qvalueCutoff = 1, readable = T)
   
 }
 
@@ -107,7 +112,7 @@ for (name in Comp) {
                                              replacement = "Regulation of IGF transport and uptake by IGFBPs", 
                                              x = reactome[[name]]@result$Description)
   
-  reactome[[name]]@result$Description <- reactome[[name]]@result$Description %>% str_to_sentence() %>% str_wrap(width = 45)
+  reactome[[name]]@result$Description <- reactome[[name]]@result$Description %>% firstCap() %>% str_wrap(width = 45)
   
   reactome_all[[name]] <- reactome[[name]]@result
   
