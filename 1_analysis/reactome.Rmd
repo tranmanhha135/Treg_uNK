@@ -62,7 +62,7 @@ lm_all <- readRDS(here::here("0_data/rds_objects/lm_all.rds"))
 lm_sig <- readRDS(here::here("0_data/rds_objects/lm_sig.rds"))
 Comp <- readRDS(here::here("0_data/rds_objects/comp.rds"))
 # to increase the knitting speed. change to T to save all plots
-savePlots <- F
+savePlots <- T
 export <- F
 ```
 
@@ -138,39 +138,48 @@ reactome_sig <- readRDS(here::here("0_data/rds_objects/reactome_sig.rds"))
 react_dot=list()
 react_tab = list()
 react_upset=list()
-for (i in 1:length(lm)) {
-  name <- names(lm)[i]
-  react_dot[[name]] <- reactome_all[[name]][1:20,] %>% 
-    separate(col = BgRatio, sep = "/", into = c("Total", "Universe")) %>%
-    dplyr::mutate(
-      Significant = ifelse(p.adjust <= 0.1, TRUE, FALSE),
-      GeneRatio = Count / as.numeric(Total)) %>% 
+for (name in Comp) {
+  # name <- names(lm)[i]
+  react_dot[[name]] <- reactome_sig[[name]] %>% 
     ggplot() +
-    geom_point(aes(x = GeneRatio, y = reorder(Description, GeneRatio), colour = Significant, size = Count)) +
-
-  scale_size(range = c(2,5)) +
-      labs(x = "Gene ratio", y = "", color = "Significant", size = "Gene Counts") +
-      bossTheme(base_size = 14,legend = "right")
+    geom_point(aes(x = GeneRatio, y = reorder(Description, GeneRatio), colour = logFDR, size = Count)) +
+    scale_color_gradientn(colors = rev(c("#FB8072","#FDB462","#ffffd5","#8DD3C7","#80B1D3")),
+                          values = scales::rescale(c(min(reactome_sig[[name]]$logFDR), max(reactome_sig[[name]]$logFDR))),
+                          breaks = scales::pretty_breaks(n = 5)) +
+    scale_size(range = c(2,5)) +
+    labs(x = "Gene ratio", y = "", color = expression("-log"[10] * "P value"), size = "Gene Counts") +
+    
+    bossTheme(base_size = 14,legend = "right")
 
   
   react_tab[[name]] <- reactome_sig[[name]] %>% 
-      dplyr::mutate_if(is.numeric, funs(as.character(signif(.,3)))) %>% 
-      DT(., caption = "Significantly enriched Reactome Pathways")
+    dplyr::mutate_if(is.numeric, funs(as.character(signif(.,3)))) %>% 
+    DT(., caption = "Significantly enriched Reactome Pathways")
   
   react_upset[[name]] <- upsetplot(x = reactome[[name]])
   
-  if(savePlots == TRUE) {
-      ggsave(filename = paste0("react_dot_", name, ".svg"), plot = react_dot[[name]], path = here::here("2_plots/3_FA/reactome/"),
-             width = 18, height = 16, units = "cm")
-      ggsave(filename = paste0("react_upset_", name, ".svg"), plot = react_upset[[name]], path = here::here("2_plots/3_FA/reactome/"), 
-             width = 20, height = 12, units = "cm")
-      
-    }
 }
 
-```
 
-For data exploratory purposes, the following visualisations are Reactome enrichment analysis performed with set of DE genes significantly below **FDR \< 0.1 or \< 0.05** with and without FC threshold (TREAT). **IMPORTANTLY**, significant Reactome pathways are significantly if FDR < 0.1
+react_dot[[2]] <- ggplot() +
+  theme_void() +
+  geom_text(aes(0,0,label='N/A')) +
+  xlab(NULL)
+
+for (name in Comp) {
+  
+  if(savePlots == TRUE) {
+    ggsave(filename = paste0("react_dot_", name, ".svg"), plot = react_dot[[name]], path = here::here("2_plots/3_FA/reactome/"),
+           width = 18, height = 16, units = "cm")
+    ggsave(filename = paste0("react_upset_", name, ".svg"), plot = react_upset[[name]], path = here::here("2_plots/3_FA/reactome/"), 
+           width = 20, height = 12, units = "cm")
+    
+  }
+}
+
+
+```
+The following visualisations are Reactome enrichment analysis performed with set of DE genes significantly below **FDR \< 0.1 ** without FC threshold (TREAT). **IMPORTANTLY**, significant Reactome pathways are significantly if FDR < 0.1
 
 -   **Dot plot:** illustrates the enriched Reactome pathways
 
@@ -192,8 +201,7 @@ kexpand <- function(wd, ht, cap) {
 
 
 # Loop through each FC value
-headers <- c("FC=none, FDR<0.1", "FC=none, FDR<0.05", "FC=1.1, FDR<0.1", 
-             "FC=1.1, FDR<0.05", "FC=1.2, FDR<0.1"  , "FC=1.2, FDR<0.05")
+headers <- Comp
 types <- c("Dot plot", "Table", "Upset plot")
 
 for (i in 1:length(headers)) {

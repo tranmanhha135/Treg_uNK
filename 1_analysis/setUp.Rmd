@@ -60,7 +60,7 @@ rawCount <- readRDS(here::here("0_data/rds_objects/rawCount.rds"))
 DT <- readRDS(here::here("0_data/functions/DT.rds"))
 
 # to increase the knitting speed. change to T to save all plots
-savePlots <- F
+savePlots <- T
 
 # Theme
 bossTheme <- readRDS(here::here("0_data/functions/bossTheme.rds"))

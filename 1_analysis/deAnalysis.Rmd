@@ -72,8 +72,8 @@ DGElist object containing the raw feature count, sample metadata, and gene metad
 dge <- readRDS(here::here("0_data/rds_objects/dge.rds"))
 
 # to increase the knitting speed. change to T to save all plots
-savePlots <- F
-export <- F
+savePlots <- T
+export <- T
 ```
 
 ```{r importFunctions}
@@ -713,15 +713,15 @@ heat_combined <- ComplexHeatmap::pheatmap(
     treeheight_col = 30,
     show_colnames = T,
     clustering_distance_rows = "euclidean",
-    main = paste0("Top ", nrow(logCPM_combined), " significant DEGs"),
+    # main = paste0("Top ", nrow(logCPM_combined), " significant DEGs"),
 
 
     legend = T,
 
-    heatmap_legend_param = list(title = "Expression Z-score",
-                                direction= "horizontal",
-                                # merge_legend = TRUE,
-                                legend_direction = "horizontal",
+    heatmap_legend_param = list(title = "Expression\nZ-score",
+                                direction= "vertical",
+                                merge_legend = T,
+                                legend_direction = "vertical",
                                 legend_width = unit(5, "cm")),
 
     # annotation = T,
@@ -732,15 +732,15 @@ heat_combined <- ComplexHeatmap::pheatmap(
     # annotation_legend_param = list(direction = "horizontal"),
 
     fontfamily = "Arial Narrow",
-    fontsize = 14,
-    fontsize_col = 14,
-    fontsize_number = 14,
-    fontsize_row = 14,
+    fontsize = 12,
+    fontsize_col = 12,
+    fontsize_number = 12,
+    fontsize_row = 12,
     labels_row = as.expression(lapply(rownames(logCPM_combined), function(a) bquote(italic(.(a)))))
   )
 
-draw(heat_combined, merge_legend = T, heatmap_legend_side = "bottom", 
-    annotation_legend_side = "bottom")
+draw(heat_combined, merge_legend = T, heatmap_legend_side = "right", 
+    annotation_legend_side = "right")
 
 if (savePlots == T) {
   svg(filename = here::here("2_plots/2_DE/heat_combined.svg"),width = 8,height = 12)
