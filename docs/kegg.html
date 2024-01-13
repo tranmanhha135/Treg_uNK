@@ -375,7 +375,16 @@ div.tocify {
     <li>
       <a href="kegg.html">KEGG</a>
     </li>
+    <li>
+      <a href="reactome.html">Reactome</a>
+    </li>
+    <li>
+      <a href="ipa.html">IPA</a>
+    </li>
   </ul>
+</li>
+<li>
+  <a href="extraFigs.html">Extra figures</a>
 </li>
       </ul>
       <ul class="nav navbar-nav navbar-right">
@@ -439,7 +448,7 @@ class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span>
 <div class="tab-content">
 <div id="summary" class="tab-pane fade in active">
 <p>
-<strong>Last updated:</strong> 2024-01-09
+<strong>Last updated:</strong> 2024-01-13
 </p>
 <p>
 <strong>Checks:</strong> <span
@@ -448,7 +457,7 @@ class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> 7
 aria-hidden="true"></span> 0
 </p>
 <p>
-<strong>Knit directory:</strong> <code>140_treg_uNK/1_analysis/</code>
+<strong>Knit directory:</strong> <code>4_Treg_uNK/1_analysis/</code>
 <span class="glyphicon glyphicon-question-sign" aria-hidden="true"
 title="This is the local directory in which the code in this file was executed.">
 </span>
@@ -570,15 +579,15 @@ project makes it easier to run your code on other machines.</p>
 <div class="panel panel-default">
 <div class="panel-heading">
 <p class="panel-title">
-<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRepositoryversionstrongahrefhttpsgithubcomtranmanhha135TreguNKtreec6d389fdf5eb43d638d31d9a9d6625aacfcca31ctargetblankc6d389fa">
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRepositoryversionstrongahrefhttpsgithubcomtranmanhha135TreguNKtreea957cffecc77bb00bb12bd564a9acf69ac763907targetblanka957cffa">
 <span class="glyphicon glyphicon-ok text-success"
 aria-hidden="true"></span> <strong>Repository version:</strong>
-<a href="https://github.com/tranmanhha135/Treg_uNK/tree/c6d389fdf5eb43d638d31d9a9d6625aacfcca31c" target="_blank">c6d389f</a>
+<a href="https://github.com/tranmanhha135/Treg_uNK/tree/a957cffecc77bb00bb12bd564a9acf69ac763907" target="_blank">a957cff</a>
 </a>
 </p>
 </div>
 <div
-id="strongRepositoryversionstrongahrefhttpsgithubcomtranmanhha135TreguNKtreec6d389fdf5eb43d638d31d9a9d6625aacfcca31ctargetblankc6d389fa"
+id="strongRepositoryversionstrongahrefhttpsgithubcomtranmanhha135TreguNKtreea957cffecc77bb00bb12bd564a9acf69ac763907targetblanka957cffa"
 class="panel-collapse collapse">
 <div class="panel-body">
 <p>
@@ -588,7 +597,7 @@ reproducibility.
 </p>
 <p>
 The results in this page were generated with repository version
-<a href="https://github.com/tranmanhha135/Treg_uNK/tree/c6d389fdf5eb43d638d31d9a9d6625aacfcca31c" target="_blank">c6d389f</a>.
+<a href="https://github.com/tranmanhha135/Treg_uNK/tree/a957cffecc77bb00bb12bd564a9acf69ac763907" target="_blank">a957cff</a>.
 See the <em>Past versions</em> tab to see a history of the changes made
 to the R Markdown and HTML files.
 </p>
@@ -604,39 +613,77 @@ were generated:
 <pre><code>
 Ignored files:
     Ignored:    .Rproj.user/
-    Ignored:    2_plots/3_FA/
-    Ignored:    2_plots/4_GSEA/
 
 Untracked files:
     Untracked:  .gitignore
-    Untracked:  0_data/rds_objects/comp.rds
-    Untracked:  0_data/rds_objects/enrichGO.rds
-    Untracked:  0_data/rds_objects/enrichGO_sig.rds
-    Untracked:  0_data/rds_objects/enrichKEGG.rds
-    Untracked:  0_data/rds_objects/enrichKEGG_all.rds
-    Untracked:  0_data/rds_objects/enrichKEGG_sig.rds
-    Untracked:  0_data/rds_objects/pathway_details.rds
-    Untracked:  0_data/rds_objects/reducedTerms_ora.rds
-    Untracked:  0_data/rds_objects/scores_ora.rds
-    Untracked:  0_data/rds_objects/simMatrix_ora.rds
-    Untracked:  3_output/GO_sig.xlsx
-    Untracked:  3_output/KEGG_all.xlsx
-    Untracked:  3_output/KEGG_sig.xlsx
-    Untracked:  functions.Rmd
-    Untracked:  gsea.Rmd
-    Untracked:  ipa.Rmd
-    Untracked:  reactome.Rmd
+    Untracked:  0_data/rds_objects/reactome.rds
+    Untracked:  0_data/rds_objects/reactome_all.rds
+    Untracked:  0_data/rds_objects/reactome_sig.rds
+    Untracked:  2_plots/3_FA/kegg/combine_kegg_dot.svg
+    Untracked:  2_plots/3_FA/kegg/heat_DT vs PBS_Antigen processing and presentation.svg
+    Untracked:  2_plots/3_FA/kegg/heat_DT vs PBS_Natural killer cell mediated cytotoxicity.svg
+    Untracked:  2_plots/3_FA/kegg/heat_DT vs PBS_Phagosome.svg
+    Untracked:  2_plots/3_FA/kegg/heat_DT vs PBS_Th1 and Th2 cell differentiation.svg
+    Untracked:  2_plots/3_FA/kegg/heat_Treg vs DT_Antigen processing and presentation.svg
+    Untracked:  2_plots/3_FA/kegg/heat_Treg vs DT_Natural killer cell mediated cytotoxicity.svg
+    Untracked:  2_plots/3_FA/kegg/heat_Treg vs DT_Phagosome.svg
+    Untracked:  2_plots/3_FA/kegg/heat_Treg vs DT_Th1 and Th2 cell differentiation.svg
+    Untracked:  2_plots/3_FA/kegg/heat_Treg vs PBS_Antigen processing and presentation.svg
+    Untracked:  2_plots/3_FA/kegg/heat_Treg vs PBS_Natural killer cell mediated cytotoxicity.svg
+    Untracked:  2_plots/3_FA/kegg/heat_Treg vs PBS_Phagosome.svg
+    Untracked:  2_plots/3_FA/kegg/heat_Treg vs PBS_Th1 and Th2 cell differentiation.svg
+    Untracked:  2_plots/3_FA/kegg/kegg_dot_DT vs PBS.svg
+    Untracked:  2_plots/3_FA/kegg/kegg_dot_Treg vs DT.svg
+    Untracked:  2_plots/3_FA/kegg/kegg_dot_Treg vs PBS.svg
+    Untracked:  2_plots/3_FA/kegg/kegg_upset_DT vs PBS.svg
+    Untracked:  2_plots/3_FA/kegg/kegg_upset_Treg vs DT.svg
+    Untracked:  2_plots/3_FA/kegg/kegg_upset_Treg vs PBS.svg
+    Untracked:  2_plots/3_FA/reactome/
+    Untracked:  2_plots/functionalHeat.svg
+    Untracked:  2_plots/functionalHeat_DT vs PBS.svg
+    Untracked:  2_plots/functionalHeat_Treg vs DT.svg
+    Untracked:  2_plots/functionalHeat_legend.svg
 
 Unstaged changes:
+    Modified:   0_data/rds_objects/comp.rds
+    Modified:   0_data/rds_objects/dge.rds
+    Modified:   0_data/rds_objects/enrichGO.rds
+    Modified:   0_data/rds_objects/enrichGO_sig.rds
+    Modified:   0_data/rds_objects/enrichKEGG.rds
+    Modified:   0_data/rds_objects/enrichKEGG_all.rds
+    Modified:   0_data/rds_objects/enrichKEGG_sig.rds
     Modified:   0_data/rds_objects/lm.rds
+    Modified:   0_data/rds_objects/lm_all.rds
+    Modified:   0_data/rds_objects/lm_sig.rds
     Modified:   1_analysis/_site.yml
-    Deleted:    1_analysis/functions.Rmd
     Deleted:    1_analysis/gsea.Rmd
-    Deleted:    1_analysis/ipa.Rmd
-    Deleted:    1_analysis/reactome.Rmd
-    Modified:   2_plots/1_QC/PC1_PC2.svg
-    Modified:   2_plots/1_QC/PC1_PC3.svg
-    Modified:   2_plots/1_QC/PC2_PC3.svg
+    Modified:   2_plots/1_QC/counts_after_filtering.svg
+    Modified:   2_plots/1_QC/counts_before_after_filtering.svg
+    Modified:   2_plots/1_QC/counts_before_filtering.svg
+    Modified:   2_plots/1_QC/library_size.svg
+    Modified:   2_plots/2_DE/heat_DT vs PBS.svg
+    Modified:   2_plots/2_DE/heat_Treg vs DT.svg
+    Modified:   2_plots/2_DE/heat_Treg vs PBS.svg
+    Modified:   2_plots/2_DE/heat_combined.svg
+    Modified:   2_plots/2_DE/hist_DT vs PBS.svg
+    Modified:   2_plots/2_DE/hist_Treg vs DT.svg
+    Modified:   2_plots/2_DE/hist_Treg vs PBS.svg
+    Modified:   2_plots/2_DE/ma_DT vs PBS.png
+    Modified:   2_plots/2_DE/ma_Treg vs DT.png
+    Modified:   2_plots/2_DE/ma_Treg vs PBS.png
+    Modified:   2_plots/2_DE/venn.png
+    Modified:   2_plots/2_DE/vol_DT vs PBS.png
+    Modified:   2_plots/2_DE/vol_Treg vs DT.png
+    Modified:   2_plots/2_DE/vol_Treg vs PBS.png
+    Modified:   2_plots/3_FA/kegg/venn.png
+    Modified:   2_plots/sampleHeat.svg
+    Modified:   3_output/GO_sig.xlsx
+    Modified:   3_output/KEGG_all.xlsx
+    Modified:   3_output/KEGG_sig.xlsx
+    Modified:   3_output/de_genes_all.xlsx
+    Modified:   3_output/de_genes_sig.xlsx
+    Modified:   3_output/reactome_all.xlsx
+    Modified:   3_output/reactome_sig.xlsx
 
 </code></pre>
 <p>
@@ -681,6 +728,74 @@ Message
 </tr>
 </thead>
 <tbody>
+<tr>
+<td>
+Rmd
+</td>
+<td>
+<a href="https://github.com/tranmanhha135/Treg_uNK/blob/a957cffecc77bb00bb12bd564a9acf69ac763907/1_analysis/kegg.Rmd" target="_blank">a957cff</a>
+</td>
+<td>
+Ha Manh Tran
+</td>
+<td>
+2024-01-13
+</td>
+<td>
+workflowr::wflow_publish(here::here("1_analysis/*Rmd"))
+</td>
+</tr>
+<tr>
+<td>
+Rmd
+</td>
+<td>
+<a href="https://github.com/tranmanhha135/Treg_uNK/blob/c78dfac2aad574f5112c4ea94ad08fa6d760c9ca/1_analysis/kegg.Rmd" target="_blank">c78dfac</a>
+</td>
+<td>
+tranmanhha135
+</td>
+<td>
+2024-01-12
+</td>
+<td>
+remote from ipad
+</td>
+</tr>
+<tr>
+<td>
+Rmd
+</td>
+<td>
+<a href="https://github.com/tranmanhha135/Treg_uNK/blob/221e2fa3c26fec7be64f95a93cb9e5a0d0441924/1_analysis/kegg.Rmd" target="_blank">221e2fa</a>
+</td>
+<td>
+tranmanhha135
+</td>
+<td>
+2024-01-10
+</td>
+<td>
+fixed error
+</td>
+</tr>
+<tr>
+<td>
+html
+</td>
+<td>
+<a href="https://rawcdn.githack.com/tranmanhha135/Treg_uNK/762020e5b1bc3664ab92da69ebba8ad38169515d/docs/kegg.html" target="_blank">762020e</a>
+</td>
+<td>
+tranmanhha135
+</td>
+<td>
+2024-01-09
+</td>
+<td>
+Build site.
+</td>
+</tr>
 <tr>
 <td>
 Rmd
@@ -732,6 +847,7 @@ library(tidyverse)
 library(KEGGREST)
 library(data.table)
 library(KEGGREST)
+library(VennDiagram)
 # Visualisation:
 library(kableExtra)
 library(ggplot2)
@@ -816,12 +932,11 @@ Progesterone-mediated oocyte maturation &amp; etc.)</li>
 </details>
 <div id="visualisation" class="section level2 tabset tabset-pills">
 <h2 class="tabset tabset-pills">Visualisation</h2>
-<p>For data exploratory purposes, the following visualisations are KEGG
-enrichment analysis performed with set of DE genes significantly below
-<strong>FDR &lt; 0.1 or &lt; 0.05</strong> with and without FC threshold
-(TREAT). <strong>IMPORTANTLY</strong>, these KEGG terms are all
-significantly enriched but only with P-value &lt; 0.05 and no P-value
-correction method.</p>
+<p>The following visualisations are KEGG enrichment analysis performed
+with set of DE genes significantly below <strong>FDR &lt; 0.1</strong>
+without FC threshold (TREAT). <strong>IMPORTANTLY</strong>, these KEGG
+terms are all significantly enriched but only with P-value &lt; 0.05 and
+no P-value correction method.</p>
 <ul>
 <li><p><strong>Dot plot:</strong> illustrates the top 7 enriched KEGG
 pathways</p>
@@ -843,20 +958,94 @@ different pathways</p></li>
 <p><strong>I recommend reading through the full list of significant KEGG
 pathways and selecting the most biologically relevant for better
 visualisation</strong></p>
-<div id="fcnone-fdr0.1" class="section level3 tabset tabset-pills">
-<h3 class="tabset tabset-pills">FC=none, FDR&lt;0.1</h3>
+<div id="dt-vs-pbs" class="section level3 tabset tabset-pills">
+<h3 class="tabset tabset-pills">DT vs PBS</h3>
 <div id="dot-plot" class="section level4">
 <h4>Dot plot</h4>
 <p><img src="figure/kegg.Rmd/kegg_dot-1.png" width="672" style="display: block; margin: auto;" /></p>
+<p>
+<button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-kegg_dot-1">
+Past versions of kegg_dot-1.png
+</button>
+</p>
+<div id="fig-kegg_dot-1" class="collapse">
+<div class="table-responsive">
+<table class="table table-condensed table-hover">
+<thead>
+<tr>
+<th>
+Version
+</th>
+<th>
+Author
+</th>
+<th>
+Date
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>
+<a href="https://github.com/tranmanhha135/Treg_uNK/blob/762020e5b1bc3664ab92da69ebba8ad38169515d/docs/figure/kegg.Rmd/kegg_dot-1.png" target="_blank">762020e</a>
+</td>
+<td>
+tranmanhha135
+</td>
+<td>
+2024-01-09
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
 </div>
 <div id="table" class="section level4">
 <h4>Table</h4>
 <div class="datatables html-widget html-fill-item" id="htmlwidget-8d32cfd9db97395c4a5f" style="width:100%;height:auto;"></div>
-<script type="application/json" data-for="htmlwidget-8d32cfd9db97395c4a5f">{"x":{"filter":"none","vertical":false,"extensions":["Buttons"],"caption":"<caption>Significantly enriched KEGG terms<\/caption>","data":[["mmu04612","mmu04610","mmu04514","mmu05169","mmu04978","mmu05416","mmu04145","mmu04142","mmu05166","mmu05323","mmu04974","mmu04512","mmu05340","mmu04964","mmu04670","mmu05133","mmu05162","mmu04650","mmu04933","mmu05330","mmu05332","mmu04940","mmu04210","mmu04621"],["Antigen processing and presentation","Complement and coagulation cascades","Cell adhesion molecules","Epstein-barr virus infection","Mineral absorption","Viral myocarditis","Phagosome","Lysosome","Human t-cell leukemia virus 1 infection","Rheumatoid arthritis","Protein digestion and absorption","Ecm-receptor interaction","Primary immunodeficiency","Proximal tubule bicarbonate reclamation","Leukocyte transendothelial migration","Pertussis","Measles","Natural killer cell mediated cytotoxicity","Age-rage signaling pathway in diabetic\ncomplications","Allograft rejection","Graft-versus-host disease","Type i diabetes mellitus","Apoptosis","Nod-like receptor signaling pathway"],["0.115","0.106","0.0778","0.0702","0.13","0.0978","0.0726","0.0815","0.0607","0.092","0.0833","0.0899","0.139","0.182","0.0756","0.0909","0.069","0.0738","0.0792","0.1","0.1","0.0896","0.0662","0.0556"],["5.32e-05","0.000103","0.000146","0.000165","0.00034","0.000432","0.000488","0.000505","0.0012","0.00135","0.00138","0.00156","0.00179","0.00188","0.00271","0.00286","0.00315","0.00321","0.00348","0.00352","0.00352","0.00608","0.00654","0.00735"],["4.27","3.99","3.84","3.78","3.47","3.36","3.31","3.3","2.92","2.87","2.86","2.81","2.75","2.73","2.57","2.54","2.5","2.49","2.46","2.45","2.45","2.22","2.18","2.13"],["5.32e-05","0.000103","0.000146","0.000165","0.00034","0.000432","0.000488","0.000505","0.0012","0.00135","0.00138","0.00156","0.00179","0.00188","0.00271","0.00286","0.00315","0.00321","0.00348","0.00352","0.00352","0.00608","0.00654","0.00735"],["0.0101","0.0101","0.0101","0.0101","0.0154","0.0154","0.0154","0.0154","0.0307","0.0307","0.0307","0.0318","0.0327","0.0327","0.0409","0.0409","0.0409","0.0409","0.0409","0.0409","0.0409","0.0675","0.0694","0.0748"],["H2-Q4/Tap1/B2m/H2-K1/Tap2/H2-D1/H2-T23/Hspa1b/Psme1/Psme2","C2/Serping1/Clu/F3/Kng2/Cd55/C1s1/Itgb2l/Serpina1e/C1ra","H2-Q4/H2-K1/H2-D1/Cldn3/Nrxn2/Cldn7/Vcam1/H2-T23/Icam1/Ptprc/Cdh1/Spn/Itgb2l/Cdh5","H2-Q4/Tap1/B2m/H2-K1/Stat2/Tap2/Stat1/H2-D1/Oas2/Irf7/H2-T23/Icam1/Runx3/Oas1a/Gadd45a/Bcl2l11","Trpv6/Atp1a3/Trpm6/Atp1a2/Vdr/Mt2/Mt1","H2-Q4/H2-K1/H2-D1/Cd55/H2-T23/Icam1/Itgb2l/Rac2/Prf1","H2-Q4/Tap1/H2-K1/Olr1/Tap2/H2-D1/H2-T23/Atp6v0a4/Itgb2l/Lamp1/C1ra/Sftpd/Atp6v1g2","Cln5/Laptm5/Ap1m2/Ctsg/Ctsc/Ctsk/Atp6v0a4/Lamp1/Cd63/Napsa/Abca2","H2-Q4/B2m/H2-K1/Tgfb2/H2-D1/Il15ra/Fosl1/H2-T23/Ets2/Il2rb/Icam1/Tgfbr2/Itgb2l/Fos/Il2rg","Tgfb2/Ctsk/Icam1/Csf1/Atp6v0a4/Itgb2l/Fos/Atp6v1g2","Col24a1/Col4a6/Col4a5/Col6a4/Col6a3/Col7a1/Atp1a3/Atp1a2/Kcnq1","Col4a6/Hspg2/Col4a5/Col6a4/Col6a3/Lamb1/Itga7/Sv2b","Tap1/Tap2/Zap70/Ptprc/Il2rg","Car4/Atp1a3/Atp1a2/Pck1","Cldn3/Cldn7/Vcam1/Thy1/Icam1/Itgb2l/Cdh5/Rac2/Msn","C2/Serping1/Irf8/C1s1/Itgb2l/C1ra/Fos","Stat2/Stat1/Oas2/Irf7/Il2rb/Hspa1b/Oas1a/Fos/Il2rg/Msn","H2-K1/H2-D1/Zap70/H2-T23/Icam1/Itgb2l/Rac2/Gzmb/Prf1","Stat1/Tgfb2/F3/Col4a6/Vcam1/Col4a5/Icam1/Tgfbr2","H2-Q4/H2-K1/H2-D1/H2-T23/Gzmb/Prf1","H2-Q4/H2-K1/H2-D1/H2-T23/Gzmb/Prf1","H2-Q4/H2-K1/H2-D1/H2-T23/Gzmb/Prf1","Parp3/Ctsc/Ctsk/Il3ra/Gadd45a/Bcl2l11/Fos/Gzmb/Prf1","Stat2/Gbp2/Stat1/Casr/Oas2/Gbp3/Irf7/Irgm2/Irgm1/Oas1a/Gpsm3/Pstpip1"],["10","10","14","16","7","9","13","11","15","8","9","8","5","4","9","7","10","9","8","6","6","6","9","12"],["Organismal Systems; Immune system","Organismal Systems; Immune system","Environmental Information Processing; Signaling molecules and interaction","Human Diseases; Infectious disease: viral","Organismal Systems; Digestive system","Human Diseases; Cardiovascular disease","Cellular Processes; Transport and catabolism","Cellular Processes; Transport and catabolism","Human Diseases; Infectious disease: viral","Human Diseases; Immune disease","Organismal Systems; Digestive system","Environmental Information Processing; Signaling molecules and interaction","Human Diseases; Immune disease","Organismal Systems; Excretory system","Organismal Systems; Immune system","Human Diseases; Infectious disease: bacterial","Human Diseases; Infectious disease: viral","Organismal Systems; Immune system","Human Diseases; Endocrine and metabolic disease","Human Diseases; Immune disease","Human Diseases; Immune disease","Human Diseases; Endocrine and metabolic disease","Cellular Processes; Cell growth and death","Organismal Systems; Immune system"],[null,"The complement system is a proteolytic cascade in blood plasma and a mediator of innate immunity, a nonspecific defense mechanism against pathogens. There are three pathways of complement activation: the classical pathway, the lectin pathway, and the alternative pathway. All of these pathways generate a crucial enzymatic activity that, in turn, generates the effector molecules of complement. The main consequences of complement activation are the opsonization of pathogens, the recruitment of inflammatory and immunocompetent cells, and the direct killing of pathogens. Blood coagulation is another series of proenzyme-to-serine protease conversions, culminating the formation of thrombin, the enzyme responsible for the conversion of soluble fibrinogen to the insoluble fibrin clot. Protease-activated receptors, such as those activated by thrombin, are members of G protein-coupled receptors and function as a mediator of innate immunity. The kallikrein-kinin system is an endogenous metabolic cascade, triggering of which results in the release of vasoactive kinins (bradykinin-related peptides). Kinin peptides are implicated in many physiological and pathological processes including the regulation of blood pressure and sodium homeostasis, inflammatory processes, and the cardioprotective effects of preconditioning.","Cell adhesion molecules (CAMs) are (glyco)proteins expressed on the cell surface and play a critical role in a wide array of biologic processes that include hemostasis, the immune response, inflammation, embryogenesis, and development of neuronal tissue. There are four main groups: the integrin family, the immunoglobulin superfamily, selectins, and cadherins. Membrane proteins that mediate immune cell&amp;#8211;cell interactions fall into different categories, namely those involved in antigen recognition, costimulation and cellular adhesion. Furthermore cell-cell adhesions are important for brain morphology and highly coordinated brain functions such as memory and learning. During early development of the nervous system, neurons elongate their axons towards their targets and establish and maintain synapses through formation of cell-cell adhesions. Cell-cell adhesions also underpin axon-axon contacts and link neurons with supporting schwann cells and oligodendrocytes.","Epstein-Barr virus (EBV) is a gamma-herpes virus that widely infects human populations predominantly at an early age but remains mostly asymptomatic. EBV has been linked to a wide spectrum of human malignancies, including nasopharyngeal carcinoma and other hematologic cancers, like Hodgkin's lymphoma, Burkitt's lymphoma (BL), B-cell immunoblastic lymphoma in HIV patients, and posttransplant-associated lymphoproliferative diseases.  EBV has the unique ability to establish life-long latent infection in primary human B lymphocytes. During latent infection, EBV expresses a small subset of genes, including 6 nuclear antigens (EBNA-1, -2, -3A, -3B, -3C, and -LP), 3 latent membrane proteins (LMP-1, -2A, and -2B), 2 small noncoding RNAs (EBER-1 and 2). On the basis of these latent gene expression, three different latency patterns associated with the types of cancers are recognized.","Minerals are one of the five fundamental groups of nutrients needed to sustain life. Of the minerals, calcium plays innumerable roles in our bodies, serving as a main component of bone as well as an intracellular messenger in muscle contraction/relaxation, neural networks, the immune system, and endocrine/exocrine cells. Iron, copper, and other metals are required for redox reactions (as cofactors) and for oxygen transport and binding (in hemoglobin and myoglobin). Many enzymes require specific metal atoms to complete their catalytic functions. Animal tissues need moderate quantities of some elements (Ca, P, K, Na, Mg, S, and Cl) and trace amounts of others (Mn, Fe, I, Co, Cr, Cu, Zn, and Se). The minerals are absorbed by either passive or active transport systems through the intestinal mucosa, often using specialized transport proteins, such as ferritin for Fe3+ and vitamin D-induced protein for calcium.","Myocarditis is a cardiac disease associated with inflammation and injury of the myocardium. It results from various etiologies, both noninfectious and infectious, but coxsackievirus B3 (CVB3) is still considered the dominant etiological agent. Myocarditis may be caused by direct cytopathic effects of virus, a pathologic immune response to persistent virus, or autoimmunity triggered by the viral infection. The virus enters the myocyte through internalization of the coxsackie-adenoviral receptor (CAR) and its coreceptor, decay-accelerating factor (DAF). Viral proteases cleave various proteins in the host cell. One example is viral protease 2A, which cleaves eukaryote initiation factor 4G (eIF4G) and the dystrophin protein, resulting in a complete shutdown of cap-dependent RNA translation and cytoskeletal destruction in infected cardiomyocytes, respectively. CVB3 also cleaves the member of the Bcl-2 family Bid, leading to apoptosis. CVB3 infection also induces the cleavage of cyclin D protein through a proteasome-dependent pathway, leading to the host cell-growth arrest. Viral infection and necrosis of myocytes may lead to the release of intracellular antigens, resulting in activation of self-reactive T cells. CVB infection is a significant cause of dilated cardiomyopathy (DCM) as well as myocarditis. Epidemiologically, myocarditis underlies a significant portion of patients with DCM.","Phagocytosis is the process of taking in relatively large particles by a cell, and is a central mechanism in the tissue remodeling, inflammation, and defense against infectious agents. A phagosome is formed when the specific receptors on the phagocyte surface recognize ligands on the particle surface. After formation, nascent phagosomes progressively acquire digestive characteristics. This maturation of phagosomes involves regulated interaction with the other membrane organelles, including recycling endosomes, late endosomes and lysosomes. The fusion of phagosomes and lysosomes releases toxic products that kill most bacteria and degrade them into fragments. However, some bacteria have strategies to escape the bactericidal mechanisms associated with phagocytosis and survive within host phagocytes.","Lysosomes are membrane-delimited organelles in animal cells serving as the cell's main digestive compartment to which all sorts of macromolecules are delivered for degradation. They contain more than 40 hydrolases in an acidic environment (pH of about 5). After synthesis in the ER, lysosomal enzymes are decorated with mannose-6-phosphate residues, which are recognized by mannose-6-phosphate receptors in the trans-Golgi network. They are packaged into clathrin-coated vesicles and are transported to late endosomes. Substances for digestion are acquired by the lysosomes via a series of processes including endocytosis, phagocytosis, and autophagy.","Human T-cell leukemia virus type 1 (HTLV-1) is a pathogenic retrovirus that is associated with adult T-cell leukemia/lymphoma (ATL). It is also strongly implicated in non-neoplastic chronic inflammatory diseases such as HTLV-1-associated myelopathy/tropical spastic paraparesis (HAM/TSP). Expression of Tax, a viral regulatory protein is critical to the pathogenesis. Tax is a transcriptional co-factor that interfere several signaling pathways related to anti-apoptosis or cell proliferation. The modulation of the signaling by Tax involve its binding to transcription factors like CREB/ATF, NF-kappa B, and SRF.","Rheumatoid arthritis (RA) is a chronic autoimmune joint disease where persistent inflammation affects bone remodeling leading to progressive bone destruction. In RA, abnormal activation of the immune system elevates pro-inflammatory cytokines and chemokines levels, which can promote synovial angiogenesis and leukocyte infiltration. The synovium forms a hyperplastic pannus with infiltrated macrophage-like and fibroblast-like synoviocytes and invades joints by secreting proteinases and inducing osteoclast differentiation.","Protein is a dietary component essential for nutritional homeostasis in humans. Normally, ingested protein undergoes a complex series of degradative processes following the action of gastric, pancreatic and small intestinal enzymes. The result of this proteolytic activity is a mixture of amino acids and small peptides. Amino acids (AAs) are transported into the enterocyte (intestinal epithelial cell) by a variety of AA transporters that are specific for cationic (basic) AA, neutral AA, and anionic (acidic) AA. Small peptides are absorbed into enterocytes by the PEPT1 transporter. Inside enterocytes peptides are hydrolyzed, and the resulting amino acids are released together with those absorbed by AA transporters into blood via multiple, basolateral, AA transporters. Hydrolysis-resistant peptides, however, are transported out of the cells by a basolateral peptide transporter that has not been identified molecularly.","The extracellular matrix (ECM) consists of a complex mixture of structural and functional macromolecules and serves an important role in tissue and organ morphogenesis and in the maintenance of cell and tissue structure and function. Specific interactions between cells and the ECM are mediated by transmembrane molecules, mainly integrins and perhaps also proteoglycans, CD36, or other cell-surface-associated components. These interactions lead to a direct or indirect control of cellular activities such as adhesion, migration, differentiation, proliferation, and apoptosis. In addition, integrins function as mechanoreceptors and provide a force-transmitting physical link between the ECM and the cytoskeleton. Integrins are a family of glycosylated, heterodimeric transmembrane adhesion receptors that consist of noncovalently bound alpha- and beta-subunits.","Primary immunodeficiencies (PIs) are a heterogeneous group of disorders, which affect cellular and humoral immunity or non-specific host defense mechanisms mediated by complement proteins, and cells such as phagocytes and natural killer (NK) cells. These disorders of the immune system cause increased susceptibility to infection, autoimmune disease, and malignancy. Most of PIs are due to genetic defects that affect cell maturation or function at different levels during hematopoiesis. Disruption of the cellular immunity is observed in patients with defects in T cells or both T and B cells. These cellular immunodeficiencies comprise 20% of all PIs. Disorders of humoral immunity affect B-cell differentiation and antibody production. They account for 70% of all PIs.","One of the major tasks of the renal proximal tubule (PT) is to secrete acid into the tubule lumen, thereby reabsorbing approximately 80% of the filtered bicarbonate (HCO3(-)), as well as generating \"new HCO3(-)\" for regulating blood pH. In the tubular lumen, filtered HCO3(-) combines with H(+) in a reaction catalyzed by CA IV. The CO2 thus produced rapidly diffuses into the tubular cells and is combined with water to produce intracellular H(+) and HCO3(-), catalyzed by soluble cytoplasmic CA II. HCO3(-) is then cotransported with Na(+) into blood via the NBC-1. The intracellular H(+) produced by CA II is secreted into the tubular lumen predominantly via the NHE-3. The PT creates the \"new HCO3(-)\" by taking glutamine and metabolizing it to two molecules each of NH4(+) and HCO3(-). The NH4(+) is excreted into the tubular lumen, and the HCO3(-) , which is \"new HCO3(-) ,\" is returned to the blood, where it replaces the HCO3(-) lost earlier in the titration of nonvolatile acids.","Leukocyte migaration from the blood into tissues is vital for immune surveillance and inflammation. During this diapedesis of leukocytes, the leukocytes bind to endothelial cell adhesion molecules (CAM) and then migrate across the vascular endothelium. A leukocyte adherent to CAMs on the endothelial cells moves forward by leading-edge protrusion and retraction of its tail. In this process, alphaL /beta2 integrin activates through Vav1, RhoA, which subsequently activates the kinase p160ROCK. ROCK activation leads to MLC phosphorylation, resulting in retraction of the actin cytoskeleton. Moreover, Leukocytes activate endothelial cell signals that stimulate endothelial cell retraction during localized dissociation of the endothelial cell junctions. ICAM-1-mediated signals activate an endothelial cell calcium flux and PKC, which are required for ICAM-1 dependent leukocyte migration. VCAM-1 is involved in the opening of the \"endothelial passage\" through which leukocytes can extravasate. In this regard, VCAM-1 ligation induces NADPH oxidase activation and the production of reactive oxygen species (ROS) in a Rac-mediated manner, with subsequent activation of matrix metallopoteinases and loss of VE-cadherin-mediated adhesion.","Pertussis, also known as whooping cough, is an acute respiratory infectious disease caused by a bacteria called Bordetella Pertussis. The characteristic symptoms are paroxysmal cough, inspiratory wheezing and post-tussive vomiting., Following the inhalation of respiratory secretions from an infected individual, bacteria enter the upper respiratory tract and adhere to epithelial cells. Several adhesion factors have been implicated: the filamentous hemagglutinin (FHA), fimbriae, and pertactin (Prn)., Pertussis toxin (Ptx) and adenylate cyclase toxin (ACT) have been identified so far as major protein toxins of B. pertussis. PTX is a hexameric AB5-type exotoxin. Catalytic A subunit catalyzes the ADP-ribosylation of the Gi subunits of the heterotrimeric G protein, then inhibits multiple downstream pathways. ACT is able to penetrate the cytoplasmic membrane of host cells and becomes activated through the cleavage and the binding of calmodulin (CaM). Activated ACT converts ATP to cyclic AMP and subverts cellular signaling pathways.","Measles virus (MV) is highly contagious virus that leads infant death worldwide. Humans are the unique natural reservoir for this virus. MV infection is characterized by virus-induced immune suppression that can lead to increased susceptibility to secondary bacterial and viral infections. The P, V and C proteins act as virulence factors to suppress innate immune response in host by inhibiting signaling for both type I IFN induction and JAK/STAT-mediated interferon-stimulated gene (ISG) induction. Moreover,  H protein expressed on viral particles and binding to SLAM or CD46,  as well as N protein liberated from infected cells and interacting with Fc-gamma R, causes an inhibition of IL-12 synthesis in dendritic cells. IL-12 is a key cytokine inducing cellular immune responses to protect host from the harm caused by pathogenic infections.","Natural killer (NK) cells are lymphocytes of the innate immune system that are involved in early defenses against both allogeneic (nonself) cells and autologous cells undergoing various forms of stress, such as infection with viruses, bacteria, or parasites or malignant transformation. Although NK cells do not express classical antigen receptors of the immunoglobulin gene family, such as the antibodies produced by B cells or the T cell receptor expressed by T cells, they are equipped with various receptors whose engagement allows them to discriminate between target and nontarget cells. Activating receptors bind ligands on the target cell surface and trigger NK cell activation and target cell lysis. However Inhibitory receptors recognize MHC class I molecules (HLA) and inhibit killing by NK cells by overruling the actions of the activating receptors. This inhibitory signal is lost when the target cells do not express MHC class I and perhaps also in cells infected with virus, which might inhibit MHC class I exprssion or alter its conformation. The mechanism of NK cell killing is the same as that used by the cytotoxic T cells generated in an adaptive immune response; cytotoxic granules are released onto the surface of the bound target cell, and the effector proteins they contain penetrate the cell membrane and induce programmed cell death.","Advanced glycation end products (AGEs) are a complex group of compounds produced through the non-enzymatic glycation and oxidation of proteins, lipids and nucleic acids, primarily due to aging and under certain pathologic condition such as huperglycemia. Some of the best chemically characterized AGEs include N-epsilon-carboxy-methyl-lysine (CML), N-epsilon-carboxy-ethyl-lysine (CEL), and Imidazolone. The major receptor for AGEs, known as receptor for advanced glycation end products (RAGE or AGER), belongs to the immunoglobulin superfamily and has been described as a pattern recognition receptor. AGE/RAGE signaling elicits activation of multiple intracellular signal pathways involving NADPH oxidase, protein kinase C, and MAPKs, then resulting in NF-kappaB activity. NF-kappa B promotes the expression of pro-inflammatory cytokines such as IL-1, IL-6 and TNF-alpha and a variety of atherosclerosis-related genes, including VCAM-1, tissue factor, VEGF, and RAGE. In addition, JAK-STAT-mediated and PI3K-Akt-dependent pathways are induced via RAGE, which in turn participate in cell proliferation and apoptosis respectively. Hypoxia-mediated induction of Egr-1 was also shown to require the AGE-RAGE interaction. The results of these signal transductions have been reported to be the possible mechanism that initates diabetic complications.","Allograft rejection is the consequence of the recipient's alloimmune response to nonself antigens expressed by donor tissues. After transplantation of organ allografts, there are two pathways of antigen presentation. In the direct pathway, recipient T cells react to intact allogeneic MHC molecules expressed on the surface of donor cells. This pathway would activate host CD4 or CD8 T cells. In contrast, donor MHC molecules (and all other proteins) shed from the graft can be taken up by host APCs and presented to recipient T cells in the context of self-MHC molecules - the indirect pathway. Such presentation activates predominantly CD4 T cells. A direct cytotoxic T-cell attack on graft cells can be made only by T cells that recognize the graft MHC molecules directly. Nontheless, T cells with indirect allospecificity can contribute to graft rejection by activating macrophages, which cause tissue injury and fibrosis, and are also likely to be important in the development of an alloantibody response to graft.","Graft-versus-host disease (GVHD) is a lethal complication of allogeneic hematopoietic stem cell transplantation (HSCT) where immunocompetent donor T cells attack the genetically disparate host cells. GVHD pathophysiology can be summerized in a three-step process. Step 1 involves the development of an inflammatory milieu resulting from damage in the host tissues induced by the preparative chemotherapy or radiotherapy regimen. Damaged tissues secrete inflammatory cytokines, including interleukin 1 (IL-1), and tumor necrosis factor (TNF-alpha ). During step 2, antigen-presenting cells (APCs) trigger the activation of donor-derived T cells, which induce further T-cell expansion, induce cytotoxic T lymphocytes (CTL) and natural killer (NK) cells responses and prime additional mononuclear phagocytes to produce TNF-alpha and IL-1. Also, nitric oxide (NO) is produced by activated macrophages, and it may contribute to the tissue damage seen during step 3. During step 3, the effector phase, activated CTL and NK cells mediate cytotoxicity against target host cells through Fas-Fas ligand interactions and perforin-granzyme B.","Type I diabetes mellitus is a disease that results from autoimmune destruction of the insulin-producing beta-cells. Certain beta-cell proteins act as autoantigens after being processed by antigen-presenting cell (APC), such as macrophages and dendritic cells, and presented in a complex with MHC-II molecules on the surface of the APC. Then immunogenic signals from APC activate CD4+ T cells, predominantly of the Th1 subset. Antigen-activated Th1 cells produce IL-2 and IFNgamma. They activate macrophages and cytotoxic CD8+ T cells, and these effector cells may kill islet beta-cells by one or both of two types of mechanisms: (1) direct interactions of antigen-specific cytotoxic T cells with a beta-cell autoantigen-MHC-I complex on the beta-cell, and (2) non-specific inflammatory mediators, such as free radicals/oxidants and cytokines (IL-1, TNFalpha, TNFbeta, IFNgamma)., Type I diabetes is a polygenic disease. One of the principle determining genetic factors in diabetes incidence is the inheritance of mutant MHC-II alleles. Another plausible candidate gene is the insulin gene.","Apoptosis is a genetically programmed process for the elimination of damaged or redundant cells by activation of caspases (aspartate-specific cysteine proteases). The onset of apoptosis is controlled by numerous interrelating processes. The 'extrinsic' pathway involves stimulation of members of the tumor necrosis factor (TNF) receptor subfamily, such as TNFRI, CD95/Fas or TRAILR (death receptors), located at the cell surface, by their specific ligands, such as TNF-alpha, FasL or TRAIL, respectively. The 'intrinsic' pathway is activated mainly by non-receptor stimuli, such as DNA damage, ER stress, metabolic stress, UV radiation or growth-factor deprivation. The central event in the 'intrinsic' pathway is the mitochondrial outer membrane permeabilization (MOMP), which leads to the release of cytochrome c. These two pathways converge at the level of effector caspases, such as caspase-3 and caspase-7. The third major pathway is initiated by the constituents of cytotoxic granules (e.g. Perforin and Granzyme B) that are released by CTLs (cytotoxic T-cells) and NK (natural killer) cells. Granzyme B, similarly to the caspases, cleaves its substrates after aspartic acid residues, suggesting that this protease has the ability to activate members of the caspase family directly. It is the balance between the pro-apoptotic and anti-apoptotic signals that eventually determines whether cells will undergo apoptosis, survive or proliferate. TNF family of ligands activates anti-apoptotic or cell-survival signals as well as apoptotic signals. NGF and Interleukin-3 promotes the survival, proliferation and differentiation of neurons or hematopoietic cells, respectively. Withdrawal of these growth factors leads to cell death, as described above.","Specific families of pattern recognition receptors are responsible for detecting various pathogens and generating innate immune responses. The intracellular NOD-like receptor (NLR) family contains more than 20 members in mammals and plays a pivotal role in the recognition of intracellular ligands. NOD1 and NOD2, two prototypic NLRs, sense the cytosolic presence of the bacterial peptidoglycan fragments that escaped from endosomal compartments, driving the activation of NF-{kappa}B and MAPK, cytokine production and apoptosis. On the other hand, a different set of NLRs induces caspase-1 activation through the assembly of multiprotein complexes called inflammasomes. The activated of caspase-1 regulates maturation of the pro-inflammatory cytokines IL-1B, IL-18 and drives pyroptosis."],["Proteasome, Natural killer cell mediated cytotoxicity, T cell receptor signaling pathway","Platelet activation, B cell receptor signaling pathway, Inflammatory mediator regulation of TRP channels","Adherens junction, Tight junction, Complement and coagulation cascades, T cell receptor signaling pathway, Leukocyte transendothelial migration","Proteasome, MAPK signaling pathway, Calcium signaling pathway, NF-kappa B signaling pathway, Cell cycle, p53 signaling pathway, Apoptosis, Antigen processing and presentation, Toll-like receptor signaling pathway, RIG-I-like receptor signaling pathway, JAK-STAT signaling pathway, B cell receptor signaling pathway","Porphyrin metabolism, Tight junction, Carbohydrate digestion and absorption, Protein digestion and absorption","Proteasome, Cell cycle, Apoptosis, Cardiac muscle contraction, ECM-receptor interaction, Antigen processing and presentation, T cell receptor signaling pathway, Dilated cardiomyopathy","Lysosome, Endocytosis, Complement and coagulation cascades, Antigen processing and presentation, Toll-like receptor signaling pathway, Fc gamma R-mediated phagocytosis","Other glycan degradation, Glycosaminoglycan degradation, SNARE interactions in vesicular transport, Autophagy - animal, Endocytosis","Nucleocytoplasmic transport, MAPK signaling pathway, NF-kappa B signaling pathway, Cell cycle, p53 signaling pathway, PI3K-Akt signaling pathway, Apoptosis, TGF-beta signaling pathway, Antigen processing and presentation, T cell receptor signaling pathway, TNF signaling pathway","VEGF signaling pathway, Osteoclast differentiation, Toll-like receptor signaling pathway, Th17 cell differentiation, T cell receptor signaling pathway, Leukocyte transendothelial migration","Alanine, aspartate and glutamate metabolism, Tight junction, Gastric acid secretion, Pancreatic secretion","Focal adhesion","Hematopoietic cell lineage, T cell receptor signaling pathway, B cell receptor signaling pathway","Glycolysis / Gluconeogenesis, Citrate cycle (TCA cycle), Tight junction","Cell adhesion molecules, Regulation of actin cytoskeleton","MAPK signaling pathway, Apoptosis, Complement and coagulation cascades, Toll-like receptor signaling pathway","Cell cycle, p53 signaling pathway, Ubiquitin mediated proteolysis, Apoptosis, Toll-like receptor signaling pathway, RIG-I-like receptor signaling pathway, JAK-STAT signaling pathway, Th1 and Th2 cell differentiation, T cell receptor signaling pathway","MAPK signaling pathway, Calcium signaling pathway, Cytokine-cytokine receptor interaction, Apoptosis, JAK-STAT signaling pathway","MAPK signaling pathway, Calcium signaling pathway, Cell cycle, PI3K-Akt signaling pathway, TGF-beta signaling pathway, Renin-angiotensin system, JAK-STAT signaling pathway","Apoptosis, Cell adhesion molecules, Complement and coagulation cascades, Antigen processing and presentation, T cell receptor signaling pathway, B cell receptor signaling pathway","Cytokine-cytokine receptor interaction, Apoptosis, Cell adhesion molecules, Antigen processing and presentation, Toll-like receptor signaling pathway, Natural killer cell mediated cytotoxicity, T cell receptor signaling pathway","Apoptosis, T cell receptor signaling pathway","MAPK signaling pathway, Calcium signaling pathway, NF-kappa B signaling pathway, p53 signaling pathway, Protein processing in endoplasmic reticulum, PI3K-Akt signaling pathway, Natural killer cell mediated cytotoxicity, TNF signaling pathway","MAPK signaling pathway, NF-kappa B signaling pathway, Autophagy - animal, Toll-like receptor signaling pathway"],["15771591, 15814328, 11905820, 15304636, 16200082, 12776207, 12974477, 15224093, 16181333, 15653312, 11244040, 15745856, 15224094, 15653315, 20010787","26489954, 25568220, 26082779, 21811895, 25705421, 23110467, 17635716, 26324800, 23911436, 24924409, 20027185, 23564577, 23564578, 25309880, 25979655","14690046, 11910893, 9597126, 16034094, 12234363, 15071551, 14519386, 10798271, 9150551, 12810109, 14519398, 15882774, 11050419, 11860281, 10964748, 12367625, 10664064, 14556710, 15561584, 15551862, 15115723, 15056568, 15728677, 12500939, 15923648","15510157, 21372216, 21429244, 28408983, 24586164, 23850008, 25704559, 22110506, 23303627, 29116588, 23435233, 19498380, 18977445, 21146386, 27886133, 22249143, 25613730, 17601372, 23793113, 28835489, 12740915, 25873381, 11905817, 11669605, 14506283, 25403939, 29932446, 19649319, 19244339, 19394062, 25635182, 10818681, 30116721, 12811813, 21347341","18277073, 18598134, 15618484, 12520535, 17943492, 18636652, 17194590, 16565477, 18779306, 18779302, 20120011, 19400752, 18301276, 19448074, 21054167, 19729436, 16431934","18039131, 12920582, 17200452, 12439638, 16845885, 16413486, 10904843, 18357777, 18545064, 19357408, 10051305, 11524405, 14522402, 16817756","15894272, 10684585, 18492791, 15036145, 17245426, 17637737, 18513324","12628346, 1883197, 2943218, 15987739, 18635948, 34249946, 34646033","17384582, 16155604, 18702816, 21994754, 21114861, , 18923409, 15040584, 27334587, 15988028, 21994758, 26927155, 22783232, 23248621, 18421579, 15761473, 20332002, 23741982, 21743832, 21994767, 16036567, 16155602, 9710600, 21315773, 26797638, 26324707, 11264182, 15310405, 11244044, 12802280","16127012, 20036936, 20651747, 17195034, 20193003, 17502360, 9627005, 20305562, 15059264, 11861618, 19184540, 16313349, 20392226, 19585227, 19455385, 17380158, 20510236, 15055519","18195088, 15772300, 20522896, 11546643, 18400692, 9687539, 14977407, 12237156, 7937532, 12583961, 16887608, 20093818, , 18626068","11572082, 12921709, 12125070, 12796473, 7698997, 10617638, 15036264, 15381249, 11331578, 12736199, 15229478, 12845610, 29079659","16261175, 11941303, 17960151, 17952897, 18093537, 14699405, 11058677, 15661024, 14647478","19948674, 16914536, 9550618, 16352913, 17557941, 19721811, 12138151, 11826292, 11385088, 11045400, 18056784, 11533299","14976004, 15604886, 14977592, 15629883, 15173832, 15265790, 10975856, 12540948, 15771581","21204863, 20210554, 10540218, 16999837, 16390441, 20610650, 18401006, 16622221, 17148436, 16863919, 15201703, 17328678, 20404851, 12701623, 21423776, 16481212, 12915094","19203113, 19203114, 19198566, 16690907, 22049305, 27854326, 18922877, 17720800, 23146309, 26878224, 12620806, 12804771, 12805463, 14585342, 16971451, 15914229, 29712906, 24155404, 17686838, 19895323, 16140759, 16699046, 10756053, 20601611, 10590149, 11846228, 10423127, 30510918, 20636817, 11385511, 15308747, 16963735, 16237742","15607802, 16109839, 15567854, 12205470, 11062493, 15607806, 11895890, 12530970, 16177799, 8942070, 16002670, 9143705, 14710949, 11905813, 11836514, 12766758, 12752668, 15618404, 9862693, 11390470","21261520, 21111800, 23961320, 22558488, 19404313, 11180401, 21680901, 11684565, 16894049, 21590515, 21440603, 23776698, 17005604, 20300563, 20470857, 18922799, 11375353, 12709399, 18323529, 15569303","10746853, 12023610, 17445565, 14710779, 8835634, 10571983, 10331992, 10667806, , 12216939, 12563298","16412784, 14735553, 17900507, 15882431, 12359826, 14556773, 16147539, 15372473, 17784964","9719467, 11507694, 8072542, 8786033, 12796471, 15889095, 15889096, 14617043, 12752668","26615431, 23803157, 15654015, 15725726, 15322527, 12838338, 19148180, 22429822, 25526085, 15601572, 9894605, 23070002, 18304445, 20533903, 15719025, 24278747, 21145844, 18023214, 16397578, 21914490, 22465226, 26231733, 22075987, 18238895, 12949498, 14737178, 9916983, 11520933, 24769728, 18208375, 19770840, 20075940","23124073, 16493424, 24718315, 24707857, 25526305, 19767725, 20643110, 26655628, 27291964, 25879280, 26549800, 23846113, 22430786, 24840700, 23702978, 25145756, 23215645, 25330206, 25879288, 27012466, 26121197, 26482951, 22819539, 21575908, 29148036, 25816776"]],"container":"<table class=\"display\">\n  <thead>\n    <tr>\n      <th> <\/th>\n      <th>Description<\/th>\n      <th>GeneRatio<\/th>\n      <th>pvalue<\/th>\n      <th>logPval<\/th>\n      <th>p.adjust<\/th>\n      <th>qvalue<\/th>\n      <th>geneID<\/th>\n      <th>Count<\/th>\n      <th>Class<\/th>\n      <th>Pathway description<\/th>\n      <th>Related pathways<\/th>\n      <th>References (PMID)<\/th>\n    <\/tr>\n  <\/thead>\n<\/table>","options":{"dom":"Blfrtip","scrollX":true,"buttons":["copy","csv","excel","pdf","print"],"lengthMenu":[[10,25,50,-1],["10","25","50","All"]],"columnDefs":[{"orderable":false,"targets":0},{"name":" ","targets":0},{"name":"Description","targets":1},{"name":"GeneRatio","targets":2},{"name":"pvalue","targets":3},{"name":"logPval","targets":4},{"name":"p.adjust","targets":5},{"name":"qvalue","targets":6},{"name":"geneID","targets":7},{"name":"Count","targets":8},{"name":"Class","targets":9},{"name":"Pathway description","targets":10},{"name":"Related pathways","targets":11},{"name":"References (PMID)","targets":12}],"order":[],"autoWidth":false,"orderClasses":false}},"evals":[],"jsHooks":[]}</script>
+<script type="application/json" data-for="htmlwidget-8d32cfd9db97395c4a5f">{"x":{"filter":"none","vertical":false,"extensions":["Buttons"],"caption":"<caption>Significantly enriched KEGG terms<\/caption>","data":[["mmu04612","mmu04610","mmu04514","mmu05330","mmu05332","mmu05416","mmu05320","mmu04940","mmu05150","mmu04145","mmu05169","mmu04978","mmu04974","mmu05340","mmu05323","mmu04964","mmu04650","mmu04142","mmu04512","mmu04621","mmu05166","mmu05162","mmu05133","mmu04670","mmu05144"],["mmu04612","mmu04610","mmu04514","mmu05330","mmu05332","mmu05416","mmu05320","mmu04940","mmu05150","mmu04145","mmu05169","mmu04978","mmu04974","mmu05340","mmu05323","mmu04964","mmu04650","mmu04142","mmu04512","mmu04621","mmu05166","mmu05162","mmu05133","mmu04670","mmu05144"],["Antigen processing and presentation","Complement and coagulation cascades","Cell adhesion molecules","Allograft rejection","Graft-versus-host disease","Viral myocarditis","Autoimmune thyroid disease","Type I diabetes mellitus","Staphylococcus aureus infection","Phagosome","Epstein-Barr virus infection","Mineral absorption","Protein digestion and absorption","Primary immunodeficiency","Rheumatoid arthritis","Proximal tubule bicarbonate reclamation","Natural killer cell mediated cytotoxicity","Lysosome","ECM-receptor interaction","NOD-like receptor signaling pathway","Human T-cell leukemia virus 1 infection","Measles","Pertussis","Leukocyte transendothelial migration","Malaria"],["0.196","0.185","0.126","0.261","0.261","0.164","0.25","0.231","0.175","0.106","0.0925","0.167","0.13","0.2","0.125","0.222","0.103","0.0917","0.11","0.0845","0.0758","0.0909","0.111","0.0938","0.135"],["51","54","111","23","23","55","24","26","40","123","173","42","69","25","64","18","87","120","73","142","198","110","63","96","37"],["6038","6038","6038","6038","6038","6038","6038","6038","6038","6038","6038","6038","6038","6038","6038","6038","6038","6038","6038","6038","6038","6038","6038","6038","6038"],["1.91e-05","3.24e-05","8.21e-05","0.00018","0.00018","0.000219","0.000232","0.000372","0.00073","0.000848","0.000972","0.000989","0.00122","0.00231","0.00298","0.00431","0.00606","0.00635","0.00673","0.00844","0.00923","0.00962","0.0102","0.0114","0.013"],["0.0045","0.0045","0.00761","0.00922","0.00922","0.00922","0.00922","0.0129","0.0225","0.0229","0.0229","0.0229","0.0261","0.0459","0.0552","0.0749","0.0981","0.0981","0.0984","0.117","0.122","0.122","0.124","0.132","0.145"],["0.00419","0.00419","0.00709","0.00859","0.00859","0.00859","0.00859","0.012","0.021","0.0213","0.0213","0.0213","0.0243","0.0428","0.0515","0.0698","0.0913","0.0913","0.0917","0.109","0.113","0.113","0.115","0.123","0.135"],["H2-Q4/Tap1/B2m/H2-K1/Tap2/H2-D1/H2-T23/Hspa1b/Psme1/Psme2","C2/Serping1/Clu/F3/Kng2/Cd55/C1s1/Itgb2l/Serpina1e/C1ra","H2-Q4/H2-K1/H2-D1/Cldn3/Nrxn2/Cldn7/Vcam1/H2-T23/Icam1/Ptprc/Cdh1/Spn/Itgb2l/Cdh5","H2-Q4/H2-K1/H2-D1/H2-T23/Gzmb/Prf1","H2-Q4/H2-K1/H2-D1/H2-T23/Gzmb/Prf1","H2-Q4/H2-K1/H2-D1/Cd55/H2-T23/Icam1/Itgb2l/Rac2/Prf1","H2-Q4/H2-K1/H2-D1/H2-T23/Gzmb/Prf1","H2-Q4/H2-K1/H2-D1/H2-T23/Gzmb/Prf1","Krt18/C2/Krt19/C1s1/Icam1/Itgb2l/C1ra","H2-Q4/Tap1/H2-K1/Olr1/Tap2/H2-D1/H2-T23/Atp6v0a4/Itgb2l/Lamp1/C1ra/Sftpd/Atp6v1g2","H2-Q4/Tap1/B2m/H2-K1/Stat2/Tap2/Stat1/H2-D1/Oas2/Irf7/H2-T23/Icam1/Runx3/Oas1a/Gadd45a/Bcl2l11","Trpv6/Atp1a3/Trpm6/Atp1a2/Vdr/Mt2/Mt1","Col24a1/Col4a6/Col4a5/Col6a4/Col6a3/Col7a1/Atp1a3/Atp1a2/Kcnq1","Tap1/Tap2/Zap70/Ptprc/Il2rg","Tgfb2/Ctsk/Icam1/Csf1/Atp6v0a4/Itgb2l/Fos/Atp6v1g2","Car4/Atp1a3/Atp1a2/Pck1","H2-K1/H2-D1/Zap70/H2-T23/Icam1/Itgb2l/Rac2/Gzmb/Prf1","Cln5/Laptm5/Ap1m2/Ctsg/Ctsc/Ctsk/Atp6v0a4/Lamp1/Cd63/Napsa/Abca2","Col4a6/Hspg2/Col4a5/Col6a4/Col6a3/Lamb1/Itga7/Sv2b","Stat2/Gbp2/Stat1/Casr/Oas2/Gbp3/Irf7/Irgm2/Irgm1/Oas1a/Gpsm3/Pstpip1","H2-Q4/B2m/H2-K1/Tgfb2/H2-D1/Il15ra/Fosl1/H2-T23/Ets2/Il2rb/Icam1/Tgfbr2/Itgb2l/Fos/Il2rg","Stat2/Stat1/Oas2/Irf7/Il2rb/Hspa1b/Oas1a/Fos/Il2rg/Msn","C2/Serping1/Irf8/C1s1/Itgb2l/C1ra/Fos","Cldn3/Cldn7/Vcam1/Thy1/Icam1/Itgb2l/Cdh5/Rac2/Msn","Tgfb2/Vcam1/Icam1/Itgb2l/Lrp1"],["10","10","14","6","6","9","6","6","7","13","16","7","9","5","8","4","9","11","8","12","15","10","7","9","5"],["2.35","2.35","2.12","2.04","2.04","2.04","2.04","1.89","1.65","1.64","1.64","1.64","1.58","1.34","1.26","1.13","1.01","1.01","1.01","0.931","0.915","0.915","0.908","0.881","0.839"],["Organismal Systems; Immune system","Organismal Systems; Immune system","Environmental Information Processing; Signaling molecules and interaction","Human Diseases; Immune disease","Human Diseases; Immune disease","Human Diseases; Cardiovascular disease","Human Diseases; Immune disease","Human Diseases; Endocrine and metabolic disease","Human Diseases; Infectious disease: bacterial","Cellular Processes; Transport and catabolism","Human Diseases; Infectious disease: viral","Organismal Systems; Digestive system","Organismal Systems; Digestive system","Human Diseases; Immune disease","Human Diseases; Immune disease","Organismal Systems; Excretory system","Organismal Systems; Immune system","Cellular Processes; Transport and catabolism","Environmental Information Processing; Signaling molecules and interaction","Organismal Systems; Immune system","Human Diseases; Infectious disease: viral","Human Diseases; Infectious disease: viral","Human Diseases; Infectious disease: bacterial","Organismal Systems; Immune system","Human Diseases; Infectious disease: parasitic"],[null,"The complement system is a proteolytic cascade in blood plasma and a mediator of innate immunity, a nonspecific defense mechanism against pathogens. There are three pathways of complement activation: the classical pathway, the lectin pathway, and the alternative pathway. All of these pathways generate a crucial enzymatic activity that, in turn, generates the effector molecules of complement. The main consequences of complement activation are the opsonization of pathogens, the recruitment of inflammatory and immunocompetent cells, and the direct killing of pathogens. Blood coagulation is another series of proenzyme-to-serine protease conversions, culminating the formation of thrombin, the enzyme responsible for the conversion of soluble fibrinogen to the insoluble fibrin clot. Protease-activated receptors, such as those activated by thrombin, are members of G protein-coupled receptors and function as a mediator of innate immunity. The kallikrein-kinin system is an endogenous metabolic cascade, triggering of which results in the release of vasoactive kinins (bradykinin-related peptides). Kinin peptides are implicated in many physiological and pathological processes including the regulation of blood pressure and sodium homeostasis, inflammatory processes, and the cardioprotective effects of preconditioning.","Cell adhesion molecules (CAMs) are (glyco)proteins expressed on the cell surface and play a critical role in a wide array of biologic processes that include hemostasis, the immune response, inflammation, embryogenesis, and development of neuronal tissue. There are four main groups: the integrin family, the immunoglobulin superfamily, selectins, and cadherins. Membrane proteins that mediate immune cell&amp;#8211;cell interactions fall into different categories, namely those involved in antigen recognition, costimulation and cellular adhesion. Furthermore cell-cell adhesions are important for brain morphology and highly coordinated brain functions such as memory and learning. During early development of the nervous system, neurons elongate their axons towards their targets and establish and maintain synapses through formation of cell-cell adhesions. Cell-cell adhesions also underpin axon-axon contacts and link neurons with supporting schwann cells and oligodendrocytes.","Allograft rejection is the consequence of the recipient's alloimmune response to nonself antigens expressed by donor tissues. After transplantation of organ allografts, there are two pathways of antigen presentation. In the direct pathway, recipient T cells react to intact allogeneic MHC molecules expressed on the surface of donor cells. This pathway would activate host CD4 or CD8 T cells. In contrast, donor MHC molecules (and all other proteins) shed from the graft can be taken up by host APCs and presented to recipient T cells in the context of self-MHC molecules - the indirect pathway. Such presentation activates predominantly CD4 T cells. A direct cytotoxic T-cell attack on graft cells can be made only by T cells that recognize the graft MHC molecules directly. Nontheless, T cells with indirect allospecificity can contribute to graft rejection by activating macrophages, which cause tissue injury and fibrosis, and are also likely to be important in the development of an alloantibody response to graft.","Graft-versus-host disease (GVHD) is a lethal complication of allogeneic hematopoietic stem cell transplantation (HSCT) where immunocompetent donor T cells attack the genetically disparate host cells. GVHD pathophysiology can be summerized in a three-step process. Step 1 involves the development of an inflammatory milieu resulting from damage in the host tissues induced by the preparative chemotherapy or radiotherapy regimen. Damaged tissues secrete inflammatory cytokines, including interleukin 1 (IL-1), and tumor necrosis factor (TNF-alpha ). During step 2, antigen-presenting cells (APCs) trigger the activation of donor-derived T cells, which induce further T-cell expansion, induce cytotoxic T lymphocytes (CTL) and natural killer (NK) cells responses and prime additional mononuclear phagocytes to produce TNF-alpha and IL-1. Also, nitric oxide (NO) is produced by activated macrophages, and it may contribute to the tissue damage seen during step 3. During step 3, the effector phase, activated CTL and NK cells mediate cytotoxicity against target host cells through Fas-Fas ligand interactions and perforin-granzyme B.","Myocarditis is a cardiac disease associated with inflammation and injury of the myocardium. It results from various etiologies, both noninfectious and infectious, but coxsackievirus B3 (CVB3) is still considered the dominant etiological agent. Myocarditis may be caused by direct cytopathic effects of virus, a pathologic immune response to persistent virus, or autoimmunity triggered by the viral infection. The virus enters the myocyte through internalization of the coxsackie-adenoviral receptor (CAR) and its coreceptor, decay-accelerating factor (DAF). Viral proteases cleave various proteins in the host cell. One example is viral protease 2A, which cleaves eukaryote initiation factor 4G (eIF4G) and the dystrophin protein, resulting in a complete shutdown of cap-dependent RNA translation and cytoskeletal destruction in infected cardiomyocytes, respectively. CVB3 also cleaves the member of the Bcl-2 family Bid, leading to apoptosis. CVB3 infection also induces the cleavage of cyclin D protein through a proteasome-dependent pathway, leading to the host cell-growth arrest. Viral infection and necrosis of myocytes may lead to the release of intracellular antigens, resulting in activation of self-reactive T cells. CVB infection is a significant cause of dilated cardiomyopathy (DCM) as well as myocarditis. Epidemiologically, myocarditis underlies a significant portion of patients with DCM.","The classification of autoimmune throid disease (AITD) includes Hashimoto's thyroiditis (HT) or chronic autoimmune thyroiditis and its variants, Graves' disease (GD) and autoimmune atrophic thyroiditis or primary myxedema. HT is characterized by the presence of goitre, thyroid autoantibodies against thyroid peroxidase (TPO) and thyroglobulin (Tg) in serum and varying degrees of thyroid dysfunction. During HT, self-reactive CD4+ T lymphocytes (Th) recruit B cells and CD8+ T cells (CTL) into the thyroid. Disease progression leads to the death of thyroid cells and hypothyroidism. Both autoantibodies and thyroid-specific cytotoxic T lymphocytes (CTLs) have been proposed to be responsible for autoimmune thyrocyte depletion. In GD, the TSH-R is the most important autoantigen. Antibodies directed against it mimic the effects of the hormone on thyroid cells, TSH, stimulating autonomous production of thyroxine and triiodothyronine and causing hyperthyroidism. The presence of TSH-R-blocking antibodies that bind the TSH receptor in a similar fashion to the antibodies in patients with Grave's disease but that block rather than activate the receptor explains some cases of atrophic hypothyroidism.","Type I diabetes mellitus is a disease that results from autoimmune destruction of the insulin-producing beta-cells. Certain beta-cell proteins act as autoantigens after being processed by antigen-presenting cell (APC), such as macrophages and dendritic cells, and presented in a complex with MHC-II molecules on the surface of the APC. Then immunogenic signals from APC activate CD4+ T cells, predominantly of the Th1 subset. Antigen-activated Th1 cells produce IL-2 and IFNgamma. They activate macrophages and cytotoxic CD8+ T cells, and these effector cells may kill islet beta-cells by one or both of two types of mechanisms: (1) direct interactions of antigen-specific cytotoxic T cells with a beta-cell autoantigen-MHC-I complex on the beta-cell, and (2) non-specific inflammatory mediators, such as free radicals/oxidants and cytokines (IL-1, TNFalpha, TNFbeta, IFNgamma)., Type I diabetes is a polygenic disease. One of the principle determining genetic factors in diabetes incidence is the inheritance of mutant MHC-II alleles. Another plausible candidate gene is the insulin gene.","Staphylococcus aureus can cause multiple forms of infections ranging from superficial skin infections to food poisoning and life-threatening infections. The organism has several ways to divert the effectiveness of the immune system: secreting immune modulating proteins that inhibit complement activation and neutrophil chemotaxis or lysis, modulating the sensitivity to cationic antimicrobial peptides (such as defensin) by increasing the positive net charge of its cytoplasmic membrane, and expression of superantigens that prevent development of a normal immune response or cause an emetic response when ingested.","Phagocytosis is the process of taking in relatively large particles by a cell, and is a central mechanism in the tissue remodeling, inflammation, and defense against infectious agents. A phagosome is formed when the specific receptors on the phagocyte surface recognize ligands on the particle surface. After formation, nascent phagosomes progressively acquire digestive characteristics. This maturation of phagosomes involves regulated interaction with the other membrane organelles, including recycling endosomes, late endosomes and lysosomes. The fusion of phagosomes and lysosomes releases toxic products that kill most bacteria and degrade them into fragments. However, some bacteria have strategies to escape the bactericidal mechanisms associated with phagocytosis and survive within host phagocytes.","Epstein-Barr virus (EBV) is a gamma-herpes virus that widely infects human populations predominantly at an early age but remains mostly asymptomatic. EBV has been linked to a wide spectrum of human malignancies, including nasopharyngeal carcinoma and other hematologic cancers, like Hodgkin's lymphoma, Burkitt's lymphoma (BL), B-cell immunoblastic lymphoma in HIV patients, and posttransplant-associated lymphoproliferative diseases.  EBV has the unique ability to establish life-long latent infection in primary human B lymphocytes. During latent infection, EBV expresses a small subset of genes, including 6 nuclear antigens (EBNA-1, -2, -3A, -3B, -3C, and -LP), 3 latent membrane proteins (LMP-1, -2A, and -2B), 2 small noncoding RNAs (EBER-1 and 2). On the basis of these latent gene expression, three different latency patterns associated with the types of cancers are recognized.","Minerals are one of the five fundamental groups of nutrients needed to sustain life. Of the minerals, calcium plays innumerable roles in our bodies, serving as a main component of bone as well as an intracellular messenger in muscle contraction/relaxation, neural networks, the immune system, and endocrine/exocrine cells. Iron, copper, and other metals are required for redox reactions (as cofactors) and for oxygen transport and binding (in hemoglobin and myoglobin). Many enzymes require specific metal atoms to complete their catalytic functions. Animal tissues need moderate quantities of some elements (Ca, P, K, Na, Mg, S, and Cl) and trace amounts of others (Mn, Fe, I, Co, Cr, Cu, Zn, and Se). The minerals are absorbed by either passive or active transport systems through the intestinal mucosa, often using specialized transport proteins, such as ferritin for Fe3+ and vitamin D-induced protein for calcium.","Protein is a dietary component essential for nutritional homeostasis in humans. Normally, ingested protein undergoes a complex series of degradative processes following the action of gastric, pancreatic and small intestinal enzymes. The result of this proteolytic activity is a mixture of amino acids and small peptides. Amino acids (AAs) are transported into the enterocyte (intestinal epithelial cell) by a variety of AA transporters that are specific for cationic (basic) AA, neutral AA, and anionic (acidic) AA. Small peptides are absorbed into enterocytes by the PEPT1 transporter. Inside enterocytes peptides are hydrolyzed, and the resulting amino acids are released together with those absorbed by AA transporters into blood via multiple, basolateral, AA transporters. Hydrolysis-resistant peptides, however, are transported out of the cells by a basolateral peptide transporter that has not been identified molecularly.","Primary immunodeficiencies (PIs) are a heterogeneous group of disorders, which affect cellular and humoral immunity or non-specific host defense mechanisms mediated by complement proteins, and cells such as phagocytes and natural killer (NK) cells. These disorders of the immune system cause increased susceptibility to infection, autoimmune disease, and malignancy. Most of PIs are due to genetic defects that affect cell maturation or function at different levels during hematopoiesis. Disruption of the cellular immunity is observed in patients with defects in T cells or both T and B cells. These cellular immunodeficiencies comprise 20% of all PIs. Disorders of humoral immunity affect B-cell differentiation and antibody production. They account for 70% of all PIs.","Rheumatoid arthritis (RA) is a chronic autoimmune joint disease where persistent inflammation affects bone remodeling leading to progressive bone destruction. In RA, abnormal activation of the immune system elevates pro-inflammatory cytokines and chemokines levels, which can promote synovial angiogenesis and leukocyte infiltration. The synovium forms a hyperplastic pannus with infiltrated macrophage-like and fibroblast-like synoviocytes and invades joints by secreting proteinases and inducing osteoclast differentiation.","One of the major tasks of the renal proximal tubule (PT) is to secrete acid into the tubule lumen, thereby reabsorbing approximately 80% of the filtered bicarbonate (HCO3(-)), as well as generating \"new HCO3(-)\" for regulating blood pH. In the tubular lumen, filtered HCO3(-) combines with H(+) in a reaction catalyzed by CA IV. The CO2 thus produced rapidly diffuses into the tubular cells and is combined with water to produce intracellular H(+) and HCO3(-), catalyzed by soluble cytoplasmic CA II. HCO3(-) is then cotransported with Na(+) into blood via the NBC-1. The intracellular H(+) produced by CA II is secreted into the tubular lumen predominantly via the NHE-3. The PT creates the \"new HCO3(-)\" by taking glutamine and metabolizing it to two molecules each of NH4(+) and HCO3(-). The NH4(+) is excreted into the tubular lumen, and the HCO3(-) , which is \"new HCO3(-) ,\" is returned to the blood, where it replaces the HCO3(-) lost earlier in the titration of nonvolatile acids.","Natural killer (NK) cells are lymphocytes of the innate immune system that are involved in early defenses against both allogeneic (nonself) cells and autologous cells undergoing various forms of stress, such as infection with viruses, bacteria, or parasites or malignant transformation. Although NK cells do not express classical antigen receptors of the immunoglobulin gene family, such as the antibodies produced by B cells or the T cell receptor expressed by T cells, they are equipped with various receptors whose engagement allows them to discriminate between target and nontarget cells. Activating receptors bind ligands on the target cell surface and trigger NK cell activation and target cell lysis. However Inhibitory receptors recognize MHC class I molecules (HLA) and inhibit killing by NK cells by overruling the actions of the activating receptors. This inhibitory signal is lost when the target cells do not express MHC class I and perhaps also in cells infected with virus, which might inhibit MHC class I exprssion or alter its conformation. The mechanism of NK cell killing is the same as that used by the cytotoxic T cells generated in an adaptive immune response; cytotoxic granules are released onto the surface of the bound target cell, and the effector proteins they contain penetrate the cell membrane and induce programmed cell death.","Lysosomes are membrane-delimited organelles in animal cells serving as the cell's main digestive compartment to which all sorts of macromolecules are delivered for degradation. They contain more than 40 hydrolases in an acidic environment (pH of about 5). After synthesis in the ER, lysosomal enzymes are decorated with mannose-6-phosphate residues, which are recognized by mannose-6-phosphate receptors in the trans-Golgi network. They are packaged into clathrin-coated vesicles and are transported to late endosomes. Substances for digestion are acquired by the lysosomes via a series of processes including endocytosis, phagocytosis, and autophagy.","The extracellular matrix (ECM) consists of a complex mixture of structural and functional macromolecules and serves an important role in tissue and organ morphogenesis and in the maintenance of cell and tissue structure and function. Specific interactions between cells and the ECM are mediated by transmembrane molecules, mainly integrins and perhaps also proteoglycans, CD36, or other cell-surface-associated components. These interactions lead to a direct or indirect control of cellular activities such as adhesion, migration, differentiation, proliferation, and apoptosis. In addition, integrins function as mechanoreceptors and provide a force-transmitting physical link between the ECM and the cytoskeleton. Integrins are a family of glycosylated, heterodimeric transmembrane adhesion receptors that consist of noncovalently bound alpha- and beta-subunits.","Specific families of pattern recognition receptors are responsible for detecting various pathogens and generating innate immune responses. The intracellular NOD-like receptor (NLR) family contains more than 20 members in mammals and plays a pivotal role in the recognition of intracellular ligands. NOD1 and NOD2, two prototypic NLRs, sense the cytosolic presence of the bacterial peptidoglycan fragments that escaped from endosomal compartments, driving the activation of NF-{kappa}B and MAPK, cytokine production and apoptosis. On the other hand, a different set of NLRs induces caspase-1 activation through the assembly of multiprotein complexes called inflammasomes. The activated of caspase-1 regulates maturation of the pro-inflammatory cytokines IL-1B, IL-18 and drives pyroptosis.","Human T-cell leukemia virus type 1 (HTLV-1) is a pathogenic retrovirus that is associated with adult T-cell leukemia/lymphoma (ATL). It is also strongly implicated in non-neoplastic chronic inflammatory diseases such as HTLV-1-associated myelopathy/tropical spastic paraparesis (HAM/TSP). Expression of Tax, a viral regulatory protein is critical to the pathogenesis. Tax is a transcriptional co-factor that interfere several signaling pathways related to anti-apoptosis or cell proliferation. The modulation of the signaling by Tax involve its binding to transcription factors like CREB/ATF, NF-kappa B, and SRF.","Measles virus (MV) is highly contagious virus that leads infant death worldwide. Humans are the unique natural reservoir for this virus. MV infection is characterized by virus-induced immune suppression that can lead to increased susceptibility to secondary bacterial and viral infections. The P, V and C proteins act as virulence factors to suppress innate immune response in host by inhibiting signaling for both type I IFN induction and JAK/STAT-mediated interferon-stimulated gene (ISG) induction. Moreover,  H protein expressed on viral particles and binding to SLAM or CD46,  as well as N protein liberated from infected cells and interacting with Fc-gamma R, causes an inhibition of IL-12 synthesis in dendritic cells. IL-12 is a key cytokine inducing cellular immune responses to protect host from the harm caused by pathogenic infections.","Pertussis, also known as whooping cough, is an acute respiratory infectious disease caused by a bacteria called Bordetella Pertussis. The characteristic symptoms are paroxysmal cough, inspiratory wheezing and post-tussive vomiting., Following the inhalation of respiratory secretions from an infected individual, bacteria enter the upper respiratory tract and adhere to epithelial cells. Several adhesion factors have been implicated: the filamentous hemagglutinin (FHA), fimbriae, and pertactin (Prn)., Pertussis toxin (Ptx) and adenylate cyclase toxin (ACT) have been identified so far as major protein toxins of B. pertussis. PTX is a hexameric AB5-type exotoxin. Catalytic A subunit catalyzes the ADP-ribosylation of the Gi subunits of the heterotrimeric G protein, then inhibits multiple downstream pathways. ACT is able to penetrate the cytoplasmic membrane of host cells and becomes activated through the cleavage and the binding of calmodulin (CaM). Activated ACT converts ATP to cyclic AMP and subverts cellular signaling pathways.","Leukocyte migaration from the blood into tissues is vital for immune surveillance and inflammation. During this diapedesis of leukocytes, the leukocytes bind to endothelial cell adhesion molecules (CAM) and then migrate across the vascular endothelium. A leukocyte adherent to CAMs on the endothelial cells moves forward by leading-edge protrusion and retraction of its tail. In this process, alphaL /beta2 integrin activates through Vav1, RhoA, which subsequently activates the kinase p160ROCK. ROCK activation leads to MLC phosphorylation, resulting in retraction of the actin cytoskeleton. Moreover, Leukocytes activate endothelial cell signals that stimulate endothelial cell retraction during localized dissociation of the endothelial cell junctions. ICAM-1-mediated signals activate an endothelial cell calcium flux and PKC, which are required for ICAM-1 dependent leukocyte migration. VCAM-1 is involved in the opening of the \"endothelial passage\" through which leukocytes can extravasate. In this regard, VCAM-1 ligation induces NADPH oxidase activation and the production of reactive oxygen species (ROS) in a Rac-mediated manner, with subsequent activation of matrix metallopoteinases and loss of VE-cadherin-mediated adhesion.","Plasmodium protozoa are parasites that account for malaria infection. Sporozoite forms of the parasite are injected by mosquito bites under the skin and are carried to the liver where they develop into the merozoite form., Sporozoite invasion of hepatocytes is mediated by parasite surface protein like CSP. Subsequent infection into red blood cells (RBCs) by merozoites causes malaria disease via aberrant cytokine production and sequestration of parasite-infected red blood cells (pRBCs) to host endothelium. Microvasculature sequestration in the brain brings about cerebral malaria that can results in death or persisting neurological impairment. PfEMP1 has been suggested as the key adhesive molecule of pRBCs."],["Proteasome, Natural killer cell mediated cytotoxicity, T cell receptor signaling pathway","Platelet activation, B cell receptor signaling pathway, Inflammatory mediator regulation of TRP channels","Adherens junction, Tight junction, Complement and coagulation cascades, T cell receptor signaling pathway, Leukocyte transendothelial migration","Apoptosis, Cell adhesion molecules, Complement and coagulation cascades, Antigen processing and presentation, T cell receptor signaling pathway, B cell receptor signaling pathway","Cytokine-cytokine receptor interaction, Apoptosis, Cell adhesion molecules, Antigen processing and presentation, Toll-like receptor signaling pathway, Natural killer cell mediated cytotoxicity, T cell receptor signaling pathway","Proteasome, Cell cycle, Apoptosis, Cardiac muscle contraction, ECM-receptor interaction, Antigen processing and presentation, T cell receptor signaling pathway, Dilated cardiomyopathy","Apoptosis, Cell adhesion molecules, Complement and coagulation cascades, Antigen processing and presentation, T cell receptor signaling pathway, B cell receptor signaling pathway, Thyroid hormone synthesis","Apoptosis, T cell receptor signaling pathway","Complement and coagulation cascades, T cell receptor signaling pathway, B cell receptor signaling pathway","Lysosome, Endocytosis, Complement and coagulation cascades, Antigen processing and presentation, Toll-like receptor signaling pathway, Fc gamma R-mediated phagocytosis","Proteasome, MAPK signaling pathway, Calcium signaling pathway, NF-kappa B signaling pathway, Cell cycle, p53 signaling pathway, Apoptosis, Antigen processing and presentation, Toll-like receptor signaling pathway, RIG-I-like receptor signaling pathway, JAK-STAT signaling pathway, B cell receptor signaling pathway","Porphyrin metabolism, Tight junction, Carbohydrate digestion and absorption, Protein digestion and absorption","Alanine, aspartate and glutamate metabolism, Tight junction, Gastric acid secretion, Pancreatic secretion","Hematopoietic cell lineage, T cell receptor signaling pathway, B cell receptor signaling pathway","VEGF signaling pathway, Osteoclast differentiation, Toll-like receptor signaling pathway, Th17 cell differentiation, T cell receptor signaling pathway, Leukocyte transendothelial migration","Glycolysis / Gluconeogenesis, Citrate cycle (TCA cycle), Tight junction","MAPK signaling pathway, Calcium signaling pathway, Cytokine-cytokine receptor interaction, Apoptosis, JAK-STAT signaling pathway","Other glycan degradation, Glycosaminoglycan degradation, SNARE interactions in vesicular transport, Autophagy - animal, Endocytosis","Focal adhesion","MAPK signaling pathway, NF-kappa B signaling pathway, Autophagy - animal, Toll-like receptor signaling pathway","Nucleocytoplasmic transport, MAPK signaling pathway, NF-kappa B signaling pathway, Cell cycle, p53 signaling pathway, PI3K-Akt signaling pathway, Apoptosis, TGF-beta signaling pathway, Antigen processing and presentation, T cell receptor signaling pathway, TNF signaling pathway","Cell cycle, p53 signaling pathway, Ubiquitin mediated proteolysis, Apoptosis, Toll-like receptor signaling pathway, RIG-I-like receptor signaling pathway, JAK-STAT signaling pathway, Th1 and Th2 cell differentiation, T cell receptor signaling pathway","MAPK signaling pathway, Apoptosis, Complement and coagulation cascades, Toll-like receptor signaling pathway","Cell adhesion molecules, Regulation of actin cytoskeleton","Apoptosis, Cell adhesion molecules, Complement and coagulation cascades, Toll-like receptor signaling pathway"],["15771591, 15814328, 11905820, 15304636, 16200082, 12776207, 12974477, 15224093, 16181333, 15653312, 11244040, 15745856, 15224094, 15653315, 20010787","26489954, 25568220, 26082779, 21811895, 25705421, 23110467, 17635716, 26324800, 23911436, 24924409, 20027185, 23564577, 23564578, 25309880, 25979655","14690046, 11910893, 9597126, 16034094, 12234363, 15071551, 14519386, 10798271, 9150551, 12810109, 14519398, 15882774, 11050419, 11860281, 10964748, 12367625, 10664064, 14556710, 15561584, 15551862, 15115723, 15056568, 15728677, 12500939, 15923648","10746853, 12023610, 17445565, 14710779, 8835634, 10571983, 10331992, 10667806, , 12216939, 12563298","16412784, 14735553, 17900507, 15882431, 12359826, 14556773, 16147539, 15372473, 17784964","18039131, 12920582, 17200452, 12439638, 16845885, 16413486, 10904843, 18357777, 18545064, 19357408, 10051305, 11524405, 14522402, 16817756","15049952, 15762980, 9534029, 11913070, 12192541, 11396701, 17192582, 15132715, 11577986","9719467, 11507694, 8072542, 8786033, 12796471, 15889095, 15889096, 14617043, 12752668","20178484, 16322743, 20062962, 16242332, 16679003, 11361034, 18061675, 16724100, 15273292, 19112495, 16111912, 16086019, 19503103, 17893203, 18544012, 16640587, 20133685, 17848512, 14993252, 17114475, 17132726, 18045383, 12091905, 17517597, 15561843, 18837785, 12228315, 16710608, 16184199, 15372083","15894272, 10684585, 18492791, 15036145, 17245426, 17637737, 18513324","15510157, 21372216, 21429244, 28408983, 24586164, 23850008, 25704559, 22110506, 23303627, 29116588, 23435233, 19498380, 18977445, 21146386, 27886133, 22249143, 25613730, 17601372, 23793113, 28835489, 12740915, 25873381, 11905817, 11669605, 14506283, 25403939, 29932446, 19649319, 19244339, 19394062, 25635182, 10818681, 30116721, 12811813, 21347341","18277073, 18598134, 15618484, 12520535, 17943492, 18636652, 17194590, 16565477, 18779306, 18779302, 20120011, 19400752, 18301276, 19448074, 21054167, 19729436, 16431934","18195088, 15772300, 20522896, 11546643, 18400692, 9687539, 14977407, 12237156, 7937532, 12583961, 16887608, 20093818, , 18626068","16261175, 11941303, 17960151, 17952897, 18093537, 14699405, 11058677, 15661024, 14647478","16127012, 20036936, 20651747, 17195034, 20193003, 17502360, 9627005, 20305562, 15059264, 11861618, 19184540, 16313349, 20392226, 19585227, 19455385, 17380158, 20510236, 15055519","19948674, 16914536, 9550618, 16352913, 17557941, 19721811, 12138151, 11826292, 11385088, 11045400, 18056784, 11533299","15607802, 16109839, 15567854, 12205470, 11062493, 15607806, 11895890, 12530970, 16177799, 8942070, 16002670, 9143705, 14710949, 11905813, 11836514, 12766758, 12752668, 15618404, 9862693, 11390470","12628346, 1883197, 2943218, 15987739, 18635948, 34249946, 34646033","11572082, 12921709, 12125070, 12796473, 7698997, 10617638, 15036264, 15381249, 11331578, 12736199, 15229478, 12845610, 29079659","23124073, 16493424, 24718315, 24707857, 25526305, 19767725, 20643110, 26655628, 27291964, 25879280, 26549800, 23846113, 22430786, 24840700, 23702978, 25145756, 23215645, 25330206, 25879288, 27012466, 26121197, 26482951, 22819539, 21575908, 29148036, 25816776","17384582, 16155604, 18702816, 21994754, 21114861, , 18923409, 15040584, 27334587, 15988028, 21994758, 26927155, 22783232, 23248621, 18421579, 15761473, 20332002, 23741982, 21743832, 21994767, 16036567, 16155602, 9710600, 21315773, 26797638, 26324707, 11264182, 15310405, 11244044, 12802280","19203113, 19203114, 19198566, 16690907, 22049305, 27854326, 18922877, 17720800, 23146309, 26878224, 12620806, 12804771, 12805463, 14585342, 16971451, 15914229, 29712906, 24155404, 17686838, 19895323, 16140759, 16699046, 10756053, 20601611, 10590149, 11846228, 10423127, 30510918, 20636817, 11385511, 15308747, 16963735, 16237742","21204863, 20210554, 10540218, 16999837, 16390441, 20610650, 18401006, 16622221, 17148436, 16863919, 15201703, 17328678, 20404851, 12701623, 21423776, 16481212, 12915094","14976004, 15604886, 14977592, 15629883, 15173832, 15265790, 10975856, 12540948, 15771581","19101208, 8920859, 15106591, 15464448, 12364790, 16019257, 17630968, 11224682, 15094163, 15463497, 18250459, 10885986, 11832955, 19967139, 16138104, 14737184, 16468982, 20091081"]],"container":"<table class=\"display\">\n  <thead>\n    <tr>\n      <th> <\/th>\n      <th>ID<\/th>\n      <th>Description<\/th>\n      <th>GeneRatio<\/th>\n      <th>Total<\/th>\n      <th>Universe<\/th>\n      <th>pvalue<\/th>\n      <th>p.adjust<\/th>\n      <th>qvalue<\/th>\n      <th>geneID<\/th>\n      <th>Count<\/th>\n      <th>logFDR<\/th>\n      <th>Class<\/th>\n      <th>Pathway description<\/th>\n      <th>Related pathways<\/th>\n      <th>References (PMID)<\/th>\n    <\/tr>\n  <\/thead>\n<\/table>","options":{"dom":"Blfrtip","scrollX":true,"buttons":["copy","csv","excel","pdf","print"],"lengthMenu":[[10,25,50,-1],["10","25","50","All"]],"columnDefs":[{"orderable":false,"targets":0},{"name":" ","targets":0},{"name":"ID","targets":1},{"name":"Description","targets":2},{"name":"GeneRatio","targets":3},{"name":"Total","targets":4},{"name":"Universe","targets":5},{"name":"pvalue","targets":6},{"name":"p.adjust","targets":7},{"name":"qvalue","targets":8},{"name":"geneID","targets":9},{"name":"Count","targets":10},{"name":"logFDR","targets":11},{"name":"Class","targets":12},{"name":"Pathway description","targets":13},{"name":"Related pathways","targets":14},{"name":"References (PMID)","targets":15}],"order":[],"autoWidth":false,"orderClasses":false}},"evals":[],"jsHooks":[]}</script>
 </div>
 <div id="upset-plot" class="section level4">
 <h4>Upset Plot</h4>
 <p><img src="figure/kegg.Rmd/upset-1.png" width="672" style="display: block; margin: auto;" /></p>
+<p>
+<button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-upset-1">
+Past versions of upset-1.png
+</button>
+</p>
+<div id="fig-upset-1" class="collapse">
+<div class="table-responsive">
+<table class="table table-condensed table-hover">
+<thead>
+<tr>
+<th>
+Version
+</th>
+<th>
+Author
+</th>
+<th>
+Date
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>
+<a href="https://github.com/tranmanhha135/Treg_uNK/blob/762020e5b1bc3664ab92da69ebba8ad38169515d/docs/figure/kegg.Rmd/upset-1.png" target="_blank">762020e</a>
+</td>
+<td>
+tranmanhha135
+</td>
+<td>
+2024-01-09
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
 </div>
 </div>
 <div id="treg-vs-pbs" class="section level3 tabset tabset-pills">
@@ -864,31 +1053,190 @@ visualisation</strong></p>
 <div id="dot-plot-1" class="section level4">
 <h4>Dot plot</h4>
 <p><img src="figure/kegg.Rmd/dot2-1.png" width="768" style="display: block; margin: auto;" /></p>
+<p>
+<button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-dot2-1">
+Past versions of dot2-1.png
+</button>
+</p>
+<div id="fig-dot2-1" class="collapse">
+<div class="table-responsive">
+<table class="table table-condensed table-hover">
+<thead>
+<tr>
+<th>
+Version
+</th>
+<th>
+Author
+</th>
+<th>
+Date
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>
+<a href="https://github.com/tranmanhha135/Treg_uNK/blob/762020e5b1bc3664ab92da69ebba8ad38169515d/docs/figure/kegg.Rmd/dot2-1.png" target="_blank">762020e</a>
+</td>
+<td>
+tranmanhha135
+</td>
+<td>
+2024-01-09
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
 </div>
 <div id="table-1" class="section level4">
 <h4>Table</h4>
 <div class="datatables html-widget html-fill-item" id="htmlwidget-d701554a25665d09d09f" style="width:100%;height:auto;"></div>
-<script type="application/json" data-for="htmlwidget-d701554a25665d09d09f">{"x":{"filter":"none","vertical":false,"extensions":["Buttons"],"caption":"<caption>Significantly enriched KEGG terms<\/caption>","data":[["mmu04610","mmu04512","mmu00330","mmu04933","mmu04530"],["Complement and coagulation cascades","Ecm-receptor interaction","Arginine and proline metabolism","Age-rage signaling pathway in diabetic\ncomplications","Tight junction"],["0.117","0.112","0.13","0.099","0.0774"],["0.000505","0.00124","0.00293","0.00321","0.0072"],["3.3","2.91","2.53","2.49","2.14"],["0.000505","0.00124","0.00293","0.00321","0.0072"],["0.152","0.186","0.242","0.242","0.401"],["F3/C3/Itgb2l/Clu/Serpina1e/F5/Cd59a/Cfb/Bdkrb2/Tfpi/Pros1","Col6a4/Lama3/Col4a5/Sv2b/Col4a6/Spp1/Lamb1/Itga1/Itga4/Npnt","Cndp2/Ckb/Ckmt1/Cndp1/P4ha3/Nos3/Aoc1","Tgfb2/Nox1/F3/Mapk13/Col4a5/Tgfbr2/Col4a6/Stat5a/Nos3/Stat1","Ezr/Cldn3/Cldn10/Cacna1d/Marveld3/Cldn7/Myh14/Scrib/Arhgap17/Prkag1/Cgn/Patj/Myl9"],["11","10","7","10","13"],["Organismal Systems; Immune system","Environmental Information Processing; Signaling molecules and interaction","Human Diseases; Endocrine and metabolic disease","Metabolism; Amino acid metabolism","Cellular Processes; Cellular community - eukaryotes"],["The complement system is a proteolytic cascade in blood plasma and a mediator of innate immunity, a nonspecific defense mechanism against pathogens. There are three pathways of complement activation: the classical pathway, the lectin pathway, and the alternative pathway. All of these pathways generate a crucial enzymatic activity that, in turn, generates the effector molecules of complement. The main consequences of complement activation are the opsonization of pathogens, the recruitment of inflammatory and immunocompetent cells, and the direct killing of pathogens. Blood coagulation is another series of proenzyme-to-serine protease conversions, culminating the formation of thrombin, the enzyme responsible for the conversion of soluble fibrinogen to the insoluble fibrin clot. Protease-activated receptors, such as those activated by thrombin, are members of G protein-coupled receptors and function as a mediator of innate immunity. The kallikrein-kinin system is an endogenous metabolic cascade, triggering of which results in the release of vasoactive kinins (bradykinin-related peptides). Kinin peptides are implicated in many physiological and pathological processes including the regulation of blood pressure and sodium homeostasis, inflammatory processes, and the cardioprotective effects of preconditioning.","The extracellular matrix (ECM) consists of a complex mixture of structural and functional macromolecules and serves an important role in tissue and organ morphogenesis and in the maintenance of cell and tissue structure and function. Specific interactions between cells and the ECM are mediated by transmembrane molecules, mainly integrins and perhaps also proteoglycans, CD36, or other cell-surface-associated components. These interactions lead to a direct or indirect control of cellular activities such as adhesion, migration, differentiation, proliferation, and apoptosis. In addition, integrins function as mechanoreceptors and provide a force-transmitting physical link between the ECM and the cytoskeleton. Integrins are a family of glycosylated, heterodimeric transmembrane adhesion receptors that consist of noncovalently bound alpha- and beta-subunits.","Advanced glycation end products (AGEs) are a complex group of compounds produced through the non-enzymatic glycation and oxidation of proteins, lipids and nucleic acids, primarily due to aging and under certain pathologic condition such as huperglycemia. Some of the best chemically characterized AGEs include N-epsilon-carboxy-methyl-lysine (CML), N-epsilon-carboxy-ethyl-lysine (CEL), and Imidazolone. The major receptor for AGEs, known as receptor for advanced glycation end products (RAGE or AGER), belongs to the immunoglobulin superfamily and has been described as a pattern recognition receptor. AGE/RAGE signaling elicits activation of multiple intracellular signal pathways involving NADPH oxidase, protein kinase C, and MAPKs, then resulting in NF-kappaB activity. NF-kappa B promotes the expression of pro-inflammatory cytokines such as IL-1, IL-6 and TNF-alpha and a variety of atherosclerosis-related genes, including VCAM-1, tissue factor, VEGF, and RAGE. In addition, JAK-STAT-mediated and PI3K-Akt-dependent pathways are induced via RAGE, which in turn participate in cell proliferation and apoptosis respectively. Hypoxia-mediated induction of Egr-1 was also shown to require the AGE-RAGE interaction. The results of these signal transductions have been reported to be the possible mechanism that initates diabetic complications.",null,"Tight junctions (TJs) are essential for establishing a selectively permeable barrier to diffusion through the paracellular space between neighboring cells. TJs are composed of at least three types of transmembrane protein -occludin, claudin and junctional adhesion molecules (JAMs)- and a cytoplasmic 'plaque' consisting of many different proteins that form large complexes. These are proposed to be involved in junction assembly, barrier regulation, cell polarity, gene transcription, and other pathways."],["Platelet activation, B cell receptor signaling pathway, Inflammatory mediator regulation of TRP channels","Focal adhesion","MAPK signaling pathway, Calcium signaling pathway, Cell cycle, PI3K-Akt signaling pathway, TGF-beta signaling pathway, Renin-angiotensin system, JAK-STAT signaling pathway","Citrate cycle (TCA cycle), Arginine biosynthesis, Alanine, aspartate and glutamate metabolism, Glycine, serine and threonine metabolism, Cysteine and methionine metabolism, Lysine degradation, beta-Alanine metabolism, D-Amino acid metabolism, Glutathione metabolism, Glyoxylate and dicarboxylate metabolism, Butanoate metabolism, Pantothenate and CoA biosynthesis","Adherens junction, Regulation of actin cytoskeleton"],["26489954, 25568220, 26082779, 21811895, 25705421, 23110467, 17635716, 26324800, 23911436, 24924409, 20027185, 23564577, 23564578, 25309880, 25979655","11572082, 12921709, 12125070, 12796473, 7698997, 10617638, 15036264, 15381249, 11331578, 12736199, 15229478, 12845610, 29079659","21261520, 21111800, 23961320, 22558488, 19404313, 11180401, 21680901, 11684565, 16894049, 21590515, 21440603, 23776698, 17005604, 20300563, 20470857, 18922799, 11375353, 12709399, 18323529, 15569303","5288244, 16499623, 15590624","27353478, 22169974, 17525755, 15820555, 16650994, 16771626, 17182900, 17950242, 18005931, 18946474, 20094051, 20134025, 21283798, 21781017, 22896795, 22928510, 24548561, 24651541, 25152334, 25469537, 25483301, 25757376, 22892070, 12042308, 18094055, 23885123"]],"container":"<table class=\"display\">\n  <thead>\n    <tr>\n      <th> <\/th>\n      <th>Description<\/th>\n      <th>GeneRatio<\/th>\n      <th>pvalue<\/th>\n      <th>logPval<\/th>\n      <th>p.adjust<\/th>\n      <th>qvalue<\/th>\n      <th>geneID<\/th>\n      <th>Count<\/th>\n      <th>Class<\/th>\n      <th>Pathway description<\/th>\n      <th>Related pathways<\/th>\n      <th>References (PMID)<\/th>\n    <\/tr>\n  <\/thead>\n<\/table>","options":{"dom":"Blfrtip","scrollX":true,"buttons":["copy","csv","excel","pdf","print"],"lengthMenu":[[10,25,50,-1],["10","25","50","All"]],"columnDefs":[{"orderable":false,"targets":0},{"name":" ","targets":0},{"name":"Description","targets":1},{"name":"GeneRatio","targets":2},{"name":"pvalue","targets":3},{"name":"logPval","targets":4},{"name":"p.adjust","targets":5},{"name":"qvalue","targets":6},{"name":"geneID","targets":7},{"name":"Count","targets":8},{"name":"Class","targets":9},{"name":"Pathway description","targets":10},{"name":"Related pathways","targets":11},{"name":"References (PMID)","targets":12}],"order":[],"autoWidth":false,"orderClasses":false}},"evals":[],"jsHooks":[]}</script>
+<script type="application/json" data-for="htmlwidget-d701554a25665d09d09f">{"x":{"filter":"none","vertical":false,"extensions":["Buttons"],"caption":"<caption>Significantly enriched KEGG terms<\/caption>","data":[["mmu04610"],["mmu04610"],["Complement and coagulation cascades"],["0.204"],["54"],["6038"],["0.000152"],["0.0474"],["0.0472"],["F3/C3/Itgb2l/Clu/Serpina1e/F5/Cd59a/Cfb/Bdkrb2/Tfpi/Pros1"],["11"],["1.32"],["Organismal Systems; Immune system"],["The complement system is a proteolytic cascade in blood plasma and a mediator of innate immunity, a nonspecific defense mechanism against pathogens. There are three pathways of complement activation: the classical pathway, the lectin pathway, and the alternative pathway. All of these pathways generate a crucial enzymatic activity that, in turn, generates the effector molecules of complement. The main consequences of complement activation are the opsonization of pathogens, the recruitment of inflammatory and immunocompetent cells, and the direct killing of pathogens. Blood coagulation is another series of proenzyme-to-serine protease conversions, culminating the formation of thrombin, the enzyme responsible for the conversion of soluble fibrinogen to the insoluble fibrin clot. Protease-activated receptors, such as those activated by thrombin, are members of G protein-coupled receptors and function as a mediator of innate immunity. The kallikrein-kinin system is an endogenous metabolic cascade, triggering of which results in the release of vasoactive kinins (bradykinin-related peptides). Kinin peptides are implicated in many physiological and pathological processes including the regulation of blood pressure and sodium homeostasis, inflammatory processes, and the cardioprotective effects of preconditioning."],["Platelet activation, B cell receptor signaling pathway, Inflammatory mediator regulation of TRP channels"],["26489954, 25568220, 26082779, 21811895, 25705421, 23110467, 17635716, 26324800, 23911436, 24924409, 20027185, 23564577, 23564578, 25309880, 25979655"]],"container":"<table class=\"display\">\n  <thead>\n    <tr>\n      <th> <\/th>\n      <th>ID<\/th>\n      <th>Description<\/th>\n      <th>GeneRatio<\/th>\n      <th>Total<\/th>\n      <th>Universe<\/th>\n      <th>pvalue<\/th>\n      <th>p.adjust<\/th>\n      <th>qvalue<\/th>\n      <th>geneID<\/th>\n      <th>Count<\/th>\n      <th>logFDR<\/th>\n      <th>Class<\/th>\n      <th>Pathway description<\/th>\n      <th>Related pathways<\/th>\n      <th>References (PMID)<\/th>\n    <\/tr>\n  <\/thead>\n<\/table>","options":{"dom":"Blfrtip","scrollX":true,"buttons":["copy","csv","excel","pdf","print"],"lengthMenu":[[10,25,50,-1],["10","25","50","All"]],"columnDefs":[{"orderable":false,"targets":0},{"name":" ","targets":0},{"name":"ID","targets":1},{"name":"Description","targets":2},{"name":"GeneRatio","targets":3},{"name":"Total","targets":4},{"name":"Universe","targets":5},{"name":"pvalue","targets":6},{"name":"p.adjust","targets":7},{"name":"qvalue","targets":8},{"name":"geneID","targets":9},{"name":"Count","targets":10},{"name":"logFDR","targets":11},{"name":"Class","targets":12},{"name":"Pathway description","targets":13},{"name":"Related pathways","targets":14},{"name":"References (PMID)","targets":15}],"order":[],"autoWidth":false,"orderClasses":false}},"evals":[],"jsHooks":[]}</script>
 </div>
 <div id="upset-plot-1" class="section level4">
 <h4>Upset plot</h4>
 <p><img src="figure/kegg.Rmd/upset2-1.png" width="1056" style="display: block; margin: auto;" /></p>
+<p>
+<button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-upset2-1">
+Past versions of upset2-1.png
+</button>
+</p>
+<div id="fig-upset2-1" class="collapse">
+<div class="table-responsive">
+<table class="table table-condensed table-hover">
+<thead>
+<tr>
+<th>
+Version
+</th>
+<th>
+Author
+</th>
+<th>
+Date
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>
+<a href="https://github.com/tranmanhha135/Treg_uNK/blob/762020e5b1bc3664ab92da69ebba8ad38169515d/docs/figure/kegg.Rmd/upset2-1.png" target="_blank">762020e</a>
+</td>
+<td>
+tranmanhha135
+</td>
+<td>
+2024-01-09
+</td>
+</tr>
+</tbody>
+</table>
 </div>
 </div>
-<div id="dt-vs-treg" class="section level3 tabset tabset-pills">
-<h3 class="tabset tabset-pills">DT vs Treg</h3>
+</div>
+</div>
+<div id="treg-vs-dt" class="section level3 tabset tabset-pills">
+<h3 class="tabset tabset-pills">Treg vs DT</h3>
 <div id="dot-plot-2" class="section level4">
 <h4>Dot plot</h4>
 <p><img src="figure/kegg.Rmd/dot3-1.png" width="768" style="display: block; margin: auto;" /></p>
+<p>
+<button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-dot3-1">
+Past versions of dot3-1.png
+</button>
+</p>
+<div id="fig-dot3-1" class="collapse">
+<div class="table-responsive">
+<table class="table table-condensed table-hover">
+<thead>
+<tr>
+<th>
+Version
+</th>
+<th>
+Author
+</th>
+<th>
+Date
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>
+<a href="https://github.com/tranmanhha135/Treg_uNK/blob/762020e5b1bc3664ab92da69ebba8ad38169515d/docs/figure/kegg.Rmd/dot3-1.png" target="_blank">762020e</a>
+</td>
+<td>
+tranmanhha135
+</td>
+<td>
+2024-01-09
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
 </div>
 <div id="table-2" class="section level4">
 <h4>Table</h4>
 <div class="datatables html-widget html-fill-item" id="htmlwidget-27a6251d00cbd347f90b" style="width:100%;height:auto;"></div>
-<script type="application/json" data-for="htmlwidget-27a6251d00cbd347f90b">{"x":{"filter":"none","vertical":false,"extensions":["Buttons"],"caption":"<caption>Significantly enriched KEGG terms<\/caption>","data":[["mmu04612","mmu05166","mmu05340","mmu05169","mmu04145","mmu05330","mmu05332","mmu04650","mmu04940","mmu05320"],["Antigen processing and presentation","Human t-cell leukemia virus 1 infection","Primary immunodeficiency","Epstein-barr virus infection","Phagosome","Allograft rejection","Graft-versus-host disease","Natural killer cell mediated cytotoxicity","Type i diabetes mellitus","Autoimmune thyroid disease"],["0.069","0.0283","0.0833","0.0263","0.0279","0.05","0.05","0.0328","0.0448","0.0395"],["9.43e-06","0.000484","0.00111","0.00184","0.00349","0.00484","0.00484","0.00514","0.00658","0.00932"],["5.03","3.32","2.95","2.74","2.46","2.32","2.32","2.29","2.18","2.03"],["9.43e-06","0.000484","0.00111","0.00184","0.00349","0.00484","0.00484","0.00514","0.00658","0.00932"],["0.00102","0.0262","0.0402","0.0499","0.0696","0.0696","0.0696","0.0696","0.0793","0.101"],["H2-K1/B2m/Hspa1l/H2-D1/H2-T23/Rfxap","H2-K1/Cdc23/B2m/Il2rg/H2-D1/H2-T23/Bub1b","Il2rg/Zap70/Rfxap","H2-K1/B2m/Runx3/H2-D1/Stat2/H2-T23","H2-K1/Stx18/Lamp1/H2-D1/H2-T23","H2-K1/H2-D1/H2-T23","H2-K1/H2-D1/H2-T23","H2-K1/H2-D1/Zap70/H2-T23","H2-K1/H2-D1/H2-T23","H2-K1/H2-D1/H2-T23"],["6","7","3","6","5","3","3","4","3","3"],["Organismal Systems; Immune system","Human Diseases; Infectious disease: viral","Cellular Processes; Transport and catabolism","Human Diseases; Infectious disease: viral","Human Diseases; Immune disease","Organismal Systems; Immune system","Human Diseases; Immune disease","Human Diseases; Immune disease","Human Diseases; Endocrine and metabolic disease","Human Diseases; Immune disease"],[null,"Epstein-Barr virus (EBV) is a gamma-herpes virus that widely infects human populations predominantly at an early age but remains mostly asymptomatic. EBV has been linked to a wide spectrum of human malignancies, including nasopharyngeal carcinoma and other hematologic cancers, like Hodgkin's lymphoma, Burkitt's lymphoma (BL), B-cell immunoblastic lymphoma in HIV patients, and posttransplant-associated lymphoproliferative diseases.  EBV has the unique ability to establish life-long latent infection in primary human B lymphocytes. During latent infection, EBV expresses a small subset of genes, including 6 nuclear antigens (EBNA-1, -2, -3A, -3B, -3C, and -LP), 3 latent membrane proteins (LMP-1, -2A, and -2B), 2 small noncoding RNAs (EBER-1 and 2). On the basis of these latent gene expression, three different latency patterns associated with the types of cancers are recognized.","Phagocytosis is the process of taking in relatively large particles by a cell, and is a central mechanism in the tissue remodeling, inflammation, and defense against infectious agents. A phagosome is formed when the specific receptors on the phagocyte surface recognize ligands on the particle surface. After formation, nascent phagosomes progressively acquire digestive characteristics. This maturation of phagosomes involves regulated interaction with the other membrane organelles, including recycling endosomes, late endosomes and lysosomes. The fusion of phagosomes and lysosomes releases toxic products that kill most bacteria and degrade them into fragments. However, some bacteria have strategies to escape the bactericidal mechanisms associated with phagocytosis and survive within host phagocytes.","Human T-cell leukemia virus type 1 (HTLV-1) is a pathogenic retrovirus that is associated with adult T-cell leukemia/lymphoma (ATL). It is also strongly implicated in non-neoplastic chronic inflammatory diseases such as HTLV-1-associated myelopathy/tropical spastic paraparesis (HAM/TSP). Expression of Tax, a viral regulatory protein is critical to the pathogenesis. Tax is a transcriptional co-factor that interfere several signaling pathways related to anti-apoptosis or cell proliferation. The modulation of the signaling by Tax involve its binding to transcription factors like CREB/ATF, NF-kappa B, and SRF.","Primary immunodeficiencies (PIs) are a heterogeneous group of disorders, which affect cellular and humoral immunity or non-specific host defense mechanisms mediated by complement proteins, and cells such as phagocytes and natural killer (NK) cells. These disorders of the immune system cause increased susceptibility to infection, autoimmune disease, and malignancy. Most of PIs are due to genetic defects that affect cell maturation or function at different levels during hematopoiesis. Disruption of the cellular immunity is observed in patients with defects in T cells or both T and B cells. These cellular immunodeficiencies comprise 20% of all PIs. Disorders of humoral immunity affect B-cell differentiation and antibody production. They account for 70% of all PIs.","Natural killer (NK) cells are lymphocytes of the innate immune system that are involved in early defenses against both allogeneic (nonself) cells and autologous cells undergoing various forms of stress, such as infection with viruses, bacteria, or parasites or malignant transformation. Although NK cells do not express classical antigen receptors of the immunoglobulin gene family, such as the antibodies produced by B cells or the T cell receptor expressed by T cells, they are equipped with various receptors whose engagement allows them to discriminate between target and nontarget cells. Activating receptors bind ligands on the target cell surface and trigger NK cell activation and target cell lysis. However Inhibitory receptors recognize MHC class I molecules (HLA) and inhibit killing by NK cells by overruling the actions of the activating receptors. This inhibitory signal is lost when the target cells do not express MHC class I and perhaps also in cells infected with virus, which might inhibit MHC class I exprssion or alter its conformation. The mechanism of NK cell killing is the same as that used by the cytotoxic T cells generated in an adaptive immune response; cytotoxic granules are released onto the surface of the bound target cell, and the effector proteins they contain penetrate the cell membrane and induce programmed cell death.","Allograft rejection is the consequence of the recipient's alloimmune response to nonself antigens expressed by donor tissues. After transplantation of organ allografts, there are two pathways of antigen presentation. In the direct pathway, recipient T cells react to intact allogeneic MHC molecules expressed on the surface of donor cells. This pathway would activate host CD4 or CD8 T cells. In contrast, donor MHC molecules (and all other proteins) shed from the graft can be taken up by host APCs and presented to recipient T cells in the context of self-MHC molecules - the indirect pathway. Such presentation activates predominantly CD4 T cells. A direct cytotoxic T-cell attack on graft cells can be made only by T cells that recognize the graft MHC molecules directly. Nontheless, T cells with indirect allospecificity can contribute to graft rejection by activating macrophages, which cause tissue injury and fibrosis, and are also likely to be important in the development of an alloantibody response to graft.","Graft-versus-host disease (GVHD) is a lethal complication of allogeneic hematopoietic stem cell transplantation (HSCT) where immunocompetent donor T cells attack the genetically disparate host cells. GVHD pathophysiology can be summerized in a three-step process. Step 1 involves the development of an inflammatory milieu resulting from damage in the host tissues induced by the preparative chemotherapy or radiotherapy regimen. Damaged tissues secrete inflammatory cytokines, including interleukin 1 (IL-1), and tumor necrosis factor (TNF-alpha ). During step 2, antigen-presenting cells (APCs) trigger the activation of donor-derived T cells, which induce further T-cell expansion, induce cytotoxic T lymphocytes (CTL) and natural killer (NK) cells responses and prime additional mononuclear phagocytes to produce TNF-alpha and IL-1. Also, nitric oxide (NO) is produced by activated macrophages, and it may contribute to the tissue damage seen during step 3. During step 3, the effector phase, activated CTL and NK cells mediate cytotoxicity against target host cells through Fas-Fas ligand interactions and perforin-granzyme B.","Type I diabetes mellitus is a disease that results from autoimmune destruction of the insulin-producing beta-cells. Certain beta-cell proteins act as autoantigens after being processed by antigen-presenting cell (APC), such as macrophages and dendritic cells, and presented in a complex with MHC-II molecules on the surface of the APC. Then immunogenic signals from APC activate CD4+ T cells, predominantly of the Th1 subset. Antigen-activated Th1 cells produce IL-2 and IFNgamma. They activate macrophages and cytotoxic CD8+ T cells, and these effector cells may kill islet beta-cells by one or both of two types of mechanisms: (1) direct interactions of antigen-specific cytotoxic T cells with a beta-cell autoantigen-MHC-I complex on the beta-cell, and (2) non-specific inflammatory mediators, such as free radicals/oxidants and cytokines (IL-1, TNFalpha, TNFbeta, IFNgamma)., Type I diabetes is a polygenic disease. One of the principle determining genetic factors in diabetes incidence is the inheritance of mutant MHC-II alleles. Another plausible candidate gene is the insulin gene.","The classification of autoimmune throid disease (AITD) includes Hashimoto's thyroiditis (HT) or chronic autoimmune thyroiditis and its variants, Graves' disease (GD) and autoimmune atrophic thyroiditis or primary myxedema. HT is characterized by the presence of goitre, thyroid autoantibodies against thyroid peroxidase (TPO) and thyroglobulin (Tg) in serum and varying degrees of thyroid dysfunction. During HT, self-reactive CD4+ T lymphocytes (Th) recruit B cells and CD8+ T cells (CTL) into the thyroid. Disease progression leads to the death of thyroid cells and hypothyroidism. Both autoantibodies and thyroid-specific cytotoxic T lymphocytes (CTLs) have been proposed to be responsible for autoimmune thyrocyte depletion. In GD, the TSH-R is the most important autoantigen. Antibodies directed against it mimic the effects of the hormone on thyroid cells, TSH, stimulating autonomous production of thyroxine and triiodothyronine and causing hyperthyroidism. The presence of TSH-R-blocking antibodies that bind the TSH receptor in a similar fashion to the antibodies in patients with Grave's disease but that block rather than activate the receptor explains some cases of atrophic hypothyroidism."],["Proteasome, Natural killer cell mediated cytotoxicity, T cell receptor signaling pathway","Proteasome, MAPK signaling pathway, Calcium signaling pathway, NF-kappa B signaling pathway, Cell cycle, p53 signaling pathway, Apoptosis, Antigen processing and presentation, Toll-like receptor signaling pathway, RIG-I-like receptor signaling pathway, JAK-STAT signaling pathway, B cell receptor signaling pathway","Lysosome, Endocytosis, Complement and coagulation cascades, Antigen processing and presentation, Toll-like receptor signaling pathway, Fc gamma R-mediated phagocytosis","Nucleocytoplasmic transport, MAPK signaling pathway, NF-kappa B signaling pathway, Cell cycle, p53 signaling pathway, PI3K-Akt signaling pathway, Apoptosis, TGF-beta signaling pathway, Antigen processing and presentation, T cell receptor signaling pathway, TNF signaling pathway","Hematopoietic cell lineage, T cell receptor signaling pathway, B cell receptor signaling pathway","MAPK signaling pathway, Calcium signaling pathway, Cytokine-cytokine receptor interaction, Apoptosis, JAK-STAT signaling pathway","Apoptosis, Cell adhesion molecules, Complement and coagulation cascades, Antigen processing and presentation, T cell receptor signaling pathway, B cell receptor signaling pathway","Cytokine-cytokine receptor interaction, Apoptosis, Cell adhesion molecules, Antigen processing and presentation, Toll-like receptor signaling pathway, Natural killer cell mediated cytotoxicity, T cell receptor signaling pathway","Apoptosis, T cell receptor signaling pathway","Apoptosis, Cell adhesion molecules, Complement and coagulation cascades, Antigen processing and presentation, T cell receptor signaling pathway, B cell receptor signaling pathway, Thyroid hormone synthesis"],["15771591, 15814328, 11905820, 15304636, 16200082, 12776207, 12974477, 15224093, 16181333, 15653312, 11244040, 15745856, 15224094, 15653315, 20010787","15510157, 21372216, 21429244, 28408983, 24586164, 23850008, 25704559, 22110506, 23303627, 29116588, 23435233, 19498380, 18977445, 21146386, 27886133, 22249143, 25613730, 17601372, 23793113, 28835489, 12740915, 25873381, 11905817, 11669605, 14506283, 25403939, 29932446, 19649319, 19244339, 19394062, 25635182, 10818681, 30116721, 12811813, 21347341","15894272, 10684585, 18492791, 15036145, 17245426, 17637737, 18513324","17384582, 16155604, 18702816, 21994754, 21114861, , 18923409, 15040584, 27334587, 15988028, 21994758, 26927155, 22783232, 23248621, 18421579, 15761473, 20332002, 23741982, 21743832, 21994767, 16036567, 16155602, 9710600, 21315773, 26797638, 26324707, 11264182, 15310405, 11244044, 12802280","16261175, 11941303, 17960151, 17952897, 18093537, 14699405, 11058677, 15661024, 14647478","15607802, 16109839, 15567854, 12205470, 11062493, 15607806, 11895890, 12530970, 16177799, 8942070, 16002670, 9143705, 14710949, 11905813, 11836514, 12766758, 12752668, 15618404, 9862693, 11390470","10746853, 12023610, 17445565, 14710779, 8835634, 10571983, 10331992, 10667806, , 12216939, 12563298","16412784, 14735553, 17900507, 15882431, 12359826, 14556773, 16147539, 15372473, 17784964","9719467, 11507694, 8072542, 8786033, 12796471, 15889095, 15889096, 14617043, 12752668","15049952, 15762980, 9534029, 11913070, 12192541, 11396701, 17192582, 15132715, 11577986"]],"container":"<table class=\"display\">\n  <thead>\n    <tr>\n      <th> <\/th>\n      <th>Description<\/th>\n      <th>GeneRatio<\/th>\n      <th>pvalue<\/th>\n      <th>logPval<\/th>\n      <th>p.adjust<\/th>\n      <th>qvalue<\/th>\n      <th>geneID<\/th>\n      <th>Count<\/th>\n      <th>Class<\/th>\n      <th>Pathway description<\/th>\n      <th>Related pathways<\/th>\n      <th>References (PMID)<\/th>\n    <\/tr>\n  <\/thead>\n<\/table>","options":{"dom":"Blfrtip","scrollX":true,"buttons":["copy","csv","excel","pdf","print"],"lengthMenu":[[10,25,50,-1],["10","25","50","All"]],"columnDefs":[{"orderable":false,"targets":0},{"name":" ","targets":0},{"name":"Description","targets":1},{"name":"GeneRatio","targets":2},{"name":"pvalue","targets":3},{"name":"logPval","targets":4},{"name":"p.adjust","targets":5},{"name":"qvalue","targets":6},{"name":"geneID","targets":7},{"name":"Count","targets":8},{"name":"Class","targets":9},{"name":"Pathway description","targets":10},{"name":"Related pathways","targets":11},{"name":"References (PMID)","targets":12}],"order":[],"autoWidth":false,"orderClasses":false}},"evals":[],"jsHooks":[]}</script>
+<script type="application/json" data-for="htmlwidget-27a6251d00cbd347f90b">{"x":{"filter":"none","vertical":false,"extensions":["Buttons"],"caption":"<caption>Significantly enriched KEGG terms<\/caption>","data":[["mmu04612","mmu05330","mmu05332","mmu05320","mmu05340","mmu04940","mmu05166","mmu05169","mmu04145","mmu04650","mmu05416"],["mmu04612","mmu05330","mmu05332","mmu05320","mmu05340","mmu04940","mmu05166","mmu05169","mmu04145","mmu04650","mmu05416"],["Antigen processing and presentation","Allograft rejection","Graft-versus-host disease","Autoimmune thyroid disease","Primary immunodeficiency","Type I diabetes mellitus","Human T-cell leukemia virus 1 infection","Epstein-Barr virus infection","Phagosome","Natural killer cell mediated cytotoxicity","Viral myocarditis"],["0.118","0.13","0.13","0.125","0.12","0.115","0.0354","0.0347","0.0407","0.046","0.0545"],["51","23","23","24","25","26","198","173","123","87","55"],["6038","6038","6038","6038","6038","6038","6038","6038","6038","6038","6038"],["5.09e-06","0.00106","0.00106","0.0012","0.00135","0.00152","0.00176","0.00419","0.00461","0.00735","0.0128"],["0.000631","0.0311","0.0311","0.0311","0.0311","0.0311","0.0311","0.0635","0.0635","0.0912","0.144"],["0.000579","0.0285","0.0285","0.0285","0.0285","0.0285","0.0285","0.0582","0.0582","0.0836","0.132"],["H2-K1/B2m/Hspa1l/H2-D1/H2-T23/Rfxap","H2-K1/H2-D1/H2-T23","H2-K1/H2-D1/H2-T23","H2-K1/H2-D1/H2-T23","Il2rg/Zap70/Rfxap","H2-K1/H2-D1/H2-T23","H2-K1/Cdc23/B2m/Il2rg/H2-D1/H2-T23/Bub1b","H2-K1/B2m/Runx3/H2-D1/Stat2/H2-T23","H2-K1/Stx18/Lamp1/H2-D1/H2-T23","H2-K1/H2-D1/Zap70/H2-T23","H2-K1/H2-D1/H2-T23"],["6","3","3","3","3","3","7","6","5","4","3"],["3.2","1.51","1.51","1.51","1.51","1.51","1.51","1.2","1.2","1.04","0.841"],["Organismal Systems; Immune system","Human Diseases; Immune disease","Human Diseases; Immune disease","Human Diseases; Cardiovascular disease","Human Diseases; Immune disease","Human Diseases; Endocrine and metabolic disease","Cellular Processes; Transport and catabolism","Human Diseases; Infectious disease: viral","Human Diseases; Immune disease","Organismal Systems; Immune system","Human Diseases; Infectious disease: viral"],[null,"Allograft rejection is the consequence of the recipient's alloimmune response to nonself antigens expressed by donor tissues. After transplantation of organ allografts, there are two pathways of antigen presentation. In the direct pathway, recipient T cells react to intact allogeneic MHC molecules expressed on the surface of donor cells. This pathway would activate host CD4 or CD8 T cells. In contrast, donor MHC molecules (and all other proteins) shed from the graft can be taken up by host APCs and presented to recipient T cells in the context of self-MHC molecules - the indirect pathway. Such presentation activates predominantly CD4 T cells. A direct cytotoxic T-cell attack on graft cells can be made only by T cells that recognize the graft MHC molecules directly. Nontheless, T cells with indirect allospecificity can contribute to graft rejection by activating macrophages, which cause tissue injury and fibrosis, and are also likely to be important in the development of an alloantibody response to graft.","Graft-versus-host disease (GVHD) is a lethal complication of allogeneic hematopoietic stem cell transplantation (HSCT) where immunocompetent donor T cells attack the genetically disparate host cells. GVHD pathophysiology can be summerized in a three-step process. Step 1 involves the development of an inflammatory milieu resulting from damage in the host tissues induced by the preparative chemotherapy or radiotherapy regimen. Damaged tissues secrete inflammatory cytokines, including interleukin 1 (IL-1), and tumor necrosis factor (TNF-alpha ). During step 2, antigen-presenting cells (APCs) trigger the activation of donor-derived T cells, which induce further T-cell expansion, induce cytotoxic T lymphocytes (CTL) and natural killer (NK) cells responses and prime additional mononuclear phagocytes to produce TNF-alpha and IL-1. Also, nitric oxide (NO) is produced by activated macrophages, and it may contribute to the tissue damage seen during step 3. During step 3, the effector phase, activated CTL and NK cells mediate cytotoxicity against target host cells through Fas-Fas ligand interactions and perforin-granzyme B.","Myocarditis is a cardiac disease associated with inflammation and injury of the myocardium. It results from various etiologies, both noninfectious and infectious, but coxsackievirus B3 (CVB3) is still considered the dominant etiological agent. Myocarditis may be caused by direct cytopathic effects of virus, a pathologic immune response to persistent virus, or autoimmunity triggered by the viral infection. The virus enters the myocyte through internalization of the coxsackie-adenoviral receptor (CAR) and its coreceptor, decay-accelerating factor (DAF). Viral proteases cleave various proteins in the host cell. One example is viral protease 2A, which cleaves eukaryote initiation factor 4G (eIF4G) and the dystrophin protein, resulting in a complete shutdown of cap-dependent RNA translation and cytoskeletal destruction in infected cardiomyocytes, respectively. CVB3 also cleaves the member of the Bcl-2 family Bid, leading to apoptosis. CVB3 infection also induces the cleavage of cyclin D protein through a proteasome-dependent pathway, leading to the host cell-growth arrest. Viral infection and necrosis of myocytes may lead to the release of intracellular antigens, resulting in activation of self-reactive T cells. CVB infection is a significant cause of dilated cardiomyopathy (DCM) as well as myocarditis. Epidemiologically, myocarditis underlies a significant portion of patients with DCM.","The classification of autoimmune throid disease (AITD) includes Hashimoto's thyroiditis (HT) or chronic autoimmune thyroiditis and its variants, Graves' disease (GD) and autoimmune atrophic thyroiditis or primary myxedema. HT is characterized by the presence of goitre, thyroid autoantibodies against thyroid peroxidase (TPO) and thyroglobulin (Tg) in serum and varying degrees of thyroid dysfunction. During HT, self-reactive CD4+ T lymphocytes (Th) recruit B cells and CD8+ T cells (CTL) into the thyroid. Disease progression leads to the death of thyroid cells and hypothyroidism. Both autoantibodies and thyroid-specific cytotoxic T lymphocytes (CTLs) have been proposed to be responsible for autoimmune thyrocyte depletion. In GD, the TSH-R is the most important autoantigen. Antibodies directed against it mimic the effects of the hormone on thyroid cells, TSH, stimulating autonomous production of thyroxine and triiodothyronine and causing hyperthyroidism. The presence of TSH-R-blocking antibodies that bind the TSH receptor in a similar fashion to the antibodies in patients with Grave's disease but that block rather than activate the receptor explains some cases of atrophic hypothyroidism.","Type I diabetes mellitus is a disease that results from autoimmune destruction of the insulin-producing beta-cells. Certain beta-cell proteins act as autoantigens after being processed by antigen-presenting cell (APC), such as macrophages and dendritic cells, and presented in a complex with MHC-II molecules on the surface of the APC. Then immunogenic signals from APC activate CD4+ T cells, predominantly of the Th1 subset. Antigen-activated Th1 cells produce IL-2 and IFNgamma. They activate macrophages and cytotoxic CD8+ T cells, and these effector cells may kill islet beta-cells by one or both of two types of mechanisms: (1) direct interactions of antigen-specific cytotoxic T cells with a beta-cell autoantigen-MHC-I complex on the beta-cell, and (2) non-specific inflammatory mediators, such as free radicals/oxidants and cytokines (IL-1, TNFalpha, TNFbeta, IFNgamma)., Type I diabetes is a polygenic disease. One of the principle determining genetic factors in diabetes incidence is the inheritance of mutant MHC-II alleles. Another plausible candidate gene is the insulin gene.","Phagocytosis is the process of taking in relatively large particles by a cell, and is a central mechanism in the tissue remodeling, inflammation, and defense against infectious agents. A phagosome is formed when the specific receptors on the phagocyte surface recognize ligands on the particle surface. After formation, nascent phagosomes progressively acquire digestive characteristics. This maturation of phagosomes involves regulated interaction with the other membrane organelles, including recycling endosomes, late endosomes and lysosomes. The fusion of phagosomes and lysosomes releases toxic products that kill most bacteria and degrade them into fragments. However, some bacteria have strategies to escape the bactericidal mechanisms associated with phagocytosis and survive within host phagocytes.","Epstein-Barr virus (EBV) is a gamma-herpes virus that widely infects human populations predominantly at an early age but remains mostly asymptomatic. EBV has been linked to a wide spectrum of human malignancies, including nasopharyngeal carcinoma and other hematologic cancers, like Hodgkin's lymphoma, Burkitt's lymphoma (BL), B-cell immunoblastic lymphoma in HIV patients, and posttransplant-associated lymphoproliferative diseases.  EBV has the unique ability to establish life-long latent infection in primary human B lymphocytes. During latent infection, EBV expresses a small subset of genes, including 6 nuclear antigens (EBNA-1, -2, -3A, -3B, -3C, and -LP), 3 latent membrane proteins (LMP-1, -2A, and -2B), 2 small noncoding RNAs (EBER-1 and 2). On the basis of these latent gene expression, three different latency patterns associated with the types of cancers are recognized.","Primary immunodeficiencies (PIs) are a heterogeneous group of disorders, which affect cellular and humoral immunity or non-specific host defense mechanisms mediated by complement proteins, and cells such as phagocytes and natural killer (NK) cells. These disorders of the immune system cause increased susceptibility to infection, autoimmune disease, and malignancy. Most of PIs are due to genetic defects that affect cell maturation or function at different levels during hematopoiesis. Disruption of the cellular immunity is observed in patients with defects in T cells or both T and B cells. These cellular immunodeficiencies comprise 20% of all PIs. Disorders of humoral immunity affect B-cell differentiation and antibody production. They account for 70% of all PIs.","Natural killer (NK) cells are lymphocytes of the innate immune system that are involved in early defenses against both allogeneic (nonself) cells and autologous cells undergoing various forms of stress, such as infection with viruses, bacteria, or parasites or malignant transformation. Although NK cells do not express classical antigen receptors of the immunoglobulin gene family, such as the antibodies produced by B cells or the T cell receptor expressed by T cells, they are equipped with various receptors whose engagement allows them to discriminate between target and nontarget cells. Activating receptors bind ligands on the target cell surface and trigger NK cell activation and target cell lysis. However Inhibitory receptors recognize MHC class I molecules (HLA) and inhibit killing by NK cells by overruling the actions of the activating receptors. This inhibitory signal is lost when the target cells do not express MHC class I and perhaps also in cells infected with virus, which might inhibit MHC class I exprssion or alter its conformation. The mechanism of NK cell killing is the same as that used by the cytotoxic T cells generated in an adaptive immune response; cytotoxic granules are released onto the surface of the bound target cell, and the effector proteins they contain penetrate the cell membrane and induce programmed cell death.","Human T-cell leukemia virus type 1 (HTLV-1) is a pathogenic retrovirus that is associated with adult T-cell leukemia/lymphoma (ATL). It is also strongly implicated in non-neoplastic chronic inflammatory diseases such as HTLV-1-associated myelopathy/tropical spastic paraparesis (HAM/TSP). Expression of Tax, a viral regulatory protein is critical to the pathogenesis. Tax is a transcriptional co-factor that interfere several signaling pathways related to anti-apoptosis or cell proliferation. The modulation of the signaling by Tax involve its binding to transcription factors like CREB/ATF, NF-kappa B, and SRF."],["Proteasome, Natural killer cell mediated cytotoxicity, T cell receptor signaling pathway","Apoptosis, Cell adhesion molecules, Complement and coagulation cascades, Antigen processing and presentation, T cell receptor signaling pathway, B cell receptor signaling pathway","Cytokine-cytokine receptor interaction, Apoptosis, Cell adhesion molecules, Antigen processing and presentation, Toll-like receptor signaling pathway, Natural killer cell mediated cytotoxicity, T cell receptor signaling pathway","Proteasome, Cell cycle, Apoptosis, Cardiac muscle contraction, ECM-receptor interaction, Antigen processing and presentation, T cell receptor signaling pathway, Dilated cardiomyopathy","Apoptosis, Cell adhesion molecules, Complement and coagulation cascades, Antigen processing and presentation, T cell receptor signaling pathway, B cell receptor signaling pathway, Thyroid hormone synthesis","Apoptosis, T cell receptor signaling pathway","Lysosome, Endocytosis, Complement and coagulation cascades, Antigen processing and presentation, Toll-like receptor signaling pathway, Fc gamma R-mediated phagocytosis","Proteasome, MAPK signaling pathway, Calcium signaling pathway, NF-kappa B signaling pathway, Cell cycle, p53 signaling pathway, Apoptosis, Antigen processing and presentation, Toll-like receptor signaling pathway, RIG-I-like receptor signaling pathway, JAK-STAT signaling pathway, B cell receptor signaling pathway","Hematopoietic cell lineage, T cell receptor signaling pathway, B cell receptor signaling pathway","MAPK signaling pathway, Calcium signaling pathway, Cytokine-cytokine receptor interaction, Apoptosis, JAK-STAT signaling pathway","Nucleocytoplasmic transport, MAPK signaling pathway, NF-kappa B signaling pathway, Cell cycle, p53 signaling pathway, PI3K-Akt signaling pathway, Apoptosis, TGF-beta signaling pathway, Antigen processing and presentation, T cell receptor signaling pathway, TNF signaling pathway"],["15771591, 15814328, 11905820, 15304636, 16200082, 12776207, 12974477, 15224093, 16181333, 15653312, 11244040, 15745856, 15224094, 15653315, 20010787","10746853, 12023610, 17445565, 14710779, 8835634, 10571983, 10331992, 10667806, , 12216939, 12563298","16412784, 14735553, 17900507, 15882431, 12359826, 14556773, 16147539, 15372473, 17784964","18039131, 12920582, 17200452, 12439638, 16845885, 16413486, 10904843, 18357777, 18545064, 19357408, 10051305, 11524405, 14522402, 16817756","15049952, 15762980, 9534029, 11913070, 12192541, 11396701, 17192582, 15132715, 11577986","9719467, 11507694, 8072542, 8786033, 12796471, 15889095, 15889096, 14617043, 12752668","15894272, 10684585, 18492791, 15036145, 17245426, 17637737, 18513324","15510157, 21372216, 21429244, 28408983, 24586164, 23850008, 25704559, 22110506, 23303627, 29116588, 23435233, 19498380, 18977445, 21146386, 27886133, 22249143, 25613730, 17601372, 23793113, 28835489, 12740915, 25873381, 11905817, 11669605, 14506283, 25403939, 29932446, 19649319, 19244339, 19394062, 25635182, 10818681, 30116721, 12811813, 21347341","16261175, 11941303, 17960151, 17952897, 18093537, 14699405, 11058677, 15661024, 14647478","15607802, 16109839, 15567854, 12205470, 11062493, 15607806, 11895890, 12530970, 16177799, 8942070, 16002670, 9143705, 14710949, 11905813, 11836514, 12766758, 12752668, 15618404, 9862693, 11390470","17384582, 16155604, 18702816, 21994754, 21114861, , 18923409, 15040584, 27334587, 15988028, 21994758, 26927155, 22783232, 23248621, 18421579, 15761473, 20332002, 23741982, 21743832, 21994767, 16036567, 16155602, 9710600, 21315773, 26797638, 26324707, 11264182, 15310405, 11244044, 12802280"]],"container":"<table class=\"display\">\n  <thead>\n    <tr>\n      <th> <\/th>\n      <th>ID<\/th>\n      <th>Description<\/th>\n      <th>GeneRatio<\/th>\n      <th>Total<\/th>\n      <th>Universe<\/th>\n      <th>pvalue<\/th>\n      <th>p.adjust<\/th>\n      <th>qvalue<\/th>\n      <th>geneID<\/th>\n      <th>Count<\/th>\n      <th>logFDR<\/th>\n      <th>Class<\/th>\n      <th>Pathway description<\/th>\n      <th>Related pathways<\/th>\n      <th>References (PMID)<\/th>\n    <\/tr>\n  <\/thead>\n<\/table>","options":{"dom":"Blfrtip","scrollX":true,"buttons":["copy","csv","excel","pdf","print"],"lengthMenu":[[10,25,50,-1],["10","25","50","All"]],"columnDefs":[{"orderable":false,"targets":0},{"name":" ","targets":0},{"name":"ID","targets":1},{"name":"Description","targets":2},{"name":"GeneRatio","targets":3},{"name":"Total","targets":4},{"name":"Universe","targets":5},{"name":"pvalue","targets":6},{"name":"p.adjust","targets":7},{"name":"qvalue","targets":8},{"name":"geneID","targets":9},{"name":"Count","targets":10},{"name":"logFDR","targets":11},{"name":"Class","targets":12},{"name":"Pathway description","targets":13},{"name":"Related pathways","targets":14},{"name":"References (PMID)","targets":15}],"order":[],"autoWidth":false,"orderClasses":false}},"evals":[],"jsHooks":[]}</script>
 </div>
 <div id="upset-plot-2" class="section level4">
 <h4>Upset plot</h4>
 <p><img src="figure/kegg.Rmd/upset3-1.png" width="1056" style="display: block; margin: auto;" /></p>
+<p>
+<button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-upset3-1">
+Past versions of upset3-1.png
+</button>
+</p>
+<div id="fig-upset3-1" class="collapse">
+<div class="table-responsive">
+<table class="table table-condensed table-hover">
+<thead>
+<tr>
+<th>
+Version
+</th>
+<th>
+Author
+</th>
+<th>
+Date
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>
+<a href="https://github.com/tranmanhha135/Treg_uNK/blob/762020e5b1bc3664ab92da69ebba8ad38169515d/docs/figure/kegg.Rmd/upset3-1.png" target="_blank">762020e</a>
+</td>
+<td>
+tranmanhha135
+</td>
+<td>
+2024-01-09
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+</div>
+</div>
+<div id="combined" class="section level3 tabset tabset-pills">
+<h3 class="tabset tabset-pills">Combined</h3>
+<div id="venn-diagram" class="section level4">
+<h4>Venn diagram</h4>
+<p><img src="figure/kegg.Rmd/venn.png" /></p>
+</div>
+<div id="dot-plot-3" class="section level4">
+<h4>Dot plot</h4>
+<p><img src="figure/kegg.Rmd/combined_dot-1.png" width="864" style="display: block; margin: auto;" /></p>
 </div>
 </div>
 </div>
@@ -896,141 +1244,240 @@ visualisation</strong></p>
 <div id="pathway-specific-heatmaps"
 class="section level1 tabset tabset-pills">
 <h1 class="tabset tabset-pills">Pathway specific heatmaps</h1>
-<!-- Here the top 5 most interesting KEGG pathways were selected for further visualisations. -->
-<!-- These visualisations are similarly performed with set of DE genes significantly below **FDR \< 0.1 or \< 0.05** with and without FC threshold (TREAT). **IMPORTANTLY**, these KEGG terms are all significantly enriched but only with P-value \< 0.05 and no P-value correction method. -->
-<!-- -   **Heatmap:** illustrates the expression of genes in specific KEGG pathways. -->
-<!--     -   The genes (rows) and samples (columns) are heirachirally clusterd based on their expression profile. -->
-<!-- -   **Table:** list of all the significant DE genes in the specified KEGG pathway -->
-<!-- -   **Pathview:** maps gene expression data onto the specified KEGG pathways, allowing users to see where genes in their dataset are located within specific pathways, and potential upstream and downstream elements. -->
-<!-- ```{r heatmap} -->
-<!-- # create df with normalised read counts with an additional entrezid column for binding -->
-<!-- logCPM <- cpm(dge, prior.count = 4, log = TRUE) %>% subset(select = 1:8) -->
-<!-- rownames(logCPM) <- dge$genes$gene -->
-<!-- # df for heatmap annotation of sample group -->
-<!-- anno <- as.factor(dge$samples$group) %>% as.data.frame() %>% dplyr::slice(1:8) -->
-<!-- colnames(anno) <- "Groups" -->
-<!-- rownames(anno) <- colnames(logCPM) -->
-<!-- matrix <- list() -->
-<!-- display_matrix <- list() -->
-<!-- kegg_heat=list() -->
-<!-- for (i in 1:length(lm)) { -->
-<!--   name <- names(lm[i]) -->
-<!--   for (j in 1:length(kegg_id)) { -->
-<!--     pathName <- kegg_pathway[[j]]$PATHWAY_MAP -->
-<!--     partial <- enrichKEGG_all[[name]][, c("ID", "geneID")] -->
-<!--     partial <- partial[kegg_id[j], "geneID"] %>% as.data.frame() -->
-<!--     partial <- separate_rows(partial, ., sep = "/") -->
-<!--     colnames(partial) <- "entrezid" -->
-<!--     # heatmap matrix -->
-<!--     match <- rownames(logCPM) %in% partial$entrezid -->
-<!--     matrix[[name]][[pathName]] <- logCPM[match, ] %>% as.matrix() -->
-<!--     # display matrix -->
-<!--     match2 <- lm_sig[[name]][, "gene"] %in% partial$entrezid -->
-<!--     display_matrix[[name]][[pathName]] <- lm_sig[[name]][match2, c("gene", "logFC", "P.Value", "adj.P.Val", "description","entrezid")] %>% -->
-<!--       dplyr::mutate_if(is.numeric, funs(as.character(signif(.,3)))) %>% -->
-<!--       DT(.,caption = "DE genes") -->
-<!--     kegg_heat[[name]][[pathName]] <- ComplexHeatmap::pheatmap( -->
-<!--       # MAIN -->
-<!--       mat = matrix[[name]][[pathName]], -->
-<!--       color = colorRampPalette(rev(c("#FB8072","#FDB462","#ffffd5","#8DD3C7","#80B1D3")))(100), -->
-<!--       scale = "row", -->
-<!--       # Col -->
-<!--       cluster_cols = T, -->
-<!--       cutree_cols = 2, -->
-<!--       border_color = "white", -->
-<!--       # gaps_col = 4, -->
-<!--       angle_col = "0", -->
-<!--       treeheight_col = 20, -->
-<!--       # Row -->
-<!--       cutree_rows = 4, -->
-<!--       treeheight_row = 30, -->
-<!--       clustering_distance_rows = "euclidean", -->
-<!--       labels_row = as.expression(lapply(rownames(matrix[[name]][[pathName]]), function(a) bquote(italic(.(a))))), -->
-<!--       # Labs -->
-<!--       main = paste0(pathName, "\n"), -->
-<!--       show_colnames = T, -->
-<!--       legend = T, -->
-<!--       heatmap_legend_param = list(title = "Z-score", legend_width = unit(3, "cm")), -->
-<!--       # Annotation -->
-<!--       annotation_legend = T, -->
-<!--       # legend_labels = T, -->
-<!--       annotation_col = anno, -->
-<!--       annotation_colors = list("Groups" = groupColour), -->
-<!--       annotation_names_col = T, -->
-<!--       # Fonts -->
-<!--       fontfamily = "Arial Narrow", -->
-<!--       fontsize = 14, -->
-<!--       fontsize_col = 14, -->
-<!--       fontsize_number = 14, -->
-<!--       fontsize_row = 14 -->
-<!--     ) %>% as.ggplot() -->
-<!--     if (savePlots == T) { -->
-<!--       ggsave(filename = paste0("heat_", name, "_", pathName, ".svg"),  -->
-<!--            plot = kegg_heat[[name]][[pathName]],  -->
-<!--            path = here::here("2_plots/3_FA/kegg/"), -->
-<!--            width = 12, -->
-<!--            height = 14, -->
-<!--            units = "cm") -->
-<!--     } -->
-<!--   } -->
-<!-- } -->
-<!-- ``` -->
-<!-- ```{r pathview, eval=FALSE} -->
-<!-- # adjusting the kegg id to suit the parameters of the pathview funtion -->
-<!-- adj.keggID <- gsub("mmu", "", kegg_id) -->
-<!-- for (i in 1:length(lm)) { -->
-<!--   name <- names(lm[i]) -->
-<!--   # extract the logFC from the DE gene list -->
-<!--   pathview_table <- dplyr::select(.data = lm_sig[[name]], c("logFC")) %>% as.matrix() -->
-<!--   # run pathview with Ensembl ID instead of entrezID -->
-<!--   pathview <- pathview( -->
-<!--     gene.data = pathview_table[, 1], -->
-<!--     gene.idtype = "SYMBOL", -->
-<!--     pathway.id = adj.keggID, -->
-<!--     species = "mmu", -->
-<!--     out.suffix = "pv", -->
-<!--     kegg.dir = here::here("2_plots/3_FA/"), -->
-<!--     kegg.native = T -->
-<!--   ) -->
-<!--   # move the result file to the plot directory -->
-<!--   file.rename( -->
-<!--     from = paste0("mmu", adj.keggID, ".pv.png"), -->
-<!--     to = here::here(paste0("2_plots/3_FA/kegg/pv_", name, "_", kegg_id, ".png")) -->
-<!--   ) -->
-<!-- } -->
-<!-- ``` -->
-<!-- ```{r loop2, results="asis"} -->
-<!-- ## this function is basically creating chunks within chunks, and then -->
-<!-- ## I use results='asis' so that the html image code is rendered  -->
-<!-- kexpand <- function(wd, ht, cap) { -->
-<!--   cat(knit(text = knit_expand(text = sprintf("```{r %s, fig.width=%s, fig.height=%s}\n.pl\n```", cap,wd, ht) -->
-<!--   ))) -->
-<!--   } -->
-<!-- # Loop through each FC value -->
-<!-- headers <- c("FC=none, FDR<0.1", "FC=none, FDR<0.05", "FC=1.1, FDR<0.1",  -->
-<!--              "FC=1.1, FDR<0.05", "FC=1.2, FDR<0.1"  , "FC=1.2, FDR<0.05") -->
-<!-- # subheaders <-  -->
-<!-- types <- c("Heatmap", "Table", "Pathview") -->
-<!-- for (i in 1:length(headers)) { -->
-<!--   cat(paste0("## ",headers[i],"{.tabset .tabset-pills} \n\n")) -->
-<!--   for (j in 1:length(kegg_pathway)) { -->
-<!--     cat(paste0("### ",kegg_pathway[[j]]$PATHWAY_MAP,"{.tabset .tabset-pills} \n\n")) -->
-<!--     cat(paste0("#### ",types[[1]]," \n")) -->
-<!--     .pl <- kegg_heat[[i]][[j]]  -->
-<!--     kexpand(wd = 8,ht = 9,cap = paste0("heat",i,j)) -->
-<!--     cat("\n\n") -->
-<!--     cat(paste0("#### ",types[[2]]," \n")) -->
-<!--     .pl <- display_matrix[[i]][[j]] -->
-<!--     kexpand(wd = 11,ht = 8,cap = paste0("specficTab",i,j)) -->
-<!--     cat("\n\n") -->
-<!--     cat(paste0("#### ",types[[3]]," \n")) -->
-<!--     cat(paste0("![](figure/kegg.Rmd/pv_", names(kegg_heat)[i], "_", kegg_id[j], ".png)")) -->
-<!--     # .pl <- knitr::include_graphics(here::here(paste0("figure/kegg.Rmd/pv_", names(kegg_heat)[i], "_", kegg_id[j], ".png"))) -->
-<!--     # kexpand(wd = 9,ht = 9,cap = paste0("pathview",i,j)) -->
-<!--     cat("\n\n") -->
-<!--   } -->
-<!-- } -->
-<!-- ``` -->
+<p>Here the top 4 most interesting KEGG pathways were selected for
+further visualisations.</p>
+<p>These visualisations are similarly performed with set of DE genes
+significantly below <strong>FDR &lt; 0.1 or &lt; 0.05</strong> with and
+without FC threshold (TREAT). <strong>IMPORTANTLY</strong>, these KEGG
+terms are all significantly enriched but only with P-value &lt; 0.05 and
+no P-value correction method.</p>
+<ul>
+<li><p><strong>Heatmap:</strong> illustrates the expression of genes in
+specific KEGG pathways.</p>
+<ul>
+<li>The genes (rows) and samples (columns) are heirachirally clusterd
+based on their expression profile.</li>
+</ul></li>
+<li><p><strong>Table:</strong> list of all the significant DE genes in
+the specified KEGG pathway</p></li>
+<li><p><strong>Pathview:</strong> maps gene expression data onto the
+specified KEGG pathways, allowing users to see where genes in their
+dataset are located within specific pathways, and potential upstream and
+downstream elements.</p></li>
+</ul>
+<div id="dt-vs-pbs-1" class="section level2 tabset tabset-pills">
+<h2 class="tabset tabset-pills">DT vs PBS</h2>
+<div id="antigen-processing-and-presentation"
+class="section level3 tabset tabset-pills">
+<h3 class="tabset tabset-pills">Antigen processing and presentation</h3>
+<div id="heatmap" class="section level4">
+<h4>Heatmap</h4>
+<p><img src="figure/kegg.Rmd/heat11-1.png" width="768" style="display: block; margin: auto;" /></p>
+</div>
+<div id="table-3" class="section level4">
+<h4>Table</h4>
+<div class="datatables html-widget html-fill-item" id="htmlwidget-02880d8cbf9369760f4f" style="width:100%;height:auto;"></div>
+<script type="application/json" data-for="htmlwidget-02880d8cbf9369760f4f">{"x":{"filter":"none","vertical":false,"extensions":["Buttons"],"caption":"<caption>DE genes<\/caption>","data":[["H2-Q4","Tap1","B2m","H2-K1","Tap2","H2-D1","H2-T23","Hspa1b","Psme1","Psme2"],["H2-Q4","Tap1","B2m","H2-K1","Tap2","H2-D1","H2-T23","Hspa1b","Psme1","Psme2"],["1.07","0.976","0.794","0.766","0.694","0.776","0.781","-0.869","0.584","0.559"],["3.34e-08","1.03e-07","2.15e-07","6.07e-07","1.81e-05","4.14e-05","0.000379","0.000665","0.00121","0.00228"],["0.000492","0.00076","0.000865","0.00158","0.00905","0.0127","0.0323","0.0446","0.0617","0.0865"],["histocompatibility 2, Q region locus 4 [Source:MGI Symbol;Acc:MGI:95933]","transporter 1, ATP-binding cassette, sub-family B (MDR/TAP) [Source:MGI Symbol;Acc:MGI:98483]","beta-2 microglobulin [Source:MGI Symbol;Acc:MGI:88127]","histocompatibility 2, K1, K region [Source:MGI Symbol;Acc:MGI:95904]","transporter 2, ATP-binding cassette, sub-family B (MDR/TAP) [Source:MGI Symbol;Acc:MGI:98484]","histocompatibility 2, D region locus 1 [Source:MGI Symbol;Acc:MGI:95896]","histocompatibility 2, T region locus 23 [Source:MGI Symbol;Acc:MGI:95957]","heat shock protein 1B [Source:MGI Symbol;Acc:MGI:99517]","proteasome (prosome, macropain) activator subunit 1 (PA28 alpha) [Source:MGI Symbol;Acc:MGI:1096367]","proteasome (prosome, macropain) activator subunit 2 (PA28 beta) [Source:MGI Symbol;Acc:MGI:1096365]"],["15015","21354","12010","14972","21355","14964","15040","15511","19186","19188"]],"container":"<table class=\"display\">\n  <thead>\n    <tr>\n      <th> <\/th>\n      <th>gene<\/th>\n      <th>logFC<\/th>\n      <th>P.Value<\/th>\n      <th>adj.P.Val<\/th>\n      <th>description<\/th>\n      <th>entrezid<\/th>\n    <\/tr>\n  <\/thead>\n<\/table>","options":{"dom":"Blfrtip","scrollX":true,"buttons":["copy","csv","excel","pdf","print"],"lengthMenu":[[10,25,50,-1],["10","25","50","All"]],"columnDefs":[{"orderable":false,"targets":0},{"name":" ","targets":0},{"name":"gene","targets":1},{"name":"logFC","targets":2},{"name":"P.Value","targets":3},{"name":"adj.P.Val","targets":4},{"name":"description","targets":5},{"name":"entrezid","targets":6}],"order":[],"autoWidth":false,"orderClasses":false}},"evals":[],"jsHooks":[]}</script>
+</div>
+<div id="pathview" class="section level4">
+<h4>Pathview</h4>
+<p><img src="figure/kegg.Rmd/pv_DT%20vs%20PBS_mmu04612.png" /></p>
+</div>
+</div>
+<div id="natural-killer-cell-mediated-cytotoxicity"
+class="section level3 tabset tabset-pills">
+<h3 class="tabset tabset-pills">Natural killer cell mediated
+cytotoxicity</h3>
+<div id="heatmap-1" class="section level4">
+<h4>Heatmap</h4>
+<p><img src="figure/kegg.Rmd/heat12-1.png" width="768" style="display: block; margin: auto;" /></p>
+</div>
+<div id="table-4" class="section level4">
+<h4>Table</h4>
+<div class="datatables html-widget html-fill-item" id="htmlwidget-3ddf61f37a3b681f1823" style="width:100%;height:auto;"></div>
+<script type="application/json" data-for="htmlwidget-3ddf61f37a3b681f1823">{"x":{"filter":"none","vertical":false,"extensions":["Buttons"],"caption":"<caption>DE genes<\/caption>","data":[["H2-K1","H2-D1","Zap70","H2-T23","Icam1","Itgb2l","Rac2","Gzmb","Prf1"],["H2-K1","H2-D1","Zap70","H2-T23","Icam1","Itgb2l","Rac2","Gzmb","Prf1"],["0.766","0.776","1.04","0.781","0.865","-2.15","0.606","0.513","0.705"],["6.07e-07","4.14e-05","8.6e-05","0.000379","0.000755","0.00131","0.00196","0.0019","0.00212"],["0.00158","0.0127","0.0184","0.0323","0.0484","0.0623","0.0789","0.0768","0.0835"],["histocompatibility 2, K1, K region [Source:MGI Symbol;Acc:MGI:95904]","histocompatibility 2, D region locus 1 [Source:MGI Symbol;Acc:MGI:95896]","zeta-chain (TCR) associated protein kinase [Source:MGI Symbol;Acc:MGI:99613]","histocompatibility 2, T region locus 23 [Source:MGI Symbol;Acc:MGI:95957]","intercellular adhesion molecule 1 [Source:MGI Symbol;Acc:MGI:96392]","integrin beta 2-like [Source:MGI Symbol;Acc:MGI:1277979]","Rac family small GTPase 2 [Source:MGI Symbol;Acc:MGI:97846]","granzyme B [Source:MGI Symbol;Acc:MGI:109267]","perforin 1 (pore forming protein) [Source:MGI Symbol;Acc:MGI:97551]"],["14972","14964","22637","15040","15894","16415","19354","14939","18646"]],"container":"<table class=\"display\">\n  <thead>\n    <tr>\n      <th> <\/th>\n      <th>gene<\/th>\n      <th>logFC<\/th>\n      <th>P.Value<\/th>\n      <th>adj.P.Val<\/th>\n      <th>description<\/th>\n      <th>entrezid<\/th>\n    <\/tr>\n  <\/thead>\n<\/table>","options":{"dom":"Blfrtip","scrollX":true,"buttons":["copy","csv","excel","pdf","print"],"lengthMenu":[[10,25,50,-1],["10","25","50","All"]],"columnDefs":[{"orderable":false,"targets":0},{"name":" ","targets":0},{"name":"gene","targets":1},{"name":"logFC","targets":2},{"name":"P.Value","targets":3},{"name":"adj.P.Val","targets":4},{"name":"description","targets":5},{"name":"entrezid","targets":6}],"order":[],"autoWidth":false,"orderClasses":false}},"evals":[],"jsHooks":[]}</script>
+</div>
+<div id="pathview-1" class="section level4">
+<h4>Pathview</h4>
+<p><img src="figure/kegg.Rmd/pv_DT%20vs%20PBS_mmu04650.png" /></p>
+</div>
+</div>
+<div id="th1-and-th2-cell-differentiation"
+class="section level3 tabset tabset-pills">
+<h3 class="tabset tabset-pills">Th1 and Th2 cell differentiation</h3>
+<div id="heatmap-2" class="section level4">
+<h4>Heatmap</h4>
+<p><img src="figure/kegg.Rmd/heat13-1.png" width="768" style="display: block; margin: auto;" /></p>
+</div>
+<div id="table-5" class="section level4">
+<h4>Table</h4>
+<div class="datatables html-widget html-fill-item" id="htmlwidget-e7caa58884ced2907e90" style="width:100%;height:auto;"></div>
+<script type="application/json" data-for="htmlwidget-e7caa58884ced2907e90">{"x":{"filter":"none","vertical":false,"extensions":["Buttons"],"caption":"<caption>DE genes<\/caption>","data":[["Stat1","Zap70","Il2rb","Runx3","Fos","Il2rg"],["Stat1","Zap70","Il2rb","Runx3","Fos","Il2rg"],["0.645","1.04","0.68","0.627","0.866","0.758"],["2.62e-05","8.6e-05","0.00043","0.000784","0.00254","0.00267"],["0.0104","0.0184","0.0343","0.0492","0.0914","0.093"],["signal transducer and activator of transcription 1 [Source:MGI Symbol;Acc:MGI:103063]","zeta-chain (TCR) associated protein kinase [Source:MGI Symbol;Acc:MGI:99613]","interleukin 2 receptor, beta chain [Source:MGI Symbol;Acc:MGI:96550]","runt related transcription factor 3 [Source:MGI Symbol;Acc:MGI:102672]","FBJ osteosarcoma oncogene [Source:MGI Symbol;Acc:MGI:95574]","interleukin 2 receptor, gamma chain [Source:MGI Symbol;Acc:MGI:96551]"],["20846","22637","16185","12399","14281","16186"]],"container":"<table class=\"display\">\n  <thead>\n    <tr>\n      <th> <\/th>\n      <th>gene<\/th>\n      <th>logFC<\/th>\n      <th>P.Value<\/th>\n      <th>adj.P.Val<\/th>\n      <th>description<\/th>\n      <th>entrezid<\/th>\n    <\/tr>\n  <\/thead>\n<\/table>","options":{"dom":"Blfrtip","scrollX":true,"buttons":["copy","csv","excel","pdf","print"],"lengthMenu":[[10,25,50,-1],["10","25","50","All"]],"columnDefs":[{"orderable":false,"targets":0},{"name":" ","targets":0},{"name":"gene","targets":1},{"name":"logFC","targets":2},{"name":"P.Value","targets":3},{"name":"adj.P.Val","targets":4},{"name":"description","targets":5},{"name":"entrezid","targets":6}],"order":[],"autoWidth":false,"orderClasses":false}},"evals":[],"jsHooks":[]}</script>
+</div>
+<div id="pathview-2" class="section level4">
+<h4>Pathview</h4>
+<p><img src="figure/kegg.Rmd/pv_DT%20vs%20PBS_mmu04658.png" /></p>
+</div>
+</div>
+<div id="phagosome" class="section level3 tabset tabset-pills">
+<h3 class="tabset tabset-pills">Phagosome</h3>
+<div id="heatmap-3" class="section level4">
+<h4>Heatmap</h4>
+<p><img src="figure/kegg.Rmd/heat14-1.png" width="768" style="display: block; margin: auto;" /></p>
+</div>
+<div id="table-6" class="section level4">
+<h4>Table</h4>
+<div class="datatables html-widget html-fill-item" id="htmlwidget-a43969c2d20cde42b049" style="width:100%;height:auto;"></div>
+<script type="application/json" data-for="htmlwidget-a43969c2d20cde42b049">{"x":{"filter":"none","vertical":false,"extensions":["Buttons"],"caption":"<caption>DE genes<\/caption>","data":[["H2-Q4","Tap1","H2-K1","Olr1","Tap2","H2-D1","H2-T23","Atp6v0a4","Itgb2l","Lamp1","C1ra","Sftpd","Atp6v1g2"],["H2-Q4","Tap1","H2-K1","Olr1","Tap2","H2-D1","H2-T23","Atp6v0a4","Itgb2l","Lamp1","C1ra","Sftpd","Atp6v1g2"],["1.07","0.976","0.766","1.18","0.694","0.776","0.781","-1.79","-2.15","0.43","0.599","-2","-0.458"],["3.34e-08","1.03e-07","6.07e-07","5.8e-06","1.81e-05","4.14e-05","0.000379","0.00127","0.00131","0.000944","0.00151","0.00294","0.00302"],["0.000492","0.00076","0.00158","0.00492","0.00905","0.0127","0.0323","0.0617","0.0623","0.054","0.0675","0.0985","0.0998"],["histocompatibility 2, Q region locus 4 [Source:MGI Symbol;Acc:MGI:95933]","transporter 1, ATP-binding cassette, sub-family B (MDR/TAP) [Source:MGI Symbol;Acc:MGI:98483]","histocompatibility 2, K1, K region [Source:MGI Symbol;Acc:MGI:95904]","oxidized low density lipoprotein (lectin-like) receptor 1 [Source:MGI Symbol;Acc:MGI:1261434]","transporter 2, ATP-binding cassette, sub-family B (MDR/TAP) [Source:MGI Symbol;Acc:MGI:98484]","histocompatibility 2, D region locus 1 [Source:MGI Symbol;Acc:MGI:95896]","histocompatibility 2, T region locus 23 [Source:MGI Symbol;Acc:MGI:95957]","ATPase, H+ transporting, lysosomal V0 subunit A4 [Source:MGI Symbol;Acc:MGI:2153480]","integrin beta 2-like [Source:MGI Symbol;Acc:MGI:1277979]","lysosomal-associated membrane protein 1 [Source:MGI Symbol;Acc:MGI:96745]","complement component 1, r subcomponent A [Source:MGI Symbol;Acc:MGI:1355313]","surfactant associated protein D [Source:MGI Symbol;Acc:MGI:109515]","ATPase, H+ transporting, lysosomal V1 subunit G2 [Source:MGI Symbol;Acc:MGI:1913487]"],["15015","21354","14972","108078","21355","14964","15040","140494","16415","16783","50909","20390","66237"]],"container":"<table class=\"display\">\n  <thead>\n    <tr>\n      <th> <\/th>\n      <th>gene<\/th>\n      <th>logFC<\/th>\n      <th>P.Value<\/th>\n      <th>adj.P.Val<\/th>\n      <th>description<\/th>\n      <th>entrezid<\/th>\n    <\/tr>\n  <\/thead>\n<\/table>","options":{"dom":"Blfrtip","scrollX":true,"buttons":["copy","csv","excel","pdf","print"],"lengthMenu":[[10,25,50,-1],["10","25","50","All"]],"columnDefs":[{"orderable":false,"targets":0},{"name":" ","targets":0},{"name":"gene","targets":1},{"name":"logFC","targets":2},{"name":"P.Value","targets":3},{"name":"adj.P.Val","targets":4},{"name":"description","targets":5},{"name":"entrezid","targets":6}],"order":[],"autoWidth":false,"orderClasses":false}},"evals":[],"jsHooks":[]}</script>
+</div>
+<div id="pathview-3" class="section level4">
+<h4>Pathview</h4>
+<p><img src="figure/kegg.Rmd/pv_DT%20vs%20PBS_mmu04145.png" /></p>
+</div>
+</div>
+</div>
+<div id="treg-vs-pbs-1" class="section level2 tabset tabset-pills">
+<h2 class="tabset tabset-pills">Treg vs PBS</h2>
+<div id="antigen-processing-and-presentation-1"
+class="section level3 tabset tabset-pills">
+<h3 class="tabset tabset-pills">Antigen processing and presentation</h3>
+<div id="heatmap-4" class="section level4">
+<h4>Heatmap</h4>
+<p><img src="figure/kegg.Rmd/heat21-1.png" width="768" style="display: block; margin: auto;" /></p>
+</div>
+<div id="table-7" class="section level4">
+<h4>Table</h4>
+<div class="datatables html-widget html-fill-item" id="htmlwidget-376a78f75a7321aba26c" style="width:100%;height:auto;"></div>
+<script type="application/json" data-for="htmlwidget-376a78f75a7321aba26c">{"x":{"filter":"none","vertical":false,"extensions":["Buttons"],"caption":"<caption>DE genes<\/caption>","data":[["Rfxap","Tap1","H2-Q4","Hspa1b","Ctsb"],["Rfxap","Tap1","H2-Q4","Hspa1b","Ctsb"],["0.732","0.664","0.682","-1.07","-0.48"],["5.97e-06","2.95e-05","3.38e-05","3.88e-05","0.00121"],["0.0022","0.00465","0.0048","0.00511","0.0411"],["regulatory factor X-associated protein [Source:MGI Symbol;Acc:MGI:2180854]","transporter 1, ATP-binding cassette, sub-family B (MDR/TAP) [Source:MGI Symbol;Acc:MGI:98483]","histocompatibility 2, Q region locus 4 [Source:MGI Symbol;Acc:MGI:95933]","heat shock protein 1B [Source:MGI Symbol;Acc:MGI:99517]","cathepsin B [Source:MGI Symbol;Acc:MGI:88561]"],["170767","21354","15015","15511","13030"]],"container":"<table class=\"display\">\n  <thead>\n    <tr>\n      <th> <\/th>\n      <th>gene<\/th>\n      <th>logFC<\/th>\n      <th>P.Value<\/th>\n      <th>adj.P.Val<\/th>\n      <th>description<\/th>\n      <th>entrezid<\/th>\n    <\/tr>\n  <\/thead>\n<\/table>","options":{"dom":"Blfrtip","scrollX":true,"buttons":["copy","csv","excel","pdf","print"],"lengthMenu":[[10,25,50,-1],["10","25","50","All"]],"columnDefs":[{"orderable":false,"targets":0},{"name":" ","targets":0},{"name":"gene","targets":1},{"name":"logFC","targets":2},{"name":"P.Value","targets":3},{"name":"adj.P.Val","targets":4},{"name":"description","targets":5},{"name":"entrezid","targets":6}],"order":[],"autoWidth":false,"orderClasses":false}},"evals":[],"jsHooks":[]}</script>
+</div>
+<div id="pathview-4" class="section level4">
+<h4>Pathview</h4>
+<p><img src="figure/kegg.Rmd/pv_Treg%20vs%20PBS_mmu04612.png" /></p>
+</div>
+</div>
+<div id="natural-killer-cell-mediated-cytotoxicity-1"
+class="section level3 tabset tabset-pills">
+<h3 class="tabset tabset-pills">Natural killer cell mediated
+cytotoxicity</h3>
+<div id="heatmap-5" class="section level4">
+<h4>Heatmap</h4>
+<p><img src="figure/kegg.Rmd/heat22-1.png" width="768" style="display: block; margin: auto;" /></p>
+</div>
+<div id="table-8" class="section level4">
+<h4>Table</h4>
+<div class="datatables html-widget html-fill-item" id="htmlwidget-d5b236e9fe165e99b686" style="width:100%;height:auto;"></div>
+<script type="application/json" data-for="htmlwidget-d5b236e9fe165e99b686">{"x":{"filter":"none","vertical":false,"extensions":["Buttons"],"caption":"<caption>DE genes<\/caption>","data":[["Vav2","Itgb2l"],["Vav2","Itgb2l"],["0.53","-2.47"],["0.000139","0.000237"],["0.0113","0.0157"],["vav 2 oncogene [Source:MGI Symbol;Acc:MGI:102718]","integrin beta 2-like [Source:MGI Symbol;Acc:MGI:1277979]"],["22325","16415"]],"container":"<table class=\"display\">\n  <thead>\n    <tr>\n      <th> <\/th>\n      <th>gene<\/th>\n      <th>logFC<\/th>\n      <th>P.Value<\/th>\n      <th>adj.P.Val<\/th>\n      <th>description<\/th>\n      <th>entrezid<\/th>\n    <\/tr>\n  <\/thead>\n<\/table>","options":{"dom":"Blfrtip","scrollX":true,"buttons":["copy","csv","excel","pdf","print"],"lengthMenu":[[10,25,50,-1],["10","25","50","All"]],"columnDefs":[{"orderable":false,"targets":0},{"name":" ","targets":0},{"name":"gene","targets":1},{"name":"logFC","targets":2},{"name":"P.Value","targets":3},{"name":"adj.P.Val","targets":4},{"name":"description","targets":5},{"name":"entrezid","targets":6}],"order":[],"autoWidth":false,"orderClasses":false}},"evals":[],"jsHooks":[]}</script>
+</div>
+<div id="pathview-5" class="section level4">
+<h4>Pathview</h4>
+<p><img src="figure/kegg.Rmd/pv_Treg%20vs%20PBS_mmu04650.png" /></p>
+</div>
+</div>
+<div id="th1-and-th2-cell-differentiation-1"
+class="section level3 tabset tabset-pills">
+<h3 class="tabset tabset-pills">Th1 and Th2 cell differentiation</h3>
+<div id="heatmap-6" class="section level4">
+<h4>Heatmap</h4>
+<p><img src="figure/kegg.Rmd/heat23-1.png" width="768" style="display: block; margin: auto;" /></p>
+</div>
+<div id="table-9" class="section level4">
+<h4>Table</h4>
+<div class="datatables html-widget html-fill-item" id="htmlwidget-8ee42dd6fb8b59fc7bd7" style="width:100%;height:auto;"></div>
+<script type="application/json" data-for="htmlwidget-8ee42dd6fb8b59fc7bd7">{"x":{"filter":"none","vertical":false,"extensions":["Buttons"],"caption":"<caption>DE genes<\/caption>","data":[["Mapk13","Stat5a","Stat1","Il4ra"],["Mapk13","Stat5a","Stat1","Il4ra"],["-2.6","-0.635","0.429","0.413"],["0.000104","0.00192","0.00175","0.00364"],["0.00937","0.0558","0.0525","0.0821"],["mitogen-activated protein kinase 13 [Source:MGI Symbol;Acc:MGI:1346864]","signal transducer and activator of transcription 5A [Source:MGI Symbol;Acc:MGI:103036]","signal transducer and activator of transcription 1 [Source:MGI Symbol;Acc:MGI:103063]","interleukin 4 receptor, alpha [Source:MGI Symbol;Acc:MGI:105367]"],["26415","20850","20846","16190"]],"container":"<table class=\"display\">\n  <thead>\n    <tr>\n      <th> <\/th>\n      <th>gene<\/th>\n      <th>logFC<\/th>\n      <th>P.Value<\/th>\n      <th>adj.P.Val<\/th>\n      <th>description<\/th>\n      <th>entrezid<\/th>\n    <\/tr>\n  <\/thead>\n<\/table>","options":{"dom":"Blfrtip","scrollX":true,"buttons":["copy","csv","excel","pdf","print"],"lengthMenu":[[10,25,50,-1],["10","25","50","All"]],"columnDefs":[{"orderable":false,"targets":0},{"name":" ","targets":0},{"name":"gene","targets":1},{"name":"logFC","targets":2},{"name":"P.Value","targets":3},{"name":"adj.P.Val","targets":4},{"name":"description","targets":5},{"name":"entrezid","targets":6}],"order":[],"autoWidth":false,"orderClasses":false}},"evals":[],"jsHooks":[]}</script>
+</div>
+<div id="pathview-6" class="section level4">
+<h4>Pathview</h4>
+<p><img src="figure/kegg.Rmd/pv_Treg%20vs%20PBS_mmu04658.png" /></p>
+</div>
+</div>
+<div id="phagosome-1" class="section level3 tabset tabset-pills">
+<h3 class="tabset tabset-pills">Phagosome</h3>
+<div id="heatmap-7" class="section level4">
+<h4>Heatmap</h4>
+<p><img src="figure/kegg.Rmd/heat24-1.png" width="768" style="display: block; margin: auto;" /></p>
+</div>
+<div id="table-10" class="section level4">
+<h4>Table</h4>
+<div class="datatables html-widget html-fill-item" id="htmlwidget-62046a43780a3042490e" style="width:100%;height:auto;"></div>
+<script type="application/json" data-for="htmlwidget-62046a43780a3042490e">{"x":{"filter":"none","vertical":false,"extensions":["Buttons"],"caption":"<caption>DE genes<\/caption>","data":[["Stx18","Tap1","H2-Q4","C3","Itgb2l","Atp6v0a4","Sftpd","Cd14","Colec12"],["Stx18","Tap1","H2-Q4","C3","Itgb2l","Atp6v0a4","Sftpd","Cd14","Colec12"],["0.649","0.664","0.682","-1.21","-2.47","-1.99","-2.66","-0.953","0.477"],["1.22e-05","2.95e-05","3.38e-05","2.84e-05","0.000237","0.000366","0.000697","0.00298","0.00507"],["0.0031","0.00465","0.0048","0.00465","0.0157","0.0197","0.0296","0.0734","0.0999"],["syntaxin 18 [Source:MGI Symbol;Acc:MGI:1918366]","transporter 1, ATP-binding cassette, sub-family B (MDR/TAP) [Source:MGI Symbol;Acc:MGI:98483]","histocompatibility 2, Q region locus 4 [Source:MGI Symbol;Acc:MGI:95933]","complement component 3 [Source:MGI Symbol;Acc:MGI:88227]","integrin beta 2-like [Source:MGI Symbol;Acc:MGI:1277979]","ATPase, H+ transporting, lysosomal V0 subunit A4 [Source:MGI Symbol;Acc:MGI:2153480]","surfactant associated protein D [Source:MGI Symbol;Acc:MGI:109515]","CD14 antigen [Source:MGI Symbol;Acc:MGI:88318]","collectin sub-family member 12 [Source:MGI Symbol;Acc:MGI:2152907]"],["71116","21354","15015","12266","16415","140494","20390","12475","140792"]],"container":"<table class=\"display\">\n  <thead>\n    <tr>\n      <th> <\/th>\n      <th>gene<\/th>\n      <th>logFC<\/th>\n      <th>P.Value<\/th>\n      <th>adj.P.Val<\/th>\n      <th>description<\/th>\n      <th>entrezid<\/th>\n    <\/tr>\n  <\/thead>\n<\/table>","options":{"dom":"Blfrtip","scrollX":true,"buttons":["copy","csv","excel","pdf","print"],"lengthMenu":[[10,25,50,-1],["10","25","50","All"]],"columnDefs":[{"orderable":false,"targets":0},{"name":" ","targets":0},{"name":"gene","targets":1},{"name":"logFC","targets":2},{"name":"P.Value","targets":3},{"name":"adj.P.Val","targets":4},{"name":"description","targets":5},{"name":"entrezid","targets":6}],"order":[],"autoWidth":false,"orderClasses":false}},"evals":[],"jsHooks":[]}</script>
+</div>
+<div id="pathview-7" class="section level4">
+<h4>Pathview</h4>
+<p><img src="figure/kegg.Rmd/pv_Treg%20vs%20PBS_mmu04145.png" /></p>
+</div>
+</div>
+</div>
+<div id="treg-vs-dt-1" class="section level2 tabset tabset-pills">
+<h2 class="tabset tabset-pills">Treg vs DT</h2>
+<div id="antigen-processing-and-presentation-2"
+class="section level3 tabset tabset-pills">
+<h3 class="tabset tabset-pills">Antigen processing and presentation</h3>
+<div id="heatmap-8" class="section level4">
+<h4>Heatmap</h4>
+<p><img src="figure/kegg.Rmd/heat31-1.png" width="768" style="display: block; margin: auto;" /></p>
+</div>
+<div id="table-11" class="section level4">
+<h4>Table</h4>
+<div class="datatables html-widget html-fill-item" id="htmlwidget-0629593683dbe9836c1f" style="width:100%;height:auto;"></div>
+<script type="application/json" data-for="htmlwidget-0629593683dbe9836c1f">{"x":{"filter":"none","vertical":false,"extensions":["Buttons"],"caption":"<caption>DE genes<\/caption>","data":[["H2-K1","B2m","Hspa1l","H2-D1","H2-T23","Rfxap"],["H2-K1","B2m","Hspa1l","H2-D1","H2-T23","Rfxap"],["-0.702","-0.564","0.66","-0.668","-0.746","0.531"],["1.23e-06","1.93e-05","4.18e-05","0.000135","0.000345","0.000328"],["0.00359","0.015","0.0257","0.0462","0.0634","0.062"],["histocompatibility 2, K1, K region [Source:MGI Symbol;Acc:MGI:95904]","beta-2 microglobulin [Source:MGI Symbol;Acc:MGI:88127]","heat shock protein 1-like [Source:MGI Symbol;Acc:MGI:96231]","histocompatibility 2, D region locus 1 [Source:MGI Symbol;Acc:MGI:95896]","histocompatibility 2, T region locus 23 [Source:MGI Symbol;Acc:MGI:95957]","regulatory factor X-associated protein [Source:MGI Symbol;Acc:MGI:2180854]"],["14972","12010","15482","14964","15040","170767"]],"container":"<table class=\"display\">\n  <thead>\n    <tr>\n      <th> <\/th>\n      <th>gene<\/th>\n      <th>logFC<\/th>\n      <th>P.Value<\/th>\n      <th>adj.P.Val<\/th>\n      <th>description<\/th>\n      <th>entrezid<\/th>\n    <\/tr>\n  <\/thead>\n<\/table>","options":{"dom":"Blfrtip","scrollX":true,"buttons":["copy","csv","excel","pdf","print"],"lengthMenu":[[10,25,50,-1],["10","25","50","All"]],"columnDefs":[{"orderable":false,"targets":0},{"name":" ","targets":0},{"name":"gene","targets":1},{"name":"logFC","targets":2},{"name":"P.Value","targets":3},{"name":"adj.P.Val","targets":4},{"name":"description","targets":5},{"name":"entrezid","targets":6}],"order":[],"autoWidth":false,"orderClasses":false}},"evals":[],"jsHooks":[]}</script>
+</div>
+<div id="pathview-8" class="section level4">
+<h4>Pathview</h4>
+<p><img src="figure/kegg.Rmd/pv_Treg%20vs%20DT_mmu04612.png" /></p>
+</div>
+</div>
+<div id="natural-killer-cell-mediated-cytotoxicity-2"
+class="section level3 tabset tabset-pills">
+<h3 class="tabset tabset-pills">Natural killer cell mediated
+cytotoxicity</h3>
+<div id="heatmap-9" class="section level4">
+<h4>Heatmap</h4>
+<p><img src="figure/kegg.Rmd/heat32-1.png" width="768" style="display: block; margin: auto;" /></p>
+</div>
+<div id="table-12" class="section level4">
+<h4>Table</h4>
+<div class="datatables html-widget html-fill-item" id="htmlwidget-38d1f7e9c0dbafc85536" style="width:100%;height:auto;"></div>
+<script type="application/json" data-for="htmlwidget-38d1f7e9c0dbafc85536">{"x":{"filter":"none","vertical":false,"extensions":["Buttons"],"caption":"<caption>DE genes<\/caption>","data":[["H2-K1","H2-D1","Zap70","H2-T23"],["H2-K1","H2-D1","Zap70","H2-T23"],["-0.702","-0.668","-0.876","-0.746"],["1.23e-06","0.000135","0.000222","0.000345"],["0.00359","0.0462","0.054","0.0634"],["histocompatibility 2, K1, K region [Source:MGI Symbol;Acc:MGI:95904]","histocompatibility 2, D region locus 1 [Source:MGI Symbol;Acc:MGI:95896]","zeta-chain (TCR) associated protein kinase [Source:MGI Symbol;Acc:MGI:99613]","histocompatibility 2, T region locus 23 [Source:MGI Symbol;Acc:MGI:95957]"],["14972","14964","22637","15040"]],"container":"<table class=\"display\">\n  <thead>\n    <tr>\n      <th> <\/th>\n      <th>gene<\/th>\n      <th>logFC<\/th>\n      <th>P.Value<\/th>\n      <th>adj.P.Val<\/th>\n      <th>description<\/th>\n      <th>entrezid<\/th>\n    <\/tr>\n  <\/thead>\n<\/table>","options":{"dom":"Blfrtip","scrollX":true,"buttons":["copy","csv","excel","pdf","print"],"lengthMenu":[[10,25,50,-1],["10","25","50","All"]],"columnDefs":[{"orderable":false,"targets":0},{"name":" ","targets":0},{"name":"gene","targets":1},{"name":"logFC","targets":2},{"name":"P.Value","targets":3},{"name":"adj.P.Val","targets":4},{"name":"description","targets":5},{"name":"entrezid","targets":6}],"order":[],"autoWidth":false,"orderClasses":false}},"evals":[],"jsHooks":[]}</script>
+</div>
+<div id="pathview-9" class="section level4">
+<h4>Pathview</h4>
+<p><img src="figure/kegg.Rmd/pv_Treg%20vs%20DT_mmu04650.png" /></p>
+</div>
+</div>
+<div id="th1-and-th2-cell-differentiation-2"
+class="section level3 tabset tabset-pills">
+<h3 class="tabset tabset-pills">Th1 and Th2 cell differentiation</h3>
+<div id="heatmap-10" class="section level4">
+<h4>Heatmap</h4>
+<p><img src="figure/kegg.Rmd/heat33-1.png" width="768" style="display: block; margin: auto;" /></p>
+</div>
+<div id="table-13" class="section level4">
+<h4>Table</h4>
+<div class="datatables html-widget html-fill-item" id="htmlwidget-900211c4c9f5865ef8c9" style="width:100%;height:auto;"></div>
+<script type="application/json" data-for="htmlwidget-900211c4c9f5865ef8c9">{"x":{"filter":"none","vertical":false,"extensions":["Buttons"],"caption":"<caption>DE genes<\/caption>","data":[["Runx3","Il2rg","Zap70"],["Runx3","Il2rg","Zap70"],["-0.744","-1.04","-0.876"],["7.75e-05","9.58e-05","0.000222"],["0.0348","0.0391","0.054"],["runt related transcription factor 3 [Source:MGI Symbol;Acc:MGI:102672]","interleukin 2 receptor, gamma chain [Source:MGI Symbol;Acc:MGI:96551]","zeta-chain (TCR) associated protein kinase [Source:MGI Symbol;Acc:MGI:99613]"],["12399","16186","22637"]],"container":"<table class=\"display\">\n  <thead>\n    <tr>\n      <th> <\/th>\n      <th>gene<\/th>\n      <th>logFC<\/th>\n      <th>P.Value<\/th>\n      <th>adj.P.Val<\/th>\n      <th>description<\/th>\n      <th>entrezid<\/th>\n    <\/tr>\n  <\/thead>\n<\/table>","options":{"dom":"Blfrtip","scrollX":true,"buttons":["copy","csv","excel","pdf","print"],"lengthMenu":[[10,25,50,-1],["10","25","50","All"]],"columnDefs":[{"orderable":false,"targets":0},{"name":" ","targets":0},{"name":"gene","targets":1},{"name":"logFC","targets":2},{"name":"P.Value","targets":3},{"name":"adj.P.Val","targets":4},{"name":"description","targets":5},{"name":"entrezid","targets":6}],"order":[],"autoWidth":false,"orderClasses":false}},"evals":[],"jsHooks":[]}</script>
+</div>
+<div id="pathview-10" class="section level4">
+<h4>Pathview</h4>
+<p><img src="figure/kegg.Rmd/pv_Treg%20vs%20DT_mmu04658.png" /></p>
+</div>
+</div>
+<div id="phagosome-2" class="section level3 tabset tabset-pills">
+<h3 class="tabset tabset-pills">Phagosome</h3>
+<div id="heatmap-11" class="section level4">
+<h4>Heatmap</h4>
+<p><img src="figure/kegg.Rmd/heat34-1.png" width="768" style="display: block; margin: auto;" /></p>
+</div>
+<div id="table-14" class="section level4">
+<h4>Table</h4>
+<div class="datatables html-widget html-fill-item" id="htmlwidget-938b6143a28577166e43" style="width:100%;height:auto;"></div>
+<script type="application/json" data-for="htmlwidget-938b6143a28577166e43">{"x":{"filter":"none","vertical":false,"extensions":["Buttons"],"caption":"<caption>DE genes<\/caption>","data":[["H2-K1","Stx18","Lamp1","H2-D1","H2-T23"],["H2-K1","Stx18","Lamp1","H2-D1","H2-T23"],["-0.702","0.565","-0.511","-0.668","-0.746"],["1.23e-06","8.08e-05","9.81e-05","0.000135","0.000345"],["0.00359","0.035","0.0391","0.0462","0.0634"],["histocompatibility 2, K1, K region [Source:MGI Symbol;Acc:MGI:95904]","syntaxin 18 [Source:MGI Symbol;Acc:MGI:1918366]","lysosomal-associated membrane protein 1 [Source:MGI Symbol;Acc:MGI:96745]","histocompatibility 2, D region locus 1 [Source:MGI Symbol;Acc:MGI:95896]","histocompatibility 2, T region locus 23 [Source:MGI Symbol;Acc:MGI:95957]"],["14972","71116","16783","14964","15040"]],"container":"<table class=\"display\">\n  <thead>\n    <tr>\n      <th> <\/th>\n      <th>gene<\/th>\n      <th>logFC<\/th>\n      <th>P.Value<\/th>\n      <th>adj.P.Val<\/th>\n      <th>description<\/th>\n      <th>entrezid<\/th>\n    <\/tr>\n  <\/thead>\n<\/table>","options":{"dom":"Blfrtip","scrollX":true,"buttons":["copy","csv","excel","pdf","print"],"lengthMenu":[[10,25,50,-1],["10","25","50","All"]],"columnDefs":[{"orderable":false,"targets":0},{"name":" ","targets":0},{"name":"gene","targets":1},{"name":"logFC","targets":2},{"name":"P.Value","targets":3},{"name":"adj.P.Val","targets":4},{"name":"description","targets":5},{"name":"entrezid","targets":6}],"order":[],"autoWidth":false,"orderClasses":false}},"evals":[],"jsHooks":[]}</script>
+</div>
+<div id="pathview-11" class="section level4">
+<h4>Pathview</h4>
+<p><img src="figure/kegg.Rmd/pv_Treg%20vs%20DT_mmu04145.png" /></p>
+</div>
+</div>
+</div>
 </div>
 <div id="export-data" class="section level1">
 <h1>Export Data</h1>
@@ -1049,24 +1496,20 @@ Session information
 </button>
 </p>
 <div id="workflowr-sessioninfo" class="collapse">
-<pre><code>R version 4.3.2 (2023-10-31)
-Platform: x86_64-pc-linux-gnu (64-bit)
-Running under: Ubuntu 22.04.3 LTS
+<pre><code>R version 4.3.1 (2023-06-16 ucrt)
+Platform: x86_64-w64-mingw32/x64 (64-bit)
+Running under: Windows 10 x64 (build 19045)
 
 Matrix products: default
-BLAS:   /usr/lib/x86_64-linux-gnu/blas/libblas.so.3.10.0 
-LAPACK: /usr/lib/x86_64-linux-gnu/lapack/liblapack.so.3.10.0
+
 
 locale:
- [1] LC_CTYPE=en_AU.UTF-8       LC_NUMERIC=C              
- [3] LC_TIME=en_AU.UTF-8        LC_COLLATE=en_AU.UTF-8    
- [5] LC_MONETARY=en_AU.UTF-8    LC_MESSAGES=en_AU.UTF-8   
- [7] LC_PAPER=en_AU.UTF-8       LC_NAME=C                 
- [9] LC_ADDRESS=C               LC_TELEPHONE=C            
-[11] LC_MEASUREMENT=en_AU.UTF-8 LC_IDENTIFICATION=C       
+[1] LC_COLLATE=English_Australia.utf8  LC_CTYPE=English_Australia.utf8   
+[3] LC_MONETARY=English_Australia.utf8 LC_NUMERIC=C                      
+[5] LC_TIME=English_Australia.utf8    
 
 time zone: Australia/Adelaide
-tzcode source: system (glibc)
+tzcode source: internal
 
 attached base packages:
 [1] stats4    grid      stats     graphics  grDevices utils     datasets 
@@ -1082,81 +1525,89 @@ other attached packages:
 [19] ggpubr_0.6.0          ggplotify_0.1.2       extrafont_0.19       
 [22] DT_0.31               pheatmap_1.0.12       cowplot_1.1.2        
 [25] viridis_0.6.4         viridisLite_0.4.2     pander_0.6.5         
-[28] kableExtra_1.3.4      data.table_1.14.10    KEGGREST_1.40.1      
-[31] lubridate_1.9.3       forcats_1.0.0         stringr_1.5.1        
-[34] purrr_1.0.2           tidyr_1.3.0           ggplot2_3.4.4        
-[37] tidyverse_2.0.0       reshape2_1.4.4        tibble_3.2.1         
-[40] readr_2.1.4           magrittr_2.0.3        dplyr_1.1.4          
+[28] kableExtra_1.3.4      VennDiagram_1.7.3     futile.logger_1.4.3  
+[31] data.table_1.14.10    KEGGREST_1.40.1       lubridate_1.9.3      
+[34] forcats_1.0.0         stringr_1.5.1         purrr_1.0.2          
+[37] tidyr_1.3.0           ggplot2_3.4.4         tidyverse_2.0.0      
+[40] reshape2_1.4.4        tibble_3.2.1          readr_2.1.4          
+[43] magrittr_2.0.3        dplyr_1.1.4          
 
 loaded via a namespace (and not attached):
-  [1] splines_4.3.2               later_1.3.2                
-  [3] bitops_1.0-7                polyclip_1.10-6            
-  [5] graph_1.78.0                XML_3.99-0.16              
-  [7] lifecycle_1.0.4             rstatix_0.7.2              
-  [9] rprojroot_2.0.4             lattice_0.22-5             
- [11] MASS_7.3-60                 crosstalk_1.2.1            
- [13] backports_1.4.1             sass_0.4.8                 
- [15] rmarkdown_2.25              jquerylib_0.1.4            
- [17] yaml_2.3.8                  httpuv_1.6.13              
- [19] DBI_1.2.0                   RColorBrewer_1.1-3         
- [21] abind_1.4-5                 zlibbioc_1.46.0            
- [23] rvest_1.0.3                 GenomicRanges_1.52.1       
- [25] ggraph_2.1.0                RCurl_1.98-1.13            
- [27] yulab.utils_0.1.2           rappdirs_0.3.3             
- [29] tweenr_2.0.2                git2r_0.33.0               
- [31] GenomeInfoDbData_1.2.10     tidytree_0.4.6             
- [33] svglite_2.1.3               codetools_0.2-19           
- [35] DelayedArray_0.26.7         DOSE_3.26.2                
- [37] xml2_1.3.6                  ggforce_0.4.1              
- [39] tidyselect_1.2.0            aplot_0.2.2                
- [41] farver_2.1.1                matrixStats_1.2.0          
- [43] webshot_0.5.5               jsonlite_1.8.8             
- [45] ellipsis_0.3.2              tidygraph_1.3.0            
- [47] systemfonts_1.0.5           tools_4.3.2                
- [49] treeio_1.24.3               Rcpp_1.0.11                
- [51] glue_1.6.2                  gridExtra_2.3              
- [53] Rttf2pt1_1.3.12             here_1.0.1                 
- [55] xfun_0.41                   DESeq2_1.40.2              
- [57] qvalue_2.32.0               MatrixGenerics_1.12.3      
- [59] GenomeInfoDb_1.36.4         withr_2.5.2                
- [61] fastmap_1.1.1               fansi_1.0.6                
- [63] digest_0.6.33               timechange_0.2.0           
- [65] R6_2.5.1                    gridGraphics_0.5-1         
- [67] colorspace_2.1-0            GO.db_3.17.0               
- [69] RSQLite_2.3.4               utf8_1.2.4                 
- [71] generics_0.1.3              graphlayouts_1.0.2         
- [73] httr_1.4.7                  htmlwidgets_1.6.4          
- [75] S4Arrays_1.0.6              scatterpie_0.2.1           
- [77] whisker_0.4.1               pkgconfig_2.0.3            
- [79] gtable_0.3.4                blob_1.2.4                 
- [81] workflowr_1.7.1             XVector_0.40.0             
- [83] shadowtext_0.1.2            htmltools_0.5.7            
- [85] carData_3.0-5               fgsea_1.26.0               
- [87] ggupset_0.3.0               png_0.1-8                  
- [89] ggfun_0.1.3                 rstudioapi_0.15.0          
- [91] tzdb_0.4.0                  curl_5.2.0                 
- [93] nlme_3.1-163                org.Hs.eg.db_3.17.0        
- [95] cachem_1.0.8                parallel_4.3.2             
- [97] HDO.db_0.99.1               pillar_1.9.0               
- [99] vctrs_0.6.5                 promises_1.2.1             
-[101] car_3.1-2                   extrafontdb_1.0            
-[103] Rgraphviz_2.44.0            KEGGgraph_1.60.0           
-[105] evaluate_0.23               cli_3.6.2                  
-[107] locfit_1.5-9.8              compiler_4.3.2             
-[109] rlang_1.1.2                 crayon_1.5.2               
-[111] ggsignif_0.6.4              labeling_0.4.3             
-[113] fs_1.6.3                    stringi_1.8.3              
-[115] BiocParallel_1.34.2         munsell_0.5.0              
-[117] Biostrings_2.68.1           lazyeval_0.2.2             
-[119] GOSemSim_2.26.1             Matrix_1.6-3               
-[121] hms_1.1.3                   patchwork_1.1.3            
-[123] bit64_4.0.5                 highr_0.10                 
-[125] SummarizedExperiment_1.30.2 igraph_1.6.0               
-[127] broom_1.0.5                 memoise_2.0.1              
-[129] bslib_0.6.1                 ggtree_3.8.2               
-[131] fastmatch_1.1-4             bit_4.0.5                  
-[133] downloader_0.4              gson_0.1.0                 
-[135] ape_5.7-1                  </code></pre>
+  [1] fs_1.6.3                    matrixStats_1.2.0          
+  [3] bitops_1.0-7                HDO.db_0.99.1              
+  [5] httr_1.4.7                  webshot_0.5.5              
+  [7] RColorBrewer_1.1-3          doParallel_1.0.17          
+  [9] Rgraphviz_2.44.0            tools_4.3.1                
+ [11] backports_1.4.1             utf8_1.2.4                 
+ [13] R6_2.5.1                    lazyeval_0.2.2             
+ [15] GetoptLong_1.0.5            withr_2.5.2                
+ [17] gridExtra_2.3               cli_3.6.1                  
+ [19] formatR_1.14                scatterpie_0.2.1           
+ [21] labeling_0.4.3              sass_0.4.8                 
+ [23] KEGGgraph_1.60.0            systemfonts_1.0.5          
+ [25] yulab.utils_0.1.1           gson_0.1.0                 
+ [27] ggupset_0.3.0               DOSE_3.26.2                
+ [29] svglite_2.1.3               rstudioapi_0.15.0          
+ [31] RSQLite_2.3.4               generics_0.1.3             
+ [33] gridGraphics_0.5-1          shape_1.4.6                
+ [35] crosstalk_1.2.1             car_3.1-2                  
+ [37] GO.db_3.17.0                Matrix_1.6-4               
+ [39] fansi_1.0.6                 abind_1.4-5                
+ [41] lifecycle_1.0.4             whisker_0.4.1              
+ [43] yaml_2.3.7                  carData_3.0-5              
+ [45] SummarizedExperiment_1.30.2 qvalue_2.32.0              
+ [47] blob_1.2.4                  promises_1.2.1             
+ [49] crayon_1.5.2                lattice_0.21-8             
+ [51] magick_2.8.2                pillar_1.9.0               
+ [53] ComplexHeatmap_2.16.0       fgsea_1.26.0               
+ [55] GenomicRanges_1.52.1        rjson_0.2.21               
+ [57] codetools_0.2-19            fastmatch_1.1-4            
+ [59] glue_1.6.2                  downloader_0.4             
+ [61] ggfun_0.1.3                 vctrs_0.6.5                
+ [63] png_0.1-8                   treeio_1.24.3              
+ [65] gtable_0.3.4                cachem_1.0.8               
+ [67] xfun_0.39                   S4Arrays_1.0.6             
+ [69] tidygraph_1.3.0             iterators_1.0.14           
+ [71] ellipsis_0.3.2              nlme_3.1-164               
+ [73] ggtree_3.8.2                bit64_4.0.5                
+ [75] GenomeInfoDb_1.36.4         rprojroot_2.0.4            
+ [77] bslib_0.6.1                 colorspace_2.1-0           
+ [79] DBI_1.2.0                   DESeq2_1.40.2              
+ [81] tidyselect_1.2.0            bit_4.0.5                  
+ [83] compiler_4.3.1              extrafontdb_1.0            
+ [85] curl_5.2.0                  git2r_0.33.0               
+ [87] rvest_1.0.3                 graph_1.78.0               
+ [89] xml2_1.3.6                  DelayedArray_0.26.7        
+ [91] shadowtext_0.1.2            rappdirs_0.3.3             
+ [93] digest_0.6.33               rmarkdown_2.25             
+ [95] XVector_0.40.0              htmltools_0.5.7            
+ [97] pkgconfig_2.0.3             MatrixGenerics_1.12.3      
+ [99] highr_0.10                  fastmap_1.1.1              
+[101] rlang_1.1.1                 GlobalOptions_0.1.2        
+[103] htmlwidgets_1.6.4           farver_2.1.1               
+[105] jquerylib_0.1.4             jsonlite_1.8.8             
+[107] BiocParallel_1.34.2         GOSemSim_2.26.1            
+[109] RCurl_1.98-1.13             GenomeInfoDbData_1.2.10    
+[111] patchwork_1.1.3             munsell_0.5.0              
+[113] Rcpp_1.0.11                 ape_5.7-1                  
+[115] stringi_1.8.3               ggraph_2.1.0               
+[117] zlibbioc_1.46.0             MASS_7.3-60                
+[119] org.Hs.eg.db_3.17.0         parallel_4.3.1             
+[121] Biostrings_2.68.1           graphlayouts_1.0.2         
+[123] splines_4.3.1               hms_1.1.3                  
+[125] circlize_0.4.15             locfit_1.5-9.8             
+[127] igraph_1.6.0                ggsignif_0.6.4             
+[129] futile.options_1.0.1        XML_3.99-0.16              
+[131] evaluate_0.23               lambda.r_1.2.4             
+[133] tzdb_0.4.0                  foreach_1.5.2              
+[135] tweenr_2.0.2                httpuv_1.6.13              
+[137] Rttf2pt1_1.3.12             polyclip_1.10-6            
+[139] clue_0.3-65                 ggforce_0.4.1              
+[141] broom_1.0.5                 tidytree_0.4.6             
+[143] rstatix_0.7.2               later_1.3.2                
+[145] aplot_0.2.2                 memoise_2.0.1              
+[147] cluster_2.1.4               workflowr_1.7.1            
+[149] timechange_0.2.0            here_1.0.1                 </code></pre>
 </div>
 </div>
 

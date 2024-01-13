@@ -1,0 +1,1159 @@
+<!DOCTYPE html>
+
+<html>
+
+<head>
+
+<meta charset="utf-8" />
+<meta name="generator" content="pandoc" />
+<meta http-equiv="X-UA-Compatible" content="IE=EDGE" />
+
+
+<meta name="author" content="Ha M. Tran" />
+
+
+<title>Reactome analysis</title>
+
+<script src="site_libs/header-attrs-2.25/header-attrs.js"></script>
+<script src="site_libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link href="site_libs/bootstrap-3.3.5/css/sandstone.min.css" rel="stylesheet" />
+<script src="site_libs/bootstrap-3.3.5/js/bootstrap.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/html5shiv.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/respond.min.js"></script>
+<style>h1 {font-size: 34px;}
+       h1.title {font-size: 38px;}
+       h2 {font-size: 30px;}
+       h3 {font-size: 24px;}
+       h4 {font-size: 18px;}
+       h5 {font-size: 16px;}
+       h6 {font-size: 12px;}
+       code {color: inherit; background-color: rgba(0, 0, 0, 0.04);}
+       pre:not([class]) { background-color: white }</style>
+<script src="site_libs/jqueryui-1.13.2/jquery-ui.min.js"></script>
+<link href="site_libs/tocify-1.9.1/jquery.tocify.css" rel="stylesheet" />
+<script src="site_libs/tocify-1.9.1/jquery.tocify.js"></script>
+<script src="site_libs/navigation-1.1/tabsets.js"></script>
+<script src="site_libs/navigation-1.1/codefolding.js"></script>
+<link href="site_libs/highlightjs-9.12.0/textmate.css" rel="stylesheet" />
+<script src="site_libs/highlightjs-9.12.0/highlight.js"></script>
+<link href="site_libs/pagedtable-1.1/css/pagedtable.css" rel="stylesheet" />
+<script src="site_libs/pagedtable-1.1/js/pagedtable.js"></script>
+<script src="site_libs/htmlwidgets-1.6.4/htmlwidgets.js"></script>
+<link href="site_libs/datatables-css-0.0.0/datatables-crosstalk.css" rel="stylesheet" />
+<script src="site_libs/datatables-binding-0.31/datatables.js"></script>
+<link href="site_libs/dt-core-1.13.6/css/jquery.dataTables.min.css" rel="stylesheet" />
+<link href="site_libs/dt-core-1.13.6/css/jquery.dataTables.extra.css" rel="stylesheet" />
+<script src="site_libs/dt-core-1.13.6/js/jquery.dataTables.min.js"></script>
+<script src="site_libs/jszip-1.13.6/jszip.min.js"></script>
+<script src="site_libs/pdfmake-1.13.6/pdfmake.js"></script>
+<script src="site_libs/pdfmake-1.13.6/vfs_fonts.js"></script>
+<link href="site_libs/dt-ext-buttons-1.13.6/css/buttons.dataTables.min.css" rel="stylesheet" />
+<script src="site_libs/dt-ext-buttons-1.13.6/js/dataTables.buttons.min.js"></script>
+<script src="site_libs/dt-ext-buttons-1.13.6/js/buttons.html5.min.js"></script>
+<script src="site_libs/dt-ext-buttons-1.13.6/js/buttons.colVis.min.js"></script>
+<script src="site_libs/dt-ext-buttons-1.13.6/js/buttons.print.min.js"></script>
+<link href="site_libs/crosstalk-1.2.1/css/crosstalk.min.css" rel="stylesheet" />
+<script src="site_libs/crosstalk-1.2.1/js/crosstalk.min.js"></script>
+<link href="site_libs/font-awesome-6.4.2/css/all.min.css" rel="stylesheet" />
+<link href="site_libs/font-awesome-6.4.2/css/v4-shims.min.css" rel="stylesheet" />
+
+<link rel="icon" href="https://github.com/workflowr/workflowr-assets/raw/main/img/reproducible.png">
+<!-- Add a small amount of space between sections. -->
+<style type="text/css">
+div.section {
+  padding-top: 12px;
+}
+</style>
+
+
+
+<style type="text/css">
+  code{white-space: pre-wrap;}
+  span.smallcaps{font-variant: small-caps;}
+  span.underline{text-decoration: underline;}
+  div.column{display: inline-block; vertical-align: top; width: 50%;}
+  div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+  ul.task-list{list-style: none;}
+    </style>
+
+<style type="text/css">code{white-space: pre;}</style>
+<script type="text/javascript">
+if (window.hljs) {
+  hljs.configure({languages: []});
+  hljs.initHighlightingOnLoad();
+  if (document.readyState && document.readyState === "complete") {
+    window.setTimeout(function() { hljs.initHighlighting(); }, 0);
+  }
+}
+</script>
+
+
+
+
+
+
+
+
+
+<style type = "text/css">
+.main-container {
+  max-width: 940px;
+  margin-left: auto;
+  margin-right: auto;
+}
+img {
+  max-width:100%;
+}
+.tabbed-pane {
+  padding-top: 12px;
+}
+.html-widget {
+  margin-bottom: 20px;
+}
+button.code-folding-btn:focus {
+  outline: none;
+}
+summary {
+  display: list-item;
+}
+details > summary > p:only-child {
+  display: inline;
+}
+pre code {
+  padding: 0;
+}
+</style>
+
+
+<style type="text/css">
+.dropdown-submenu {
+  position: relative;
+}
+.dropdown-submenu>.dropdown-menu {
+  top: 0;
+  left: 100%;
+  margin-top: -6px;
+  margin-left: -1px;
+  border-radius: 0 6px 6px 6px;
+}
+.dropdown-submenu:hover>.dropdown-menu {
+  display: block;
+}
+.dropdown-submenu>a:after {
+  display: block;
+  content: " ";
+  float: right;
+  width: 0;
+  height: 0;
+  border-color: transparent;
+  border-style: solid;
+  border-width: 5px 0 5px 5px;
+  border-left-color: #cccccc;
+  margin-top: 5px;
+  margin-right: -10px;
+}
+.dropdown-submenu:hover>a:after {
+  border-left-color: #adb5bd;
+}
+.dropdown-submenu.pull-left {
+  float: none;
+}
+.dropdown-submenu.pull-left>.dropdown-menu {
+  left: -100%;
+  margin-left: 10px;
+  border-radius: 6px 0 6px 6px;
+}
+</style>
+
+<script type="text/javascript">
+// manage active state of menu based on current page
+$(document).ready(function () {
+  // active menu anchor
+  href = window.location.pathname
+  href = href.substr(href.lastIndexOf('/') + 1)
+  if (href === "")
+    href = "index.html";
+  var menuAnchor = $('a[href="' + href + '"]');
+
+  // mark the anchor link active (and if it's in a dropdown, also mark that active)
+  var dropdown = menuAnchor.closest('li.dropdown');
+  if (window.bootstrap) { // Bootstrap 4+
+    menuAnchor.addClass('active');
+    dropdown.find('> .dropdown-toggle').addClass('active');
+  } else { // Bootstrap 3
+    menuAnchor.parent().addClass('active');
+    dropdown.addClass('active');
+  }
+
+  // Navbar adjustments
+  var navHeight = $(".navbar").first().height() + 15;
+  var style = document.createElement('style');
+  var pt = "padding-top: " + navHeight + "px; ";
+  var mt = "margin-top: -" + navHeight + "px; ";
+  var css = "";
+  // offset scroll position for anchor links (for fixed navbar)
+  for (var i = 1; i <= 6; i++) {
+    css += ".section h" + i + "{ " + pt + mt + "}\n";
+  }
+  style.innerHTML = "body {" + pt + "padding-bottom: 40px; }\n" + css;
+  document.head.appendChild(style);
+});
+</script>
+
+<!-- tabsets -->
+
+<style type="text/css">
+.tabset-dropdown > .nav-tabs {
+  display: inline-table;
+  max-height: 500px;
+  min-height: 44px;
+  overflow-y: auto;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+}
+
+.tabset-dropdown > .nav-tabs > li.active:before, .tabset-dropdown > .nav-tabs.nav-tabs-open:before {
+  content: "\e259";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li.active:before {
+  content: "\e258";
+  font-family: 'Glyphicons Halflings';
+  border: none;
+}
+
+.tabset-dropdown > .nav-tabs > li.active {
+  display: block;
+}
+
+.tabset-dropdown > .nav-tabs > li > a,
+.tabset-dropdown > .nav-tabs > li > a:focus,
+.tabset-dropdown > .nav-tabs > li > a:hover {
+  border: none;
+  display: inline-block;
+  border-radius: 4px;
+  background-color: transparent;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li {
+  display: block;
+  float: none;
+}
+
+.tabset-dropdown > .nav-tabs > li {
+  display: none;
+}
+</style>
+
+<!-- code folding -->
+<style type="text/css">
+.code-folding-btn { margin-bottom: 4px; }
+</style>
+
+
+
+<style type="text/css">
+
+#TOC {
+  margin: 25px 0px 20px 0px;
+}
+@media (max-width: 768px) {
+#TOC {
+  position: relative;
+  width: 100%;
+}
+}
+
+@media print {
+.toc-content {
+  /* see https://github.com/w3c/csswg-drafts/issues/4434 */
+  float: right;
+}
+}
+
+.toc-content {
+  padding-left: 30px;
+  padding-right: 40px;
+}
+
+div.main-container {
+  max-width: 1200px;
+}
+
+div.tocify {
+  width: 20%;
+  max-width: 260px;
+  max-height: 85%;
+}
+
+@media (min-width: 768px) and (max-width: 991px) {
+  div.tocify {
+    width: 25%;
+  }
+}
+
+@media (max-width: 767px) {
+  div.tocify {
+    width: 100%;
+    max-width: none;
+  }
+}
+
+.tocify ul, .tocify li {
+  line-height: 20px;
+}
+
+.tocify-subheader .tocify-item {
+  font-size: 0.90em;
+}
+
+.tocify .list-group-item {
+  border-radius: 0px;
+}
+
+
+</style>
+
+
+
+</head>
+
+<body>
+
+
+<div class="container-fluid main-container">
+
+
+<!-- setup 3col/9col grid for toc_float and main content  -->
+<div class="row">
+<div class="col-xs-12 col-sm-4 col-md-3">
+<div id="TOC" class="tocify">
+</div>
+</div>
+
+<div class="toc-content col-xs-12 col-sm-8 col-md-9">
+
+
+
+
+<div class="navbar navbar-default  navbar-fixed-top" role="navigation">
+  <div class="container">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-bs-toggle="collapse" data-target="#navbar" data-bs-target="#navbar">
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="index.html">Treg-uNK</a>
+    </div>
+    <div id="navbar" class="navbar-collapse collapse">
+      <ul class="nav navbar-nav">
+        <li>
+  <a href="index.html">Home</a>
+</li>
+<li>
+  <a href="setUp.html">Pre-processing</a>
+</li>
+<li>
+  <a href="deAnalysis.html">DE Analysis</a>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+    Over-representation Analysis (ORA)
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="go.html">Gene Ontology</a>
+    </li>
+    <li>
+      <a href="kegg.html">KEGG</a>
+    </li>
+    <li>
+      <a href="reactome.html">Reactome</a>
+    </li>
+    <li>
+      <a href="ipa.html">IPA</a>
+    </li>
+  </ul>
+</li>
+<li>
+  <a href="extraFigs.html">Extra figures</a>
+</li>
+      </ul>
+      <ul class="nav navbar-nav navbar-right">
+        <li>
+  <a href="https://www.linkedin.com/in/ha-tran-6973b5130/">
+    <span class="fa fa-linkedin"></span>
+     
+  </a>
+</li>
+<li>
+  <a href="https://github.com/tranmanhha135/">
+    <span class="fa fa-github"></span>
+     
+  </a>
+</li>
+      </ul>
+    </div><!--/.nav-collapse -->
+  </div><!--/.container -->
+</div><!--/.navbar -->
+
+<div id="header">
+
+<div class="btn-group pull-right float-right">
+<button type="button" class="btn btn-default btn-xs btn-secondary btn-sm dropdown-toggle" data-toggle="dropdown" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><span>Code</span> <span class="caret"></span></button>
+<ul class="dropdown-menu dropdown-menu-right" style="min-width: 50px;">
+<li><a id="rmd-show-all-code" href="#">Show All Code</a></li>
+<li><a id="rmd-hide-all-code" href="#">Hide All Code</a></li>
+</ul>
+</div>
+
+
+
+<h1 class="title toc-ignore">Reactome analysis</h1>
+<h4 class="author">Ha M. Tran</h4>
+<h4 class="date">12-01-2024</h4>
+
+</div>
+
+
+<p>
+<button type="button" class="btn btn-default btn-workflowr btn-workflowr-report" data-toggle="collapse" data-target="#workflowr-report">
+<span class="glyphicon glyphicon-list" aria-hidden="true"></span>
+workflowr <span class="glyphicon glyphicon-ok text-success"
+aria-hidden="true"></span>
+</button>
+</p>
+<div id="workflowr-report" class="collapse">
+<ul class="nav nav-tabs">
+<li class="active">
+<a data-toggle="tab" href="#summary">Summary</a>
+</li>
+<li>
+<a data-toggle="tab" href="#checks"> Checks <span
+class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span>
+</a>
+</li>
+<li>
+<a data-toggle="tab" href="#versions">Past versions</a>
+</li>
+</ul>
+<div class="tab-content">
+<div id="summary" class="tab-pane fade in active">
+<p>
+<strong>Last updated:</strong> 2024-01-13
+</p>
+<p>
+<strong>Checks:</strong> <span
+class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> 7
+<span class="glyphicon glyphicon-exclamation-sign text-danger"
+aria-hidden="true"></span> 0
+</p>
+<p>
+<strong>Knit directory:</strong> <code>4_Treg_uNK/1_analysis/</code>
+<span class="glyphicon glyphicon-question-sign" aria-hidden="true"
+title="This is the local directory in which the code in this file was executed.">
+</span>
+</p>
+<p>
+This reproducible <a href="https://rmarkdown.rstudio.com">R Markdown</a>
+analysis was created with <a
+  href="https://github.com/workflowr/workflowr">workflowr</a> (version
+1.7.1). The <em>Checks</em> tab describes the reproducibility checks
+that were applied when the results were created. The <em>Past
+versions</em> tab lists the development history.
+</p>
+<hr>
+</div>
+<div id="checks" class="tab-pane fade">
+<div id="workflowr-checks" class="panel-group">
+<div class="panel panel-default">
+<div class="panel-heading">
+<p class="panel-title">
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRMarkdownfilestronguptodate">
+<span class="glyphicon glyphicon-ok text-success"
+aria-hidden="true"></span> <strong>R Markdown file:</strong> up-to-date
+</a>
+</p>
+</div>
+<div id="strongRMarkdownfilestronguptodate"
+class="panel-collapse collapse">
+<div class="panel-body">
+<p>Great! Since the R Markdown file has been committed to the Git
+repository, you know the exact version of the code that produced these
+results.</p>
+</div>
+</div>
+</div>
+<div class="panel panel-default">
+<div class="panel-heading">
+<p class="panel-title">
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongEnvironmentstrongempty">
+<span class="glyphicon glyphicon-ok text-success"
+aria-hidden="true"></span> <strong>Environment:</strong> empty </a>
+</p>
+</div>
+<div id="strongEnvironmentstrongempty" class="panel-collapse collapse">
+<div class="panel-body">
+<p>Great job! The global environment was empty. Objects defined in the
+global environment can affect the analysis in your R Markdown file in
+unknown ways. For reproduciblity it’s best to always run the code in an
+empty environment.</p>
+</div>
+</div>
+</div>
+<div class="panel panel-default">
+<div class="panel-heading">
+<p class="panel-title">
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongSeedstrongcodesetseed12345code">
+<span class="glyphicon glyphicon-ok text-success"
+aria-hidden="true"></span> <strong>Seed:</strong>
+<code>set.seed(12345)</code> </a>
+</p>
+</div>
+<div id="strongSeedstrongcodesetseed12345code"
+class="panel-collapse collapse">
+<div class="panel-body">
+<p>The command <code>set.seed(12345)</code> was run prior to running the
+code in the R Markdown file. Setting a seed ensures that any results
+that rely on randomness, e.g. subsampling or permutations, are
+reproducible.</p>
+</div>
+</div>
+</div>
+<div class="panel panel-default">
+<div class="panel-heading">
+<p class="panel-title">
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongSessioninformationstrongrecorded">
+<span class="glyphicon glyphicon-ok text-success"
+aria-hidden="true"></span> <strong>Session information:</strong>
+recorded </a>
+</p>
+</div>
+<div id="strongSessioninformationstrongrecorded"
+class="panel-collapse collapse">
+<div class="panel-body">
+<p>Great job! Recording the operating system, R version, and package
+versions is critical for reproducibility.</p>
+</div>
+</div>
+</div>
+<div class="panel panel-default">
+<div class="panel-heading">
+<p class="panel-title">
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongCachestrongnone">
+<span class="glyphicon glyphicon-ok text-success"
+aria-hidden="true"></span> <strong>Cache:</strong> none </a>
+</p>
+</div>
+<div id="strongCachestrongnone" class="panel-collapse collapse">
+<div class="panel-body">
+<p>Nice! There were no cached chunks for this analysis, so you can be
+confident that you successfully produced the results during this
+run.</p>
+</div>
+</div>
+</div>
+<div class="panel panel-default">
+<div class="panel-heading">
+<p class="panel-title">
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongFilepathsstrongrelative">
+<span class="glyphicon glyphicon-ok text-success"
+aria-hidden="true"></span> <strong>File paths:</strong> relative </a>
+</p>
+</div>
+<div id="strongFilepathsstrongrelative" class="panel-collapse collapse">
+<div class="panel-body">
+<p>Great job! Using relative paths to the files within your workflowr
+project makes it easier to run your code on other machines.</p>
+</div>
+</div>
+</div>
+<div class="panel panel-default">
+<div class="panel-heading">
+<p class="panel-title">
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRepositoryversionstrongahrefhttpsgithubcomtranmanhha135TreguNKtreea957cffecc77bb00bb12bd564a9acf69ac763907targetblanka957cffa">
+<span class="glyphicon glyphicon-ok text-success"
+aria-hidden="true"></span> <strong>Repository version:</strong>
+<a href="https://github.com/tranmanhha135/Treg_uNK/tree/a957cffecc77bb00bb12bd564a9acf69ac763907" target="_blank">a957cff</a>
+</a>
+</p>
+</div>
+<div
+id="strongRepositoryversionstrongahrefhttpsgithubcomtranmanhha135TreguNKtreea957cffecc77bb00bb12bd564a9acf69ac763907targetblanka957cffa"
+class="panel-collapse collapse">
+<div class="panel-body">
+<p>
+Great! You are using Git for version control. Tracking code development
+and connecting the code version to the results is critical for
+reproducibility.
+</p>
+<p>
+The results in this page were generated with repository version
+<a href="https://github.com/tranmanhha135/Treg_uNK/tree/a957cffecc77bb00bb12bd564a9acf69ac763907" target="_blank">a957cff</a>.
+See the <em>Past versions</em> tab to see a history of the changes made
+to the R Markdown and HTML files.
+</p>
+<p>
+Note that you need to be careful to ensure that all relevant files for
+the analysis have been committed to Git prior to generating the results
+(you can use <code>wflow_publish</code> or
+<code>wflow_git_commit</code>). workflowr only checks the R Markdown
+file, but you know if there are other scripts or data files that it
+depends on. Below is the status of the Git repository when the results
+were generated:
+</p>
+<pre><code>
+Ignored files:
+    Ignored:    .Rproj.user/
+
+Untracked files:
+    Untracked:  .gitignore
+    Untracked:  0_data/rds_objects/reactome.rds
+    Untracked:  0_data/rds_objects/reactome_all.rds
+    Untracked:  0_data/rds_objects/reactome_sig.rds
+    Untracked:  2_plots/3_FA/kegg/combine_kegg_dot.svg
+    Untracked:  2_plots/3_FA/kegg/heat_DT vs PBS_Antigen processing and presentation.svg
+    Untracked:  2_plots/3_FA/kegg/heat_DT vs PBS_Natural killer cell mediated cytotoxicity.svg
+    Untracked:  2_plots/3_FA/kegg/heat_DT vs PBS_Phagosome.svg
+    Untracked:  2_plots/3_FA/kegg/heat_DT vs PBS_Th1 and Th2 cell differentiation.svg
+    Untracked:  2_plots/3_FA/kegg/heat_Treg vs DT_Antigen processing and presentation.svg
+    Untracked:  2_plots/3_FA/kegg/heat_Treg vs DT_Natural killer cell mediated cytotoxicity.svg
+    Untracked:  2_plots/3_FA/kegg/heat_Treg vs DT_Phagosome.svg
+    Untracked:  2_plots/3_FA/kegg/heat_Treg vs DT_Th1 and Th2 cell differentiation.svg
+    Untracked:  2_plots/3_FA/kegg/heat_Treg vs PBS_Antigen processing and presentation.svg
+    Untracked:  2_plots/3_FA/kegg/heat_Treg vs PBS_Natural killer cell mediated cytotoxicity.svg
+    Untracked:  2_plots/3_FA/kegg/heat_Treg vs PBS_Phagosome.svg
+    Untracked:  2_plots/3_FA/kegg/heat_Treg vs PBS_Th1 and Th2 cell differentiation.svg
+    Untracked:  2_plots/3_FA/kegg/kegg_dot_DT vs PBS.svg
+    Untracked:  2_plots/3_FA/kegg/kegg_dot_Treg vs DT.svg
+    Untracked:  2_plots/3_FA/kegg/kegg_dot_Treg vs PBS.svg
+    Untracked:  2_plots/3_FA/kegg/kegg_upset_DT vs PBS.svg
+    Untracked:  2_plots/3_FA/kegg/kegg_upset_Treg vs DT.svg
+    Untracked:  2_plots/3_FA/kegg/kegg_upset_Treg vs PBS.svg
+    Untracked:  2_plots/3_FA/reactome/
+    Untracked:  2_plots/functionalHeat.svg
+    Untracked:  2_plots/functionalHeat_DT vs PBS.svg
+    Untracked:  2_plots/functionalHeat_Treg vs DT.svg
+    Untracked:  2_plots/functionalHeat_legend.svg
+
+Unstaged changes:
+    Modified:   0_data/rds_objects/comp.rds
+    Modified:   0_data/rds_objects/dge.rds
+    Modified:   0_data/rds_objects/enrichGO.rds
+    Modified:   0_data/rds_objects/enrichGO_sig.rds
+    Modified:   0_data/rds_objects/enrichKEGG.rds
+    Modified:   0_data/rds_objects/enrichKEGG_all.rds
+    Modified:   0_data/rds_objects/enrichKEGG_sig.rds
+    Modified:   0_data/rds_objects/lm.rds
+    Modified:   0_data/rds_objects/lm_all.rds
+    Modified:   0_data/rds_objects/lm_sig.rds
+    Modified:   1_analysis/_site.yml
+    Deleted:    1_analysis/gsea.Rmd
+    Modified:   2_plots/1_QC/counts_after_filtering.svg
+    Modified:   2_plots/1_QC/counts_before_after_filtering.svg
+    Modified:   2_plots/1_QC/counts_before_filtering.svg
+    Modified:   2_plots/1_QC/library_size.svg
+    Modified:   2_plots/2_DE/heat_DT vs PBS.svg
+    Modified:   2_plots/2_DE/heat_Treg vs DT.svg
+    Modified:   2_plots/2_DE/heat_Treg vs PBS.svg
+    Modified:   2_plots/2_DE/heat_combined.svg
+    Modified:   2_plots/2_DE/hist_DT vs PBS.svg
+    Modified:   2_plots/2_DE/hist_Treg vs DT.svg
+    Modified:   2_plots/2_DE/hist_Treg vs PBS.svg
+    Modified:   2_plots/2_DE/ma_DT vs PBS.png
+    Modified:   2_plots/2_DE/ma_Treg vs DT.png
+    Modified:   2_plots/2_DE/ma_Treg vs PBS.png
+    Modified:   2_plots/2_DE/venn.png
+    Modified:   2_plots/2_DE/vol_DT vs PBS.png
+    Modified:   2_plots/2_DE/vol_Treg vs DT.png
+    Modified:   2_plots/2_DE/vol_Treg vs PBS.png
+    Modified:   2_plots/3_FA/kegg/venn.png
+    Modified:   2_plots/sampleHeat.svg
+    Modified:   3_output/GO_sig.xlsx
+    Modified:   3_output/KEGG_all.xlsx
+    Modified:   3_output/KEGG_sig.xlsx
+    Modified:   3_output/de_genes_all.xlsx
+    Modified:   3_output/de_genes_sig.xlsx
+    Modified:   3_output/reactome_all.xlsx
+    Modified:   3_output/reactome_sig.xlsx
+
+</code></pre>
+<p>
+Note that any generated files, e.g. HTML, png, CSS, etc., are not
+included in this status report because it is ok for generated content to
+have uncommitted changes.
+</p>
+</div>
+</div>
+</div>
+</div>
+<hr>
+</div>
+<div id="versions" class="tab-pane fade">
+
+<p>
+These are the previous versions of the repository in which changes were
+made to the R Markdown (<code>1_analysis/reactome.Rmd</code>) and HTML
+(<code>docs/reactome.html</code>) files. If you’ve configured a remote
+Git repository (see <code>?wflow_git_remote</code>), click on the
+hyperlinks in the table below to view the files as they were in that
+past version.
+</p>
+<div class="table-responsive">
+<table class="table table-condensed table-hover">
+<thead>
+<tr>
+<th>
+File
+</th>
+<th>
+Version
+</th>
+<th>
+Author
+</th>
+<th>
+Date
+</th>
+<th>
+Message
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>
+Rmd
+</td>
+<td>
+<a href="https://github.com/tranmanhha135/Treg_uNK/blob/a957cffecc77bb00bb12bd564a9acf69ac763907/1_analysis/reactome.Rmd" target="_blank">a957cff</a>
+</td>
+<td>
+Ha Manh Tran
+</td>
+<td>
+2024-01-13
+</td>
+<td>
+workflowr::wflow_publish(here::here("1_analysis/*Rmd"))
+</td>
+</tr>
+<tr>
+<td>
+Rmd
+</td>
+<td>
+<a href="https://github.com/tranmanhha135/Treg_uNK/blob/c78dfac2aad574f5112c4ea94ad08fa6d760c9ca/1_analysis/reactome.Rmd" target="_blank">c78dfac</a>
+</td>
+<td>
+tranmanhha135
+</td>
+<td>
+2024-01-12
+</td>
+<td>
+remote from ipad
+</td>
+</tr>
+<tr>
+<td>
+Rmd
+</td>
+<td>
+<a href="https://github.com/tranmanhha135/Treg_uNK/blob/221e2fa3c26fec7be64f95a93cb9e5a0d0441924/1_analysis/reactome.Rmd" target="_blank">221e2fa</a>
+</td>
+<td>
+tranmanhha135
+</td>
+<td>
+2024-01-10
+</td>
+<td>
+fixed error
+</td>
+</tr>
+<tr>
+<td>
+Rmd
+</td>
+<td>
+<a href="https://github.com/tranmanhha135/Treg_uNK/blob/7d64f8265e12ec535d65395322bea399b0c5813c/1_analysis/reactome.Rmd" target="_blank">7d64f82</a>
+</td>
+<td>
+tranmanhha135
+</td>
+<td>
+2024-01-09
+</td>
+<td>
+completed ORA GO
+</td>
+</tr>
+<tr>
+<td>
+Rmd
+</td>
+<td>
+<a href="https://github.com/tranmanhha135/Treg_uNK/blob/05fa0b3c36a50df8dd8259c61c82429bd7bf2033/1_analysis/reactome.Rmd" target="_blank">05fa0b3</a>
+</td>
+<td>
+tranmanhha135
+</td>
+<td>
+2024-01-06
+</td>
+<td>
+added description
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+<hr>
+</div>
+</div>
+</div>
+<pre class="r"><code># working with data
+library(dplyr)
+library(magrittr)
+library(readr)
+library(tibble)
+library(reshape2)
+library(tidyverse)
+
+# Visualisation:
+library(kableExtra)
+library(ggplot2)
+library(grid)
+library(pander)
+library(cowplot)
+library(pheatmap)
+library(DT)
+library(extrafont)
+# Custom ggplot
+library(ggbiplot)
+library(ggrepel)
+
+# Bioconductor packages:
+library(edgeR)
+library(limma)
+library(Glimma)
+library(clusterProfiler)
+library(org.Mm.eg.db)
+library(enrichplot)
+library(ReactomePA)
+library(pandoc)
+library(knitr)
+opts_knit$set(progress = FALSE, verbose = FALSE)
+opts_chunk$set(warning=FALSE, message=FALSE, echo=FALSE)</code></pre>
+<div id="reactome" class="section level1">
+<h1>Reactome</h1>
+<p>Reactome database provides curated information about biological
+pathways, including molecular events and reactions within cells. It
+focuses on human biology and is widely used for pathway analysis and
+functional interpretation of high-throughput data.</p>
+<p>KEGG and Reactome both include approximately the same number of
+genes. The difference lies in KEGG’s use of broader terms, while
+Reactome employs similar terms but with multiple detailed entries.</p>
+<p>In the Reactome database, terms are organized hierarchically based on
+the classification of biological pathways. The organization follows a
+tree-like structure, where terms represent different levels of
+granularity in understanding molecular events and reactions within
+cells</p>
+<div id="visualisation" class="section level2 tabset tabset-pills">
+<h2 class="tabset tabset-pills">Visualisation</h2>
+<p>The following visualisations are Reactome enrichment analysis
+performed with set of DE genes significantly below <strong>FDR &lt; 0.1
+</strong> without FC threshold (TREAT). <strong>IMPORTANTLY</strong>,
+significant Reactome pathways are significantly if FDR &lt; 0.1</p>
+<ul>
+<li><p><strong>Dot plot:</strong> illustrates the enriched Reactome
+pathways</p>
+<ul>
+<li><span class="math inline">\(Gene ratio =\)</span> the number of
+significant DE gene in the term / the total of number of genes in the
+term as indicated by the size</li>
+</ul></li>
+<li><p><strong>Table:</strong> list of all the significant Reactome
+pathways</p></li>
+<li><p><strong>Upset:</strong> illustrate the overlap of gene between
+different pathways</p></li>
+</ul>
+<p><strong>I recommend reading through the full list of significant
+Reactome pathways and selecting the most biologically relevant for more
+in-depth visualisation</strong></p>
+<div id="dt-vs-pbs" class="section level3 tabset tabset-pills">
+<h3 class="tabset tabset-pills">DT vs PBS</h3>
+<div id="dot-plot" class="section level4">
+<h4>Dot plot</h4>
+<p><img src="figure/reactome.Rmd/dot1-1.png" width="768" style="display: block; margin: auto;" /></p>
+</div>
+<div id="table" class="section level4">
+<h4>Table</h4>
+<div class="datatables html-widget html-fill-item" id="htmlwidget-8d32cfd9db97395c4a5f" style="width:100%;height:auto;"></div>
+<script type="application/json" data-for="htmlwidget-8d32cfd9db97395c4a5f">{"x":{"filter":"none","vertical":false,"extensions":["Buttons"],"caption":"<caption>Significantly enriched Reactome Pathways<\/caption>","data":[["R-MMU-1236974","R-MMU-983170","R-MMU-1236975","R-MMU-1474244","R-MMU-977606","R-MMU-1474228","R-MMU-166658","R-MMU-1592389","R-MMU-1442490","R-MMU-2243919","R-MMU-6809371","R-MMU-2022090","R-MMU-6805567"],["ER-Phagosome pathway","Antigen Presentation: Folding, assembly and\npeptide loading of class I MHC","Antigen processing-Cross presentation","Extracellular matrix organization","Regulation of Complement cascade","Degradation of the extracellular matrix","Complement cascade","Activation of Matrix Metalloproteinases","Collagen degradation","Crosslinking of collagen fibrils","Formation of the cornified envelope","Assembly of collagen fibrils and other\nmultimeric structures","Keratinization"],["0.375","0.261","0.141","0.0904","0.263","0.125","0.227","0.308","0.171","0.286","0.2","0.158","0.192"],["6.98e-06","7.26e-05","9.22e-05","0.000206","0.000286","0.000517","0.000598","0.000632","0.00084","0.000862","0.00111","0.00132","0.00134"],["0.00395","0.0174","0.0174","0.0291","0.0324","0.0447","0.0447","0.0447","0.0488","0.0488","0.0573","0.0585","0.0585"],["2.4","1.76","1.76","1.54","1.49","1.35","1.35","1.35","1.31","1.31","1.24","1.23","1.23"],["0.00381","0.0168","0.0168","0.0281","0.0313","0.0432","0.0432","0.0432","0.0471","0.0471","0.0554","0.0565","0.0565"],["H2-Q4/Tap1/B2m/H2-K1/Tap2/H2-T23","H2-Q4/Tap1/B2m/H2-K1/Tap2/H2-T23","H2-Q4/Tap1/B2m/H2-K1/Tap2/Psmb8/Psmb9/H2-T23/Psme1/Psme2","Lox/Tgfb2/Col24a1/Col4a6/Col4a5/Loxl3/Ctsg/Adam8/Col7a1/Ctsk/Icam1/Cdh1/Mmp15/Mfap4/Colgalt2/Mmp14","C2/Serping1/Clu/Cd55/C1ra","Col4a6/Col4a5/Ctsg/Adam8/Col7a1/Ctsk/Cdh1/Mmp15/Mmp14","C2/Serping1/Clu/Cd55/C1ra","Ctsg/Ctsk/Mmp15/Mmp14","Col4a6/Col4a5/Col7a1/Ctsk/Mmp15/Mmp14","Lox/Col4a6/Col4a5/Loxl3","Krt18/Krt7/Krt19/Krt8/Ppl","Lox/Col24a1/Col4a6/Col4a5/Loxl3/Col7a1","Krt18/Krt7/Krt19/Krt8/Ppl"],["6","6","10","16","5","9","5","4","6","4","5","6","5"]],"container":"<table class=\"display\">\n  <thead>\n    <tr>\n      <th> <\/th>\n      <th>Description<\/th>\n      <th>GeneRatio<\/th>\n      <th>pvalue<\/th>\n      <th>p.adjust<\/th>\n      <th>logFDR<\/th>\n      <th>qvalue<\/th>\n      <th>geneID<\/th>\n      <th>Count<\/th>\n    <\/tr>\n  <\/thead>\n<\/table>","options":{"dom":"Blfrtip","scrollX":true,"buttons":["copy","csv","excel","pdf","print"],"lengthMenu":[[10,25,50,-1],["10","25","50","All"]],"columnDefs":[{"orderable":false,"targets":0},{"name":" ","targets":0},{"name":"Description","targets":1},{"name":"GeneRatio","targets":2},{"name":"pvalue","targets":3},{"name":"p.adjust","targets":4},{"name":"logFDR","targets":5},{"name":"qvalue","targets":6},{"name":"geneID","targets":7},{"name":"Count","targets":8}],"order":[],"autoWidth":false,"orderClasses":false}},"evals":[],"jsHooks":[]}</script>
+</div>
+<div id="upset-plot" class="section level4">
+<h4>Upset plot</h4>
+<p><img src="figure/reactome.Rmd/upset1-1.png" width="1056" style="display: block; margin: auto;" /></p>
+</div>
+</div>
+<div id="treg-vs-pbs" class="section level3 tabset tabset-pills">
+<h3 class="tabset tabset-pills">Treg vs PBS</h3>
+<div id="dot-plot-1" class="section level4">
+<h4>Dot plot</h4>
+<p><img src="figure/reactome.Rmd/dot2-1.png" width="768" style="display: block; margin: auto;" /></p>
+</div>
+<div id="table-1" class="section level4">
+<h4>Table</h4>
+<div class="datatables html-widget html-fill-item" id="htmlwidget-d701554a25665d09d09f" style="width:100%;height:auto;"></div>
+<script type="application/json" data-for="htmlwidget-d701554a25665d09d09f">{"x":{"filter":"none","vertical":false,"extensions":["Buttons"],"caption":"<caption>Significantly enriched Reactome Pathways<\/caption>","data":[["R-MMU-6809371","R-MMU-6805567"],["Formation of the cornified envelope","Keratinization"],["0.4","0.385"],["1.48e-07","2.3e-07"],["7.45e-05","7.45e-05"],["4.13","4.13"],["7.36e-05","7.36e-05"],["Krt18/Krt7/Krt8/Krt19/Ppl/Pkp4/Krt17/Krt80/Perp/Krt84","Krt18/Krt7/Krt8/Krt19/Ppl/Pkp4/Krt17/Krt80/Perp/Krt84"],["10","10"]],"container":"<table class=\"display\">\n  <thead>\n    <tr>\n      <th> <\/th>\n      <th>Description<\/th>\n      <th>GeneRatio<\/th>\n      <th>pvalue<\/th>\n      <th>p.adjust<\/th>\n      <th>logFDR<\/th>\n      <th>qvalue<\/th>\n      <th>geneID<\/th>\n      <th>Count<\/th>\n    <\/tr>\n  <\/thead>\n<\/table>","options":{"dom":"Blfrtip","scrollX":true,"buttons":["copy","csv","excel","pdf","print"],"lengthMenu":[[10,25,50,-1],["10","25","50","All"]],"columnDefs":[{"orderable":false,"targets":0},{"name":" ","targets":0},{"name":"Description","targets":1},{"name":"GeneRatio","targets":2},{"name":"pvalue","targets":3},{"name":"p.adjust","targets":4},{"name":"logFDR","targets":5},{"name":"qvalue","targets":6},{"name":"geneID","targets":7},{"name":"Count","targets":8}],"order":[],"autoWidth":false,"orderClasses":false}},"evals":[],"jsHooks":[]}</script>
+</div>
+<div id="upset-plot-1" class="section level4">
+<h4>Upset plot</h4>
+<p><img src="figure/reactome.Rmd/upset2-1.png" width="1056" style="display: block; margin: auto;" /></p>
+</div>
+</div>
+<div id="treg-vs-dt" class="section level3 tabset tabset-pills">
+<h3 class="tabset tabset-pills">Treg vs DT</h3>
+<div id="dot-plot-2" class="section level4">
+<h4>Dot plot</h4>
+<p><img src="figure/reactome.Rmd/dot3-1.png" width="768" style="display: block; margin: auto;" /></p>
+</div>
+<div id="table-2" class="section level4">
+<h4>Table</h4>
+<div class="datatables html-widget html-fill-item" id="htmlwidget-27a6251d00cbd347f90b" style="width:100%;height:auto;"></div>
+<script type="application/json" data-for="htmlwidget-27a6251d00cbd347f90b">{"x":{"filter":"none","vertical":false,"extensions":["Buttons"],"caption":"<caption>Significantly enriched Reactome Pathways<\/caption>","data":[["R-MMU-1236974","R-MMU-983170","R-MMU-6809371","R-MMU-6805567","R-MMU-176408","R-MMU-1474228","R-MMU-2172127","R-MMU-2299718"],["ER-Phagosome pathway","Antigen Presentation: Folding, assembly and\npeptide loading of class I MHC","Formation of the cornified envelope","Keratinization","Regulation of APC/C activators between G1/S\nand early anaphase","Degradation of the extracellular matrix","DAP12 interactions","Condensation of Prophase Chromosomes"],["0.188","0.13","0.12","0.115","0.0909","0.0556","0.0857","0.182"],["0.000238","0.000723","0.000929","0.00104","0.00211","0.00234","0.0025","0.00318"],["0.0542","0.0595","0.0595","0.0595","0.0815","0.0815","0.0815","0.0905"],["1.27","1.23","1.23","1.23","1.09","1.09","1.09","1.04"],["0.0516","0.0566","0.0566","0.0566","0.0775","0.0775","0.0775","0.0861"],["H2-K1/B2m/H2-T23","H2-K1/B2m/H2-T23","Krt84/Krt18/Dsc2","Krt84/Krt18/Dsc2","Cdc23/Plk1/Bub1b","Eln/Spp1/Adam8/Adamts4","H2-K1/B2m/H2-T23","Ncapd3/Plk1"],["3","3","3","3","3","4","3","2"]],"container":"<table class=\"display\">\n  <thead>\n    <tr>\n      <th> <\/th>\n      <th>Description<\/th>\n      <th>GeneRatio<\/th>\n      <th>pvalue<\/th>\n      <th>p.adjust<\/th>\n      <th>logFDR<\/th>\n      <th>qvalue<\/th>\n      <th>geneID<\/th>\n      <th>Count<\/th>\n    <\/tr>\n  <\/thead>\n<\/table>","options":{"dom":"Blfrtip","scrollX":true,"buttons":["copy","csv","excel","pdf","print"],"lengthMenu":[[10,25,50,-1],["10","25","50","All"]],"columnDefs":[{"orderable":false,"targets":0},{"name":" ","targets":0},{"name":"Description","targets":1},{"name":"GeneRatio","targets":2},{"name":"pvalue","targets":3},{"name":"p.adjust","targets":4},{"name":"logFDR","targets":5},{"name":"qvalue","targets":6},{"name":"geneID","targets":7},{"name":"Count","targets":8}],"order":[],"autoWidth":false,"orderClasses":false}},"evals":[],"jsHooks":[]}</script>
+</div>
+<div id="upset-plot-2" class="section level4">
+<h4>Upset plot</h4>
+<p><img src="figure/reactome.Rmd/upset3-1.png" width="1056" style="display: block; margin: auto;" /></p>
+</div>
+</div>
+</div>
+</div>
+<div id="export-data" class="section level1">
+<h1>Export Data</h1>
+<p>The following are exported:</p>
+<ul>
+<li><p><strong>reactome_all.xlsx</strong> - This spreadsheet contains
+all Reactome pathways</p></li>
+<li><p><strong>reactome_sig.xlsx</strong> - This spreadsheet contains
+all significant (FDR &lt; 0.1) Reactome pathways</p></li>
+</ul>
+<br>
+<p>
+<button type="button" class="btn btn-default btn-workflowr btn-workflowr-sessioninfo" data-toggle="collapse" data-target="#workflowr-sessioninfo" style="display: block;">
+<span class="glyphicon glyphicon-wrench" aria-hidden="true"></span>
+Session information
+</button>
+</p>
+<div id="workflowr-sessioninfo" class="collapse">
+<pre><code>R version 4.3.1 (2023-06-16 ucrt)
+Platform: x86_64-w64-mingw32/x64 (64-bit)
+Running under: Windows 10 x64 (build 19045)
+
+Matrix products: default
+
+
+locale:
+[1] LC_COLLATE=English_Australia.utf8  LC_CTYPE=English_Australia.utf8   
+[3] LC_MONETARY=English_Australia.utf8 LC_NUMERIC=C                      
+[5] LC_TIME=English_Australia.utf8    
+
+time zone: Australia/Adelaide
+tzcode source: internal
+
+attached base packages:
+[1] stats4    grid      stats     graphics  grDevices utils     datasets 
+[8] methods   base     
+
+other attached packages:
+ [1] knitr_1.45            pandoc_0.2.0          ReactomePA_1.44.0    
+ [4] enrichplot_1.20.3     org.Mm.eg.db_3.17.0   AnnotationDbi_1.62.2 
+ [7] IRanges_2.34.1        S4Vectors_0.38.2      Biobase_2.60.0       
+[10] BiocGenerics_0.46.0   clusterProfiler_4.8.3 Glimma_2.10.0        
+[13] edgeR_3.42.4          limma_3.56.2          ggrepel_0.9.4        
+[16] ggbiplot_0.55         scales_1.3.0          plyr_1.8.9           
+[19] extrafont_0.19        DT_0.31               pheatmap_1.0.12      
+[22] cowplot_1.1.2         pander_0.6.5          kableExtra_1.3.4     
+[25] lubridate_1.9.3       forcats_1.0.0         stringr_1.5.1        
+[28] purrr_1.0.2           tidyr_1.3.0           ggplot2_3.4.4        
+[31] tidyverse_2.0.0       reshape2_1.4.4        tibble_3.2.1         
+[34] readr_2.1.4           magrittr_2.0.3        dplyr_1.1.4          
+
+loaded via a namespace (and not attached):
+  [1] splines_4.3.1               later_1.3.2                
+  [3] bitops_1.0-7                ggplotify_0.1.2            
+  [5] polyclip_1.10-6             graph_1.78.0               
+  [7] lifecycle_1.0.4             rprojroot_2.0.4            
+  [9] lattice_0.21-8              MASS_7.3-60                
+ [11] crosstalk_1.2.1             sass_0.4.8                 
+ [13] rmarkdown_2.25              jquerylib_0.1.4            
+ [15] yaml_2.3.7                  httpuv_1.6.13              
+ [17] DBI_1.2.0                   RColorBrewer_1.1-3         
+ [19] abind_1.4-5                 zlibbioc_1.46.0            
+ [21] rvest_1.0.3                 GenomicRanges_1.52.1       
+ [23] ggraph_2.1.0                RCurl_1.98-1.13            
+ [25] yulab.utils_0.1.1           tweenr_2.0.2               
+ [27] rappdirs_0.3.3              git2r_0.33.0               
+ [29] GenomeInfoDbData_1.2.10     tidytree_0.4.6             
+ [31] reactome.db_1.84.0          svglite_2.1.3              
+ [33] codetools_0.2-19            DelayedArray_0.26.7        
+ [35] DOSE_3.26.2                 xml2_1.3.6                 
+ [37] ggforce_0.4.1               tidyselect_1.2.0           
+ [39] aplot_0.2.2                 farver_2.1.1               
+ [41] viridis_0.6.4               matrixStats_1.2.0          
+ [43] webshot_0.5.5               jsonlite_1.8.8             
+ [45] ellipsis_0.3.2              tidygraph_1.3.0            
+ [47] systemfonts_1.0.5           tools_4.3.1                
+ [49] treeio_1.24.3               Rcpp_1.0.11                
+ [51] glue_1.6.2                  gridExtra_2.3              
+ [53] Rttf2pt1_1.3.12             here_1.0.1                 
+ [55] xfun_0.39                   DESeq2_1.40.2              
+ [57] qvalue_2.32.0               MatrixGenerics_1.12.3      
+ [59] GenomeInfoDb_1.36.4         withr_2.5.2                
+ [61] fastmap_1.1.1               fansi_1.0.6                
+ [63] digest_0.6.33               timechange_0.2.0           
+ [65] R6_2.5.1                    gridGraphics_0.5-1         
+ [67] colorspace_2.1-0            GO.db_3.17.0               
+ [69] RSQLite_2.3.4               utf8_1.2.4                 
+ [71] generics_0.1.3              data.table_1.14.10         
+ [73] graphlayouts_1.0.2          httr_1.4.7                 
+ [75] htmlwidgets_1.6.4           S4Arrays_1.0.6             
+ [77] scatterpie_0.2.1            graphite_1.46.0            
+ [79] whisker_0.4.1               pkgconfig_2.0.3            
+ [81] gtable_0.3.4                blob_1.2.4                 
+ [83] workflowr_1.7.1             XVector_0.40.0             
+ [85] shadowtext_0.1.2            htmltools_0.5.7            
+ [87] fgsea_1.26.0                ggupset_0.3.0              
+ [89] png_0.1-8                   ggfun_0.1.3                
+ [91] rstudioapi_0.15.0           tzdb_0.4.0                 
+ [93] nlme_3.1-164                cachem_1.0.8               
+ [95] parallel_4.3.1              HDO.db_0.99.1              
+ [97] pillar_1.9.0                vctrs_0.6.5                
+ [99] promises_1.2.1              extrafontdb_1.0            
+[101] evaluate_0.23               cli_3.6.1                  
+[103] locfit_1.5-9.8              compiler_4.3.1             
+[105] rlang_1.1.1                 crayon_1.5.2               
+[107] labeling_0.4.3              fs_1.6.3                   
+[109] stringi_1.8.3               viridisLite_0.4.2          
+[111] BiocParallel_1.34.2         munsell_0.5.0              
+[113] Biostrings_2.68.1           lazyeval_0.2.2             
+[115] GOSemSim_2.26.1             Matrix_1.6-4               
+[117] hms_1.1.3                   patchwork_1.1.3            
+[119] bit64_4.0.5                 KEGGREST_1.40.1            
+[121] highr_0.10                  SummarizedExperiment_1.30.2
+[123] igraph_1.6.0                memoise_2.0.1              
+[125] bslib_0.6.1                 ggtree_3.8.2               
+[127] fastmatch_1.1-4             bit_4.0.5                  
+[129] downloader_0.4              ape_5.7-1                  
+[131] gson_0.1.0                 </code></pre>
+</div>
+</div>
+
+
+<!-- Adjust MathJax settings so that all math formulae are shown using
+TeX fonts only; see
+https://docs.mathjax.org/en/latest/web/configuration.html. This will make
+the presentation more consistent at the cost of the webpage sometimes
+taking slightly longer to load. Note that this only works because the
+footer is added to webpages before the MathJax javascript. -->
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+    "HTML-CSS": { availableFonts: ["TeX"] }
+  });
+</script>
+
+
+
+
+</div>
+</div>
+
+</div>
+
+<script>
+
+// add bootstrap table styles to pandoc tables
+function bootstrapStylePandocTables() {
+  $('tr.odd').parent('tbody').parent('table').addClass('table table-condensed');
+}
+$(document).ready(function () {
+  bootstrapStylePandocTables();
+});
+
+
+</script>
+
+<!-- tabsets -->
+
+<script>
+$(document).ready(function () {
+  window.buildTabsets("TOC");
+});
+
+$(document).ready(function () {
+  $('.tabset-dropdown > .nav-tabs > li').click(function () {
+    $(this).parent().toggleClass('nav-tabs-open');
+  });
+});
+</script>
+
+<!-- code folding -->
+<script>
+$(document).ready(function () {
+  window.initializeCodeFolding("hide" === "show");
+});
+</script>
+
+<script>
+$(document).ready(function ()  {
+
+    // temporarily add toc-ignore selector to headers for the consistency with Pandoc
+    $('.unlisted.unnumbered').addClass('toc-ignore')
+
+    // move toc-ignore selectors from section div to header
+    $('div.section.toc-ignore')
+        .removeClass('toc-ignore')
+        .children('h1,h2,h3,h4,h5').addClass('toc-ignore');
+
+    // establish options
+    var options = {
+      selectors: "h1,h2,h3",
+      theme: "bootstrap3",
+      context: '.toc-content',
+      hashGenerator: function (text) {
+        return text.replace(/[.\\/?&!#<>]/g, '').replace(/\s/g, '_');
+      },
+      ignoreSelector: ".toc-ignore",
+      scrollTo: 0
+    };
+    options.showAndHide = true;
+    options.smoothScroll = true;
+
+    // tocify
+    var toc = $("#TOC").tocify(options).data("toc-tocify");
+});
+</script>
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+
+</body>
+</html>

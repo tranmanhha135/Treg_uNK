@@ -379,7 +379,16 @@ div.tocify {
     <li>
       <a href="kegg.html">KEGG</a>
     </li>
+    <li>
+      <a href="reactome.html">Reactome</a>
+    </li>
+    <li>
+      <a href="ipa.html">IPA</a>
+    </li>
   </ul>
+</li>
+<li>
+  <a href="extraFigs.html">Extra figures</a>
 </li>
       </ul>
       <ul class="nav navbar-nav navbar-right">
@@ -422,7 +431,7 @@ div.tocify {
 <p>
 <button type="button" class="btn btn-default btn-workflowr btn-workflowr-report" data-toggle="collapse" data-target="#workflowr-report">
 <span class="glyphicon glyphicon-list" aria-hidden="true"></span>
-workflowr <span class="glyphicon glyphicon-exclamation-sign text-danger"
+workflowr <span class="glyphicon glyphicon-ok text-success"
 aria-hidden="true"></span>
 </button>
 </p>
@@ -433,8 +442,8 @@ aria-hidden="true"></span>
 </li>
 <li>
 <a data-toggle="tab" href="#checks"> Checks <span
-class="glyphicon glyphicon-exclamation-sign text-danger"
-aria-hidden="true"></span> </a>
+class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span>
+</a>
 </li>
 <li>
 <a data-toggle="tab" href="#versions">Past versions</a>
@@ -443,16 +452,16 @@ aria-hidden="true"></span> </a>
 <div class="tab-content">
 <div id="summary" class="tab-pane fade in active">
 <p>
-<strong>Last updated:</strong> 2024-01-09
+<strong>Last updated:</strong> 2024-01-13
 </p>
 <p>
 <strong>Checks:</strong> <span
-class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> 6
+class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> 7
 <span class="glyphicon glyphicon-exclamation-sign text-danger"
-aria-hidden="true"></span> 1
+aria-hidden="true"></span> 0
 </p>
 <p>
-<strong>Knit directory:</strong> <code>140_treg_uNK/1_analysis/</code>
+<strong>Knit directory:</strong> <code>4_Treg_uNK/1_analysis/</code>
 <span class="glyphicon glyphicon-question-sign" aria-hidden="true"
 title="This is the local directory in which the code in this file was executed.">
 </span>
@@ -472,21 +481,18 @@ versions</em> tab lists the development history.
 <div class="panel panel-default">
 <div class="panel-heading">
 <p class="panel-title">
-<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRMarkdownfilestronguncommittedchanges">
-<span class="glyphicon glyphicon-exclamation-sign text-danger"
-aria-hidden="true"></span> <strong>R Markdown file:</strong> uncommitted
-changes </a>
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRMarkdownfilestronguptodate">
+<span class="glyphicon glyphicon-ok text-success"
+aria-hidden="true"></span> <strong>R Markdown file:</strong> up-to-date
+</a>
 </p>
 </div>
-<div id="strongRMarkdownfilestronguncommittedchanges"
+<div id="strongRMarkdownfilestronguptodate"
 class="panel-collapse collapse">
 <div class="panel-body">
-<p>The R Markdown file has unstaged changes. To know which version of
-the R Markdown file created these results, you’ll want to first commit
-it to the Git repo. If you’re still working on the analysis, you can
-ignore this warning. When you’re finished, you can run
-<code>wflow_publish</code> to commit the R Markdown file and build the
-HTML.</p>
+<p>Great! Since the R Markdown file has been committed to the Git
+repository, you know the exact version of the code that produced these
+results.</p>
 </div>
 </div>
 </div>
@@ -577,15 +583,15 @@ project makes it easier to run your code on other machines.</p>
 <div class="panel panel-default">
 <div class="panel-heading">
 <p class="panel-title">
-<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRepositoryversionstrongahrefhttpsgithubcomtranmanhha135TreguNKtree7d64f8265e12ec535d65395322bea399b0c5813ctargetblank7d64f82a">
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRepositoryversionstrongahrefhttpsgithubcomtranmanhha135TreguNKtreea957cffecc77bb00bb12bd564a9acf69ac763907targetblanka957cffa">
 <span class="glyphicon glyphicon-ok text-success"
 aria-hidden="true"></span> <strong>Repository version:</strong>
-<a href="https://github.com/tranmanhha135/Treg_uNK/tree/7d64f8265e12ec535d65395322bea399b0c5813c" target="_blank">7d64f82</a>
+<a href="https://github.com/tranmanhha135/Treg_uNK/tree/a957cffecc77bb00bb12bd564a9acf69ac763907" target="_blank">a957cff</a>
 </a>
 </p>
 </div>
 <div
-id="strongRepositoryversionstrongahrefhttpsgithubcomtranmanhha135TreguNKtree7d64f8265e12ec535d65395322bea399b0c5813ctargetblank7d64f82a"
+id="strongRepositoryversionstrongahrefhttpsgithubcomtranmanhha135TreguNKtreea957cffecc77bb00bb12bd564a9acf69ac763907targetblanka957cffa"
 class="panel-collapse collapse">
 <div class="panel-body">
 <p>
@@ -595,7 +601,7 @@ reproducibility.
 </p>
 <p>
 The results in this page were generated with repository version
-<a href="https://github.com/tranmanhha135/Treg_uNK/tree/7d64f8265e12ec535d65395322bea399b0c5813c" target="_blank">7d64f82</a>.
+<a href="https://github.com/tranmanhha135/Treg_uNK/tree/a957cffecc77bb00bb12bd564a9acf69ac763907" target="_blank">a957cff</a>.
 See the <em>Past versions</em> tab to see a history of the changes made
 to the R Markdown and HTML files.
 </p>
@@ -611,20 +617,77 @@ were generated:
 <pre><code>
 Ignored files:
     Ignored:    .Rproj.user/
-    Ignored:    2_plots/3_FA/
-    Ignored:    2_plots/4_GSEA/
 
 Untracked files:
     Untracked:  .gitignore
-    Untracked:  1_analysis/reactome.Rmd
-    Untracked:  3_output/reactome_all.xlsx
-    Untracked:  3_output/reactome_sig.xlsx
+    Untracked:  0_data/rds_objects/reactome.rds
+    Untracked:  0_data/rds_objects/reactome_all.rds
+    Untracked:  0_data/rds_objects/reactome_sig.rds
+    Untracked:  2_plots/3_FA/kegg/combine_kegg_dot.svg
+    Untracked:  2_plots/3_FA/kegg/heat_DT vs PBS_Antigen processing and presentation.svg
+    Untracked:  2_plots/3_FA/kegg/heat_DT vs PBS_Natural killer cell mediated cytotoxicity.svg
+    Untracked:  2_plots/3_FA/kegg/heat_DT vs PBS_Phagosome.svg
+    Untracked:  2_plots/3_FA/kegg/heat_DT vs PBS_Th1 and Th2 cell differentiation.svg
+    Untracked:  2_plots/3_FA/kegg/heat_Treg vs DT_Antigen processing and presentation.svg
+    Untracked:  2_plots/3_FA/kegg/heat_Treg vs DT_Natural killer cell mediated cytotoxicity.svg
+    Untracked:  2_plots/3_FA/kegg/heat_Treg vs DT_Phagosome.svg
+    Untracked:  2_plots/3_FA/kegg/heat_Treg vs DT_Th1 and Th2 cell differentiation.svg
+    Untracked:  2_plots/3_FA/kegg/heat_Treg vs PBS_Antigen processing and presentation.svg
+    Untracked:  2_plots/3_FA/kegg/heat_Treg vs PBS_Natural killer cell mediated cytotoxicity.svg
+    Untracked:  2_plots/3_FA/kegg/heat_Treg vs PBS_Phagosome.svg
+    Untracked:  2_plots/3_FA/kegg/heat_Treg vs PBS_Th1 and Th2 cell differentiation.svg
+    Untracked:  2_plots/3_FA/kegg/kegg_dot_DT vs PBS.svg
+    Untracked:  2_plots/3_FA/kegg/kegg_dot_Treg vs DT.svg
+    Untracked:  2_plots/3_FA/kegg/kegg_dot_Treg vs PBS.svg
+    Untracked:  2_plots/3_FA/kegg/kegg_upset_DT vs PBS.svg
+    Untracked:  2_plots/3_FA/kegg/kegg_upset_Treg vs DT.svg
+    Untracked:  2_plots/3_FA/kegg/kegg_upset_Treg vs PBS.svg
+    Untracked:  2_plots/3_FA/reactome/
+    Untracked:  2_plots/functionalHeat.svg
+    Untracked:  2_plots/functionalHeat_DT vs PBS.svg
+    Untracked:  2_plots/functionalHeat_Treg vs DT.svg
+    Untracked:  2_plots/functionalHeat_legend.svg
 
 Unstaged changes:
-    Modified:   1_analysis/index.Rmd
-    Modified:   1_analysis/kegg.Rmd
-    Modified:   1_analysis/setUp.Rmd
-    Modified:   README.md
+    Modified:   0_data/rds_objects/comp.rds
+    Modified:   0_data/rds_objects/dge.rds
+    Modified:   0_data/rds_objects/enrichGO.rds
+    Modified:   0_data/rds_objects/enrichGO_sig.rds
+    Modified:   0_data/rds_objects/enrichKEGG.rds
+    Modified:   0_data/rds_objects/enrichKEGG_all.rds
+    Modified:   0_data/rds_objects/enrichKEGG_sig.rds
+    Modified:   0_data/rds_objects/lm.rds
+    Modified:   0_data/rds_objects/lm_all.rds
+    Modified:   0_data/rds_objects/lm_sig.rds
+    Modified:   1_analysis/_site.yml
+    Deleted:    1_analysis/gsea.Rmd
+    Modified:   2_plots/1_QC/counts_after_filtering.svg
+    Modified:   2_plots/1_QC/counts_before_after_filtering.svg
+    Modified:   2_plots/1_QC/counts_before_filtering.svg
+    Modified:   2_plots/1_QC/library_size.svg
+    Modified:   2_plots/2_DE/heat_DT vs PBS.svg
+    Modified:   2_plots/2_DE/heat_Treg vs DT.svg
+    Modified:   2_plots/2_DE/heat_Treg vs PBS.svg
+    Modified:   2_plots/2_DE/heat_combined.svg
+    Modified:   2_plots/2_DE/hist_DT vs PBS.svg
+    Modified:   2_plots/2_DE/hist_Treg vs DT.svg
+    Modified:   2_plots/2_DE/hist_Treg vs PBS.svg
+    Modified:   2_plots/2_DE/ma_DT vs PBS.png
+    Modified:   2_plots/2_DE/ma_Treg vs DT.png
+    Modified:   2_plots/2_DE/ma_Treg vs PBS.png
+    Modified:   2_plots/2_DE/venn.png
+    Modified:   2_plots/2_DE/vol_DT vs PBS.png
+    Modified:   2_plots/2_DE/vol_Treg vs DT.png
+    Modified:   2_plots/2_DE/vol_Treg vs PBS.png
+    Modified:   2_plots/3_FA/kegg/venn.png
+    Modified:   2_plots/sampleHeat.svg
+    Modified:   3_output/GO_sig.xlsx
+    Modified:   3_output/KEGG_all.xlsx
+    Modified:   3_output/KEGG_sig.xlsx
+    Modified:   3_output/de_genes_all.xlsx
+    Modified:   3_output/de_genes_sig.xlsx
+    Modified:   3_output/reactome_all.xlsx
+    Modified:   3_output/reactome_sig.xlsx
 
 </code></pre>
 <p>
@@ -669,6 +732,74 @@ Message
 </tr>
 </thead>
 <tbody>
+<tr>
+<td>
+Rmd
+</td>
+<td>
+<a href="https://github.com/tranmanhha135/Treg_uNK/blob/a957cffecc77bb00bb12bd564a9acf69ac763907/1_analysis/setUp.Rmd" target="_blank">a957cff</a>
+</td>
+<td>
+Ha Manh Tran
+</td>
+<td>
+2024-01-13
+</td>
+<td>
+workflowr::wflow_publish(here::here("1_analysis/*Rmd"))
+</td>
+</tr>
+<tr>
+<td>
+Rmd
+</td>
+<td>
+<a href="https://github.com/tranmanhha135/Treg_uNK/blob/c78dfac2aad574f5112c4ea94ad08fa6d760c9ca/1_analysis/setUp.Rmd" target="_blank">c78dfac</a>
+</td>
+<td>
+tranmanhha135
+</td>
+<td>
+2024-01-12
+</td>
+<td>
+remote from ipad
+</td>
+</tr>
+<tr>
+<td>
+Rmd
+</td>
+<td>
+<a href="https://github.com/tranmanhha135/Treg_uNK/blob/221e2fa3c26fec7be64f95a93cb9e5a0d0441924/1_analysis/setUp.Rmd" target="_blank">221e2fa</a>
+</td>
+<td>
+tranmanhha135
+</td>
+<td>
+2024-01-10
+</td>
+<td>
+fixed error
+</td>
+</tr>
+<tr>
+<td>
+html
+</td>
+<td>
+<a href="https://rawcdn.githack.com/tranmanhha135/Treg_uNK/221e2fa3c26fec7be64f95a93cb9e5a0d0441924/docs/setUp.html" target="_blank">221e2fa</a>
+</td>
+<td>
+tranmanhha135
+</td>
+<td>
+2024-01-10
+</td>
+<td>
+fixed error
+</td>
+</tr>
 <tr>
 <td>
 html
@@ -768,7 +899,7 @@ library(extrafont)</code></pre>
 DT &lt;- readRDS(here::here(&quot;0_data/functions/DT.rds&quot;))
 
 # to increase the knitting speed. change to T to save all plots
-savePlots &lt;- F
+savePlots &lt;- T
 
 # Theme
 bossTheme &lt;- readRDS(here::here(&quot;0_data/functions/bossTheme.rds&quot;))
@@ -868,7 +999,7 @@ pie &lt;- pie %&gt;% layout(title = &#39;Frequency of gene biotype&#39;,
 
 pie</code></pre>
 <div class="plotly html-widget html-fill-item" id="htmlwidget-8d32cfd9db97395c4a5f" style="width:768px;height:480px;"></div>
-<script type="application/json" data-for="htmlwidget-8d32cfd9db97395c4a5f">{"x":{"visdat":{"39b6a38430714":["function () ","plotlyVisDat"]},"cur_data":"39b6a38430714","attrs":{"39b6a38430714":{"labels":{},"values":{},"textposition":"inside","textinfo":"label+percent","hoverinfo":"text","text":{},"marker":{"colors":["function (distinct = FALSE) ","{","    c <- .Call(C_colors)","    if (distinct) ","        c[!duplicated(t(col2rgb(c)))]","    else c","}"],"line":{"color":"#FFFFFF","width":1}},"showlegend":true,"alpha_stroke":1,"sizes":[10,100],"spans":[1,20],"type":"pie"}},"layout":{"margin":{"b":40,"l":60,"t":25,"r":10},"title":"Frequency of gene biotype","xaxis":{"showgrid":false,"zeroline":false,"showticklabels":false},"yaxis":{"showgrid":false,"zeroline":false,"showticklabels":false},"hovermode":"closest","showlegend":true},"source":"A","config":{"modeBarButtonsToAdd":["hoverclosest","hovercompare"],"showSendToCloud":false},"data":[{"labels":["lncRNA","miRNA","Misc rna","Processed pseudogene","Protein coding","pseudogene","ribozyme","rRNA","scaRNA","snoRNA","snRNA","TEC","Transcribed processed pseudogene","Transcribed unitary pseudogene","Transcribed unprocessed pseudogene","Translated unprocessed pseudogene","Unitary pseudogene","Unprocessed pseudogene"],"values":[2290,1173,1,122,18844,2,4,6,7,116,4,26,80,15,38,1,1,52],"textposition":["inside","inside","inside","inside","inside","inside","inside","inside","inside","inside","inside","inside","inside","inside","inside","inside","inside","inside"],"textinfo":"label+percent","hoverinfo":["text","text","text","text","text","text","text","text","text","text","text","text","text","text","text","text","text","text"],"text":["2290  genes","1173  genes","1  genes","122  genes","18844  genes","2  genes","4  genes","6  genes","7  genes","116  genes","4  genes","26  genes","80  genes","15  genes","38  genes","1  genes","1  genes","52  genes"],"marker":{"color":"rgba(31,119,180,1)","colors":["structure(function (distinct = FALSE) ","{","    c <- .Call(C_colors)","    if (distinct) ","        c[!duplicated(t(col2rgb(c)))]","    else c","}, apiSrc = TRUE)"],"line":{"color":"#FFFFFF","width":1}},"showlegend":true,"type":"pie","frame":null}],"highlight":{"on":"plotly_click","persistent":false,"dynamic":false,"selectize":false,"opacityDim":0.20000000000000001,"selected":{"opacity":1},"debounce":0},"shinyEvents":["plotly_hover","plotly_click","plotly_selected","plotly_relayout","plotly_brushed","plotly_brushing","plotly_clickannotation","plotly_doubleclick","plotly_deselect","plotly_afterplot","plotly_sunburstclick"],"base_url":"https://plot.ly"},"evals":[],"jsHooks":[]}</script>
+<script type="application/json" data-for="htmlwidget-8d32cfd9db97395c4a5f">{"x":{"visdat":{"4ce4c1663f":["function () ","plotlyVisDat"]},"cur_data":"4ce4c1663f","attrs":{"4ce4c1663f":{"labels":{},"values":{},"textposition":"inside","textinfo":"label+percent","hoverinfo":"text","text":{},"marker":{"colors":["function (distinct = FALSE) ","{","    c <- .Call(C_colors)","    if (distinct) ","        c[!duplicated(t(col2rgb(c)))]","    else c","}"],"line":{"color":"#FFFFFF","width":1}},"showlegend":true,"alpha_stroke":1,"sizes":[10,100],"spans":[1,20],"type":"pie"}},"layout":{"margin":{"b":40,"l":60,"t":25,"r":10},"title":"Frequency of gene biotype","xaxis":{"showgrid":false,"zeroline":false,"showticklabels":false},"yaxis":{"showgrid":false,"zeroline":false,"showticklabels":false},"hovermode":"closest","showlegend":true},"source":"A","config":{"modeBarButtonsToAdd":["hoverclosest","hovercompare"],"showSendToCloud":false},"data":[{"labels":["lncRNA","miRNA","Misc rna","Processed pseudogene","Protein coding","pseudogene","ribozyme","rRNA","scaRNA","snoRNA","snRNA","TEC","Transcribed processed pseudogene","Transcribed unitary pseudogene","Transcribed unprocessed pseudogene","Translated unprocessed pseudogene","Unitary pseudogene","Unprocessed pseudogene"],"values":[2290,1173,1,122,18844,2,4,6,7,116,4,26,80,15,38,1,1,52],"textposition":["inside","inside","inside","inside","inside","inside","inside","inside","inside","inside","inside","inside","inside","inside","inside","inside","inside","inside"],"textinfo":"label+percent","hoverinfo":["text","text","text","text","text","text","text","text","text","text","text","text","text","text","text","text","text","text"],"text":["2290  genes","1173  genes","1  genes","122  genes","18844  genes","2  genes","4  genes","6  genes","7  genes","116  genes","4  genes","26  genes","80  genes","15  genes","38  genes","1  genes","1  genes","52  genes"],"marker":{"color":"rgba(31,119,180,1)","colors":["structure(function (distinct = FALSE) ","{","    c <- .Call(C_colors)","    if (distinct) ","        c[!duplicated(t(col2rgb(c)))]","    else c","}, apiSrc = TRUE)"],"line":{"color":"#FFFFFF","width":1}},"showlegend":true,"type":"pie","frame":null}],"highlight":{"on":"plotly_click","persistent":false,"dynamic":false,"selectize":false,"opacityDim":0.20000000000000001,"selected":{"opacity":1},"debounce":0},"shinyEvents":["plotly_hover","plotly_click","plotly_selected","plotly_relayout","plotly_brushed","plotly_brushing","plotly_clickannotation","plotly_doubleclick","plotly_deselect","plotly_afterplot","plotly_sunburstclick"],"base_url":"https://plot.ly"},"evals":[],"jsHooks":[]}</script>
 </div>
 <div id="table" class="section level4">
 <h4>Table</h4>
@@ -968,6 +1099,17 @@ Date
 </tr>
 </thead>
 <tbody>
+<tr>
+<td>
+<a href="https://github.com/tranmanhha135/Treg_uNK/blob/221e2fa3c26fec7be64f95a93cb9e5a0d0441924/docs/figure/setUp.Rmd/libraryChecks-1.png" target="_blank">221e2fa</a>
+</td>
+<td>
+tranmanhha135
+</td>
+<td>
+2024-01-10
+</td>
+</tr>
 <tr>
 <td>
 <a href="https://github.com/tranmanhha135/Treg_uNK/blob/762020e5b1bc3664ab92da69ebba8ad38169515d/docs/figure/setUp.Rmd/libraryChecks-1.png" target="_blank">762020e</a>
@@ -1097,6 +1239,17 @@ Date
 <tbody>
 <tr>
 <td>
+<a href="https://github.com/tranmanhha135/Treg_uNK/blob/221e2fa3c26fec7be64f95a93cb9e5a0d0441924/docs/figure/setUp.Rmd/afterFiltering-1.png" target="_blank">221e2fa</a>
+</td>
+<td>
+tranmanhha135
+</td>
+<td>
+2024-01-10
+</td>
+</tr>
+<tr>
+<td>
 <a href="https://github.com/tranmanhha135/Treg_uNK/blob/762020e5b1bc3664ab92da69ebba8ad38169515d/docs/figure/setUp.Rmd/afterFiltering-1.png" target="_blank">762020e</a>
 </td>
 <td>
@@ -1189,6 +1342,17 @@ Date
 <tbody>
 <tr>
 <td>
+<a href="https://github.com/tranmanhha135/Treg_uNK/blob/221e2fa3c26fec7be64f95a93cb9e5a0d0441924/docs/figure/setUp.Rmd/beforeNorm-1.png" target="_blank">221e2fa</a>
+</td>
+<td>
+tranmanhha135
+</td>
+<td>
+2024-01-10
+</td>
+</tr>
+<tr>
+<td>
 <a href="https://github.com/tranmanhha135/Treg_uNK/blob/762020e5b1bc3664ab92da69ebba8ad38169515d/docs/figure/setUp.Rmd/beforeNorm-1.png" target="_blank">762020e</a>
 </td>
 <td>
@@ -1243,6 +1407,17 @@ Date
 </tr>
 </thead>
 <tbody>
+<tr>
+<td>
+<a href="https://github.com/tranmanhha135/Treg_uNK/blob/221e2fa3c26fec7be64f95a93cb9e5a0d0441924/docs/figure/setUp.Rmd/afterNorm-1.png" target="_blank">221e2fa</a>
+</td>
+<td>
+tranmanhha135
+</td>
+<td>
+2024-01-10
+</td>
+</tr>
 <tr>
 <td>
 <a href="https://github.com/tranmanhha135/Treg_uNK/blob/762020e5b1bc3664ab92da69ebba8ad38169515d/docs/figure/setUp.Rmd/afterNorm-1.png" target="_blank">762020e</a>
@@ -1332,6 +1507,17 @@ Date
 <tbody>
 <tr>
 <td>
+<a href="https://github.com/tranmanhha135/Treg_uNK/blob/221e2fa3c26fec7be64f95a93cb9e5a0d0441924/docs/figure/setUp.Rmd/pca-1.png" target="_blank">221e2fa</a>
+</td>
+<td>
+tranmanhha135
+</td>
+<td>
+2024-01-10
+</td>
+</tr>
+<tr>
+<td>
 <a href="https://github.com/tranmanhha135/Treg_uNK/blob/762020e5b1bc3664ab92da69ebba8ad38169515d/docs/figure/setUp.Rmd/pca-1.png" target="_blank">762020e</a>
 </td>
 <td>
@@ -1371,24 +1557,24 @@ pca_3d &lt;- plot_ly(pc, x = ~PC1, y = ~PC2, z = ~PC3, color = ~dge$samples$grou
   layout(showlegend = FALSE,
          title = paste0(&#39;Total Explained Variance = &#39;, totVar),
          scene = list(xaxis = list(title = &#39;PC 1 (20%)&#39;,
-                                   gridcolor = &#39;rgb(255, 255, 255)&#39;,
+                                   gridcolor = &#39;black&#39;,
                                    zerolinewidth = 1,
                                    ticklen = 5,
                                    gridwidth = 2),
                       yaxis = list(title = &#39;PC 2 (15%)&#39;,
-                                   gridcolor = &#39;rgb(255, 255, 255)&#39;,
+                                   gridcolor = &#39;black&#39;,
                                    zerolinewidth = 1,
                                    ticklen = 5,
                                    gridwith = 2),
                       zaxis = list(title = &#39;PC 3 (9%)&#39;,
-                                   gridcolor = &#39;rgb(255, 255, 255)&#39;,
+                                   gridcolor = &#39;black&#39;,
                                    zerolinewidth = 1,
                                    ticklen = 5,
                                    gridwith = 2)))
 
 pca_3d</code></pre>
 <div class="plotly html-widget html-fill-item" id="htmlwidget-02880d8cbf9369760f4f" style="width:768px;height:480px;"></div>
-<script type="application/json" data-for="htmlwidget-02880d8cbf9369760f4f">{"x":{"visdat":{"39b6a46761be4":["function () ","plotlyVisDat"]},"cur_data":"39b6a46761be4","attrs":{"39b6a46761be4":{"x":{},"y":{},"z":{},"marker":{"symbol":"circle","sizemode":"diameter","size":5},"hoverinfo":"text","color":{},"colors":["#73c1a6","#f58d5f","#8DA0CB"],"alpha_stroke":1,"sizes":[10,100],"spans":[1,20]}},"layout":{"margin":{"b":40,"l":60,"t":25,"r":10},"showlegend":false,"title":"Total Explained Variance = 44.949","scene":{"xaxis":{"title":"PC 1 (20%)","gridcolor":"rgb(255, 255, 255)","zerolinewidth":1,"ticklen":5,"gridwidth":2},"yaxis":{"title":"PC 2 (15%)","gridcolor":"rgb(255, 255, 255)","zerolinewidth":1,"ticklen":5,"gridwith":2},"zaxis":{"title":"PC 3 (9%)","gridcolor":"rgb(255, 255, 255)","zerolinewidth":1,"ticklen":5,"gridwith":2}},"hovermode":"closest"},"source":"A","config":{"modeBarButtonsToAdd":["hoverclosest","hovercompare"],"showSendToCloud":false},"data":[{"x":[82.919539075405169,-7.7885128767346368,-5.7268484889767635,-6.5690481787729231,-2.705146868243264,23.308620305021908],"y":[-28.147293743969495,26.181105179841797,31.657943651314199,15.913709430147351,34.837008319058931,35.823627675600044],"z":[15.631863570937847,2.3865278398344012,-6.9513391720528341,23.108649226665889,2.6180625671528279,11.674790060081387],"marker":{"color":"rgba(245,141,95,1)","symbol":"circle","sizemode":"diameter","size":5,"line":{"color":"rgba(245,141,95,1)"}},"hoverinfo":["text","text","text","text","text","text"],"type":"scatter3d","mode":"markers","name":"PBS","textfont":{"color":"rgba(245,141,95,1)"},"error_y":{"color":"rgba(245,141,95,1)"},"error_x":{"color":"rgba(245,141,95,1)"},"line":{"color":"rgba(245,141,95,1)"},"frame":null},{"x":[-9.4087924844131869,32.454312413406242,-19.259203856508599,-1.6381004770677636,-8.8928333203347911],"y":[-7.8404694858956621,-1.6742186035640052,-26.677377210099987,10.484603836844453,-10.15203026347095],"z":[-41.756200708727071,-35.596953076302889,-11.647360920231746,-3.9188291477213792,-7.0036148547760444],"marker":{"color":"rgba(141,160,203,1)","symbol":"circle","sizemode":"diameter","size":5,"line":{"color":"rgba(141,160,203,1)"}},"hoverinfo":["text","text","text","text","text"],"type":"scatter3d","mode":"markers","name":"DT","textfont":{"color":"rgba(141,160,203,1)"},"error_y":{"color":"rgba(141,160,203,1)"},"error_x":{"color":"rgba(141,160,203,1)"},"line":{"color":"rgba(141,160,203,1)"},"frame":null},{"x":[-18.678763461714457,-25.778547435475542,-12.069749969224631,-13.642956538087049,-6.5239678382798862],"y":[-26.808198540602767,-24.468495600098016,-16.779996691937672,-8.7117978281127275,-3.6381201250556789],"z":[10.97291450274116,21.914317735617143,6.4562089999895127,4.8395705144506476,7.271392862341143],"marker":{"color":"rgba(115,193,166,1)","symbol":"circle","sizemode":"diameter","size":5,"line":{"color":"rgba(115,193,166,1)"}},"hoverinfo":["text","text","text","text","text"],"type":"scatter3d","mode":"markers","name":"Treg","textfont":{"color":"rgba(115,193,166,1)"},"error_y":{"color":"rgba(115,193,166,1)"},"error_x":{"color":"rgba(115,193,166,1)"},"line":{"color":"rgba(115,193,166,1)"},"frame":null}],"highlight":{"on":"plotly_click","persistent":false,"dynamic":false,"selectize":false,"opacityDim":0.20000000000000001,"selected":{"opacity":1},"debounce":0},"shinyEvents":["plotly_hover","plotly_click","plotly_selected","plotly_relayout","plotly_brushed","plotly_brushing","plotly_clickannotation","plotly_doubleclick","plotly_deselect","plotly_afterplot","plotly_sunburstclick"],"base_url":"https://plot.ly"},"evals":[],"jsHooks":[]}</script>
+<script type="application/json" data-for="htmlwidget-02880d8cbf9369760f4f">{"x":{"visdat":{"4ce445142cb1":["function () ","plotlyVisDat"]},"cur_data":"4ce445142cb1","attrs":{"4ce445142cb1":{"x":{},"y":{},"z":{},"marker":{"symbol":"circle","sizemode":"diameter","size":5},"hoverinfo":"text","color":{},"colors":["#73c1a6","#f58d5f","#8DA0CB"],"alpha_stroke":1,"sizes":[10,100],"spans":[1,20]}},"layout":{"margin":{"b":40,"l":60,"t":25,"r":10},"showlegend":false,"title":"Total Explained Variance = 44.949","scene":{"xaxis":{"title":"PC 1 (20%)","gridcolor":"black","zerolinewidth":1,"ticklen":5,"gridwidth":2},"yaxis":{"title":"PC 2 (15%)","gridcolor":"black","zerolinewidth":1,"ticklen":5,"gridwith":2},"zaxis":{"title":"PC 3 (9%)","gridcolor":"black","zerolinewidth":1,"ticklen":5,"gridwith":2}},"hovermode":"closest"},"source":"A","config":{"modeBarButtonsToAdd":["hoverclosest","hovercompare"],"showSendToCloud":false},"data":[{"x":[82.919539075405126,-7.7885128767346608,-5.7268484889767839,-6.5690481787729302,-2.7051468682432871,23.308620305021869],"y":[-28.147293743969428,26.181105179841833,31.657943651314167,15.913709430147366,34.837008319058917,35.823627675600072],"z":[15.631863570937837,2.3865278398343883,-6.9513391720528181,23.108649226665879,2.6180625671528102,11.674790060081353],"marker":{"color":"rgba(245,141,95,1)","symbol":"circle","sizemode":"diameter","size":5,"line":{"color":"rgba(245,141,95,1)"}},"hoverinfo":["text","text","text","text","text","text"],"type":"scatter3d","mode":"markers","name":"PBS","textfont":{"color":"rgba(245,141,95,1)"},"error_y":{"color":"rgba(245,141,95,1)"},"error_x":{"color":"rgba(245,141,95,1)"},"line":{"color":"rgba(245,141,95,1)"},"frame":null},{"x":[-9.4087924844131816,32.454312413406235,-19.259203856508584,-1.6381004770677803,-8.892833320334784],"y":[-7.8404694858956647,-1.6742186035640769,-26.677377210099991,10.484603836844467,-10.152030263470941],"z":[-41.756200708727164,-35.596953076302817,-11.647360920231719,-3.9188291477213824,-7.0036148547760391],"marker":{"color":"rgba(141,160,203,1)","symbol":"circle","sizemode":"diameter","size":5,"line":{"color":"rgba(141,160,203,1)"}},"hoverinfo":["text","text","text","text","text"],"type":"scatter3d","mode":"markers","name":"DT","textfont":{"color":"rgba(141,160,203,1)"},"error_y":{"color":"rgba(141,160,203,1)"},"error_x":{"color":"rgba(141,160,203,1)"},"line":{"color":"rgba(141,160,203,1)"},"frame":null},{"x":[-18.678763461714411,-25.77854743547551,-12.069749969224617,-13.642956538087034,-6.5239678382798729],"y":[-26.808198540602739,-24.468495600098006,-16.779996691937693,-8.7117978281127275,-3.6381201250557029],"z":[10.972914502741183,21.914317735617161,6.4562089999895402,4.8395705144506627,7.2713928623411679],"marker":{"color":"rgba(115,193,166,1)","symbol":"circle","sizemode":"diameter","size":5,"line":{"color":"rgba(115,193,166,1)"}},"hoverinfo":["text","text","text","text","text"],"type":"scatter3d","mode":"markers","name":"Treg","textfont":{"color":"rgba(115,193,166,1)"},"error_y":{"color":"rgba(115,193,166,1)"},"error_x":{"color":"rgba(115,193,166,1)"},"line":{"color":"rgba(115,193,166,1)"},"frame":null}],"highlight":{"on":"plotly_click","persistent":false,"dynamic":false,"selectize":false,"opacityDim":0.20000000000000001,"selected":{"opacity":1},"debounce":0},"shinyEvents":["plotly_hover","plotly_click","plotly_selected","plotly_relayout","plotly_brushed","plotly_brushing","plotly_clickannotation","plotly_doubleclick","plotly_deselect","plotly_afterplot","plotly_sunburstclick"],"base_url":"https://plot.ly"},"evals":[],"jsHooks":[]}</script>
 <div id="correlation-plot" class="section level3">
 <h3>Correlation plot</h3>
 <p>A correlation matrix between principal components (PC) and metadata
@@ -1437,24 +1623,20 @@ Session information
 </p>
 <div id="workflowr-sessioninfo" class="collapse">
 <pre class="r"><code>sessionInfo()</code></pre>
-<pre><code>R version 4.3.2 (2023-10-31)
-Platform: x86_64-pc-linux-gnu (64-bit)
-Running under: Ubuntu 22.04.3 LTS
+<pre><code>R version 4.3.1 (2023-06-16 ucrt)
+Platform: x86_64-w64-mingw32/x64 (64-bit)
+Running under: Windows 10 x64 (build 19045)
 
 Matrix products: default
-BLAS:   /usr/lib/x86_64-linux-gnu/blas/libblas.so.3.10.0 
-LAPACK: /usr/lib/x86_64-linux-gnu/lapack/liblapack.so.3.10.0
+
 
 locale:
- [1] LC_CTYPE=en_AU.UTF-8       LC_NUMERIC=C              
- [3] LC_TIME=en_AU.UTF-8        LC_COLLATE=en_AU.UTF-8    
- [5] LC_MONETARY=en_AU.UTF-8    LC_MESSAGES=en_AU.UTF-8   
- [7] LC_PAPER=en_AU.UTF-8       LC_NAME=C                 
- [9] LC_ADDRESS=C               LC_TELEPHONE=C            
-[11] LC_MEASUREMENT=en_AU.UTF-8 LC_IDENTIFICATION=C       
+[1] LC_COLLATE=English_Australia.utf8  LC_CTYPE=English_Australia.utf8   
+[3] LC_MONETARY=English_Australia.utf8 LC_NUMERIC=C                      
+[5] LC_TIME=English_Australia.utf8    
 
 time zone: Australia/Adelaide
-tzcode source: system (glibc)
+tzcode source: internal
 
 attached base packages:
 [1] grid      stats     graphics  grDevices utils     datasets  methods  
@@ -1477,56 +1659,55 @@ loaded via a namespace (and not attached):
   [1] rstudioapi_0.15.0             jsonlite_1.8.8               
   [3] farver_2.1.1                  rmarkdown_2.25               
   [5] fs_1.6.3                      zlibbioc_1.46.0              
-  [7] ragg_1.2.7                    vctrs_0.6.5                  
-  [9] memoise_2.0.1                 RCurl_1.98-1.13              
- [11] htmltools_0.5.7               S4Arrays_1.0.6               
- [13] curl_5.2.0                    sass_0.4.8                   
- [15] bslib_0.6.1                   htmlwidgets_1.6.4            
- [17] cachem_1.0.8                  whisker_0.4.1                
- [19] mime_0.12                     lifecycle_1.0.4              
- [21] pkgconfig_2.0.3               Matrix_1.6-3                 
- [23] R6_2.5.1                      fastmap_1.1.1                
- [25] GenomeInfoDbData_1.2.10       MatrixGenerics_1.12.3        
- [27] shiny_1.8.0                   digest_0.6.33                
- [29] colorspace_2.1-0              AnnotationDbi_1.62.2         
- [31] S4Vectors_0.38.2              DESeq2_1.40.2                
- [33] rprojroot_2.0.4               textshaping_0.3.7            
- [35] crosstalk_1.2.1               GenomicRanges_1.52.1         
- [37] RSQLite_2.3.4                 filelock_1.0.3               
- [39] labeling_0.4.3                fansi_1.0.6                  
- [41] timechange_0.2.0              httr_1.4.7                   
- [43] abind_1.4-5                   compiler_4.3.2               
- [45] bit64_4.0.5                   withr_2.5.2                  
- [47] BiocParallel_1.34.2           DBI_1.2.0                    
- [49] highr_0.10                    Rttf2pt1_1.3.12              
- [51] rappdirs_0.3.3                DelayedArray_0.26.7          
- [53] tools_4.3.2                   interactiveDisplayBase_1.38.0
- [55] httpuv_1.6.13                 extrafontdb_1.0              
- [57] glue_1.6.2                    promises_1.2.1               
- [59] generics_0.1.3                gtable_0.3.4                 
- [61] tzdb_0.4.0                    data.table_1.14.10           
- [63] hms_1.1.3                     utf8_1.2.4                   
- [65] XVector_0.40.0                BiocVersion_3.17.1           
- [67] pillar_1.9.0                  later_1.3.2                  
- [69] lattice_0.22-5                bit_4.0.5                    
- [71] tidyselect_1.2.0              locfit_1.5-9.8               
- [73] Biostrings_2.68.1             knitr_1.45                   
- [75] git2r_0.33.0                  IRanges_2.34.1               
- [77] SummarizedExperiment_1.30.2   svglite_2.1.3                
- [79] stats4_4.3.2                  xfun_0.41                    
- [81] Biobase_2.60.0                matrixStats_1.2.0            
- [83] stringi_1.8.3                 workflowr_1.7.1              
- [85] lazyeval_0.2.2                yaml_2.3.8                   
- [87] evaluate_0.23                 codetools_0.2-19             
- [89] BiocManager_1.30.22           cli_3.6.2                    
- [91] systemfonts_1.0.5             xtable_1.8-4                 
- [93] munsell_0.5.0                 jquerylib_0.1.4              
- [95] Rcpp_1.0.11                   GenomeInfoDb_1.36.4          
- [97] png_0.1-8                     parallel_4.3.2               
- [99] ellipsis_0.3.2                blob_1.2.4                   
-[101] bitops_1.0-7                  viridisLite_0.4.2            
-[103] crayon_1.5.2                  rlang_1.1.2                  
-[105] KEGGREST_1.40.1              </code></pre>
+  [7] vctrs_0.6.5                   memoise_2.0.1                
+  [9] RCurl_1.98-1.13               htmltools_0.5.7              
+ [11] S4Arrays_1.0.6                curl_5.2.0                   
+ [13] sass_0.4.8                    bslib_0.6.1                  
+ [15] htmlwidgets_1.6.4             cachem_1.0.8                 
+ [17] whisker_0.4.1                 mime_0.12                    
+ [19] lifecycle_1.0.4               pkgconfig_2.0.3              
+ [21] Matrix_1.6-4                  R6_2.5.1                     
+ [23] fastmap_1.1.1                 GenomeInfoDbData_1.2.10      
+ [25] MatrixGenerics_1.12.3         shiny_1.8.0                  
+ [27] digest_0.6.33                 colorspace_2.1-0             
+ [29] AnnotationDbi_1.62.2          S4Vectors_0.38.2             
+ [31] DESeq2_1.40.2                 rprojroot_2.0.4              
+ [33] crosstalk_1.2.1               GenomicRanges_1.52.1         
+ [35] RSQLite_2.3.4                 filelock_1.0.3               
+ [37] labeling_0.4.3                fansi_1.0.6                  
+ [39] timechange_0.2.0              httr_1.4.7                   
+ [41] abind_1.4-5                   compiler_4.3.1               
+ [43] bit64_4.0.5                   withr_2.5.2                  
+ [45] BiocParallel_1.34.2           DBI_1.2.0                    
+ [47] highr_0.10                    Rttf2pt1_1.3.12              
+ [49] rappdirs_0.3.3                DelayedArray_0.26.7          
+ [51] tools_4.3.1                   interactiveDisplayBase_1.38.0
+ [53] httpuv_1.6.13                 extrafontdb_1.0              
+ [55] glue_1.6.2                    promises_1.2.1               
+ [57] generics_0.1.3                gtable_0.3.4                 
+ [59] tzdb_0.4.0                    data.table_1.14.10           
+ [61] hms_1.1.3                     utf8_1.2.4                   
+ [63] XVector_0.40.0                BiocVersion_3.17.1           
+ [65] pillar_1.9.0                  later_1.3.2                  
+ [67] lattice_0.21-8                bit_4.0.5                    
+ [69] tidyselect_1.2.0              locfit_1.5-9.8               
+ [71] Biostrings_2.68.1             knitr_1.45                   
+ [73] git2r_0.33.0                  IRanges_2.34.1               
+ [75] SummarizedExperiment_1.30.2   svglite_2.1.3                
+ [77] stats4_4.3.1                  xfun_0.39                    
+ [79] Biobase_2.60.0                matrixStats_1.2.0            
+ [81] stringi_1.8.3                 workflowr_1.7.1              
+ [83] lazyeval_0.2.2                yaml_2.3.7                   
+ [85] evaluate_0.23                 codetools_0.2-19             
+ [87] BiocManager_1.30.22           cli_3.6.1                    
+ [89] xtable_1.8-4                  systemfonts_1.0.5            
+ [91] munsell_0.5.0                 jquerylib_0.1.4              
+ [93] Rcpp_1.0.11                   GenomeInfoDb_1.36.4          
+ [95] png_0.1-8                     parallel_4.3.1               
+ [97] ellipsis_0.3.2                blob_1.2.4                   
+ [99] bitops_1.0-7                  viridisLite_0.4.2            
+[101] crayon_1.5.2                  rlang_1.1.1                  
+[103] KEGGREST_1.40.1              </code></pre>
 </div>
 </div>
 </div>
