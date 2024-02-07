@@ -14,28 +14,613 @@ knitr::opts_chunk$set(
 )
 ```
 
+# Data Setup
+
+```{r load libraries}
+# working with data
+library(dplyr)
+library(magrittr)
+library(readr)
+library(tibble)
+library(reshape2)
+library(tidyverse)
+library(pheatmap)
+library(ComplexHeatmap)
+library(DT)
+library(extrafont)
+library(readxl)
+library(patchwork)
+
+# Visualisation:
+library(VennDiagram)
+library(kableExtra)
+library(ggplot2)
+library(grid)
+library(pander)
+library(cowplot)
+library(viridis)
+library(igraph)
+library(ggalluvial)
+library(RColorBrewer)
+
+# Custom ggplot
+library(ggplotify)
+library(ggbiplot)
+library(ggrepel)
+library(pandoc)
+library(knitr)
+opts_knit$set(progress = FALSE, verbose = FALSE)
+opts_chunk$set(warning=FALSE, message=FALSE, echo=FALSE)
+```
+
+
+```{r importData}
+# load DGElist previously created in the set up
+# dge <- readRDS(here::here("0_data/rds_objects/dge.rds"))
+# fc <- readRDS(here::here("0_data/rds_objects/fc.rds"))
+# fdr <- readRDS(here::here("0_data/rds_objects/fdr.rds"))
+# lm <- readRDS(here::here("0_data/rds_objects/lm.rds"))
+# lm_sig <- readRDS(here::here("0_data/rds_objects/lm_sig.rds"))
+
+# to increase the knitting speed. change to T to save all plots
+savePlots <- T
+export <- T
+```
+
+```{r importFunctions}
+# Theme
+bossTheme <- readRDS(here::here("0_data/functions/bossTheme.rds"))
+bossTheme_bar <- readRDS(here::here("0_data/functions/bossTheme_bar.rds"))
+groupColour <- readRDS(here::here("0_data/functions/groupColour.rds"))
+groupColour_dark <- readRDS(here::here("0_data/functions/groupColour_dark.rds"))
+expressionCol <- readRDS(here::here("0_data/functions/expressionCol.rds"))
+expressionCol_dark <- readRDS(here::here("0_data/functions/expressionCol_dark.rds"))
+compColour <- readRDS(here::here("0_data/functions/compColour.rds"))
+
+DT <- readRDS(here::here("0_data/functions/DT.rds"))
+
+firstCap <- function(x) {
+  substr(x, 1, 1) <- toupper(substr(x, 1, 1))
+  x
+}
+
+# Plotting
+convert_to_superscript <- readRDS(here::here("0_data/functions/convert_to_superscript.rds"))
+exponent <- readRDS(here::here("0_data/functions/exponent.rds"))
+format_y_axis <- readRDS(here::here("0_data/functions/format_y_axis.rds"))
+```
+
 ## IPA analysis {.tabset .tabset-pills}
 
-### Regulated Pathways
+### Regulated Pathways {.tabset .tabset-pills}
+
+```{r, fig.width=8,fig.height=10}
+read_excel_allsheets <- function(filename, tibble = FALSE) {
+    sheets <- readxl::excel_sheets(filename)
+    x <- lapply(sheets, function(X) readxl::read_excel(filename, sheet = X,skip = 1))
+    if(!tibble) x <- lapply(x, as.data.frame)
+    names(x) <- sheets
+    x
+}
+
+pathways <- read_excel_allsheets(here::here("0_data/rawData/IPA pathways.xlsx")) 
+
+pathways <- lapply(pathways, function(x) {
+  colnames(x) <- c("name", "logPval", "ratio", "zScore", "molecules")
+  x <- x %>% dplyr::mutate(pval = 10^-logPval, .after = logPval)
+  x$name <- x$name %>% firstCap() %>% str_wrap(width = 45)
+  return(x)
+})
+
+pathways_sig <- lapply(pathways, function(x) {
+  res <- x %>% dplyr::filter(pval < 0.05 & abs(zScore) >= 2)
+  return(res)
+})
+
+saveRDS(pathways_sig, here::here("0_data/rds_objects/ipa_pathways.rds"))
+```
+
+#### Venn diagram
+
+```{r venn, fig.height=8, fig.width=8, echo=FALSE, results='hide'}
+futile.logger::flog.threshold(futile.logger::ERROR, name = "VennDiagramLogger")
+
+venn.diagram(x = list("DT vs veh"   = pathways_sig[[1]]$name %>% as.character(), 
+                      "DT+Treg vs veh" = pathways_sig[[2]]$name %>% as.character(),
+                      "DT+Treg vs DT"  = pathways_sig[[3]]$name %>% as.character()),
+             filename = here::here(paste0("2_plots/3_FA/ipa/venn_ipaPath.png")),
+             lwd = 2,
+             disable.logging = T,
+             fill = compColour,
+             alpha = 0.75,
+             lty = 'blank',
+             imagetype = "png",
+             
+             # Numbers
+             cex = 2,
+             fontface = "plain",
+             fontfamily = "Arial Narrow",
+             
+             # Set names
+             cat.cex = 2,
+             cat.fontface = "bold",
+             cat.fontfamily = "Arial Narrow",
+             cat.default.pos = "outer",
+             cat.pos = c(-160, 160, 0),
+             cat.dist = c(0.055, 0.025, 0.055)
+)
+
+```
+
+![](figure/ipa.Rmd/venn_ipaPath.png)
 
 
-![](figure/ipa.Rmd/giphy.gif)
+
+#### Dot plot
+
+```{r combined_dot, fig.width=9, fig.height=13}
+# combine all df in list into one df
+ipa_dot_all <- as.data.frame(do.call(rbind, pathways_sig)) %>%
+  rownames_to_column("group")
+
+ipa_dot_all$group <- gsub(pattern = "\\..*", "", ipa_dot_all$group) %>% as.factor()
+
+ipa_dot_all <- ipa_dot_all[! ipa_dot_all$group %in% c("DT+Treg vs veh"),]
+# clean group names and change to factor
+
+
+ipa_dot_all$group <- factor(ipa_dot_all$group,levels = c("DT vs veh", "DT+Treg vs veh", "DT+Treg vs DT" ))
+ipa_dot_all$name <- ipa_dot_all$name %>% str_wrap(45)
+combine_ipa <- ggplot(ipa_dot_all) +
+    geom_point(aes(x = group, y = name, colour = zScore, size = ratio)) +
+    scale_color_gradientn(colors = rev(c("#FB8072","#FDB462","#ffffd5","#8DD3C7","#80B1D3")),
+                          values = scales::rescale(c(min(ipa_dot_all$zScore), max(ipa_dot_all$zScore))),
+                          breaks = scales::pretty_breaks(n = 5)) +
+    scale_size(range = c(2,5)) +
+    labs(x = "", y = "", color = "Z- scores", size = "Ratio")+
+    bossTheme(base_size = 14,legend = "right")
+  
+  
+  if(savePlots == TRUE) {
+    ggsave(filename = paste0("combine_ipa_dot.svg"), plot = combine_ipa, path = here::here("2_plots/3_FA/ipa/"),
+           width = 18, height = 22, units = "cm")
+  }
+
+combine_ipa
+```
+
 
 
 ### Upstream Regulators
 
+```{r, fig.width=9,fig.height=14}
+upstream <-read_excel_allsheets(here::here("0_data/rawData/IPA upstream regulators.xlsx")) 
 
-![](figure/ipa.Rmd/giphy.gif)
+upstream <- lapply(upstream, function(x) {
+  colnames(x) <- c("name", "exprLogRatio", "type", "activationState", "activationScore", "pval", "molecules", "network")
+  x <- x %>% dplyr::mutate(logPval = -log10(pval), .after = pval)
+  x$name <- x$name %>% firstCap() %>% str_wrap(width = 45)
+  return(x)
+})
 
+upstream_sig <- lapply(upstream, function(x) {
+  res <- x %>% dplyr::filter(pval < 0.05 & abs(activationScore) >= 2)
+  return(res)
+})
+
+saveRDS(upstream_sig, here::here("0_data/rds_objects/upstream_sig.rds"))
+
+
+interesting_type <- c("cytokine", "group", "transmembrane receptor", "transcription regulator")
+# intersect_upstream <- intersect(upstream_sig[[1]]$name,upstream_sig[[3]]$name)
+# interesting_upstream <- c("beta-estradiol", "prednisolone", "PRL", "Tgf beta", "TGFB1", "FGF7", "BMP2", "FGF2", "VEGFA", "HIF1A")
+
+heatMatrix <- lapply(upstream_sig, function(x) {
+  x <- x[x$type %in% interesting_type,]
+  x <- x %>% remove_rownames()
+  mat <- x %>% dplyr::select(c("name", "activationScore", "type"))
+  return(mat)
+})
+
+heatMatrix <- merge(heatMatrix[[1]],heatMatrix[[3]],by= "name", all=T) 
+colnames(heatMatrix) <- c("name","DT vs veh", "type", "DT+Treg vs DT", "type2")
+heatMatrix <- heatMatrix %>% 
+  dplyr::mutate(combinedType = coalesce(type, type2)) %>%
+  dplyr::mutate(combinedType = factor(combinedType, levels = interesting_type)) %>% 
+  arrange(combinedType) %>% dplyr::select(c("name","DT vs veh", "DT+Treg vs DT", "combinedType"))
+
+
+# df for heatmap annotation of sample group
+anno <- dplyr::select(.data = heatMatrix, c("name","combinedType"))
+anno$combinedType <- str_to_title(anno$combinedType)
+anno$combinedType <- factor(anno$combinedType, levels = c("Cytokine", "Group", "Transmembrane Receptor", "Transcription Regulator"))
+# anno <- anno[1:46,1:2] %>% column_to_rownames("name")
+colnames(anno) <- c("name","Molecule Type")
+anno_colours <- brewer.pal(length(levels(anno$`Molecule Type`)), "Spectral")
+names(anno_colours) <- levels(anno$`Molecule Type`)
+
+mat1 <- heatMatrix[1:46,1:3] %>% column_to_rownames("name") %>% as.matrix()
+mat1[is.na(mat1)] <- 0
+
+mat2 <- heatMatrix[46:92,1:3] %>% remove_rownames() %>%  column_to_rownames("name") %>% as.matrix()
+mat2[is.na(mat2)] <- 0
+
+breaks <-seq(-7,7, by = 1)
+
+hmap1 <- pheatmap(
+      # MAIN
+      mat = mat1,
+      color = colorRampPalette(rev(c("#FB8072","#FDB462","grey95","#8DD3C7","#80B1D3")))(length(breaks)),
+      cellwidth = 70,
+      scale = "none",
+      
+      # Col
+      cluster_cols = F,
+      border_color = "white",
+      angle_col = "0",
+      gaps_row = c(23,30,38),
+      
+      # Row
+      cluster_rows = F,
+      
+      # Labs
+      show_colnames = T,
+      show_rownames = T,
+      legend = F,
+      breaks = breaks,
+      heatmap_legend_param = list(title = "Z-score", legend_width = unit(7, "cm")),
+      
+      # Annotation
+      annotation_legend = F,
+      # legend_labels = T,
+      annotation_row = anno[1:46,1:2] %>% column_to_rownames("name"),
+      annotation_colors = list("Molecule Type" = anno_colours),
+      
+      annotation_names_row = F,
+      
+      # Fonts
+      fontfamily = "Arial Narrow",
+      fontsize = 12,
+      fontsize_col = 12,
+      fontsize_number = 12,
+      fontsize_row = 10
+      
+    ) %>% as.ggplot()
+
+hmap2 <- pheatmap(
+      # MAIN
+      mat = mat2,
+      color = colorRampPalette(rev(c("#FB8072","#FDB462","grey95","#8DD3C7","#80B1D3")))(length(breaks)),
+      cellwidth = 70,
+      scale = "none",
+      
+      # Col
+      cluster_cols = F,
+      border_color = "white",
+      angle_col = "0",
+      
+      # Row
+      cluster_rows = F,
+      
+      # Labs
+      show_colnames = T,
+      show_rownames = T,
+      legend = T,
+      breaks = breaks,
+      heatmap_legend_param = list(title = "Z-score", legend_width = unit(7, "cm")),
+      
+      # Annotation
+      annotation_legend = T,
+      # legend_labels = T,
+      annotation_row = anno[46:92,1:2] %>% remove_rownames() %>% column_to_rownames("name"),
+      annotation_colors = list("Molecule Type" = anno_colours),
+      
+      annotation_names_row = F,
+      
+      # Fonts
+      fontfamily = "Arial Narrow",
+      fontsize = 12,
+      fontsize_col = 12,
+      fontsize_number = 12,
+      fontsize_row = 10
+      
+    ) %>% as.ggplot()
+
+
+hmap_combined <- hmap1 + plot_spacer() + hmap2 +
+  plot_layout(widths = c(4,-1.1,4.5))
+
+hmap_combined
+
+ggsave(filename = "upstream_hmap.svg", plot = hmap_combined, path = here::here("2_plots/3_FA/ipa/"),
+           width = 21, height = 29.7, units = "cm")
+
+```
 
 ### Disease and Function
 
+```{r, fig.width=8,fig.height=10}
+categories <- c("Cellular Movement", "Developmental Disorder", "Cell-To-Cell Signaling")
+tittle <- c("Cellular Movement", "Developmental Disorder", "Cell-to-Cell Signaling and Interaction")
 
-![](figure/ipa.Rmd/giphy.gif)
+disease_function <- read_excel_allsheets(here::here("0_data/rawData/IPA Diseases and Functions.xlsx")) 
+
+disease_function <- lapply(disease_function, function(x) {
+  colnames(x) <- c("Categories", "name", "pval", "activationState", "activationScore", "molecules", "numMolecules")
+  x <- x %>% separate(col = Categories, sep = ",", into = c("Category 1", "Category 2", "Category 3", "Category 4"),remove = F,fill = "right") 
+  x <- x %>% dplyr::mutate(logPval = -log10(pval), .after = pval)
+  x$name <- x$name %>% firstCap() %>% str_wrap(width = 45)
+  return(x)
+})
+
+disease_function_sig <- lapply(disease_function, function(x) {
+  res <- x %>% dplyr::filter(pval < 0.05 & abs(activationScore) >= 2)
+  return(res)
+})
+
+saveRDS(disease_function_sig, here::here("0_data/rds_objects/disease_function_sig.rds"))
+
+```
+
+#### Venn diagram
+
+```{r venn_disease, fig.height=8, fig.width=8, echo=FALSE, results='hide'}
+futile.logger::flog.threshold(futile.logger::ERROR, name = "VennDiagramLogger")
+
+venn.diagram(x = list("DT vs veh"   = disease_function_sig[[1]]$name %>% as.character(), 
+                      "DT+Treg vs veh" = disease_function_sig[[2]]$name %>% as.character(),
+                      "DT+Treg vs DT"  = disease_function_sig[[3]]$name %>% as.character()),
+             filename = here::here(paste0("2_plots/3_FA/ipa/venn_ipaDiseFunct.png")),
+             lwd = 2,
+             disable.logging = T,
+             fill = compColour,
+             alpha = 0.75,
+             lty = 'blank',
+             imagetype = "png",
+             
+             # Numbers
+             cex = 2,
+             fontface = "plain",
+             fontfamily = "Arial Narrow",
+             
+             # Set names
+             cat.cex = 2,
+             cat.fontface = "bold",
+             cat.fontfamily = "Arial Narrow",
+             cat.default.pos = "outer",
+             cat.pos = c(-180, 0, 180),
+             cat.dist = c(0.055, 0.025, 0.055)
+)
+
+```
+
+![](figure/ipa.Rmd/venn_ipaDiseFunct.png)
+
+
+
+#### Dot plot
+
+```{r combined_dnf_dot, fig.width=9, fig.height=13}
+# combine all df in list into one df
+ipa_dnf_dot_all <- as.data.frame(do.call(rbind, disease_function_sig)) %>%
+  rownames_to_column("group")
+
+ipa_dnf_dot_all$group <- gsub(pattern = "\\..*", "", ipa_dnf_dot_all$group) %>% as.factor()
+
+ipa_dnf_dot_all <- ipa_dnf_dot_all[! ipa_dnf_dot_all$group %in% c("DT+Treg vs veh"),]
+# clean group names and change to factor
+
+interesting_cat <- c("Immune Cell Trafficking", "Cellular Function and Maintenance","Free Radical Scavenging","Cell Death and Survival","Cellular Compromise","Tissue Morphology","Cellular Development")
+
+# ipa_dnf_dot_all <- 
+dnf_all <- lapply(interesting_cat, function(cat) {dplyr::filter(.data = ipa_dnf_dot_all, grepl(cat, x = ipa_dnf_dot_all$Categories))}) %>% setNames(.,interesting_cat)
+
+dnf_all <- do.call(rbind, lapply(dnf_all, as.data.frame))  %>%  rownames_to_column("basic cat")
+dnf_all$`basic cat` <- gsub(pattern = "\\..*", "", dnf_all$`basic cat`) %>% as.factor()
+dnf_all <- dnf_all[-26,]
+# dnf_all <- dnf_all[!duplicated(dnf_all$name),]
+dnf_all[dnf_all$`basic cat` == "Cellular Compromise",1] <- "Cell Death and Survival"
+dnf_all[dnf_all$`basic cat` == "Cellular Function and Maintenance",1] <- "Cellular Development"
+dnf_all$`basic cat` <- dnf_all$`basic cat` %>% as.character() %>% as.factor() 
+dnf_all$group <- factor(dnf_all$group,levels = c("DT vs veh", "DT+Treg vs DT" ))
+dnf_all$name <- dnf_all$name %>% str_wrap(35)
+dnf_all <- dnf_all[order(dnf_all$`basic cat`),]
+
+dnf_dot1 <- ggplot(dnf_all[1:28,]) +
+  geom_point(aes(x = group, y = name, colour = activationScore, size = numMolecules, shape = activationState)) +
+  facet_grid(vars(`basic cat`), scales = "free_y", shrink = T, space='free', labeller = labeller(`basic cat` = label_wrap_gen(15)))+
+  scale_color_gradientn(colors = rev(c("#FB8072","#FDB462","#ffffd5","#8DD3C7","#80B1D3")),
+                        values = scales::rescale(c(min(dnf_all[1:49,]$activationScore), max(dnf_all[1:49,]$activationScore))),
+                        limits = c(-3.8, 3.8),
+                        breaks = scales::pretty_breaks(n = 5)) +
+  scale_size(range = c(4,8),limits = c(min(dnf_all$numMolecules), max(dnf_all$numMolecules))) +
+  scale_shape_manual(values = c("\u25BC","\u25B2")) +
+  labs(x = "", y = "", color = "Z-scores", size = "# Molecules", shape = "")+
+  bossTheme(base_size = 12,base_family = "Arial Narrow",legend = "right") +
+  guides(shape = guide_legend(override.aes = list(size = 3)))
+
+dnf_dot2 <- ggplot(dnf_all[29:56,]) +
+  geom_point(aes(x = group, y = name, colour = activationScore, size = numMolecules, shape = activationState)) +
+  facet_grid(vars(`basic cat`), scales = "free_y", shrink = T, space='free',labeller = labeller(`basic cat` = label_wrap_gen(15)))+
+  scale_color_gradientn(colors = rev(c("#FB8072","#FDB462","#ffffd5","#8DD3C7","#80B1D3")),
+                        values = scales::rescale(c(min(dnf_all[1:49,]$activationScore), max(dnf_all[1:49,]$activationScore))),
+                        limits = c(-3.8, 3.8),
+                        breaks = scales::pretty_breaks(n = 5)) +
+  scale_size(range = c(4,8),limits = c(min(dnf_all$numMolecules), max(dnf_all$numMolecules))) +
+  scale_shape_manual(values = c("\u25BC","\u25B2")) +
+  labs(x = "", y = "", color = "Z-scores", size = "# Molecules", shape = "")+
+  bossTheme(base_size = 12,base_family = "Arial Narrow",legend = "right") +
+    guides(shape = guide_legend(override.aes = list(size = 3)))
+
+
+combine_ipa_dnf <- dnf_dot1 +  dnf_dot2 + plot_layout(guides = "collect") & theme(legend.position = "bottom")
+combine_ipa_dnf
+
+ggsave(filename = "dnf_dot.svg", plot = combine_ipa_dnf, path = here::here("2_plots/3_FA/ipa/"),
+       width = 21, height = 29.7, units = "cm")
+  
+  
+
+```
+
+
+
+
+```{r, eval=FALSE}
+upstream_filtered <- subset(upstream[c(1,3,19,21,2,18,10,13,11),]) 
+upstream_filtered <- upstream_filtered[order(upstream_filtered$`Molecule Type`),]
+
+
+test <- separate_rows(data = upstream_filtered, `Target Molecules in Dataset`, sep = ",")
+colnames(test)[c(1,8,3)] <- c("name", "molecule", "type")
+
+pathways_filtered <- subset(pathways[c(11,4, 6, 10, 7, 8),])
+test1 <- separate_rows(data = pathways_filtered, molecules, sep = ",")
+test1[,7] <- "enriched pathways"
+colnames(test1)[c(1,6,7)] <- c("name", "molecule", "type" )
+
+funct_filtered <- subset(funct[c(2,3,5,6,7,9,10:21),])
+test2 <- separate_rows(data = funct, Molecules, sep = ",")
+colnames(test2)[c(2,6,1)] <- c("name", "molecule", "type")
+
+# test_com <- do.call(rbind, lapply(list(test[, c(1, 8, 3)],
+#                                        test1[, c(1, 6, 7)]), as.data.frame))
+# write.csv(test_com, here::here("C:\\Users/tranm/Desktop/test_com.csv"))
+# 
+# testGraph <- graph.data.frame(test_com, directed = T)
+# # testReverse <- as_data_frame(testGraph)
+# # E(testGraph)$color <- 'grey'
+# # V(testGraph)$color <- 'grey'
+# summary(testGraph)
+# write_graph(simplify(testGraph), "C:\\Users/tranm/Desktop/testGraph.gml", format = "gml")
+# tkplot(testGraph)
+
+
+
+merged <- list()
+for (i in 1:length(upstream_filtered$`Upstream Regulator`)) {
+  x <- upstream_filtered$`Upstream Regulator`[i]
+  
+  for (j in 1:length(funct_filtered$`Diseases or Functions Annotation`)) {
+    y <- paste0("funct",j)
+    
+    merged[[x]][[y]] <- length(intersect(unlist(
+      strsplit(upstream_filtered$`Target Molecules in Dataset`[i], split = ",")
+    ), unlist(strsplit(funct_filtered$Molecules[j], split = ","))))
+    
+  }
+  merged[[x]] <- do.call(rbind, lapply(merged[[x]], as.data.frame)) %>% remove_rownames()
+  merged[[x]][, c( "funct", "funct_cat")] <-
+    c(funct_filtered$`Diseases or Functions Annotation`,
+      funct_filtered$Categories %>% as.character()
+    )
+  print(i)
+}
+merged <- do.call(rbind, lapply(merged, as.data.frame)) %>% rownames_to_column("upstream")
+merged$upstream <- gsub(pattern = "\\..*", "",merged$upstream) %>% as.factor()
+merged$funct_cat <- as.factor(merged$funct_cat)
+colnames(merged) <- c("upstream","intersect","funct","funct_cat")
+levels(merged$upstream) <- c("beta-estradiol","progesterone","prostaglandin E2","IL1B","IL6","TNF","EGF","VEGFA","BMP2")
+
+####THIS is really weird
+# merged$upstream <- gsub(pattern = "protagladin E2",replacement = "prostaglandin E2", merged$upstream)
+
+merged$up_cat <- upstream_filtered$`Molecule Type`[match(merged$upstream, upstream_filtered$`Upstream Regulator`)]
+
+merged$funct <- factor(merged$funct, levels = unique(merged$funct[order(merged$funct_cat)]))
+
+is_alluvia_form(as.data.frame(merged), silent = T)
+
+ggplot(
+  as.data.frame(merged),
+  aes(
+    y = intersect,
+    # axis1 = up_cat,
+    axis2 = upstream,
+    axis3 = funct
+    # axis4 = funct_cat
+  )
+) +
+  geom_alluvium(
+    aes(fill = upstream),
+    alpha = 0.5,
+    width = 1 / 250,
+    curve_type = "quintic"
+  ) +
+  geom_stratum(fill = "#193e3f",
+               width = 1 / 35,
+               color = "#fffaf2") +
+  # geom_flow() +
+  geom_text(stat = "stratum", aes(label = after_stat(stratum))) +
+  scale_x_discrete(
+    limits =
+      c(
+        # "Molecule Type",
+        "Upstream Regulator",
+        "Disease and Function"
+        # "Category"
+      ),
+expand = c(.05, .05)
+  ) +
+  scale_fill_brewer(type = "qual", palette = "Set1") +
+  theme_void() +
+  theme(legend.position = "none")
+# ylab(" ")
+ggsave(filename = "upstream_funct_alluvial.svg",path = here::here("2_plots/ipa/"), width = 450, height = 800, units = "mm")
+
+
+
+ggplot(
+  as.data.frame(merged),
+  aes(
+    y = intersect,
+    axis1 = funct,
+    axis2 = funct_cat
+    # axis3 = funct_cat
+  )
+) +
+  geom_alluvium(aes(fill = funct_cat), alpha = 0.5, width = 1 / 250, curve_type = "quintic") +
+  geom_stratum(fill = "#193e3f", width = 1 / 35, color = "#fffaf2") +
+  # geom_flow() +
+  # geom_text(stat = "stratum", aes(label = after_stat(stratum))) +
+  scale_x_discrete(
+    limits = c("Upstream Regulator", "Disease and Function"),
+    expand = c(.05, .05)
+  ) +
+  scale_fill_brewer(type = "qual", palette = "Set2") +
+  theme_void() +
+  theme(legend.position = "none")
+  # ylab(" ")
+ggsave(filename = "funct_cat_alluvial.svg",path = here::here("2_plots/ipa/"), width = 450, height = 800, units = "mm")
+
+
+gephi_colours <- colorRampPalette(c("#00c7ff","#ff7045","#8cb900","black"))
+
+ggplot(
+  as.data.frame(merged),
+  aes(
+    y = intersect,
+    axis1 = up_cat,
+    axis2 = upstream
+  )
+) +
+  geom_alluvium(aes(fill = up_cat), alpha = 0.5, width = 1 / 250, curve_type = "quintic") +
+  geom_stratum(fill = "#193e3f", width = 1 / 35, color = "#fffaf2") +
+  # geom_flow() +
+  # geom_text(stat = "stratum", aes(label = after_stat(stratum))) +
+  scale_x_discrete(
+    limits = c("Upstream Regulator", "Disease and Function"),
+    expand = c(.05, .05)
+  ) +
+  scale_fill_manual(c("#c5da79","#ffb59c","#7fe1f9")) +
+  theme_void() +
+  theme(legend.position = "none")
+  # ylab(" ")
+ggsave(filename = "up_cat_alluvial.svg",path = here::here("2_plots/ipa/"), width = 450, height = 800, units = "mm")
+```
 
 
 ## Network plot
-
 
 ![](figure/ipa.Rmd/giphy.gif)
 

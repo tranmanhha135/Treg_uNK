@@ -79,11 +79,12 @@ export <- T
 ```{r importFunctions}
 # Theme
 bossTheme <- readRDS(here::here("0_data/functions/bossTheme.rds"))
-bossTheme_bar <- readRDS(here::here("0_data/functions/bossTheme.rds"))
+bossTheme_bar <- readRDS(here::here("0_data/functions/bossTheme_bar.rds"))
 groupColour <- readRDS(here::here("0_data/functions/groupColour.rds"))
 groupColour_dark <- readRDS(here::here("0_data/functions/groupColour_dark.rds"))
 expressionCol <- readRDS(here::here("0_data/functions/expressionCol.rds"))
 expressionCol_dark <- readRDS(here::here("0_data/functions/expressionCol_dark.rds"))
+compColour <- readRDS(here::here("0_data/functions/compColour.rds"))
 
 
 DT <- readRDS(here::here("0_data/functions/DT.rds"))
@@ -119,7 +120,7 @@ full_design <- model.matrix(~ 0 + group,data = dge$samples)
 colnames(full_design) <- gsub("group","",colnames(full_design))
 
 full_design %>% as.data.frame() %>% DT(., "Table: Design matrix")
-
+colnames(full_design) <- make.names(colnames(full_design))
 ```
 
 ### Contrast Matrix
@@ -128,12 +129,12 @@ The contrast matrix is required to provide a coefficient to each comparison and 
 
 ```{r constrastMatrix}
 contrast <- limma::makeContrasts(
-  DTvPBS   = DT - PBS,
-  TregvPBS = Treg - PBS,
-  TregvDT  = Treg - DT,
+  DTvveh   = DT - veh,
+  DT_Tregvveh = DT.Treg - veh,
+  DT_TregvDT  = DT.Treg - DT,
   levels = full_design)
 
-colnames(contrast) <- c("DT vs PBS", "Treg vs PBS", "Treg vs DT")
+colnames(contrast) <- c("DT vs veh", "DT+Treg vs veh", "DT+Treg vs DT")
 
 contrast %>% DT(., "Table: Contrast matrix")
 ```
@@ -188,6 +189,7 @@ voom_pca <- function(voom_trans, titleIndex){
     ggplot(aes(PC1, PC2, colour = group, size = sample.weights, label = Sample_Name)) +
     geom_label_repel(box.padding = grid::unit(0.5,"lines"), size = 3, label.size = 0.15, show.legend = F) +
     geom_point(alpha = 0.5) +
+    scale_color_manual(values = groupColour_dark) +
     labs(x = paste0("PC1 (", percent(summary(pca)$importance["Proportion of Variance","PC1"]),")"),
          y = paste0("PC2 (", percent(summary(pca)$importance["Proportion of Variance","PC2"]),")"),
          colour = "Groups",
@@ -195,11 +197,12 @@ voom_pca <- function(voom_trans, titleIndex){
          shape = "Replicate",
          title = title[titleIndex]) +
     bossTheme(14,legend = "bottom") +
+    
     guides(colour = guide_legend(override.aes = list(size = 3)))
 }
 
 # iterate with lapply for voom 1 and 2
-voom_pca_plots <- lapply(1:2, function(y){
+voom_pca_plots <- lapply(c("1","2"), function(y){
   voom_pca(voom_trans = get(paste0('voom',y)), titleIndex = y)
 })
 
@@ -225,7 +228,7 @@ Importantly, the FC threshold used in `TREAT` should be chosen as a small value 
 A quick aside on the definition and interpretation of fold change and `log2FC`. A fold-change (FC) refers to the **ratio** of two values.
 
 -   If there is a **two** fold increase (`FC = 2`, `log2FC = 1`) between `A vs B`, then `A` is twice as big as `B` (or `A` is `200%` of `B`)
--   If there is a **two** fold decrease (`FC = 0.5`, `log2FC = -1`) between `A vs B`, then `A` is halfas big as `B` (or `A` is `50%` of `B`)
+-   If there is a **two** fold decrease (`FC = 0.5`, `log2FC = -1`) between `A vs B`, then `A` is half as big as `B` (or `A` is `50%` of `B`)
 
 ```{r fcAndLfc}
 # specifying FC of interest
@@ -293,7 +296,7 @@ limmaFit(x = voom1, fc[4], adjMethod = "fdr", p.val = 0.05, 12)
 
 # Differential Gene Expression analysis {.tabset .tabset-pills}
 
-Due to the large variance in the PBS group, the transformation with `observational and group-level weights` were used. **Without** FC cut-off (using TREAT) and an `FDR < 0.05`, the `DT vs Treg` comparison had 45 significant DE genes **(TABLE 3)**. This may **not** be enough DE genes to perform meaningful functional enrichment analysis downstream. Therefore, The FDR threshold is increased to `0.1`, in another word, we allow for 10% type I error, i.e. 1 in 10 genes may be a false positive for differential expression. Using a fold-change cut-off through application of `TREAT` gives additional stringency at the costs of reducing the list of DE genes.
+Due to the large variance in the veh group, the transformation with `observational and group-level weights` were used. **Without** FC cut-off (using TREAT) and an `FDR < 0.05`, the `DT vs DT+Treg` comparison had 45 significant DE genes **(TABLE 3)**. This may **not** be enough DE genes to perform meaningful functional enrichment analysis downstream. Therefore, The FDR threshold is increased to `0.1`, in another word, we allow for 10% type I error, i.e. 1 in 10 genes may be a false positive for differential expression. Using a fold-change cut-off through application of `TREAT` gives additional stringency at the costs of reducing the list of DE genes.
 
 -   **P-value histogram:** illustrates the distribution of p-values. As the stringency increases (increasing FC threshold), the distribution shifts towards `1`, thus insignificant.
 
@@ -343,7 +346,7 @@ lm_all <- lapply(lm_all, function(x) {
 
 })
 
-lm_sig <- lapply(lm_all, function(x) {x %>% dplyr::filter(adj.P.Val <= fdr)})
+lm_sig <- lapply(lm_all, function(x) {x %>% dplyr::filter(adj.P.Val < fdr)})
 
 ```
 
@@ -358,7 +361,7 @@ for (name in comp) {
     geom_histogram(bins = 50, fill="#8DA0CB",colour= "white", linewidth = 0.2, alpha=0.9) +
     scale_y_continuous(expand = expansion(mult = c(0, .1))) +
     labs(x = "P values", y = "Counts") +
-    bossTheme(base_size = 14)
+    bossTheme_bar(base_size = 14)
   
   if (savePlots == T) {
     ggsave(paste0("hist_",name,".svg"),
@@ -413,7 +416,7 @@ for (name in comp) {
       if (fc =="none") {
         geom_hline(yintercept = 0, linetype = "solid")
       } else {
-        geom_hline(yintercept = c(-as.numeric(fc), 0, as.numeric(fc)), linetype = c("dashed", "solid", "dashed"))
+        geom_hline(yintercept = c(-as.numeric(fc), 0, as.numeric(fc)), linetype = c("dashed", "solid", "dashed"), size = c(.5,.5,.5))
       }
     } +
     scale_y_continuous(limits = c(-5,5), expand = expansion(mult = c(0, 0)), breaks = c(-6,-4,-2,0,2,4,6)) +
@@ -423,7 +426,7 @@ for (name in comp) {
                                   paste0("Down: ", sum(lm_all[[name]]$expression == "down"), "  "),
                                   paste0("Up: ", sum(lm_all[[name]]$expression == "up"), " ")), 
                        values = expressionCol_dark) +    
-    bossTheme(base_size = 14, legend = "bottom") +
+    bossTheme_bar(base_size = 14, legend = "bottom") +
     guides(colour = guide_legend(override.aes = list(size = 2.4)))
   
   
@@ -438,6 +441,8 @@ for (name in comp) {
   }
   
 }
+
+saveRDS(ma, here::here("0_data/rds_plots/ma_plots.rds"))
 
 # display
 ma[[1]]
@@ -484,7 +489,7 @@ for (name in comp) {
                                     paste0("Down: ", sum(lm_all[[name]]$expression == "down"), "  "),
                                     paste0("Up: ", sum(lm_all[[name]]$expression == "up"), " ")), 
                          values = expressionCol_dark) +    
-      bossTheme(base_size = 14, legend = "bottom") +
+      bossTheme_bar(base_size = 14, legend = "bottom") +
       guides(colour = guide_legend(override.aes = list(size = 2.4)))
     
     
@@ -499,6 +504,8 @@ for (name in comp) {
     }
   
 }
+
+saveRDS(vol, here::here("0_data/rds_plots/vol_plots.rds"))
 
 # display
 vol[[1]]
@@ -593,6 +600,9 @@ for (name in comp) {
   }
 }
 
+saveRDS(lm_hmap, here::here("0_data/rds_plots/deHmap_plots.rds"))
+
+
 lm_hmap[[1]]
 
 ```
@@ -652,33 +662,62 @@ common <- join_all(list(lm_sig[[1]], lm_sig[[2]], lm_sig[[3]]), by = 'gene', typ
 futile.logger::flog.threshold(futile.logger::ERROR, name = "VennDiagramLogger")
 
 # for(name in comp) {
-  venn.diagram(x = list("DT vs PBS"   = lm_sig[[1]]$gene %>% as.character(), 
-                        "Treg vs PBS" = lm_sig[[2]]$gene %>% as.character(),
-                        "Treg vs DT"  = lm_sig[[3]]$gene %>% as.character()),
-               filename = here::here(paste0("2_plots/2_DE/venn.png")),
-               lwd = 2,
-               fill = groupColour,
-               alpha = 0.75,
-               lty = 'blank',
-               imagetype = "png",
-               
-               # Numbers
-               cex = 2,
-               fontface = "plain",
-               fontfamily = "Arial Narrow",
-               
-               # Set names
-               cat.cex = 2,
-               cat.fontface = "bold",
-               cat.fontfamily = "Arial Narrow",
-               cat.default.pos = "outer",
-               cat.pos = c(-27, 27, 135),
-               cat.dist = c(0.055, 0.055, 0.085),
-  )
- 
+venn.diagram(x = list("DT vs veh"   = lm_sig[[1]]$gene %>% as.character(), 
+                      "DT+Treg vs veh" = lm_sig[[2]]$gene %>% as.character(),
+                      "DT+Treg vs DT"  = lm_sig[[3]]$gene %>% as.character()),
+             filename = here::here(paste0("2_plots/2_DE/venn.png")),
+             lwd = 2,
+             fill = compColour,
+             alpha = 0.75,
+             lty = 'blank',
+             imagetype = "png",
+             
+             # Numbers
+             cex = 2,
+             fontface = "plain",
+             fontfamily = "Arial Narrow",
+             
+             # Set names
+             cat.cex = 2,
+             cat.fontface = "bold",
+             cat.fontfamily = "Arial Narrow",
+             cat.default.pos = "outer",
+             cat.pos = c(-27, 27, 135),
+             cat.dist = c(0.055, 0.055, 0.085),
+)
+
+venn.diagram(x = list("DT vs veh"   = lm_sig[[1]]$gene %>% as.character(),
+                      "DT+Treg vs DT"  = lm_sig[[3]]$gene %>% as.character()),
+             filename = here::here(paste0("2_plots/2_DE/venn_2comp.png")),
+             lwd = 2,
+             fill = compColour[c(1,3)],
+             alpha = 0.75,
+             lty = 'blank',
+             imagetype = "png",
+             
+             # Numbers
+             cex = 2,
+             fontface = "plain",
+             fontfamily = "Arial Narrow",
+             
+             # Set names
+             cat.cex = 2,
+             cat.fontface = "bold",
+             cat.fontfamily = "Arial Narrow",
+             cat.default.pos = "outer",
+             cat.pos = c(-27, 5),
+             cat.dist = c(0.055, 0.055),
+)
+
 ```
 
 ![](figure/deAnalysis.Rmd/venn.png)
+
+
+
+![](figure/deAnalysis.Rmd/venn_2comp.png)
+
+
 
 ### Heatmap
 
@@ -694,7 +733,7 @@ logCPM_combined <- logCPM_combined[common$gene[1:nrow(common)],]
 logCPM_combined <- logCPM_combined[,c(6,7,8,9,10,11,1,2,3,4,5,12,13,14,15,16)]
 
 #df for heatmap annotation of sample type
-anno_combined <- factor(dge$samples$group, levels = c("PBS", "DT", "Treg")) %>% as.data.frame()
+anno_combined <- factor(dge$samples$group, levels = c("veh", "DT", "DT+Treg")) %>% as.data.frame()
 anno_combined <- anno_combined[c(6,7,8,9,10,11,1,2,3,4,5,12,13,14,15,16),]%>% as.data.frame()
 
 colnames(anno_combined) <- "Groups"

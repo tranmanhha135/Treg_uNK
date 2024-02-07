@@ -64,7 +64,7 @@ savePlots <- T
 
 # Theme
 bossTheme <- readRDS(here::here("0_data/functions/bossTheme.rds"))
-bossTheme_bar <- readRDS(here::here("0_data/functions/bossTheme.rds"))
+bossTheme_bar <- readRDS(here::here("0_data/functions/bossTheme_bar.rds"))
 groupColour <- readRDS(here::here("0_data/functions/groupColour.rds"))
 groupColour_dark <- readRDS(here::here("0_data/functions/groupColour_dark.rds"))
 
@@ -79,7 +79,7 @@ format_y_axis <- readRDS(here::here("0_data/functions/format_y_axis.rds"))
 To save time, this will only be performed once at the begining of the analysis. For subsequent analysis, the file will just be loaded.
 
 ```{r importRawcount, eval=FALSE}
-rawCount <- read_csv(here::here("0_data/rawData/all.counts.genes.csv"))  %>% setNames(c("GeneID", "DT1", "DT2", "DT3", "DT4", "DT6", "PBS1", "PBS2", "PBS3", "PBS4", "PBS5", "PBS6", "Treg1", "Treg2", "Treg3", "Treg4", "Treg5")) %>% column_to_rownames("GeneID")
+rawCount <- read_csv(here::here("0_data/rawData/all.counts.genes.csv"))  %>% setNames(c("GeneID", "DT1", "DT2", "DT3", "DT4", "DT6", "veh1", "veh2", "veh3", "veh4", "veh5", "veh6", "DT+Treg1", "DT+Treg2", "DT+Treg3", "DT+Treg4", "DT+Treg5")) %>% column_to_rownames("GeneID")
 
 rawCount <- rawCount[!rownames(rawCount) %in% c("ambiguous", "no_feature"),]
 saveRDS(rawCount, here::here("0_data/rds_objects/rawCount.rds"))
@@ -98,7 +98,7 @@ The sample metadata can be extracted from the `rawCount` column names. These dat
 
 ```{r sampleMetadata}
 sampleMeta <- data.frame("sample" = colnames(rawCount), 
-                         `group` = c(rep("DT",5),rep("PBS",6),rep("Treg",5)),
+                         `group` = c(rep("DT",5),rep("veh",6),rep("DT+Treg",5)),
                          `rep` = c(1,2,3,4,6,1,2,3,4,5,6,1,2,3,4,5))
 ```
 
@@ -191,7 +191,7 @@ dge <- DGEList(counts = rawCount,
                remove.zeros = TRUE
                ) 
 
-dge$samples$group <- factor(dge$samples$group, levels = c("PBS", "DT", "Treg"))
+dge$samples$group <- factor(dge$samples$group, levels = c("veh", "DT", "DT+Treg"))
 ```
 
 `r nrow(rawCount)-nrow(dge$counts)` non-expressed genes were removed. 
@@ -265,7 +265,7 @@ beforeFiltering <- dge %>%
        x = "logCPM",
        y = "Density",
        colour = "Sample Groups") +
-  bossTheme(base_size = 14)
+  bossTheme_bar(base_size = 14)
 
 if(savePlots){
   ggsave("counts_before_filtering.svg",
@@ -310,7 +310,7 @@ if(savePlots){
          path = here::here("2_plots/1_QC/"))
 }
 
-beforeFiltering + afterFiltering + plot_layout(guides = "collect") & bossTheme(base_size = 14,legend = "none")
+beforeFiltering + afterFiltering + plot_layout(guides = "collect") & bossTheme_bar(base_size = 14,legend = "none")
 
 if(savePlots){
   ggsave(filename = "counts_before_after_filtering.svg",
@@ -418,33 +418,25 @@ pc = cbind(pc, dge$samples)
 totVar <- summary(pca_analysis)[["importance"]]['Proportion of Variance',]
 totVar <- 100 * sum(totVar[1:3])
 
-# pca_3d <- plot_ly(pc, x = ~PC1, y = ~PC2, z = ~PC3, color = ~dge$samples$group, colors = groupColour,marker = list(size = 5)) %>%
-#   add_markers(size = 5)
-# 
-# pca_3d <- pca_3d %>%
-#   layout(
-#     title = paste0('Total Explained Variance = ', totVar),
-#     scene = list(bgcolor = "#e5ecf6")
-# )
 pca_3d <- plot_ly(pc, x = ~PC1, y = ~PC2, z = ~PC3, color = ~dge$samples$group, colors = groupColour,
                   marker = list(symbol = 'circle', sizemode = 'diameter', size =5),
                   # sizes = c(5, 70),
                   # text = ~paste('Term    :', term,'<br>P. Term:', parentTerm, '<br>Sig       :', score),
                   hoverinfo = 'text') %>% 
-  layout(showlegend = FALSE,
+  layout(showlegend = T,
          title = paste0('Total Explained Variance = ', totVar),
          scene = list(xaxis = list(title = 'PC 1 (20%)',
-                                   gridcolor = 'black',
+                                   gridcolor = 'rgb(194, 197, 204)',
                                    zerolinewidth = 1,
                                    ticklen = 5,
                                    gridwidth = 2),
                       yaxis = list(title = 'PC 2 (15%)',
-                                   gridcolor = 'black',
+                                   gridcolor = 'rgb(194, 197, 204)',
                                    zerolinewidth = 1,
                                    ticklen = 5,
                                    gridwith = 2),
                       zaxis = list(title = 'PC 3 (9%)',
-                                   gridcolor = 'black',
+                                   gridcolor = 'rgb(194, 197, 204)',
                                    zerolinewidth = 1,
                                    ticklen = 5,
                                    gridwith = 2)))

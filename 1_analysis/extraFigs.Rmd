@@ -76,7 +76,7 @@ export <- F
 ```{r importFunctions}
 # Theme
 bossTheme <- readRDS(here::here("0_data/functions/bossTheme.rds"))
-bossTheme_bar <- readRDS(here::here("0_data/functions/bossTheme.rds"))
+bossTheme_bar <- readRDS(here::here("0_data/functions/bossTheme_bar.rds"))
 groupColour <- readRDS(here::here("0_data/functions/groupColour.rds"))
 groupColour_dark <- readRDS(here::here("0_data/functions/groupColour_dark.rds"))
 expressionCol <- readRDS(here::here("0_data/functions/expressionCol.rds"))
@@ -103,18 +103,32 @@ firstCap <- function(x) {
 enrichGO_sig <-  readRDS(here::here("0_data/rds_objects/enrichGO_sig.rds"))
 enrichKEGG_sig <-  readRDS(here::here("0_data/rds_objects/enrichKEGG_sig.rds"))
 reactome_sig <-  readRDS(here::here("0_data/rds_objects/reactome_sig.rds"))
+ipaPathway_sig <- readRDS(here::here("0_data/rds_objects/ipa_pathways.rds"))
 
 go <- lapply(enrichGO_sig, function(x) {x %>% dplyr::select(c("ID","Description", "geneID"))})
 kegg <- lapply(enrichKEGG_sig, function(x) {x %>% dplyr::select(c("ID","Description", "geneID"))})
 react <- lapply(reactome_sig, function(x) {x %>% rownames_to_column("ID") %>% dplyr::select(c("ID","Description", "geneID"))})
 
+lookup <- tibble(gene_name = lm_all[[1]]$gene, gene_name_CAP = str_to_upper(lm_all[[1]]$gene))
+replacement_vector <- setNames(lookup$gene_name, lookup$gene_name_CAP)
 
-all_ora_DTvPBS <- rbind(go[[1]],kegg[[1]], react[[1]])
-all_ora_TregvDT <- rbind(go[[3]],kegg[[3]], react[[3]])
+ipa <- lapply(ipaPathway_sig, function(x) {
+  res <- x %>% dplyr::select(c("name","molecules")) %>% dplyr::mutate(ID = name, .before = name)
+  colnames(res) <- c("ID", "Description", "geneID")
+  res$geneID <- map_chr(res$geneID, ~ str_replace_all(., replacement_vector))
+  res$geneID <- str_replace_all(res$geneID, ",", "/")
+  return(res)
+  })
+
+
+
+all_ora_DTvPBS <- rbind(go[[1]],kegg[[1]], react[[1]], ipa[[1]])
+all_ora_TregvDT <- rbind(go[[3]],kegg[[3]], react[[3]], ipa[[3]])
 
 
 library(ComplexHeatmap)
-ora_id <- c("GO:0140507", "GO:0042267", "GO:0001910", "GO:0046703", "GO:0001913","GO:0019835","mmu04612","R-MMU-1474228")
+ora_id <- c("GO:0140507", "GO:0042267", "GO:0001910", "GO:0046703", "GO:0001913","GO:0019835","mmu04612","R-MMU-1236974","Interferon gamma signaling","Interferon alpha/beta signaling", "Neutrophil degranulation")
+all_ora_DTvPBS[all_ora_DTvPBS$ID %in% ora_id,2]
 
 generateMat <- function(data,index){
   
@@ -148,15 +162,15 @@ mat <- rbind(mat1,mat2)
 
 library(RColorBrewer)
 
-anno_col <-  brewer.pal(3,"Set1")%>% setNames(c("GO", "KEGG", "Reactome"))
+anno_col <-  brewer.pal(4,"Set1")%>% setNames(c("GO", "KEGG", "Reactome", "IPA"))
 anno_col_2 <-  groupColour %>% setNames(Comp)
 
 library(ggplotify)
 
-createHeat <- function(matrix, compIndex, col){
-  anno <- data.frame("Database" = c(rep("GO",6), rep("KEGG", 1), "Reactome"),
-                   "Constrast" = rep(Comp[compIndex], 8))
-  breaks <-seq(-2,2, by = 1)
+createHeat <- function(matrix, compIndex, col, legend){
+  anno <- data.frame("Database" = c(rep("GO",6), rep("KEGG", 1), "Reactome",rep("IPA", 3)),
+                   "Constrast" = rep(Comp[compIndex], 11))
+  breaks <-seq(-2.5,2.5, by = 1)
   # anno <- data.frame("Database" = c(rep("GO",6), rep("KEGG", 1), "Reactome", rep("GO",6), rep("KEGG", 1), "Reactome"),
   #                    "Constrast" = c(rep("DT vs PBS", 8), rep("Treg vs DT", 8)))
   p <- ComplexHeatmap::pheatmap(
@@ -183,12 +197,12 @@ createHeat <- function(matrix, compIndex, col){
     # Labs
     # main = paste0(pathName, "\n"),
     show_colnames = col,
-    legend = T,
+    legend = legend,
     breaks = breaks,
-    heatmap_legend_param = list(title = "LogFC", legend_width = unit(3, "cm"), limit = c(-2,2)),
+    heatmap_legend_param = list(title = "LogFC", legend_width = unit(3, "cm"), limit = c(-2.5,2.5)),
     
     # Annotation
-    annotation_legend = T,
+    annotation_legend = legend,
     # legend_labels = T,
     annotation_row = anno,
     annotation_colors = list("Database" = anno_col, "Constrast" = anno_col_2),
@@ -202,7 +216,7 @@ createHeat <- function(matrix, compIndex, col){
     fontsize_row = 12,row_names_side = "left", row_dend_side = "right"
     
   ) %>% as.ggplot()
-  
+
   # if (savePlots == T) {
   #   png(filename = here::here(paste0("2_plots/functionalHeat_",Comp[compIndex],".svg")),width = 7.5,height = 3)
   #   draw(p, merge_legend = T, heatmap_legend_side = "right", 
@@ -219,8 +233,8 @@ createHeat <- function(matrix, compIndex, col){
 mat1 <- mat1 %>% as.data.frame() %>%  dplyr::select(starts_with(LETTERS))
 mat2 <- mat2 %>% as.data.frame() %>%  dplyr::select(starts_with(LETTERS))
 
-p1 <- createHeat(mat1 %>% as.matrix(), 1, col = F)
-p2 <- createHeat(mat2 %>% as.matrix(), 3, col = T)
+p1 <- createHeat(mat1 %>% as.matrix(), 1, col = F,legend = F)
+p2 <- createHeat(mat2 %>% as.matrix(), 3, col = T,legend = F)
 
 # draw(p, merge_legend = T, heatmap_legend_side = "right", 
 #        annotation_legend_side = "right")

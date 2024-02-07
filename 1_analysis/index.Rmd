@@ -9,7 +9,7 @@ site: workflowr::wflow_site
 ^2^ Flinders Health and Medical Research Institute, Flinders University, Adelaide, SA 5042, Australia.
 ^3^ Women and Children’s Health Research Institute, Department of Obstetrics and Gynaecology, University of Alberta, Edmonton, AB, T6G 2S2, Canada
 
-^\*^ **Corresponding author:** Dr Alison S. Care, Robinson Research Institute and School of Biomedicine, The University of Adelaide, South Australia, 5000, Australia. 
+^\*^ **Corresponding author:** Dr Alison S. Care, Robinson Research Institute and School of Biomedicine, The University of Adelaide, South Australia, 5001, Australia. 
 
 E-mail: alison.care@adelaide.edu.au
 

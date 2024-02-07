@@ -63,22 +63,24 @@ opts_chunk$set(warning=FALSE, message=FALSE, echo=FALSE)
 # load DGElist previously created in the set up
 dge <- readRDS(here::here("0_data/rds_objects/dge.rds"))
 lm <- readRDS(here::here("0_data/rds_objects/lm.rds"))
+lm_all <- readRDS(here::here("0_data/rds_objects/lm_all.rds"))
 lm_sig <- readRDS(here::here("0_data/rds_objects/lm_sig.rds"))
 Comp <- readRDS(here::here("0_data/rds_objects/comp.rds"))
 Ont <- c("BP","MF","CC")
 # to increase the knitting speed. change to T to save all plots
-savePlots <- F
-export <- F
+savePlots <- T
+export <- T
 ```
 
 ```{r importFunctions}
 # Theme
 bossTheme <- readRDS(here::here("0_data/functions/bossTheme.rds"))
-bossTheme_bar <- readRDS(here::here("0_data/functions/bossTheme.rds"))
+bossTheme_bar <- readRDS(here::here("0_data/functions/bossTheme_bar.rds"))
 groupColour <- readRDS(here::here("0_data/functions/groupColour.rds"))
 groupColour_dark <- readRDS(here::here("0_data/functions/groupColour_dark.rds"))
 expressionCol <- readRDS(here::here("0_data/functions/expressionCol.rds"))
 expressionCol_dark <- readRDS(here::here("0_data/functions/expressionCol_dark.rds"))
+compColour <- readRDS(here::here("0_data/functions/compColour.rds"))
 
 
 DT <- readRDS(here::here("0_data/functions/DT.rds"))
@@ -168,6 +170,9 @@ for (comp in Comp) {
   
   
 }
+
+saveRDS(object = enrichGO_sig,file = here::here("0_data/rds_objects/enrichGO_sig.rds"))
+saveRDS(object = enrichGO,file = here::here("0_data/rds_objects/enrichGO.rds"))
 ```
 
 ```{r semanticSim, eval=FALSE}
@@ -234,7 +239,7 @@ saveRDS(reducedTerms_all, here::here("0_data/rds_objects/reducedTerms_all.rds"))
 
 ## Visualisations {.tabset .tabset-pills}
 
-The following visualisations are GO enrichment analysis performed with set of DE genes significantly below **FDR 0.1**  without FC threshold (TREAT). IMPORTANTLY, these GO terms are all significantly enriched (FDR <0.05)
+The following visualisations are GO enrichment analysis performed with set of DE genes significantly below **FDR 0.1**  without FC threshold (TREAT). IMPORTANTLY, these GO terms are all significantly enriched **(FDR <0.05)**
 
 -   **Dot plot:** illustrates the top 25 enriched GO terms.
 
@@ -305,6 +310,9 @@ for (comp in Comp) {
   }
 }
 
+saveRDS(dot, here::here("0_data/rds_plots/go_dotPlot.rds"))
+
+
 dot[[1]]
 ```
 
@@ -336,6 +344,13 @@ den <- lapply(enrichGO, function(x) {
 # den <- readRDS(here::here("0_data/rds_objects/ora_dendrogram.rds"))
 
 den[[1]]
+
+for(i in 1:length(Comp)){
+  if(savePlots == TRUE) {
+    ggsave(filename = paste0("semSim_dendrogram_", Comp[i], ".svg"), plot = den[[i]], path = here::here("2_plots/3_FA/go/"),
+           width = 20, height = 25, units = "cm")
+  }
+}
 ```
 
 #### Scatter plot
@@ -358,7 +373,7 @@ for (comp in Comp){
   set.seed(3)
   dimReduced[[comp]] <- revigo_dimReduction(simMatrix[["BP"]][[comp]], reducedTerms[["BP"]][[comp]], algorithm = "umap")
   
-  m <- subset(dimReduced[[comp]], parent == rownames(dimReduced[[comp]]))[1:15,]
+  m <- subset(dimReduced[[comp]], parent == rownames(dimReduced[[comp]]))[1:10,]
   
   scatter[[comp]] <- ggplot(dimReduced[[comp]], aes(x = V1, y = V2, color = parentTerm)) +
     geom_point(aes_string(size = "score"), alpha = 0.5, stroke = 0) + 
@@ -397,7 +412,16 @@ for (comp in Comp){
       )
     )
   
+  if(savePlots == TRUE) {
+    ggsave(filename = paste0("semSim_scatter_", comp, ".svg"), plot = scatter[[comp]], path = here::here("2_plots/3_FA/go/"),
+           width = 18, height = 18, units = "cm")
+
+  }
+  
 }
+
+
+saveRDS(scatter, here::here("0_data/rds_plots/go_parTerm_scatter.rds"))
 
 scatter[[1]]
 ```
@@ -477,6 +501,7 @@ semSim_dot <- lapply(Comp, function(comp){
   
 }) 
 
+saveRDS(semSim_dot, here::here("0_data/rds_plots/go_parTerm_dotPlot.rds"))
 
 semSim_dot[1]
 ```
@@ -608,13 +633,13 @@ for (i in 2:length(headers)) {
 ```{r combined_venn, fig.height=8, fig.width=8, echo=FALSE, results='hide'}
 futile.logger::flog.threshold(futile.logger::ERROR, name = "VennDiagramLogger")
 
-venn.diagram(x = list("DT vs PBS"   = enrichGO_sig[[1]]$ID %>% as.character(), 
-                      "Treg vs PBS" = enrichGO_sig[[2]]$ID %>% as.character(),
-                      "Treg vs DT"  = enrichGO_sig[[3]]$ID %>% as.character()),
+venn.diagram(x = list("DT vs veh"   = enrichGO_sig[[1]]$ID %>% as.character(), 
+                      "DT+Treg vs veh" = enrichGO_sig[[2]]$ID %>% as.character(),
+                      "DT+Treg vs DT"  = enrichGO_sig[[3]]$ID %>% as.character()),
              filename = here::here(paste0("2_plots/3_FA/go/venn.png")),
              lwd = 2,
              disable.logging = T,
-             fill = groupColour,
+             fill = compColour,
              alpha = 0.75,
              lty = 'blank',
              imagetype = "png",
@@ -653,7 +678,7 @@ top10 <- as.data.frame(do.call(rbind, lapply(enrichGO_sig, "[", 1:15,3))) %>% ro
 top10 <- melt(top10, "group")
 terms <- top10$value %>% as.factor() %>% levels()
 go_dot_all <- go_dot_all[go_dot_all$Description %in% terms,]
-go_dot_all$group <- factor(go_dot_all$group,levels = c("DT vs PBS", "Treg vs PBS", "Treg vs DT" ))
+go_dot_all$group <- factor(go_dot_all$group,levels = c("DT vs veh", "DT+Treg vs veh", "DT+Treg vs DT" ))
 go_dot_all$Description <- go_dot_all$Description %>% str_wrap(55)
 combine_go <- ggplot(go_dot_all) +
     geom_point(aes(x = group, y = reorder(Description, logFDR), colour = logFDR, size = Count, shape = ONTOLOGY %>% as.factor())) +
@@ -667,8 +692,11 @@ combine_go <- ggplot(go_dot_all) +
   
   if(savePlots == TRUE) {
     ggsave(filename = paste0("combine_go_dot.svg"), plot = combine_go, path = here::here("2_plots/3_FA/go/"),
-           width = 18, height = 20, units = "cm")
+           width = 20, height = 25, units = "cm")
   }
+
+saveRDS(combine_go, here::here("0_data/rds_plots/go_combined_dotPlot.rds"))
+
 
 combine_go
 ```
@@ -687,13 +715,13 @@ cat.dist <- list(BP =c(0.05, .09, .045),
                  MF =c(0.085, 0.06, 0.085),
                  CC =c(0.055, 0.055, 0.085))
 for(ont in Ont){
-  venn.diagram(x = list("DT vs PBS"   = reducedTerms[[ont]][[1]]$parentTerm %>% as.character(), 
-                        "Treg vs PBS" = reducedTerms[[ont]][[2]]$parentTerm %>% as.character(),
-                        "Treg vs DT"  = reducedTerms[[ont]][[3]]$parentTerm %>% as.character()),
+  venn.diagram(x = list("DT vs veh"   = reducedTerms[[ont]][[1]]$parentTerm %>% as.character(), 
+                        "DT+Treg vs veh" = reducedTerms[[ont]][[2]]$parentTerm %>% as.character(),
+                        "DT+Treg vs DT"  = reducedTerms[[ont]][[3]]$parentTerm %>% as.character()),
                filename = here::here(paste0("2_plots/3_FA/go/parTerm_",ont,"_venn.png")),
                lwd = 2,
                disable.logging = T,
-               fill = groupColour,
+               fill = compColour,
                alpha = 0.75,
                lty = 'blank',
                imagetype = "png",
@@ -725,8 +753,9 @@ for(ont in Ont){
 #### Parent term dot
 ```{r combined_parent, fig.width=9, fig.height=14, fig.cap="Biological processes parent terms"}
 reducedTerms_all <- readRDS(here::here("0_data/rds_objects/reducedTerms_all.rds"))
-reducedTerms_all_BP <- reducedTerms_all[!reducedTerms_all$ont %in% c("MF", "CC"),] %>% dplyr::arrange(desc(score))
-reducedTerms_all_BP$parentTerm <- reducedTerms_all_BP$parentTerm %>% str_wrap(45)
+reducedTerms_all_BP <- reducedTerms_all[!reducedTerms_all$ont %in% c("MF", "CC"),] 
+reducedTerms_all_BP <- reducedTerms_all_BP[!reducedTerms_all_BP$comparison %in% c("DT+Treg vs veh"),]%>% dplyr::arrange(desc(score))
+reducedTerms_all_BP$parentTerm <- reducedTerms_all_BP$parentTerm %>% str_wrap(38)
 
 dotplot <- function(data){
   ggplot(data) +
@@ -740,15 +769,17 @@ dotplot <- function(data){
 }
 
 
-t <- wrap_plots(list(dotplot(reducedTerms_all_BP[1:42, ]), dotplot(reducedTerms_all_BP[42:84, ]))) + 
+t <- wrap_plots(list(dotplot(reducedTerms_all_BP[1:32, ]), dotplot(reducedTerms_all_BP[32:nrow(reducedTerms_all_BP), ]))) + 
   plot_layout(guides = "collect") &
   bossTheme(base_size = 12, legend = "bottom") &
-  theme(legend.box.margin = margin(-5, 0, 0, 0, unit = "mm"),
+  theme(legend.box.margin = margin(-5, 0, 0, -50, unit = "mm"),
         # plot.margin = margin(1, 1, 1, 0, unit = "pt"),
-        axis.text.y = element_text(family = "Arial narrow", face = "plain", size = 9, hjust = 1),
-        axis.text.x = element_text(family =  "Arial", face = "plain", size = 10, hjust = 1, vjust = 0.8, angle = 30))
+        axis.text.y = element_text(family = "Arial narrow", face = "plain", size = 11, hjust = 1),
+        axis.text.x = element_text(family =  "Arial", face = "plain", size = 12, hjust = 1, vjust = 1, angle = 40))
 
 t
+
+saveRDS(t, here::here("0_data/rds_plots/go_combined_parTerm_dotPlot.rds"))
 
 ggsave(filename = "parentTerm_all.svg", plot = t, path = here::here("2_plots/3_FA/go/"),
            width = 21, height = 29.7, units = "cm")
@@ -764,7 +795,6 @@ The following are exported:
 
 # save to excel
 writexl::write_xlsx(x = enrichGO_sig, here::here("3_output/GO_sig.xlsx"))
-saveRDS(object = enrichGO_sig,file = here::here("0_data/rds_objects/enrichGO_sig.rds"))
-saveRDS(object = enrichGO,file = here::here("0_data/rds_objects/enrichGO.rds"))
+
 
 ```
