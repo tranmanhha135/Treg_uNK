@@ -56,11 +56,11 @@ library(DT)
 ## Themes
 
 ```{r customThemes}
-groupColour <- c("Treg" = "#73c1a6", "PBS" = "#f58d5f", "DT" = "#8DA0CB")
-groupColour_dark <- c("Treg" = "#3a9d78", "PBS" = "#d25f00","DT" = "#828FAD")
+groupColour <- c("DT+Treg" = "#73c1a6", "veh" = "#f58d5f", "DT" = "#8DA0CB")
+groupColour_dark <- c("DT+Treg" = "#3a9d78", "veh" = "#d25f00","DT" = "#828FAD")
 expressionCol <- c("up" = "#c6331f", "down" = "#4581b8", "insig" = alpha("grey90",alpha = 0.9))
 expressionCol_dark <- c("up" = "#A11315", "down" = "#21638B", "insig" = alpha("grey80",alpha = 0.9))
-
+compColour <- c("DT vs veh" = "#BEBADA", "DT+Treg vs veh" = "#FFFFB3", "DT+Treg vs DT" = "#8DD3C7")
 ## Sarah Robertson's theme
 bossTheme <- function(base_size, base_family="Arial Narrow", title_family = "Arial", legend = F){
   theme_bw() %+replace% 
@@ -110,6 +110,9 @@ saveRDS(groupColour, here::here("0_data/functions/groupColour.rds"))
 saveRDS(groupColour_dark, here::here("0_data/functions/groupColour_dark.rds"))
 saveRDS(expressionCol, here::here("0_data/functions/expressionCol.rds"))
 saveRDS(expressionCol_dark, here::here("0_data/functions/expressionCol_dark.rds"))
+saveRDS(compColour, here::here("0_data/functions/compColour.rds"))
+
+
 ```
 
 ## Plot adjustments
