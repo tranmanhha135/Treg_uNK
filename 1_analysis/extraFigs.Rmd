@@ -81,7 +81,7 @@ groupColour <- readRDS(here::here("0_data/functions/groupColour.rds"))
 groupColour_dark <- readRDS(here::here("0_data/functions/groupColour_dark.rds"))
 expressionCol <- readRDS(here::here("0_data/functions/expressionCol.rds"))
 expressionCol_dark <- readRDS(here::here("0_data/functions/expressionCol_dark.rds"))
-
+compColour <- readRDS(here::here("0_data/functions/compColour.rds"))
 
 DT <- readRDS(here::here("0_data/functions/DT.rds"))
 
@@ -148,7 +148,7 @@ generateMat <- function(data,index){
     mat[i, which(colnames(mat) %in% gns)] <- lm_sig[[index]][ gns, "logFC"]
   }
   
-  rownames(mat) <- rownames(mat) %>% str_wrap(30)
+  rownames(mat) <- rownames(mat) %>% str_wrap(35)
   return(mat)
 }
 
@@ -163,27 +163,26 @@ mat <- rbind(mat1,mat2)
 library(RColorBrewer)
 
 anno_col <-  brewer.pal(4,"Set1")%>% setNames(c("GO", "KEGG", "Reactome", "IPA"))
-anno_col_2 <-  groupColour %>% setNames(Comp)
-
+anno_col_2 <-  compColour %>% setNames(Comp)
 library(ggplotify)
 
 createHeat <- function(matrix, compIndex, col, legend){
   anno <- data.frame("Database" = c(rep("GO",6), rep("KEGG", 1), "Reactome",rep("IPA", 3)),
                    "Constrast" = rep(Comp[compIndex], 11))
-  breaks <-seq(-2.5,2.5, by = 1)
+  breaks <-seq(-4,4, by = 1)
   # anno <- data.frame("Database" = c(rep("GO",6), rep("KEGG", 1), "Reactome", rep("GO",6), rep("KEGG", 1), "Reactome"),
   #                    "Constrast" = c(rep("DT vs PBS", 8), rep("Treg vs DT", 8)))
   p <- ComplexHeatmap::pheatmap(
     # MAIN
     mat = matrix,
-    color = colorRampPalette(rev(c("#FB8072","#FDB462","grey98","grey98","#8DD3C7","#80B1D3")))(length(breaks)),
+    color = colorRampPalette(rev(c("#FB8072","#FDB462","grey98","#3b9888","#346f97")))(length(breaks)),
     scale = "none",
     
     # Col
     cluster_cols = F,
     # gaps_col = c(6,11),
     # cutree_cols = 2,
-    border_color = "white",
+    border_color = "grey90",
     angle_col = "90",
     # treeheight_col = 20,
     
@@ -199,7 +198,12 @@ createHeat <- function(matrix, compIndex, col, legend){
     show_colnames = col,
     legend = legend,
     breaks = breaks,
-    heatmap_legend_param = list(title = "LogFC", legend_width = unit(3, "cm"), limit = c(-2.5,2.5)),
+    heatmap_legend_param = list(title = "LogFC",
+                                direction= "horizontal",
+                                merge_legend = T,
+                                legend_direction = "horizontal",
+                                legend_width = unit(4, "cm")),
+    # heatmap_legend_param = list(title = "LogFC", legend_width = unit(3, "cm"), limit = c(-4,4)),
     
     # Annotation
     annotation_legend = legend,
@@ -210,10 +214,11 @@ createHeat <- function(matrix, compIndex, col, legend){
     
     # Fonts
     fontfamily = "Arial Narrow",
-    fontsize = 12,
-    fontsize_col = 12,
-    fontsize_number = 12,
-    fontsize_row = 12,row_names_side = "left", row_dend_side = "right"
+    fontsize = 11,
+    fontsize_col = 9,
+    fontsize_number = 11,
+    fontsize_row = 10,
+    row_names_side = "left", row_dend_side = "right"
     
   ) %>% as.ggplot()
 
@@ -233,16 +238,16 @@ createHeat <- function(matrix, compIndex, col, legend){
 mat1 <- mat1 %>% as.data.frame() %>%  dplyr::select(starts_with(LETTERS))
 mat2 <- mat2 %>% as.data.frame() %>%  dplyr::select(starts_with(LETTERS))
 
-p1 <- createHeat(mat1 %>% as.matrix(), 1, col = F,legend = F)
-p2 <- createHeat(mat2 %>% as.matrix(), 3, col = T,legend = F)
+p1 <- createHeat(mat1 %>% as.matrix(), 1, col = F,legend = T)
+p2 <- createHeat(mat2 %>% as.matrix(), 3, col = T,legend = T)
 
 # draw(p, merge_legend = T, heatmap_legend_side = "right", 
 #        annotation_legend_side = "right")
 
 # p3 <- createHeat(mat %>% as.matrix(),)
 sampleHeatmap <- p1/ p2
-
-svg(filename = here::here(paste0("2_plots/functionalHeat.svg")),width = 9,height = 7)
+sampleHeatmap
+png(filename = here::here(paste0("2_plots/functionalHeat.png")),width = 23,height = 18, res = 900, units = "cm")
 sampleHeatmap
 dev.off()
 
@@ -250,3 +255,56 @@ sampleHeatmap
 # ggsave(filename = "sampleHeat.svg",plot = sampleHeatmap,path = here::here("2_plots/"),width = 25.5,height = 20,units = "cm")
 
 ```
+
+
+
+
+```{r}
+combine_kegg+combine_react
+
+combine_kegg_react <- wrap_plots(list(combine_kegg, combine_react)) + 
+  plot_layout(guides = "collect") +
+  plot_annotation(tag_levels = "A") & 
+  bossTheme(base_size = 12, legend = "none") &
+  theme(legend.box.margin = margin(-5, 0, 0, -50, unit = "mm"),
+        plot.tag.position = "topleft",
+        plot.tag = element_text(family = "Arial", face='plain', size = 18),
+        # plot.margin = margin(1, 1, 1, 0, unit = "pt"),
+        axis.text.y = element_text(family = "Arial Narrow", face = "plain", size = 10, hjust = 1),
+        axis.text.x = element_text(family =  "Arial", face = "plain", size = 11, hjust = 1, vjust = 1, angle = 40))
+
+ggsave(filename = "combine_kegg_react_dotplot.png", plot = combine_kegg_react, path = here::here("2_plots/3_FA/"),
+           width = 21, height = 27, units = "cm")
+
+combine_kegg_react
+
+```
+
+```{r}
+library(patchwork)
+library(figpatch)
+images <- list(pca = fig(here::here("2_plots/1_QC/3d_pca.png"),aspect.ratio = "free"),
+               venn = fig(here::here("2_plots/2_DE/venn_2comp.png"),aspect.ratio = "free"),
+               hmap = fig(here::here("2_plots/functionalHeat_manualAdj.png"),aspect.ratio = "free"))
+
+
+design = "
+AABB
+CCCC
+CCCC
+"
+
+fig <- images[[1]] + images[[2]] + images[[3]] +
+  plot_layout(design = design, heights = c(2.5,3.5,3.5)) +
+  plot_annotation(tag_levels = "A") & 
+  theme(plot.tag.position = "topleft",
+        plot.tag = element_text(family = "Arial Narrow", face='bold', size = 16),
+        # plot.margin = margin(4,5,4,5),
+        # legend.position = "bottom",
+        # legend.background = element_rect(color = NA),
+        # legend.title = element_blank()
+        )
+
+ggsave(filename = "figure.png", plot = fig, path = here::here("2_plots/"), width = 23, height = 27, units = "cm",dpi = 900)
+```
+

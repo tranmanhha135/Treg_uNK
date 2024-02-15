@@ -283,15 +283,16 @@ react_dot_all <- react_dot_all[!react_dot_all$group %in% c("DT+Treg vs veh"),]
 # clean group names and change to factor
 
 react_dot_all$group <- factor(react_dot_all$group,levels = c("DT vs veh", "DT+Treg vs DT"))
-react_dot_all$Description <- react_dot_all$Description %>% str_wrap(55)
+react_dot_all$Description <- react_dot_all$Description %>% str_wrap(38)
 combine_react <- ggplot(react_dot_all) +
     geom_point(aes(x = group, y = reorder(Description, logFDR), colour = logFDR, size = Count)) +
-    scale_color_gradientn(colors = rev(c("#FB8072","#FDB462","#ffffd5","#8DD3C7","#80B1D3")),
+    scale_color_gradientn(colors = rev(c("#FB8072","#FDB462","#8DD3C7","#80B1D3")),
+                          limits = c(0.8,3.2),
                           values = scales::rescale(c(min(react_dot_all$logFDR), max(react_dot_all$logFDR))),
                           breaks = scales::pretty_breaks(n = 5)) +
-    scale_size(range = c(2,5)) +
+    scale_size(range = c(2,5),limits = c(2, 16)) +
     labs(x = "", y = "", color = expression("-log"[10] * "FDR"), size = "Counts")+
-    bossTheme(base_size = 14,legend = "right")
+    bossTheme(base_size = 12,legend = "right")
   
   
   if(savePlots == TRUE) {

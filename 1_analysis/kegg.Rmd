@@ -240,7 +240,7 @@ for (name in Comp) {
   # dot plot, save
   kegg_dot[[name]] <- ggplot(enrichKEGG_sig[[name]][1:nrow(enrichKEGG_sig[[name]]), ]) +
     geom_point(aes(x = GeneRatio, y = reorder(Description, GeneRatio), colour = logFDR, size = Count)) +
-    scale_color_gradientn(colors = rev(c("#FB8072","#FDB462","#ffffd5","#8DD3C7","#80B1D3")),
+    scale_color_gradientn(colors = rev(c("#FB8072","#FDB462","#8DD3C7","#80B1D3")),
                           values = scales::rescale(c(min(enrichKEGG_sig[[1]]$logFDR), max(enrichKEGG_sig[[3]]$logFDR))),
                           breaks = scales::pretty_breaks(n = 5)) +
     scale_size(range = c(2,5)) +
@@ -364,15 +364,16 @@ kegg_dot_all <- kegg_dot_all[! kegg_dot_all$group %in% c("DT+Treg vs veh"),]
 kegg_dot_all$group <- gsub(pattern = "\\..*", "", kegg_dot_all$group) %>% as.factor()
 
 kegg_dot_all$group <- factor(kegg_dot_all$group,levels = c("DT vs veh", "DT+Treg vs veh", "DT+Treg vs DT" ))
-kegg_dot_all$Description <- kegg_dot_all$Description %>% str_wrap(55)
+kegg_dot_all$Description <- kegg_dot_all$Description %>% str_wrap(38)
 combine_kegg <- ggplot(kegg_dot_all) +
     geom_point(aes(x = group, y = reorder(Description, logFDR), colour = logFDR, size = Count)) +
-    scale_color_gradientn(colors = rev(c("#FB8072","#FDB462","#ffffd5","#8DD3C7","#80B1D3")),
+    scale_color_gradientn(colors = rev(c("#FB8072","#FDB462","#8DD3C7","#80B1D3")),
+                          limits = c(0.8,3.2),
                           values = scales::rescale(c(min(kegg_dot_all$logFDR), max(kegg_dot_all$logFDR))),
                           breaks = scales::pretty_breaks(n = 5)) +
-    scale_size(range = c(2,5)) +
+    scale_size(range = c(2,5),limits = c(2, 16)) +
     labs(x = "", y = "", color = expression("-log"[10] * "FDR"), size = "Counts")+
-    bossTheme(base_size = 14,legend = "right")
+    bossTheme(base_size = 12,legend = "right")
   
   
   if(savePlots == TRUE) {

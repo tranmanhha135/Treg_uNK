@@ -3,6 +3,8 @@ title: "Ingenuity Pathway Analysis"
 author: "Ha"
 date: "2024-01-05"
 output: html_document
+editor_options: 
+  chunk_output_type: console
 ---
 
 ```{r setup, include=FALSE}
@@ -18,6 +20,7 @@ knitr::opts_chunk$set(
 
 ```{r load libraries}
 # working with data
+library(showtext)
 library(dplyr)
 library(magrittr)
 library(readr)
@@ -59,8 +62,9 @@ opts_chunk$set(warning=FALSE, message=FALSE, echo=FALSE)
 # dge <- readRDS(here::here("0_data/rds_objects/dge.rds"))
 # fc <- readRDS(here::here("0_data/rds_objects/fc.rds"))
 # fdr <- readRDS(here::here("0_data/rds_objects/fdr.rds"))
-# lm <- readRDS(here::here("0_data/rds_objects/lm.rds"))
-# lm_sig <- readRDS(here::here("0_data/rds_objects/lm_sig.rds"))
+lm <- readRDS(here::here("0_data/rds_objects/lm.rds"))
+lm_all <- readRDS(here::here("0_data/rds_objects/lm_all.rds"))
+lm_sig <- readRDS(here::here("0_data/rds_objects/lm_sig.rds"))
 
 # to increase the knitting speed. change to T to save all plots
 savePlots <- T
@@ -160,6 +164,7 @@ venn.diagram(x = list("DT vs veh"   = pathways_sig[[1]]$name %>% as.character(),
 
 ```{r combined_dot, fig.width=9, fig.height=13}
 # combine all df in list into one df
+library(stringi)
 ipa_dot_all <- as.data.frame(do.call(rbind, pathways_sig)) %>%
   rownames_to_column("group")
 
@@ -170,23 +175,48 @@ ipa_dot_all <- ipa_dot_all[! ipa_dot_all$group %in% c("DT+Treg vs veh"),]
 
 
 ipa_dot_all$group <- factor(ipa_dot_all$group,levels = c("DT vs veh", "DT+Treg vs veh", "DT+Treg vs DT" ))
-ipa_dot_all$name <- ipa_dot_all$name %>% str_wrap(45)
-combine_ipa <- ggplot(ipa_dot_all) +
-    geom_point(aes(x = group, y = name, colour = zScore, size = ratio)) +
-    scale_color_gradientn(colors = rev(c("#FB8072","#FDB462","#ffffd5","#8DD3C7","#80B1D3")),
-                          values = scales::rescale(c(min(ipa_dot_all$zScore), max(ipa_dot_all$zScore))),
-                          breaks = scales::pretty_breaks(n = 5)) +
-    scale_size(range = c(2,5)) +
-    labs(x = "", y = "", color = "Z- scores", size = "Ratio")+
-    bossTheme(base_size = 14,legend = "right")
+ipa_dot_all <- ipa_dot_all %>% dplyr::mutate(count = stri_count(molecules,fixed = ",") + 1,
+                                             state = case_when(zScore < 0 ~ "Decreased",
+                                                               zScore > 0 ~ "Increased"))
+ipa_dot_all$name <- ipa_dot_all$name %>% str_wrap(35)
+
+ipa_dot_all <- ipa_dot_all[order(ipa_dot_all$name),]
+path_dot1 <- ggplot(ipa_dot_all[1:18,]) +
+  geom_point(aes(x = group, y = name, colour = zScore, size = count, shape = state)) +
+  scale_color_gradientn(colors = rev(c("#FB8072","#FDB462","#ffffd5","#8DD3C7","#80B1D3")),
+                        values = scales::rescale(c(min(ipa_dot_all$zScore), max(ipa_dot_all$zScore))),
+                        limit = c(-4,4),
+                        breaks = scales::pretty_breaks(n = 5)) +
+  scale_size(range = c(4,8),limits = c(min(ipa_dot_all$count), max(ipa_dot_all$count)),breaks = c(4,12)) +
+  scale_shape_manual(values = c("\u25BC","\u25B2")) +
+  labs(x = "", y = "", color = "Z-scores", size = "# Molecules", shape = "")+
+  bossTheme(base_size = 12,legend = "bottom") +
+  guides(size = guide_legend(order = 1),
+         shape = guide_legend(override.aes = list(size = 3),order = 2))
+
+path_dot2 <- ggplot(ipa_dot_all[19:38,]) +
+  geom_point(aes(x = group, y = name, colour = zScore, size = count, shape = state)) +
+  scale_color_gradientn(colors = rev(c("#FB8072","#FDB462","#ffffd5","#8DD3C7","#80B1D3")),
+                        limit = c(-4,4),
+                        values = scales::rescale(c(min(ipa_dot_all$zScore), max(ipa_dot_all$zScore))),
+                        breaks = scales::pretty_breaks(n = 5)) +
+  scale_size(range = c(4,8),limits = c(min(ipa_dot_all$count), max(ipa_dot_all$count)),breaks = c(4,12)) +
+  scale_shape_manual(values = c("\u25BC","\u25B2")) +
+  labs(x = "", y = "", color = "Z-scores", size = "# Molecules", shape = "")+
+  bossTheme(base_size = 12,legend = "bottom") +
+  guides(size = guide_legend(order = 1),
+         shape = guide_legend(override.aes = list(size = 3),order = 2))
   
   
+combine_ipaPath <- path_dot1 +  path_dot2 + plot_layout(guides = "collect") & theme(legend.position = "bottom")
+combine_ipaPath
+
   if(savePlots == TRUE) {
-    ggsave(filename = paste0("combine_ipa_dot.svg"), plot = combine_ipa, path = here::here("2_plots/3_FA/ipa/"),
-           width = 18, height = 22, units = "cm")
+    ggsave(filename = paste0("combine_ipa_dot.png"), plot = combine_ipaPath, path = here::here("2_plots/3_FA/ipa/"),
+           width = 21, height = 24, units = "cm")
   }
 
-combine_ipa
+# combine_ipa
 ```
 
 
@@ -215,41 +245,76 @@ interesting_type <- c("cytokine", "group", "transmembrane receptor", "transcript
 # intersect_upstream <- intersect(upstream_sig[[1]]$name,upstream_sig[[3]]$name)
 # interesting_upstream <- c("beta-estradiol", "prednisolone", "PRL", "Tgf beta", "TGFB1", "FGF7", "BMP2", "FGF2", "VEGFA", "HIF1A")
 
-heatMatrix <- lapply(upstream_sig, function(x) {
-  x <- x[x$type %in% interesting_type,]
-  x <- x %>% remove_rownames()
-  mat <- x %>% dplyr::select(c("name", "activationScore", "type"))
-  return(mat)
-})
+# heatMatrix <- lapply(upstream_sig, function(x) {
+#   x <- x[x$type %in% interesting_type,]
+#   x <- x %>% remove_rownames()
+#   mat <- x %>% dplyr::select(c("name", "activationScore", "type"))
+#   return(mat)
+# })
+# 
+# heatMatrix <- merge(heatMatrix[[1]],heatMatrix[[3]],by= "name", all=T) 
+# colnames(heatMatrix) <- c("name","DT vs veh", "type", "DT+Treg vs DT", "type2")
+# heatMatrix <- heatMatrix %>% 
+#   dplyr::mutate(combinedType = coalesce(type, type2)) %>%
+#   dplyr::mutate(combinedType = factor(combinedType, levels = interesting_type)) %>% 
+#   arrange(combinedType) %>% dplyr::select(c("name","DT vs veh", "DT+Treg vs DT", "combinedType"))
+# 
+# 
+# lookup <- tibble(gene_name = lm_all[[1]]$gene, gene_name_CAP = str_to_upper(lm_all[[1]]$gene))
+# replacement_vector <- setNames(lookup$gene_name, lookup$gene_name_CAP)
+# 
+# heatMatrix$correctName <- map_chr(heatMatrix$name, ~ str_replace_all(., replacement_vector))
+# 
+# heatMatrix$correctName <- str_replace_all(heatMatrix$correctName, ",", "/")
 
-heatMatrix <- merge(heatMatrix[[1]],heatMatrix[[3]],by= "name", all=T) 
-colnames(heatMatrix) <- c("name","DT vs veh", "type", "DT+Treg vs DT", "type2")
-heatMatrix <- heatMatrix %>% 
-  dplyr::mutate(combinedType = coalesce(type, type2)) %>%
-  dplyr::mutate(combinedType = factor(combinedType, levels = interesting_type)) %>% 
-  arrange(combinedType) %>% dplyr::select(c("name","DT vs veh", "DT+Treg vs DT", "combinedType"))
+# saveRDS(heatMatrix, here::here("0_data/rds_objects/heatMatrix.rds"))
+heatMatrix <- readRDS(here::here("0_data/rds_objects/heatMatrix.rds"))
 
+heatMatrix_anno <- heatMatrix[,c(1,5)]
 
+heatMatrix_anno <- heatMatrix_anno %>% left_join(lm_all[[1]][,c("gene","adj.P.Val")],by = join_by(correctName == gene)) %>% dplyr::rename(`DT vs veh` = adj.P.Val)
+
+heatMatrix_anno <- heatMatrix_anno %>% left_join(lm_all[[3]][,c("gene","adj.P.Val")],by = join_by(correctName == gene)) %>% dplyr::rename(`DT+Treg vs DT` = adj.P.Val)
+
+heatMatrix_anno <- heatMatrix_anno %>% 
+  dplyr::mutate_if(is.numeric, funs(as.character(signif(.,3)))) %>% 
+  dplyr::mutate(across(c(`DT vs veh`,`DT+Treg vs DT`), ~ case_when(. < 0.001 ~ "****",
+                                                                   . < 0.01 ~ "***",
+                                                                   . < 0.05 ~ "**",
+                                                                   . < 0.1 ~ "*",
+                                                                   TRUE ~ as.character(.))))
+  
+# \u2217C
 # df for heatmap annotation of sample group
 anno <- dplyr::select(.data = heatMatrix, c("name","combinedType"))
 anno$combinedType <- str_to_title(anno$combinedType)
-anno$combinedType <- factor(anno$combinedType, levels = c("Cytokine", "Group", "Transmembrane Receptor", "Transcription Regulator"))
 # anno <- anno[1:46,1:2] %>% column_to_rownames("name")
 colnames(anno) <- c("name","Molecule Type")
+anno$`Molecule Type` <- gsub("Transmembrane Receptor", "Transmembrane\nreceptor", anno$`Molecule Type`)
+anno$`Molecule Type` <- gsub("Transcription Regulator", "Transcription\nregulator", anno$`Molecule Type`)
+anno$`Molecule Type` <- factor(anno$`Molecule Type`, levels = c("Cytokine", "Group", "Transmembrane\nreceptor", "Transcription\nregulator"))
+
 anno_colours <- brewer.pal(length(levels(anno$`Molecule Type`)), "Spectral")
 names(anno_colours) <- levels(anno$`Molecule Type`)
 
 mat1 <- heatMatrix[1:46,1:3] %>% column_to_rownames("name") %>% as.matrix()
 mat1[is.na(mat1)] <- 0
+mat1_anno <- heatMatrix_anno[1:46,c(1,3,4)] %>% column_to_rownames("name") %>% as.matrix()
+mat1_anno[is.na(mat1_anno)] <- ""
+
 
 mat2 <- heatMatrix[46:92,1:3] %>% remove_rownames() %>%  column_to_rownames("name") %>% as.matrix()
 mat2[is.na(mat2)] <- 0
+mat2_anno <- heatMatrix_anno[46:92,c(1,3,4)] %>% remove_rownames() %>%  column_to_rownames("name") %>% as.matrix()
+mat2_anno[is.na(mat2_anno)] <- ""
 
 breaks <-seq(-7,7, by = 1)
-
+# 
+# showtext_auto(enable = T)
 hmap1 <- pheatmap(
       # MAIN
       mat = mat1,
+      display_numbers = mat1_anno,
       color = colorRampPalette(rev(c("#FB8072","#FDB462","grey95","#8DD3C7","#80B1D3")))(length(breaks)),
       cellwidth = 70,
       scale = "none",
@@ -282,7 +347,7 @@ hmap1 <- pheatmap(
       fontfamily = "Arial Narrow",
       fontsize = 12,
       fontsize_col = 12,
-      fontsize_number = 12,
+      fontsize_number = 8,
       fontsize_row = 10
       
     ) %>% as.ggplot()
@@ -290,6 +355,7 @@ hmap1 <- pheatmap(
 hmap2 <- pheatmap(
       # MAIN
       mat = mat2,
+      display_numbers = mat2_anno,
       color = colorRampPalette(rev(c("#FB8072","#FDB462","grey95","#8DD3C7","#80B1D3")))(length(breaks)),
       cellwidth = 70,
       scale = "none",
@@ -305,12 +371,16 @@ hmap2 <- pheatmap(
       # Labs
       show_colnames = T,
       show_rownames = T,
-      legend = T,
+      legend = F,
       breaks = breaks,
-      heatmap_legend_param = list(title = "Z-score", legend_width = unit(7, "cm")),
-      
+      # heatmap_legend_param = list(title = "Z-score", legend_width = unit(7, "cm")),
+      heatmap_legend_param = list(title = "Z-score",
+                                  direction= "vertical",
+                                  merge_legend = T,
+                                  legend_direction = "vertical",
+                                  legend_height = unit(4, "cm")),
       # Annotation
-      annotation_legend = T,
+      annotation_legend = F,
       # legend_labels = T,
       annotation_row = anno[46:92,1:2] %>% remove_rownames() %>% column_to_rownames("name"),
       annotation_colors = list("Molecule Type" = anno_colours),
@@ -321,19 +391,27 @@ hmap2 <- pheatmap(
       fontfamily = "Arial Narrow",
       fontsize = 12,
       fontsize_col = 12,
-      fontsize_number = 12,
+      fontsize_number = 8,
       fontsize_row = 10
       
     ) %>% as.ggplot()
+ 
 
+
+
+
+png(filename = here::here("2_plots/3_FA/ipa/legend.png"),res = 900,width = 8.267,height = 10.63,units = "in")
+draw(hmap2, merge_legend = T, heatmap_legend_side = "right", 
+     annotation_legend_side = "right")
+dev.off()
 
 hmap_combined <- hmap1 + plot_spacer() + hmap2 +
-  plot_layout(widths = c(4,-1.1,4.5))
+  plot_layout(widths = c(4,-1.3,4.5))
 
 hmap_combined
 
-ggsave(filename = "upstream_hmap.svg", plot = hmap_combined, path = here::here("2_plots/3_FA/ipa/"),
-           width = 21, height = 29.7, units = "cm")
+ggsave(filename = "upstream_hmap.png", plot = hmap_combined, path = here::here("2_plots/3_FA/ipa/"),
+           width = 21, height = 27, units = "cm")
 
 ```
 
@@ -456,8 +534,8 @@ dnf_dot2 <- ggplot(dnf_all[29:56,]) +
 combine_ipa_dnf <- dnf_dot1 +  dnf_dot2 + plot_layout(guides = "collect") & theme(legend.position = "bottom")
 combine_ipa_dnf
 
-ggsave(filename = "dnf_dot.svg", plot = combine_ipa_dnf, path = here::here("2_plots/3_FA/ipa/"),
-       width = 21, height = 29.7, units = "cm")
+ggsave(filename = "dnf_dot.png", plot = combine_ipa_dnf, path = here::here("2_plots/3_FA/ipa/"),
+       width = 21, height = 25.5, units = "cm")
   
   
 

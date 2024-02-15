@@ -14,6 +14,8 @@ knitr::opts_chunk$set(
   eval = TRUE,
   fig.align = "center"
 )
+
+opts_knit$set(progress = FALSE, verbose = FALSE)
 ```
 
 
@@ -54,8 +56,6 @@ library(patchwork)
 
 library(pandoc)
 library(knitr)
-opts_knit$set(progress = FALSE, verbose = FALSE)
-opts_chunk$set(warning=FALSE, message=FALSE, echo=FALSE)
 
 ```
 
@@ -288,7 +288,7 @@ upset <- list()
 for (comp in Comp) {
   dot[[comp]] <- ggplot(enrichGO_sig[[comp]][1:20, ]) +
     geom_point(aes(x = GeneRatio, y = reorder(Description, GeneRatio), colour = logFDR, size = Count, shape = ontology %>% as.factor())) +
-    scale_color_gradientn(colors = rev(c("#FB8072","#FDB462","#ffffd5","#8DD3C7","#80B1D3")),
+    scale_color_gradientn(colors = rev(c("#FB8072","#FDB462","#8DD3C7","#80B1D3")),
                           values = scales::rescale(c(min(enrichGO_sig[[comp]]$logFDR), max(enrichGO_sig[[comp]]$logFDR))),
                           breaks = scales::pretty_breaks(n = 5)) +
     scale_size(range = c(2,5)) +
@@ -485,7 +485,7 @@ semSim_dot <- lapply(Comp, function(comp){
   
   plot <- ggplot(df) +
     geom_point(aes(x = parentTerm_size, y = reorder(parentTerm, score), colour = score, size = parentTerm_size)) +
-    scale_color_gradientn(colors = rev(c("#FB8072","#FDB462","#ffffd5","#8DD3C7","#80B1D3")),
+    scale_color_gradientn(colors = rev(c("#FB8072","#FDB462","#8DD3C7","#80B1D3")),
                           values = scales::rescale(c(min(df$score), max(df$score))),
                           breaks = scales::pretty_breaks(n = 5)) +
     scale_size(range = c(2,5), guide = F) +
@@ -682,7 +682,7 @@ go_dot_all$group <- factor(go_dot_all$group,levels = c("DT vs veh", "DT+Treg vs 
 go_dot_all$Description <- go_dot_all$Description %>% str_wrap(55)
 combine_go <- ggplot(go_dot_all) +
     geom_point(aes(x = group, y = reorder(Description, logFDR), colour = logFDR, size = Count, shape = ONTOLOGY %>% as.factor())) +
-    scale_color_gradientn(colors = rev(c("#FB8072","#FDB462","#ffffd5","#8DD3C7","#80B1D3")),
+    scale_color_gradientn(colors = rev(c("#FB8072","#FDB462","#8DD3C7","#80B1D3")),
                           values = scales::rescale(c(min(go_dot_all$logFDR), max(go_dot_all$logFDR))),
                           breaks = scales::pretty_breaks(n = 5)) +
     scale_size(range = c(2,5)) +
@@ -760,10 +760,10 @@ reducedTerms_all_BP$parentTerm <- reducedTerms_all_BP$parentTerm %>% str_wrap(38
 dotplot <- function(data){
   ggplot(data) +
     geom_point(aes(x = comparison, y = reorder(parentTerm, score), colour = score, size = parentTerm_size), alpha=0.8) +
-    scale_color_gradientn(colours = rev(c("#FB8072","#FDB462","#ffffd5","#8DD3C7","#80B1D3")),
+    scale_color_gradientn(colours = rev(c("#FB8072","#FDB462","#8DD3C7","#80B1D3")),
                           limits = c(min(reducedTerms_all_BP$score), max(reducedTerms_all_BP$score)),
                           breaks = scales::pretty_breaks(n = 5)) +
-    scale_size(range = c(2,7),limits = c(min(reducedTerms_all_BP$parentTerm_size), max(reducedTerms_all_BP$parentTerm_size))) +
+    scale_size(range = c(2,5),limits = c(min(reducedTerms_all_BP$parentTerm_size), max(reducedTerms_all_BP$parentTerm_size))) +
     labs(x = "", y = "", color = expression("-log"[10] * "FDR"), size = "Term size")+
     bossTheme(base_size = 14,legend = "bottom")
 }
@@ -771,18 +771,18 @@ dotplot <- function(data){
 
 t <- wrap_plots(list(dotplot(reducedTerms_all_BP[1:32, ]), dotplot(reducedTerms_all_BP[32:nrow(reducedTerms_all_BP), ]))) + 
   plot_layout(guides = "collect") &
-  bossTheme(base_size = 12, legend = "bottom") &
+  bossTheme(base_size = 12, legend = "none") &
   theme(legend.box.margin = margin(-5, 0, 0, -50, unit = "mm"),
         # plot.margin = margin(1, 1, 1, 0, unit = "pt"),
-        axis.text.y = element_text(family = "Arial narrow", face = "plain", size = 11, hjust = 1),
-        axis.text.x = element_text(family =  "Arial", face = "plain", size = 12, hjust = 1, vjust = 1, angle = 40))
+        axis.text.y = element_text(family = "Arial Narrow", face = "plain", size = 10, hjust = 1),
+        axis.text.x = element_text(family =  "Arial", face = "plain", size = 11, hjust = 1, vjust = 1, angle = 40))
 
 t
 
 saveRDS(t, here::here("0_data/rds_plots/go_combined_parTerm_dotPlot.rds"))
 
-ggsave(filename = "parentTerm_all.svg", plot = t, path = here::here("2_plots/3_FA/go/"),
-           width = 21, height = 29.7, units = "cm")
+ggsave(filename = "parentTerm_all.png", plot = t, path = here::here("2_plots/3_FA/go/"),
+           width = 21, height = 27, units = "cm")
 ```
 
 # Export Data
