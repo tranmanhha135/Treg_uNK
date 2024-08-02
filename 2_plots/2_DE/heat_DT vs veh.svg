@@ -352,7 +352,7 @@
 <rect x='175.22' y='411.64' width='12.45' height='12.14' style='stroke-width: 0.75; stroke: #FFFFFF; fill: #FDBB6D;' />
 <rect x='175.22' y='423.78' width='12.45' height='12.14' style='stroke-width: 0.75; stroke: #FFFFFF; fill: #FCA666;' />
 <rect x='175.22' y='435.92' width='12.45' height='12.14' style='stroke-width: 0.75; stroke: #FFFFFF; fill: #FCA666;' />
-<text x='117.21' y='18.40' text-anchor='middle' style='font-size: 18.20px; font-weight: bold; font-family: "Arial";' textLength='241.19px' lengthAdjust='spacingAndGlyphs'>Top 30 significant DEGs</text>
+<text x='117.21' y='18.40' text-anchor='middle' style='font-size: 18.20px; font-weight: bold; font-family: "Arial";' textLength='209.20px' lengthAdjust='spacingAndGlyphs'>Top 30 significant DEGs</text>
 <line x1='38.12' y1='84.01' x2='29.48' y2='84.01' style='stroke-width: 0.75;' />
 <line x1='29.48' y1='84.01' x2='29.48' y2='104.50' style='stroke-width: 0.75;' />
 <line x1='34.03' y1='124.99' x2='29.48' y2='124.99' style='stroke-width: 0.75;' />
@@ -550,10 +550,10 @@
 <rect x='150.33' y='59.04' width='12.45' height='10.00' style='stroke-width: 0.75; stroke: #FFFFFF; fill: #F58D5F;' />
 <rect x='162.78' y='59.04' width='12.45' height='10.00' style='stroke-width: 0.75; stroke: #FFFFFF; fill: #F58D5F;' />
 <rect x='175.22' y='59.04' width='12.45' height='10.00' style='stroke-width: 0.75; stroke: #FFFFFF; fill: #F58D5F;' />
-<text x='281.97' y='243.83' style='font-size: 10.00px; font-weight: bold; font-family: "Arial";' textLength='40.24px' lengthAdjust='spacingAndGlyphs'>Groups</text>
-<text x='296.15' y='258.70' style='font-size: 10.00px; font-family: "Arial";' textLength='18.41px' lengthAdjust='spacingAndGlyphs'>veh</text>
-<text x='296.15' y='270.04' style='font-size: 10.00px; font-family: "Arial";' textLength='13.81px' lengthAdjust='spacingAndGlyphs'>DT</text>
-<text x='296.15' y='281.38' style='font-size: 10.00px; font-family: "Arial";' textLength='43.22px' lengthAdjust='spacingAndGlyphs'>DT+Treg</text>
+<text x='281.97' y='243.74' style='font-size: 10.00px; font-weight: bold; font-family: "Arial";' textLength='35.55px' lengthAdjust='spacingAndGlyphs'>Groups</text>
+<text x='296.15' y='258.64' style='font-size: 10.00px; font-family: "Arial";' textLength='16.11px' lengthAdjust='spacingAndGlyphs'>veh</text>
+<text x='296.15' y='269.98' style='font-size: 10.00px; font-family: "Arial";' textLength='13.33px' lengthAdjust='spacingAndGlyphs'>DT</text>
+<text x='296.15' y='281.32' style='font-size: 10.00px; font-family: "Arial";' textLength='39.72px' lengthAdjust='spacingAndGlyphs'>DT+Treg</text>
 <rect x='281.97' y='249.39' width='11.34' height='11.34' style='stroke-width: 0.75; stroke: #FFFFFF; fill: #F58D5F;' />
 <rect x='281.97' y='260.72' width='11.34' height='11.34' style='stroke-width: 0.75; stroke: #FFFFFF; fill: #8DA0CB;' />
 <rect x='281.97' y='272.06' width='11.34' height='11.34' style='stroke-width: 0.75; stroke: #FFFFFF; fill: #73C1A6;' />

@@ -14,7 +14,7 @@
 
 <title>Setting up for DGE analysis</title>
 
-<script src="site_libs/header-attrs-2.25/header-attrs.js"></script>
+<script src="site_libs/header-attrs-2.27/header-attrs.js"></script>
 <script src="site_libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <link href="site_libs/bootstrap-3.3.5/css/sandstone.min.css" rel="stylesheet" />
@@ -39,15 +39,16 @@
 <script src="site_libs/highlightjs-9.12.0/highlight.js"></script>
 <link href="site_libs/pagedtable-1.1/css/pagedtable.css" rel="stylesheet" />
 <script src="site_libs/pagedtable-1.1/js/pagedtable.js"></script>
+<link href="site_libs/htmltools-fill-0.5.8.1/fill.css" rel="stylesheet" />
 <script src="site_libs/htmlwidgets-1.6.4/htmlwidgets.js"></script>
-<script src="site_libs/plotly-binding-4.10.3/plotly.js"></script>
+<script src="site_libs/plotly-binding-4.10.4/plotly.js"></script>
 <script src="site_libs/typedarray-0.1/typedarray.min.js"></script>
 <link href="site_libs/crosstalk-1.2.1/css/crosstalk.min.css" rel="stylesheet" />
 <script src="site_libs/crosstalk-1.2.1/js/crosstalk.min.js"></script>
 <link href="site_libs/plotly-htmlwidgets-css-2.11.1/plotly-htmlwidgets.css" rel="stylesheet" />
 <script src="site_libs/plotly-main-2.11.1/plotly-latest.min.js"></script>
 <link href="site_libs/datatables-css-0.0.0/datatables-crosstalk.css" rel="stylesheet" />
-<script src="site_libs/datatables-binding-0.31/datatables.js"></script>
+<script src="site_libs/datatables-binding-0.33/datatables.js"></script>
 <link href="site_libs/dt-core-1.13.6/css/jquery.dataTables.min.css" rel="stylesheet" />
 <link href="site_libs/dt-core-1.13.6/css/jquery.dataTables.extra.css" rel="stylesheet" />
 <script src="site_libs/dt-core-1.13.6/js/jquery.dataTables.min.js"></script>
@@ -431,7 +432,7 @@ div.tocify {
 <p>
 <button type="button" class="btn btn-default btn-workflowr btn-workflowr-report" data-toggle="collapse" data-target="#workflowr-report">
 <span class="glyphicon glyphicon-list" aria-hidden="true"></span>
-workflowr <span class="glyphicon glyphicon-ok text-success"
+workflowr <span class="glyphicon glyphicon-exclamation-sign text-danger"
 aria-hidden="true"></span>
 </button>
 </p>
@@ -442,8 +443,8 @@ aria-hidden="true"></span>
 </li>
 <li>
 <a data-toggle="tab" href="#checks"> Checks <span
-class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span>
-</a>
+class="glyphicon glyphicon-exclamation-sign text-danger"
+aria-hidden="true"></span> </a>
 </li>
 <li>
 <a data-toggle="tab" href="#versions">Past versions</a>
@@ -452,17 +453,17 @@ class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span>
 <div class="tab-content">
 <div id="summary" class="tab-pane fade in active">
 <p>
-<strong>Last updated:</strong> 2024-02-08
+<strong>Last updated:</strong> 2024-08-01
 </p>
 <p>
 <strong>Checks:</strong> <span
-class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> 7
+class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> 6
 <span class="glyphicon glyphicon-exclamation-sign text-danger"
-aria-hidden="true"></span> 0
+aria-hidden="true"></span> 1
 </p>
 <p>
-<strong>Knit directory:</strong> <code>Treg_uNK/1_analysis/</code> <span
-class="glyphicon glyphicon-question-sign" aria-hidden="true"
+<strong>Knit directory:</strong> <code>5_Treg_uNK/1_analysis/</code>
+<span class="glyphicon glyphicon-question-sign" aria-hidden="true"
 title="This is the local directory in which the code in this file was executed.">
 </span>
 </p>
@@ -481,18 +482,21 @@ versions</em> tab lists the development history.
 <div class="panel panel-default">
 <div class="panel-heading">
 <p class="panel-title">
-<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRMarkdownfilestronguptodate">
-<span class="glyphicon glyphicon-ok text-success"
-aria-hidden="true"></span> <strong>R Markdown file:</strong> up-to-date
-</a>
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRMarkdownfilestronguncommittedchanges">
+<span class="glyphicon glyphicon-exclamation-sign text-danger"
+aria-hidden="true"></span> <strong>R Markdown file:</strong> uncommitted
+changes </a>
 </p>
 </div>
-<div id="strongRMarkdownfilestronguptodate"
+<div id="strongRMarkdownfilestronguncommittedchanges"
 class="panel-collapse collapse">
 <div class="panel-body">
-<p>Great! Since the R Markdown file has been committed to the Git
-repository, you know the exact version of the code that produced these
-results.</p>
+<p>The R Markdown file has unstaged changes. To know which version of
+the R Markdown file created these results, you’ll want to first commit
+it to the Git repo. If you’re still working on the analysis, you can
+ignore this warning. When you’re finished, you can run
+<code>wflow_publish</code> to commit the R Markdown file and build the
+HTML.</p>
 </div>
 </div>
 </div>
@@ -583,15 +587,15 @@ project makes it easier to run your code on other machines.</p>
 <div class="panel panel-default">
 <div class="panel-heading">
 <p class="panel-title">
-<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRepositoryversionstrongahrefhttpsgithubcomtranmanhha135TreguNKtree8da2e3114f4a95c7b48ce13a193ecaf617398137targetblank8da2e31a">
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRepositoryversionstrongahrefhttpsgithubcomtranmanhha135TreguNKtreea5cdd4ec7e940249cd3f0b44b2c6e7aa34ccaa26targetblanka5cdd4ea">
 <span class="glyphicon glyphicon-ok text-success"
 aria-hidden="true"></span> <strong>Repository version:</strong>
-<a href="https://github.com/tranmanhha135/Treg_uNK/tree/8da2e3114f4a95c7b48ce13a193ecaf617398137" target="_blank">8da2e31</a>
+<a href="https://github.com/tranmanhha135/Treg_uNK/tree/a5cdd4ec7e940249cd3f0b44b2c6e7aa34ccaa26" target="_blank">a5cdd4e</a>
 </a>
 </p>
 </div>
 <div
-id="strongRepositoryversionstrongahrefhttpsgithubcomtranmanhha135TreguNKtree8da2e3114f4a95c7b48ce13a193ecaf617398137targetblank8da2e31a"
+id="strongRepositoryversionstrongahrefhttpsgithubcomtranmanhha135TreguNKtreea5cdd4ec7e940249cd3f0b44b2c6e7aa34ccaa26targetblanka5cdd4ea"
 class="panel-collapse collapse">
 <div class="panel-body">
 <p>
@@ -601,7 +605,7 @@ reproducibility.
 </p>
 <p>
 The results in this page were generated with repository version
-<a href="https://github.com/tranmanhha135/Treg_uNK/tree/8da2e3114f4a95c7b48ce13a193ecaf617398137" target="_blank">8da2e31</a>.
+<a href="https://github.com/tranmanhha135/Treg_uNK/tree/a5cdd4ec7e940249cd3f0b44b2c6e7aa34ccaa26" target="_blank">a5cdd4e</a>.
 See the <em>Past versions</em> tab to see a history of the changes made
 to the R Markdown and HTML files.
 </p>
@@ -618,188 +622,42 @@ were generated:
 Ignored files:
     Ignored:    .Rhistory
     Ignored:    .Rproj.user/
-    Ignored:    2_plots/4_GSEA/
 
 Untracked files:
+    Untracked:  .DS_Store
     Untracked:  .gitignore
-    Untracked:  0_data/functions/compColour.rds
-    Untracked:  0_data/rawData/DTvsPBS_upstream regulators.xls
-    Untracked:  0_data/rawData/IPA Diseases and Functions.xlsx
-    Untracked:  0_data/rawData/IPA pathways.xlsx
-    Untracked:  0_data/rawData/IPA upstream regulators.xlsx
-    Untracked:  0_data/rawData/Treg vs DT_diseases and functions.xls
-    Untracked:  0_data/rawData/Treg vs DT_pathways.xls
-    Untracked:  0_data/rawData/Treg vs DT_upstream regulators.xls
-    Untracked:  0_data/rawData/Treg vs PBS_diseases and functions.xls
-    Untracked:  0_data/rawData/Treg vs PBS_pathways.xls
-    Untracked:  0_data/rawData/Treg vs PBS_upstream regulators.xls
-    Untracked:  0_data/rds_objects/disease_function_sig.rds
-    Untracked:  0_data/rds_objects/ipa_pathways.rds
-    Untracked:  0_data/rds_objects/upstream_sig.rds
-    Untracked:  0_data/rds_plots/
-    Untracked:  2_plots/2_DE/heat_DT vs veh.svg
-    Untracked:  2_plots/2_DE/heat_DT+Treg vs DT.svg
-    Untracked:  2_plots/2_DE/heat_DT+Treg vs veh.svg
-    Untracked:  2_plots/2_DE/hist_DT vs veh.svg
-    Untracked:  2_plots/2_DE/hist_DT+Treg vs DT.svg
-    Untracked:  2_plots/2_DE/hist_DT+Treg vs veh.svg
-    Untracked:  2_plots/2_DE/ma_DT vs veh.png
-    Untracked:  2_plots/2_DE/ma_DT+Treg vs DT.png
-    Untracked:  2_plots/2_DE/ma_DT+Treg vs veh.png
-    Untracked:  2_plots/2_DE/venn_2comp.png
-    Untracked:  2_plots/2_DE/venn_2comp.png.2024-02-02_16-30-41.893776.log
-    Untracked:  2_plots/2_DE/venn_2comp.png.2024-02-02_16-31-08.009748.log
-    Untracked:  2_plots/2_DE/vol_DT vs veh.png
-    Untracked:  2_plots/2_DE/vol_DT+Treg vs DT.png
-    Untracked:  2_plots/2_DE/vol_DT+Treg vs veh.png
-    Untracked:  2_plots/3_FA/go/dot_DT vs veh.svg
-    Untracked:  2_plots/3_FA/go/dot_DT+Treg vs DT.svg
-    Untracked:  2_plots/3_FA/go/dot_DT+Treg vs veh.svg
-    Untracked:  2_plots/3_FA/go/parTerm_dot_DT vs veh.svg
-    Untracked:  2_plots/3_FA/go/parTerm_dot_DT+Treg vs DT.svg
-    Untracked:  2_plots/3_FA/go/parTerm_dot_DT+Treg vs veh.svg
-    Untracked:  2_plots/3_FA/go/semSim_dendrogram_DT vs veh.svg
-    Untracked:  2_plots/3_FA/go/semSim_dendrogram_DT+Treg vs DT.svg
-    Untracked:  2_plots/3_FA/go/semSim_dendrogram_DT+Treg vs veh.svg
-    Untracked:  2_plots/3_FA/go/semSim_scatter_DT vs veh.svg
-    Untracked:  2_plots/3_FA/go/semSim_scatter_DT+Treg vs DT.svg
-    Untracked:  2_plots/3_FA/go/semSim_scatter_DT+Treg vs veh.svg
-    Untracked:  2_plots/3_FA/go/upset_DT vs veh.svg
-    Untracked:  2_plots/3_FA/go/upset_DT+Treg vs DT.svg
-    Untracked:  2_plots/3_FA/go/upset_DT+Treg vs veh.svg
-    Untracked:  2_plots/3_FA/ipa/
-    Untracked:  2_plots/3_FA/kegg/heat_Antigen processing and presentation.svg
-    Untracked:  2_plots/3_FA/kegg/heat_Epstein-Barr virus infection.svg
-    Untracked:  2_plots/3_FA/kegg/heat_Natural killer cell mediated cytotoxicity.svg
-    Untracked:  2_plots/3_FA/kegg/heat_Phagosome.svg
-    Untracked:  2_plots/3_FA/kegg/kegg_dot_DT vs veh.svg
-    Untracked:  2_plots/3_FA/kegg/kegg_dot_DT+Treg vs DT.svg
-    Untracked:  2_plots/3_FA/kegg/kegg_dot_DT+Treg vs veh.svg
-    Untracked:  2_plots/3_FA/kegg/kegg_upset_DT vs veh.svg
-    Untracked:  2_plots/3_FA/kegg/kegg_upset_DT+Treg vs DT.svg
-    Untracked:  2_plots/3_FA/kegg/kegg_upset_DT+Treg vs veh.svg
-    Untracked:  2_plots/3_FA/kegg/mmu04145.png
-    Untracked:  2_plots/3_FA/kegg/mmu04145.xml
-    Untracked:  2_plots/3_FA/kegg/mmu04612.png
-    Untracked:  2_plots/3_FA/kegg/mmu04612.xml
-    Untracked:  2_plots/3_FA/kegg/mmu04650.png
-    Untracked:  2_plots/3_FA/kegg/mmu04650.xml
-    Untracked:  2_plots/3_FA/kegg/mmu05169.png
-    Untracked:  2_plots/3_FA/kegg/mmu05169.xml
-    Untracked:  2_plots/3_FA/kegg/pv_mmu04145.png
-    Untracked:  2_plots/3_FA/kegg/pv_mmu04612.png
-    Untracked:  2_plots/3_FA/kegg/pv_mmu04650.png
-    Untracked:  2_plots/3_FA/kegg/pv_mmu05169.png
-    Untracked:  2_plots/3_FA/reactome/combine_react_dot.svg
-    Untracked:  2_plots/3_FA/reactome/react_dot_DT vs veh.svg
-    Untracked:  2_plots/3_FA/reactome/react_dot_DT+Treg vs DT.svg
-    Untracked:  2_plots/3_FA/reactome/react_dot_DT+Treg vs veh.svg
-    Untracked:  2_plots/3_FA/reactome/react_upset_DT vs veh.svg
-    Untracked:  2_plots/3_FA/reactome/react_upset_DT+Treg vs DT.svg
-    Untracked:  2_plots/3_FA/reactome/react_upset_DT+Treg vs veh.svg
-    Untracked:  2_plots/3_FA/reactome/venn_react.png
+    Untracked:  0_data/.DS_Store
+    Untracked:  0_data/rawData/.DS_Store
+    Untracked:  0_data/rawData/Jiang_TableS2_41421_2022_513_MOESM3_ESM.csv
+    Untracked:  0_data/rawData/Table S1 13578_2022_749_MOESM1_ESM (1).xlsx
+    Untracked:  0_data/rds_objects/cellchat.qs
+    Untracked:  0_data/rds_objects/cellchat_veh.qs
+    Untracked:  1_analysis/cellChat.Rmd
+    Untracked:  1_analysis/figure/
+    Untracked:  2_plots/.DS_Store
+    Untracked:  2_plots/LRheat.svg
+    Untracked:  2_plots/test.svg
+    Untracked:  2_plots/trophoblast_hmap_1.png
+    Untracked:  2_plots/trophoblast_hmap_1.svg
+    Untracked:  2_plots/trophoblast_hmap_2.svg
+    Untracked:  2_plots/trophoblast_hmap_3.svg
+    Untracked:  2_plots/trophoblast_hmap_4.svg
+    Untracked:  3_output/sig_de_JiangSC_subset.xlsx
+    Untracked:  sampleHeatmap.rds
 
 Unstaged changes:
-    Modified:   0_data/functions/bossTheme.rds
-    Modified:   0_data/functions/bossTheme_bar.rds
-    Modified:   0_data/functions/groupColour.rds
-    Modified:   0_data/functions/groupColour_dark.rds
-    Modified:   0_data/rds_objects/comp.rds
-    Modified:   0_data/rds_objects/dge.rds
-    Modified:   0_data/rds_objects/enrichGO.rds
-    Modified:   0_data/rds_objects/enrichGO_sig.rds
-    Modified:   0_data/rds_objects/enrichKEGG.rds
-    Modified:   0_data/rds_objects/enrichKEGG_all.rds
-    Modified:   0_data/rds_objects/enrichKEGG_sig.rds
-    Modified:   0_data/rds_objects/lm.rds
-    Modified:   0_data/rds_objects/lm_all.rds
-    Modified:   0_data/rds_objects/lm_sig.rds
-    Modified:   0_data/rds_objects/pathway_details.rds
-    Modified:   0_data/rds_objects/rawCount.rds
-    Modified:   0_data/rds_objects/reactome.rds
-    Modified:   0_data/rds_objects/reactome_all.rds
-    Modified:   0_data/rds_objects/reactome_sig.rds
-    Modified:   0_data/rds_objects/reducedTerms_all.rds
-    Modified:   0_data/rds_objects/reducedTerms_ora.rds
-    Modified:   0_data/rds_objects/reduced_semSim_df.rds
-    Modified:   0_data/rds_objects/scores_ora.rds
-    Modified:   0_data/rds_objects/semSim_df.rds
-    Modified:   0_data/rds_objects/simMatrix_ora.rds
     Modified:   140_treg_uNK.Rproj
     Modified:   1_analysis/_site.yml
-    Modified:   2_plots/1_QC/PC1_PC2.svg
-    Modified:   2_plots/1_QC/PC1_PC3.svg
-    Modified:   2_plots/1_QC/PC2_PC3.svg
+    Modified:   1_analysis/extraFigs.Rmd
+    Modified:   1_analysis/ipa.Rmd
+    Modified:   1_analysis/setUp.Rmd
     Modified:   2_plots/1_QC/counts_after_filtering.svg
     Modified:   2_plots/1_QC/counts_before_after_filtering.svg
     Modified:   2_plots/1_QC/counts_before_filtering.svg
     Modified:   2_plots/1_QC/library_size.svg
-    Deleted:    2_plots/2_DE/heat_DT vs PBS.svg
-    Deleted:    2_plots/2_DE/heat_Treg vs DT.svg
-    Deleted:    2_plots/2_DE/heat_Treg vs PBS.svg
-    Modified:   2_plots/2_DE/heat_combined.svg
-    Deleted:    2_plots/2_DE/hist_DT vs PBS.svg
-    Deleted:    2_plots/2_DE/hist_Treg vs DT.svg
-    Deleted:    2_plots/2_DE/hist_Treg vs PBS.svg
-    Deleted:    2_plots/2_DE/ma_DT vs PBS.png
-    Deleted:    2_plots/2_DE/ma_Treg vs DT.png
-    Deleted:    2_plots/2_DE/ma_Treg vs PBS.png
-    Modified:   2_plots/2_DE/venn.png
-    Deleted:    2_plots/2_DE/venn.png.2024-01-08_19-59-50.400111.log
-    Deleted:    2_plots/2_DE/vol_DT vs PBS.png
-    Deleted:    2_plots/2_DE/vol_Treg vs DT.png
-    Deleted:    2_plots/2_DE/vol_Treg vs PBS.png
-    Modified:   2_plots/3_FA/go/combine_go_dot.svg
-    Deleted:    2_plots/3_FA/go/dot_DT vs PBS.svg
-    Deleted:    2_plots/3_FA/go/dot_Treg vs DT.svg
-    Deleted:    2_plots/3_FA/go/dot_Treg vs PBS.svg
-    Modified:   2_plots/3_FA/go/parTerm_BP_venn.png
-    Modified:   2_plots/3_FA/go/parTerm_CC_venn.png
-    Modified:   2_plots/3_FA/go/parTerm_MF_venn.png
-    Deleted:    2_plots/3_FA/go/parTerm_dot_DT vs PBS.svg
-    Deleted:    2_plots/3_FA/go/parTerm_dot_Treg vs DT.svg
-    Deleted:    2_plots/3_FA/go/parTerm_dot_Treg vs PBS.svg
-    Modified:   2_plots/3_FA/go/parentTerm_all.svg
-    Deleted:    2_plots/3_FA/go/upset_DT vs PBS.svg
-    Deleted:    2_plots/3_FA/go/upset_Treg vs DT.svg
-    Deleted:    2_plots/3_FA/go/upset_Treg vs PBS.svg
-    Modified:   2_plots/3_FA/go/venn.png
-    Modified:   2_plots/3_FA/kegg/combine_kegg_dot.svg
-    Deleted:    2_plots/3_FA/kegg/heat_DT vs PBS_Antigen processing and presentation.svg
-    Deleted:    2_plots/3_FA/kegg/heat_DT vs PBS_Natural killer cell mediated cytotoxicity.svg
-    Deleted:    2_plots/3_FA/kegg/heat_DT vs PBS_Phagosome.svg
-    Deleted:    2_plots/3_FA/kegg/heat_DT vs PBS_Th1 and Th2 cell differentiation.svg
-    Deleted:    2_plots/3_FA/kegg/heat_Treg vs DT_Antigen processing and presentation.svg
-    Deleted:    2_plots/3_FA/kegg/heat_Treg vs DT_Natural killer cell mediated cytotoxicity.svg
-    Deleted:    2_plots/3_FA/kegg/heat_Treg vs DT_Phagosome.svg
-    Deleted:    2_plots/3_FA/kegg/heat_Treg vs DT_Th1 and Th2 cell differentiation.svg
-    Deleted:    2_plots/3_FA/kegg/heat_Treg vs PBS_Antigen processing and presentation.svg
-    Deleted:    2_plots/3_FA/kegg/heat_Treg vs PBS_Natural killer cell mediated cytotoxicity.svg
-    Deleted:    2_plots/3_FA/kegg/heat_Treg vs PBS_Phagosome.svg
-    Deleted:    2_plots/3_FA/kegg/heat_Treg vs PBS_Th1 and Th2 cell differentiation.svg
-    Deleted:    2_plots/3_FA/kegg/kegg_dot_DT vs PBS.svg
-    Deleted:    2_plots/3_FA/kegg/kegg_dot_Treg vs DT.svg
-    Deleted:    2_plots/3_FA/kegg/kegg_dot_Treg vs PBS.svg
-    Deleted:    2_plots/3_FA/kegg/kegg_upset_DT vs PBS.svg
-    Deleted:    2_plots/3_FA/kegg/kegg_upset_Treg vs DT.svg
-    Deleted:    2_plots/3_FA/kegg/kegg_upset_Treg vs PBS.svg
-    Modified:   2_plots/3_FA/kegg/venn.png
-    Deleted:    2_plots/3_FA/reactome/react_dot_DT vs PBS.svg
-    Deleted:    2_plots/3_FA/reactome/react_dot_Treg vs DT.svg
-    Deleted:    2_plots/3_FA/reactome/react_dot_Treg vs PBS.svg
-    Deleted:    2_plots/3_FA/reactome/react_upset_DT vs PBS.svg
-    Deleted:    2_plots/3_FA/reactome/react_upset_Treg vs DT.svg
-    Deleted:    2_plots/3_FA/reactome/react_upset_Treg vs PBS.svg
-    Modified:   2_plots/functionalHeat.svg
-    Modified:   3_output/GO_sig.xlsx
-    Modified:   3_output/KEGG_all.xlsx
-    Modified:   3_output/KEGG_sig.xlsx
-    Modified:   3_output/de_genes_all.xlsx
-    Modified:   3_output/de_genes_sig.xlsx
-    Modified:   3_output/reactome_all.xlsx
-    Modified:   3_output/reactome_sig.xlsx
+    Modified:   2_plots/functionalHeat.png
+    Modified:   2_plots/sampleHeat.svg
     Modified:   functions.Rmd
-    Deleted:    ipa.Rmd
 
 </code></pre>
 <p>
@@ -844,6 +702,23 @@ Message
 </tr>
 </thead>
 <tbody>
+<tr>
+<td>
+html
+</td>
+<td>
+<a href="https://rawcdn.githack.com/tranmanhha135/Treg_uNK/e9e7671a3bb7cdda8602bf9275a15e119c622cf1/docs/setUp.html" target="_blank">e9e7671</a>
+</td>
+<td>
+tranmanhha135
+</td>
+<td>
+2024-02-08
+</td>
+<td>
+Build site.
+</td>
+</tr>
 <tr>
 <td>
 Rmd
@@ -1039,6 +914,7 @@ library(reshape2)
 library(tidyverse)
 library(bookdown)
 library(here)
+library(scales)
 
 # Visualisation:
 library(ggbiplot)
@@ -1162,13 +1038,13 @@ pie &lt;- pie %&gt;% layout(title = &#39;Frequency of gene biotype&#39;,
 
 pie</code></pre>
 <div class="plotly html-widget html-fill-item" id="htmlwidget-8d32cfd9db97395c4a5f" style="width:768px;height:480px;"></div>
-<script type="application/json" data-for="htmlwidget-8d32cfd9db97395c4a5f">{"x":{"visdat":{"26b02720529b9":["function () ","plotlyVisDat"]},"cur_data":"26b02720529b9","attrs":{"26b02720529b9":{"labels":{},"values":{},"textposition":"inside","textinfo":"label+percent","hoverinfo":"text","text":{},"marker":{"colors":["function (distinct = FALSE) ","{","    c <- .Call(C_colors)","    if (distinct) ","        c[!duplicated(t(col2rgb(c)))]","    else c","}"],"line":{"color":"#FFFFFF","width":1}},"showlegend":true,"alpha_stroke":1,"sizes":[10,100],"spans":[1,20],"type":"pie"}},"layout":{"margin":{"b":40,"l":60,"t":25,"r":10},"title":"Frequency of gene biotype","xaxis":{"showgrid":false,"zeroline":false,"showticklabels":false},"yaxis":{"showgrid":false,"zeroline":false,"showticklabels":false},"hovermode":"closest","showlegend":true},"source":"A","config":{"modeBarButtonsToAdd":["hoverclosest","hovercompare"],"showSendToCloud":false},"data":[{"labels":["lncRNA","miRNA","Misc rna","Processed pseudogene","Protein coding","pseudogene","ribozyme","rRNA","scaRNA","snoRNA","snRNA","TEC","Transcribed processed pseudogene","Transcribed unitary pseudogene","Transcribed unprocessed pseudogene","Translated unprocessed pseudogene","Unitary pseudogene","Unprocessed pseudogene"],"values":[2290,1173,1,122,18844,2,4,6,7,116,4,26,80,15,38,1,1,52],"textposition":["inside","inside","inside","inside","inside","inside","inside","inside","inside","inside","inside","inside","inside","inside","inside","inside","inside","inside"],"textinfo":"label+percent","hoverinfo":["text","text","text","text","text","text","text","text","text","text","text","text","text","text","text","text","text","text"],"text":["2290  genes","1173  genes","1  genes","122  genes","18844  genes","2  genes","4  genes","6  genes","7  genes","116  genes","4  genes","26  genes","80  genes","15  genes","38  genes","1  genes","1  genes","52  genes"],"marker":{"color":"rgba(31,119,180,1)","colors":["structure(function (distinct = FALSE) ","{","    c <- .Call(C_colors)","    if (distinct) ","        c[!duplicated(t(col2rgb(c)))]","    else c","}, apiSrc = TRUE)"],"line":{"color":"#FFFFFF","width":1}},"showlegend":true,"type":"pie","frame":null}],"highlight":{"on":"plotly_click","persistent":false,"dynamic":false,"selectize":false,"opacityDim":0.20000000000000001,"selected":{"opacity":1},"debounce":0},"shinyEvents":["plotly_hover","plotly_click","plotly_selected","plotly_relayout","plotly_brushed","plotly_brushing","plotly_clickannotation","plotly_doubleclick","plotly_deselect","plotly_afterplot","plotly_sunburstclick"],"base_url":"https://plot.ly"},"evals":[],"jsHooks":[]}</script>
+<script type="application/json" data-for="htmlwidget-8d32cfd9db97395c4a5f">{"x":{"visdat":{"14969511b9295":["function () ","plotlyVisDat"]},"cur_data":"14969511b9295","attrs":{"14969511b9295":{"labels":{},"values":{},"textposition":"inside","textinfo":"label+percent","hoverinfo":"text","text":{},"marker":{"colors":["function (distinct = FALSE) ","{","    c <- .Call(C_colors)","    if (distinct) ","        c[!duplicated(t(col2rgb(c)))]","    else c","}"],"line":{"color":"#FFFFFF","width":1}},"showlegend":true,"alpha_stroke":1,"sizes":[10,100],"spans":[1,20],"type":"pie"}},"layout":{"margin":{"b":40,"l":60,"t":25,"r":10},"title":"Frequency of gene biotype","xaxis":{"showgrid":false,"zeroline":false,"showticklabels":false},"yaxis":{"showgrid":false,"zeroline":false,"showticklabels":false},"hovermode":"closest","showlegend":true},"source":"A","config":{"modeBarButtonsToAdd":["hoverclosest","hovercompare"],"showSendToCloud":false},"data":[{"labels":["lncRNA","miRNA","Misc rna","Processed pseudogene","Protein coding","pseudogene","ribozyme","rRNA","scaRNA","snoRNA","snRNA","TEC","Transcribed processed pseudogene","Transcribed unitary pseudogene","Transcribed unprocessed pseudogene","Translated unprocessed pseudogene","Unitary pseudogene","Unprocessed pseudogene"],"values":[2290,1173,1,122,18844,2,4,6,7,116,4,26,80,15,38,1,1,52],"textposition":["inside","inside","inside","inside","inside","inside","inside","inside","inside","inside","inside","inside","inside","inside","inside","inside","inside","inside"],"textinfo":"label+percent","hoverinfo":["text","text","text","text","text","text","text","text","text","text","text","text","text","text","text","text","text","text"],"text":["2290  genes","1173  genes","1  genes","122  genes","18844  genes","2  genes","4  genes","6  genes","7  genes","116  genes","4  genes","26  genes","80  genes","15  genes","38  genes","1  genes","1  genes","52  genes"],"marker":{"color":"rgba(31,119,180,1)","colors":["structure(function (distinct = FALSE) ","{","    c <- .Call(C_colors)","    if (distinct) ","        c[!duplicated(t(col2rgb(c)))]","    else c","}, apiSrc = TRUE)"],"line":{"color":"#FFFFFF","width":1}},"showlegend":true,"type":"pie","frame":null}],"highlight":{"on":"plotly_click","persistent":false,"dynamic":false,"selectize":false,"opacityDim":0.20000000000000001,"selected":{"opacity":1},"debounce":0},"shinyEvents":["plotly_hover","plotly_click","plotly_selected","plotly_relayout","plotly_brushed","plotly_brushing","plotly_clickannotation","plotly_doubleclick","plotly_deselect","plotly_afterplot","plotly_sunburstclick"],"base_url":"https://plot.ly"},"evals":[],"jsHooks":[]}</script>
 </div>
 <div id="table" class="section level4">
 <h4>Table</h4>
 <pre class="r"><code>genes %&gt;% DT(.,caption = &quot;Table 1: Gene biotype&quot;)</code></pre>
 <div class="datatables html-widget html-fill-item" id="htmlwidget-d701554a25665d09d09f" style="width:100%;height:auto;"></div>
-<script type="application/json" data-for="htmlwidget-d701554a25665d09d09f">{"x":{"filter":"none","vertical":false,"extensions":["Buttons"],"caption":"<caption>Table 1: Gene biotype<\/caption>","data":[["1","2","3","4","5","6","7","8","9","10","11","12","13","14","15","16","17","18"],["lncRNA","miRNA","Misc rna","Processed pseudogene","Protein coding","pseudogene","ribozyme","rRNA","scaRNA","snoRNA","snRNA","TEC","Transcribed processed pseudogene","Transcribed unitary pseudogene","Transcribed unprocessed pseudogene","Translated unprocessed pseudogene","Unitary pseudogene","Unprocessed pseudogene"],[2290,1173,1,122,18844,2,4,6,7,116,4,26,80,15,38,1,1,52]],"container":"<table class=\"display\">\n  <thead>\n    <tr>\n      <th> <\/th>\n      <th>Gene Biotype<\/th>\n      <th>Frequency<\/th>\n    <\/tr>\n  <\/thead>\n<\/table>","options":{"dom":"Blfrtip","scrollX":true,"buttons":["copy","csv","excel","pdf","print"],"lengthMenu":[[10,25,50,-1],["10","25","50","All"]],"columnDefs":[{"className":"dt-right","targets":2},{"orderable":false,"targets":0},{"name":" ","targets":0},{"name":"Gene Biotype","targets":1},{"name":"Frequency","targets":2}],"order":[],"autoWidth":false,"orderClasses":false},"selection":{"mode":"multiple","selected":null,"target":"row","selectable":null}},"evals":[],"jsHooks":[]}</script>
+<script type="application/json" data-for="htmlwidget-d701554a25665d09d09f">{"x":{"filter":"none","vertical":false,"extensions":["Buttons"],"caption":"<caption>Table 1: Gene biotype<\/caption>","data":[["1","2","3","4","5","6","7","8","9","10","11","12","13","14","15","16","17","18"],["lncRNA","miRNA","Misc rna","Processed pseudogene","Protein coding","pseudogene","ribozyme","rRNA","scaRNA","snoRNA","snRNA","TEC","Transcribed processed pseudogene","Transcribed unitary pseudogene","Transcribed unprocessed pseudogene","Translated unprocessed pseudogene","Unitary pseudogene","Unprocessed pseudogene"],[2290,1173,1,122,18844,2,4,6,7,116,4,26,80,15,38,1,1,52]],"container":"<table class=\"display\">\n  <thead>\n    <tr>\n      <th> <\/th>\n      <th>Gene Biotype<\/th>\n      <th>Frequency<\/th>\n    <\/tr>\n  <\/thead>\n<\/table>","options":{"dom":"Blfrtip","scrollX":true,"buttons":["copy","csv","excel","pdf","print"],"lengthMenu":[[10,25,50,-1],["10","25","50","All"]],"columnDefs":[{"className":"dt-right","targets":2},{"orderable":false,"targets":0},{"name":" ","targets":0},{"name":"Gene Biotype","targets":1},{"name":"Frequency","targets":2}],"order":[],"autoWidth":false,"orderClasses":false}},"evals":[],"jsHooks":[]}</script>
 </div>
 </div>
 </div>
@@ -1262,6 +1138,17 @@ Date
 </tr>
 </thead>
 <tbody>
+<tr>
+<td>
+<a href="https://github.com/tranmanhha135/Treg_uNK/blob/e9e7671a3bb7cdda8602bf9275a15e119c622cf1/docs/figure/setUp.Rmd/libraryChecks-1.png" target="_blank">e9e7671</a>
+</td>
+<td>
+tranmanhha135
+</td>
+<td>
+2024-02-08
+</td>
+</tr>
 <tr>
 <td>
 <a href="https://github.com/tranmanhha135/Treg_uNK/blob/36aeb85cdb811728c883b48c30fbbc564943ca3c/docs/figure/setUp.Rmd/libraryChecks-1.png" target="_blank">36aeb85</a>
@@ -1413,6 +1300,17 @@ Date
 <tbody>
 <tr>
 <td>
+<a href="https://github.com/tranmanhha135/Treg_uNK/blob/e9e7671a3bb7cdda8602bf9275a15e119c622cf1/docs/figure/setUp.Rmd/afterFiltering-1.png" target="_blank">e9e7671</a>
+</td>
+<td>
+tranmanhha135
+</td>
+<td>
+2024-02-08
+</td>
+</tr>
+<tr>
+<td>
 <a href="https://github.com/tranmanhha135/Treg_uNK/blob/36aeb85cdb811728c883b48c30fbbc564943ca3c/docs/figure/setUp.Rmd/afterFiltering-1.png" target="_blank">36aeb85</a>
 </td>
 <td>
@@ -1527,6 +1425,17 @@ Date
 <tbody>
 <tr>
 <td>
+<a href="https://github.com/tranmanhha135/Treg_uNK/blob/e9e7671a3bb7cdda8602bf9275a15e119c622cf1/docs/figure/setUp.Rmd/beforeNorm-1.png" target="_blank">e9e7671</a>
+</td>
+<td>
+tranmanhha135
+</td>
+<td>
+2024-02-08
+</td>
+</tr>
+<tr>
+<td>
 <a href="https://github.com/tranmanhha135/Treg_uNK/blob/36aeb85cdb811728c883b48c30fbbc564943ca3c/docs/figure/setUp.Rmd/beforeNorm-1.png" target="_blank">36aeb85</a>
 </td>
 <td>
@@ -1605,6 +1514,17 @@ Date
 <tbody>
 <tr>
 <td>
+<a href="https://github.com/tranmanhha135/Treg_uNK/blob/e9e7671a3bb7cdda8602bf9275a15e119c622cf1/docs/figure/setUp.Rmd/afterNorm-1.png" target="_blank">e9e7671</a>
+</td>
+<td>
+tranmanhha135
+</td>
+<td>
+2024-02-08
+</td>
+</tr>
+<tr>
+<td>
 <a href="https://github.com/tranmanhha135/Treg_uNK/blob/36aeb85cdb811728c883b48c30fbbc564943ca3c/docs/figure/setUp.Rmd/afterNorm-1.png" target="_blank">36aeb85</a>
 </td>
 <td>
@@ -1646,7 +1566,7 @@ tranmanhha135
 <h3>Normalisation factors</h3>
 <pre class="r"><code>dge$samples %&gt;% DT(.,caption = &quot;Table: Normalised samples&quot;)</code></pre>
 <div class="datatables html-widget html-fill-item" id="htmlwidget-27a6251d00cbd347f90b" style="width:100%;height:auto;"></div>
-<script type="application/json" data-for="htmlwidget-27a6251d00cbd347f90b">{"x":{"filter":"none","vertical":false,"extensions":["Buttons"],"caption":"<caption>Table: Normalised samples<\/caption>","data":[["DT1","DT2","DT3","DT4","DT6","veh1","veh2","veh3","veh4","veh5","veh6","DT+Treg1","DT+Treg2","DT+Treg3","DT+Treg4","DT+Treg5"],["DT","DT","DT","DT","DT","veh","veh","veh","veh","veh","veh","DT+Treg","DT+Treg","DT+Treg","DT+Treg","DT+Treg"],[436332,515158,694435,589541,845485,607922,579533,583693,658871,697576,736027,710060,684532,701599,686048,726381],[1.0152771242442,0.9847617851907547,1.0313934252215,1.029502696974969,1.010487862189632,0.8679277021284219,0.9904344603508075,1.061786247735169,1.025202679883528,1.019686604617302,0.9928427000211208,0.9929536398296339,0.9947164070959589,0.9897874301245985,0.9991754724858054,1.007363077747785],["DT1","DT2","DT3","DT4","DT6","veh1","veh2","veh3","veh4","veh5","veh6","DT+Treg1","DT+Treg2","DT+Treg3","DT+Treg4","DT+Treg5"],[1,2,3,4,6,1,2,3,4,5,6,1,2,3,4,5]],"container":"<table class=\"display\">\n  <thead>\n    <tr>\n      <th> <\/th>\n      <th>group<\/th>\n      <th>lib.size<\/th>\n      <th>norm.factors<\/th>\n      <th>sample<\/th>\n      <th>rep<\/th>\n    <\/tr>\n  <\/thead>\n<\/table>","options":{"dom":"Blfrtip","scrollX":true,"buttons":["copy","csv","excel","pdf","print"],"lengthMenu":[[10,25,50,-1],["10","25","50","All"]],"columnDefs":[{"className":"dt-right","targets":[2,3,5]},{"orderable":false,"targets":0},{"name":" ","targets":0},{"name":"group","targets":1},{"name":"lib.size","targets":2},{"name":"norm.factors","targets":3},{"name":"sample","targets":4},{"name":"rep","targets":5}],"order":[],"autoWidth":false,"orderClasses":false},"selection":{"mode":"multiple","selected":null,"target":"row","selectable":null}},"evals":[],"jsHooks":[]}</script>
+<script type="application/json" data-for="htmlwidget-27a6251d00cbd347f90b">{"x":{"filter":"none","vertical":false,"extensions":["Buttons"],"caption":"<caption>Table: Normalised samples<\/caption>","data":[["DT1","DT2","DT3","DT4","DT6","veh1","veh2","veh3","veh4","veh5","veh6","DT+Treg1","DT+Treg2","DT+Treg3","DT+Treg4","DT+Treg5"],["DT","DT","DT","DT","DT","veh","veh","veh","veh","veh","veh","DT+Treg","DT+Treg","DT+Treg","DT+Treg","DT+Treg"],[436332,515158,694435,589541,845485,607922,579533,583693,658871,697576,736027,710060,684532,701599,686048,726381],[1.0152771242442,0.9847617851907549,1.0313934252215,1.02950269697497,1.010487862189632,0.8679277021284224,0.9904344603508076,1.061786247735168,1.025202679883528,1.019686604617302,0.992842700021121,0.992953639829634,0.9947164070959589,0.9897874301245984,0.9991754724858054,1.007363077747785],["DT1","DT2","DT3","DT4","DT6","veh1","veh2","veh3","veh4","veh5","veh6","DT+Treg1","DT+Treg2","DT+Treg3","DT+Treg4","DT+Treg5"],[1,2,3,4,6,1,2,3,4,5,6,1,2,3,4,5]],"container":"<table class=\"display\">\n  <thead>\n    <tr>\n      <th> <\/th>\n      <th>group<\/th>\n      <th>lib.size<\/th>\n      <th>norm.factors<\/th>\n      <th>sample<\/th>\n      <th>rep<\/th>\n    <\/tr>\n  <\/thead>\n<\/table>","options":{"dom":"Blfrtip","scrollX":true,"buttons":["copy","csv","excel","pdf","print"],"lengthMenu":[[10,25,50,-1],["10","25","50","All"]],"columnDefs":[{"className":"dt-right","targets":[2,3,5]},{"orderable":false,"targets":0},{"name":" ","targets":0},{"name":"group","targets":1},{"name":"lib.size","targets":2},{"name":"norm.factors","targets":3},{"name":"sample","targets":4},{"name":"rep","targets":5}],"order":[],"autoWidth":false,"orderClasses":false}},"evals":[],"jsHooks":[]}</script>
 </div>
 </div>
 <div id="pinciple-component-analysis-pca" class="section level2">
@@ -1712,6 +1632,17 @@ Date
 </tr>
 </thead>
 <tbody>
+<tr>
+<td>
+<a href="https://github.com/tranmanhha135/Treg_uNK/blob/e9e7671a3bb7cdda8602bf9275a15e119c622cf1/docs/figure/setUp.Rmd/pca-1.png" target="_blank">e9e7671</a>
+</td>
+<td>
+tranmanhha135
+</td>
+<td>
+2024-02-08
+</td>
+</tr>
 <tr>
 <td>
 <a href="https://github.com/tranmanhha135/Treg_uNK/blob/36aeb85cdb811728c883b48c30fbbc564943ca3c/docs/figure/setUp.Rmd/pca-1.png" target="_blank">36aeb85</a>
@@ -1784,7 +1715,7 @@ pca_3d &lt;- plot_ly(pc, x = ~PC1, y = ~PC2, z = ~PC3, color = ~dge$samples$grou
 
 pca_3d</code></pre>
 <div class="plotly html-widget html-fill-item" id="htmlwidget-02880d8cbf9369760f4f" style="width:768px;height:480px;"></div>
-<script type="application/json" data-for="htmlwidget-02880d8cbf9369760f4f">{"x":{"visdat":{"26b0240157423":["function () ","plotlyVisDat"]},"cur_data":"26b0240157423","attrs":{"26b0240157423":{"x":{},"y":{},"z":{},"marker":{"symbol":"circle","sizemode":"diameter","size":5},"hoverinfo":"text","color":{},"colors":["#73c1a6","#f58d5f","#8DA0CB"],"alpha_stroke":1,"sizes":[10,100],"spans":[1,20]}},"layout":{"margin":{"b":40,"l":60,"t":25,"r":10},"showlegend":true,"title":"Total Explained Variance = 44.949","scene":{"xaxis":{"title":"PC 1 (20%)","gridcolor":"rgb(194, 197, 204)","zerolinewidth":1,"ticklen":5,"gridwidth":2},"yaxis":{"title":"PC 2 (15%)","gridcolor":"rgb(194, 197, 204)","zerolinewidth":1,"ticklen":5,"gridwith":2},"zaxis":{"title":"PC 3 (9%)","gridcolor":"rgb(194, 197, 204)","zerolinewidth":1,"ticklen":5,"gridwith":2}},"hovermode":"closest"},"source":"A","config":{"modeBarButtonsToAdd":["hoverclosest","hovercompare"],"showSendToCloud":false},"data":[{"x":[82.919539075405169,-7.7885128767346368,-5.7268484889767635,-6.5690481787729231,-2.705146868243264,23.308620305021908],"y":[-28.147293743969495,26.181105179841797,31.657943651314199,15.913709430147351,34.837008319058931,35.823627675600044],"z":[15.631863570937847,2.3865278398344012,-6.9513391720528341,23.108649226665889,2.6180625671528279,11.674790060081387],"marker":{"color":"rgba(245,141,95,1)","symbol":"circle","sizemode":"diameter","size":5,"line":{"color":"rgba(245,141,95,1)"}},"hoverinfo":["text","text","text","text","text","text"],"type":"scatter3d","mode":"markers","name":"veh","textfont":{"color":"rgba(245,141,95,1)"},"error_y":{"color":"rgba(245,141,95,1)"},"error_x":{"color":"rgba(245,141,95,1)"},"line":{"color":"rgba(245,141,95,1)"},"frame":null},{"x":[-9.4087924844131869,32.454312413406242,-19.259203856508599,-1.6381004770677636,-8.8928333203347911],"y":[-7.8404694858956621,-1.6742186035640052,-26.677377210099987,10.484603836844453,-10.15203026347095],"z":[-41.756200708727071,-35.596953076302889,-11.647360920231746,-3.9188291477213792,-7.0036148547760444],"marker":{"color":"rgba(141,160,203,1)","symbol":"circle","sizemode":"diameter","size":5,"line":{"color":"rgba(141,160,203,1)"}},"hoverinfo":["text","text","text","text","text"],"type":"scatter3d","mode":"markers","name":"DT","textfont":{"color":"rgba(141,160,203,1)"},"error_y":{"color":"rgba(141,160,203,1)"},"error_x":{"color":"rgba(141,160,203,1)"},"line":{"color":"rgba(141,160,203,1)"},"frame":null},{"x":[-18.678763461714457,-25.778547435475542,-12.069749969224631,-13.642956538087049,-6.5239678382798862],"y":[-26.808198540602767,-24.468495600098016,-16.779996691937672,-8.7117978281127275,-3.6381201250556789],"z":[10.97291450274116,21.914317735617143,6.4562089999895127,4.8395705144506476,7.271392862341143],"marker":{"color":"rgba(115,193,166,1)","symbol":"circle","sizemode":"diameter","size":5,"line":{"color":"rgba(115,193,166,1)"}},"hoverinfo":["text","text","text","text","text"],"type":"scatter3d","mode":"markers","name":"DT+Treg","textfont":{"color":"rgba(115,193,166,1)"},"error_y":{"color":"rgba(115,193,166,1)"},"error_x":{"color":"rgba(115,193,166,1)"},"line":{"color":"rgba(115,193,166,1)"},"frame":null}],"highlight":{"on":"plotly_click","persistent":false,"dynamic":false,"selectize":false,"opacityDim":0.20000000000000001,"selected":{"opacity":1},"debounce":0},"shinyEvents":["plotly_hover","plotly_click","plotly_selected","plotly_relayout","plotly_brushed","plotly_brushing","plotly_clickannotation","plotly_doubleclick","plotly_deselect","plotly_afterplot","plotly_sunburstclick"],"base_url":"https://plot.ly"},"evals":[],"jsHooks":[]}</script>
+<script type="application/json" data-for="htmlwidget-02880d8cbf9369760f4f">{"x":{"visdat":{"1496978cf87fe":["function () ","plotlyVisDat"]},"cur_data":"1496978cf87fe","attrs":{"1496978cf87fe":{"x":{},"y":{},"z":{},"marker":{"symbol":"circle","sizemode":"diameter","size":5},"hoverinfo":"text","color":{},"colors":["#73c1a6","#f58d5f","#8DA0CB"],"alpha_stroke":1,"sizes":[10,100],"spans":[1,20]}},"layout":{"margin":{"b":40,"l":60,"t":25,"r":10},"showlegend":true,"title":"Total Explained Variance = 44.949","scene":{"xaxis":{"title":"PC 1 (20%)","gridcolor":"rgb(194, 197, 204)","zerolinewidth":1,"ticklen":5,"gridwidth":2},"yaxis":{"title":"PC 2 (15%)","gridcolor":"rgb(194, 197, 204)","zerolinewidth":1,"ticklen":5,"gridwith":2},"zaxis":{"title":"PC 3 (9%)","gridcolor":"rgb(194, 197, 204)","zerolinewidth":1,"ticklen":5,"gridwith":2}},"hovermode":"closest"},"source":"A","config":{"modeBarButtonsToAdd":["hoverclosest","hovercompare"],"showSendToCloud":false},"data":[{"x":[82.919539075405083,-7.7885128767346066,-5.7268484889767493,-6.5690481787729098,-2.7051468682432489,23.308620305021918],"y":[-28.147293743969566,26.181105179841854,31.657943651314177,15.913709430147353,34.837008319058931,35.823627675600051],"z":[15.631863570937831,2.3865278398343741,-6.951339172052859,23.108649226665879,2.6180625671528057,11.674790060081358],"marker":{"color":"rgba(245,141,95,1)","symbol":"circle","sizemode":"diameter","size":5,"line":{"color":"rgba(245,141,95,1)"}},"hoverinfo":["text","text","text","text","text","text"],"type":"scatter3d","mode":"markers","name":"veh","textfont":{"color":"rgba(245,141,95,1)"},"error_y":{"color":"rgba(245,141,95,1)"},"error_x":{"color":"rgba(245,141,95,1)"},"line":{"color":"rgba(245,141,95,1)"},"frame":null},{"x":[-9.4087924844131532,32.45431241340625,-19.259203856508588,-1.6381004770677581,-8.892833320334784],"y":[-7.8404694858956008,-1.674218603564078,-26.677377210099955,10.48460383684449,-10.152030263470918],"z":[-41.756200708727199,-35.596953076302711,-11.647360920231771,-3.9188291477213726,-7.0036148547760533],"marker":{"color":"rgba(141,160,203,1)","symbol":"circle","sizemode":"diameter","size":5,"line":{"color":"rgba(141,160,203,1)"}},"hoverinfo":["text","text","text","text","text"],"type":"scatter3d","mode":"markers","name":"DT","textfont":{"color":"rgba(141,160,203,1)"},"error_y":{"color":"rgba(141,160,203,1)"},"error_x":{"color":"rgba(141,160,203,1)"},"line":{"color":"rgba(141,160,203,1)"},"frame":null},{"x":[-18.678763461714468,-25.778547435475549,-12.069749969224654,-13.64295653808704,-6.5239678382798871],"y":[-26.808198540602724,-24.468495600097981,-16.779996691937725,-8.7117978281127098,-3.6381201250556945],"z":[10.97291450274119,21.914317735617153,6.4562089999895385,4.8395705144506636,7.2713928623411528],"marker":{"color":"rgba(115,193,166,1)","symbol":"circle","sizemode":"diameter","size":5,"line":{"color":"rgba(115,193,166,1)"}},"hoverinfo":["text","text","text","text","text"],"type":"scatter3d","mode":"markers","name":"DT+Treg","textfont":{"color":"rgba(115,193,166,1)"},"error_y":{"color":"rgba(115,193,166,1)"},"error_x":{"color":"rgba(115,193,166,1)"},"line":{"color":"rgba(115,193,166,1)"},"frame":null}],"highlight":{"on":"plotly_click","persistent":false,"dynamic":false,"selectize":false,"opacityDim":0.20000000000000001,"selected":{"opacity":1},"debounce":0},"shinyEvents":["plotly_hover","plotly_click","plotly_selected","plotly_relayout","plotly_brushed","plotly_brushing","plotly_clickannotation","plotly_doubleclick","plotly_deselect","plotly_afterplot","plotly_sunburstclick"],"base_url":"https://plot.ly"},"evals":[],"jsHooks":[]}</script>
 <div id="correlation-plot" class="section level3">
 <h3>Correlation plot</h3>
 <p>A correlation matrix between principal components (PC) and metadata
@@ -1833,96 +1764,88 @@ Session information
 </p>
 <div id="workflowr-sessioninfo" class="collapse">
 <pre class="r"><code>sessionInfo()</code></pre>
-<pre><code>R version 4.3.2 (2023-10-31)
-Platform: x86_64-pc-linux-gnu (64-bit)
-Running under: Ubuntu 22.04.3 LTS
+<pre><code>R version 4.4.1 (2024-06-14)
+Platform: aarch64-apple-darwin20
+Running under: macOS Sonoma 14.5
 
 Matrix products: default
-BLAS:   /usr/lib/x86_64-linux-gnu/blas/libblas.so.3.10.0 
-LAPACK: /usr/lib/x86_64-linux-gnu/lapack/liblapack.so.3.10.0
+BLAS:   /Library/Frameworks/R.framework/Versions/4.4-arm64/Resources/lib/libRblas.0.dylib 
+LAPACK: /Library/Frameworks/R.framework/Versions/4.4-arm64/Resources/lib/libRlapack.dylib;  LAPACK version 3.12.0
 
 locale:
- [1] LC_CTYPE=en_AU.UTF-8       LC_NUMERIC=C              
- [3] LC_TIME=en_AU.UTF-8        LC_COLLATE=en_AU.UTF-8    
- [5] LC_MONETARY=en_AU.UTF-8    LC_MESSAGES=en_AU.UTF-8   
- [7] LC_PAPER=en_AU.UTF-8       LC_NAME=C                 
- [9] LC_ADDRESS=C               LC_TELEPHONE=C            
-[11] LC_MEASUREMENT=en_AU.UTF-8 LC_IDENTIFICATION=C       
+[1] en_US.UTF-8/en_US.UTF-8/en_US.UTF-8/C/en_US.UTF-8/en_US.UTF-8
 
 time zone: Australia/Adelaide
-tzcode source: system (glibc)
+tzcode source: internal
 
 attached base packages:
 [1] grid      stats     graphics  grDevices utils     datasets  methods  
 [8] base     
 
 other attached packages:
- [1] extrafont_0.19      Glimma_2.10.0       edgeR_3.42.4       
- [4] limma_3.56.2        AnnotationHub_3.8.0 BiocFileCache_2.8.0
- [7] dbplyr_2.4.0        BiocGenerics_0.46.0 patchwork_1.1.3    
-[10] plotly_4.10.3       DT_0.31             corrplot_0.92      
-[13] cowplot_1.1.2       ggrepel_0.9.4       ggbiplot_0.55      
-[16] scales_1.3.0        plyr_1.8.9          here_1.0.1         
-[19] bookdown_0.37       lubridate_1.9.3     forcats_1.0.0      
-[22] stringr_1.5.1       purrr_1.0.2         tidyr_1.3.0        
-[25] ggplot2_3.4.4       tidyverse_2.0.0     reshape2_1.4.4     
-[28] tibble_3.2.1        readr_2.1.4         magrittr_2.0.3     
-[31] dplyr_1.1.4        
+ [1] extrafont_0.19       Glimma_2.14.0        edgeR_4.2.1         
+ [4] limma_3.60.3         AnnotationHub_3.12.0 BiocFileCache_2.12.0
+ [7] dbplyr_2.5.0         BiocGenerics_0.50.0  patchwork_1.2.0     
+[10] plotly_4.10.4        DT_0.33              corrplot_0.92       
+[13] cowplot_1.1.3        ggrepel_0.9.5.9999   ggbiplot_0.6.2      
+[16] scales_1.3.0         here_1.0.1           bookdown_0.40       
+[19] lubridate_1.9.3      forcats_1.0.0        stringr_1.5.1       
+[22] purrr_1.0.2          tidyr_1.3.1          ggplot2_3.5.1       
+[25] tidyverse_2.0.0      reshape2_1.4.4       tibble_3.2.1        
+[28] readr_2.1.5          magrittr_2.0.3       dplyr_1.1.4         
 
 loaded via a namespace (and not attached):
-  [1] rstudioapi_0.15.0             jsonlite_1.8.8               
-  [3] farver_2.1.1                  rmarkdown_2.25               
-  [5] fs_1.6.3                      zlibbioc_1.46.0              
-  [7] ragg_1.2.7                    vctrs_0.6.5                  
-  [9] memoise_2.0.1                 RCurl_1.98-1.13              
- [11] htmltools_0.5.7               S4Arrays_1.0.6               
- [13] curl_5.2.0                    sass_0.4.8                   
- [15] bslib_0.6.1                   htmlwidgets_1.6.4            
- [17] cachem_1.0.8                  whisker_0.4.1                
- [19] mime_0.12                     lifecycle_1.0.4              
- [21] pkgconfig_2.0.3               Matrix_1.6-3                 
- [23] R6_2.5.1                      fastmap_1.1.1                
- [25] GenomeInfoDbData_1.2.10       MatrixGenerics_1.12.3        
- [27] shiny_1.8.0                   digest_0.6.33                
- [29] colorspace_2.1-0              AnnotationDbi_1.62.2         
- [31] S4Vectors_0.38.2              DESeq2_1.40.2                
- [33] rprojroot_2.0.4               textshaping_0.3.7            
- [35] crosstalk_1.2.1               GenomicRanges_1.52.1         
- [37] RSQLite_2.3.4                 filelock_1.0.3               
- [39] labeling_0.4.3                fansi_1.0.6                  
- [41] timechange_0.2.0              httr_1.4.7                   
- [43] abind_1.4-5                   compiler_4.3.2               
- [45] bit64_4.0.5                   withr_2.5.2                  
- [47] BiocParallel_1.34.2           DBI_1.2.0                    
- [49] highr_0.10                    Rttf2pt1_1.3.12              
- [51] rappdirs_0.3.3                DelayedArray_0.26.7          
- [53] tools_4.3.2                   interactiveDisplayBase_1.38.0
- [55] httpuv_1.6.13                 extrafontdb_1.0              
- [57] glue_1.6.2                    promises_1.2.1               
- [59] generics_0.1.3                gtable_0.3.4                 
- [61] tzdb_0.4.0                    data.table_1.14.10           
- [63] hms_1.1.3                     utf8_1.2.4                   
- [65] XVector_0.40.0                BiocVersion_3.17.1           
- [67] pillar_1.9.0                  later_1.3.2                  
- [69] lattice_0.22-5                bit_4.0.5                    
- [71] tidyselect_1.2.0              locfit_1.5-9.8               
- [73] Biostrings_2.68.1             knitr_1.45                   
- [75] git2r_0.33.0                  IRanges_2.34.1               
- [77] SummarizedExperiment_1.30.2   svglite_2.1.3                
- [79] stats4_4.3.2                  xfun_0.41                    
- [81] Biobase_2.60.0                matrixStats_1.2.0            
- [83] stringi_1.8.3                 workflowr_1.7.1              
- [85] lazyeval_0.2.2                yaml_2.3.8                   
- [87] evaluate_0.23                 codetools_0.2-19             
- [89] BiocManager_1.30.22           cli_3.6.2                    
- [91] xtable_1.8-4                  systemfonts_1.0.5            
- [93] munsell_0.5.0                 jquerylib_0.1.4              
- [95] Rcpp_1.0.11                   GenomeInfoDb_1.36.4          
- [97] png_0.1-8                     parallel_4.3.2               
- [99] ellipsis_0.3.2                blob_1.2.4                   
-[101] bitops_1.0-7                  viridisLite_0.4.2            
-[103] crayon_1.5.2                  rlang_1.1.2                  
-[105] KEGGREST_1.40.1              </code></pre>
+  [1] rstudioapi_0.16.0           jsonlite_1.8.8             
+  [3] farver_2.1.2                rmarkdown_2.27             
+  [5] fs_1.6.4                    zlibbioc_1.50.0            
+  [7] ragg_1.3.2                  vctrs_0.6.5                
+  [9] memoise_2.0.1               htmltools_0.5.8.1          
+ [11] S4Arrays_1.4.1              curl_5.2.1                 
+ [13] SparseArray_1.4.8           sass_0.4.9                 
+ [15] bslib_0.7.0                 htmlwidgets_1.6.4          
+ [17] plyr_1.8.9                  cachem_1.1.0               
+ [19] whisker_0.4.1               lifecycle_1.0.4            
+ [21] pkgconfig_2.0.3             Matrix_1.7-0               
+ [23] R6_2.5.1                    fastmap_1.2.0              
+ [25] GenomeInfoDbData_1.2.12     MatrixGenerics_1.16.0      
+ [27] digest_0.6.36               colorspace_2.1-0           
+ [29] AnnotationDbi_1.66.0        S4Vectors_0.42.1           
+ [31] DESeq2_1.44.0               rprojroot_2.0.4            
+ [33] textshaping_0.4.0           crosstalk_1.2.1            
+ [35] GenomicRanges_1.56.1        RSQLite_2.3.7              
+ [37] filelock_1.0.3              labeling_0.4.3             
+ [39] fansi_1.0.6                 timechange_0.3.0           
+ [41] httr_1.4.7                  abind_1.4-5                
+ [43] compiler_4.4.1              bit64_4.0.5                
+ [45] withr_3.0.0                 BiocParallel_1.38.0        
+ [47] DBI_1.2.3                   highr_0.11                 
+ [49] Rttf2pt1_1.3.12             rappdirs_0.3.3             
+ [51] DelayedArray_0.30.1         tools_4.4.1                
+ [53] httpuv_1.6.15               extrafontdb_1.0            
+ [55] glue_1.7.0                  promises_1.3.0             
+ [57] generics_0.1.3              gtable_0.3.5               
+ [59] tzdb_0.4.0                  data.table_1.15.4          
+ [61] hms_1.1.3                   utf8_1.2.4                 
+ [63] XVector_0.44.0              BiocVersion_3.19.1         
+ [65] pillar_1.9.0                later_1.3.2                
+ [67] lattice_0.22-6              bit_4.0.5                  
+ [69] tidyselect_1.2.1            locfit_1.5-9.10            
+ [71] Biostrings_2.72.1           knitr_1.48                 
+ [73] git2r_0.33.0                IRanges_2.38.1             
+ [75] SummarizedExperiment_1.34.0 svglite_2.1.3              
+ [77] stats4_4.4.1                xfun_0.45                  
+ [79] Biobase_2.64.0              statmod_1.5.0              
+ [81] matrixStats_1.3.0           stringi_1.8.4              
+ [83] UCSC.utils_1.0.0            workflowr_1.7.1            
+ [85] lazyeval_0.2.2              yaml_2.3.9                 
+ [87] evaluate_0.24.0             codetools_0.2-20           
+ [89] BiocManager_1.30.23         cli_3.6.3                  
+ [91] systemfonts_1.1.0           munsell_0.5.1              
+ [93] jquerylib_0.1.4             Rcpp_1.0.12                
+ [95] GenomeInfoDb_1.40.1         png_0.1-8                  
+ [97] parallel_4.4.1              blob_1.2.4                 
+ [99] viridisLite_0.4.2           crayon_1.5.3               
+[101] rlang_1.1.4                 KEGGREST_1.44.1            </code></pre>
 </div>
 </div>
 </div>

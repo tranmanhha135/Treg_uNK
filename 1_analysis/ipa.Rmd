@@ -1,6 +1,6 @@
 ---
 title: "Ingenuity Pathway Analysis"
-author: "Ha"
+author: "Ha Tran"
 date: "2024-01-05"
 output: html_document
 editor_options: 
@@ -132,7 +132,7 @@ futile.logger::flog.threshold(futile.logger::ERROR, name = "VennDiagramLogger")
 venn.diagram(x = list("DT vs veh"   = pathways_sig[[1]]$name %>% as.character(), 
                       "DT+Treg vs veh" = pathways_sig[[2]]$name %>% as.character(),
                       "DT+Treg vs DT"  = pathways_sig[[3]]$name %>% as.character()),
-             filename = here::here(paste0("2_plots/3_FA/ipa/venn_ipaPath.png")),
+             filename = here::here(paste0("docs/assets/venn_ipaPath.png")),
              lwd = 2,
              disable.logging = T,
              fill = compColour,
@@ -156,7 +156,7 @@ venn.diagram(x = list("DT vs veh"   = pathways_sig[[1]]$name %>% as.character(),
 
 ```
 
-![](figure/ipa.Rmd/venn_ipaPath.png)
+![](assets/venn_ipaPath.png)
 
 
 
@@ -241,10 +241,10 @@ upstream_sig <- lapply(upstream, function(x) {
 saveRDS(upstream_sig, here::here("0_data/rds_objects/upstream_sig.rds"))
 
 
-interesting_type <- c("cytokine", "group", "transmembrane receptor", "transcription regulator")
+# interesting_type <- c("cytokine", "group", "transmembrane receptor", "transcription regulator")
 # intersect_upstream <- intersect(upstream_sig[[1]]$name,upstream_sig[[3]]$name)
 # interesting_upstream <- c("beta-estradiol", "prednisolone", "PRL", "Tgf beta", "TGFB1", "FGF7", "BMP2", "FGF2", "VEGFA", "HIF1A")
-
+# 
 # heatMatrix <- lapply(upstream_sig, function(x) {
 #   x <- x[x$type %in% interesting_type,]
 #   x <- x %>% remove_rownames()
@@ -252,11 +252,11 @@ interesting_type <- c("cytokine", "group", "transmembrane receptor", "transcript
 #   return(mat)
 # })
 # 
-# heatMatrix <- merge(heatMatrix[[1]],heatMatrix[[3]],by= "name", all=T) 
+# heatMatrix <- merge(heatMatrix[[1]],heatMatrix[[3]],by= "name", all=T)
 # colnames(heatMatrix) <- c("name","DT vs veh", "type", "DT+Treg vs DT", "type2")
-# heatMatrix <- heatMatrix %>% 
+# heatMatrix <- heatMatrix %>%
 #   dplyr::mutate(combinedType = coalesce(type, type2)) %>%
-#   dplyr::mutate(combinedType = factor(combinedType, levels = interesting_type)) %>% 
+#   dplyr::mutate(combinedType = factor(combinedType, levels = interesting_type)) %>%
 #   arrange(combinedType) %>% dplyr::select(c("name","DT vs veh", "DT+Treg vs DT", "combinedType"))
 # 
 # 
@@ -400,10 +400,10 @@ hmap2 <- pheatmap(
 
 
 
-png(filename = here::here("2_plots/3_FA/ipa/legend.png"),res = 900,width = 8.267,height = 10.63,units = "in")
-draw(hmap2, merge_legend = T, heatmap_legend_side = "right", 
-     annotation_legend_side = "right")
-dev.off()
+# png(filename = here::here("2_plots/3_FA/ipa/legend.png"),res = 900,width = 8.267,height = 10.63,units = "in")
+# draw(hmap2, merge_legend = T, heatmap_legend_side = "right", 
+#      annotation_legend_side = "right")
+# dev.off()
 
 hmap_combined <- hmap1 + plot_spacer() + hmap2 +
   plot_layout(widths = c(4,-1.3,4.5))
@@ -415,7 +415,7 @@ ggsave(filename = "upstream_hmap.png", plot = hmap_combined, path = here::here("
 
 ```
 
-### Disease and Function
+### Disease and Function {.tabset .tabset-pills}
 
 ```{r, fig.width=8,fig.height=10}
 categories <- c("Cellular Movement", "Developmental Disorder", "Cell-To-Cell Signaling")
@@ -448,7 +448,7 @@ futile.logger::flog.threshold(futile.logger::ERROR, name = "VennDiagramLogger")
 venn.diagram(x = list("DT vs veh"   = disease_function_sig[[1]]$name %>% as.character(), 
                       "DT+Treg vs veh" = disease_function_sig[[2]]$name %>% as.character(),
                       "DT+Treg vs DT"  = disease_function_sig[[3]]$name %>% as.character()),
-             filename = here::here(paste0("2_plots/3_FA/ipa/venn_ipaDiseFunct.png")),
+             filename = here::here(paste0("docs/assets/venn_ipaDiseFunct.png")),
              lwd = 2,
              disable.logging = T,
              fill = compColour,
@@ -472,7 +472,7 @@ venn.diagram(x = list("DT vs veh"   = disease_function_sig[[1]]$name %>% as.char
 
 ```
 
-![](figure/ipa.Rmd/venn_ipaDiseFunct.png)
+![](assets/venn_ipaDiseFunct.png)
 
 
 
@@ -697,12 +697,3 @@ ggplot(
 ggsave(filename = "up_cat_alluvial.svg",path = here::here("2_plots/ipa/"), width = 450, height = 800, units = "mm")
 ```
 
-
-## Network plot
-
-![](figure/ipa.Rmd/giphy.gif)
-
-## Alluvial plot
-
-
-![](figure/ipa.Rmd/giphy.gif)

@@ -23,104 +23,104 @@
 <g clip-path='url(#cpMC4wMHw1MTAuMjR8MC4wMHw1NjYuOTM=)'>
 </g>
 <defs>
-  <clipPath id='cpMTg4LjkwfDQzNy44MXw1LjQ4fDUzNi4zMg=='>
-    <rect x='188.90' y='5.48' width='248.91' height='530.84' />
+  <clipPath id='cpMTU4Ljc4fDQ0NS45NXw1LjQ4fDUzNi4zMw=='>
+    <rect x='158.78' y='5.48' width='287.16' height='530.85' />
   </clipPath>
 </defs>
-<g clip-path='url(#cpMTg4LjkwfDQzNy44MXw1LjQ4fDUzNi4zMg==)'>
-<circle cx='256.79' cy='25.14' r='4.20' style='stroke-width: 0.71; stroke: #FFCC87; fill: #FFCC87;' />
-<circle cx='256.79' cy='123.44' r='4.20' style='stroke-width: 0.71; stroke: #D4EDD0; fill: #D4EDD0;' />
-<circle cx='256.79' cy='57.91' r='4.91' style='stroke-width: 0.71; stroke: #D4EDD0; fill: #D4EDD0;' />
-<circle cx='256.79' cy='90.68' r='5.69' style='stroke-width: 0.71; stroke: #A9DDCA; fill: #A9DDCA;' />
-<circle cx='256.79' cy='156.21' r='3.97' style='stroke-width: 0.71; stroke: #A0DAC9; fill: #A0DAC9;' />
-<circle cx='256.79' cy='418.35' r='4.75' style='stroke-width: 0.71; stroke: #8CD0C8; fill: #8CD0C8;' />
-<circle cx='256.79' cy='188.98' r='3.97' style='stroke-width: 0.71; stroke: #8CD0C8; fill: #8CD0C8;' />
-<circle cx='256.79' cy='221.75' r='3.70' style='stroke-width: 0.71; stroke: #8CD0C8; fill: #8CD0C8;' />
-<circle cx='256.79' cy='287.28' r='4.20' style='stroke-width: 0.71; stroke: #8BCEC9; fill: #8BCEC9;' />
-<circle cx='256.79' cy='254.52' r='3.70' style='stroke-width: 0.71; stroke: #8BCEC9; fill: #8BCEC9;' />
-<circle cx='256.79' cy='320.05' r='3.97' style='stroke-width: 0.71; stroke: #8ACACA; fill: #8ACACA;' />
-<circle cx='256.79' cy='352.82' r='4.20' style='stroke-width: 0.71; stroke: #8AC9CA; fill: #8AC9CA;' />
-<circle cx='256.79' cy='385.59' r='3.97' style='stroke-width: 0.71; stroke: #8AC9CA; fill: #8AC9CA;' />
-<circle cx='369.93' cy='25.14' r='3.34' style='stroke-width: 0.71; stroke: #8BCBCA; fill: #8BCBCA;' />
-<circle cx='369.93' cy='123.44' r='3.34' style='stroke-width: 0.71; stroke: #8AC9CB; fill: #8AC9CB;' />
-<circle cx='369.93' cy='320.05' r='3.34' style='stroke-width: 0.71; stroke: #8AC9CB; fill: #8AC9CB;' />
-<circle cx='369.93' cy='385.59' r='3.34' style='stroke-width: 0.71; stroke: #8AC9CB; fill: #8AC9CB;' />
-<circle cx='369.93' cy='451.12' r='3.34' style='stroke-width: 0.71; stroke: #87C1CD; fill: #87C1CD;' />
-<circle cx='369.93' cy='418.35' r='3.70' style='stroke-width: 0.71; stroke: #87C1CD; fill: #87C1CD;' />
-<circle cx='369.93' cy='483.89' r='3.34' style='stroke-width: 0.71; stroke: #87C1CD; fill: #87C1CD;' />
-<circle cx='369.93' cy='516.66' r='2.49' style='stroke-width: 0.71; stroke: #86BFCE; fill: #86BFCE;' />
-<rect x='188.90' y='5.48' width='248.91' height='530.84' style='stroke-width: 0.32;' />
+<g clip-path='url(#cpMTU4Ljc4fDQ0NS45NXw1LjQ4fDUzNi4zMw==)'>
+<circle cx='237.10' cy='25.14' r='4.20' style='stroke-width: 0.71; stroke: #FDB462; fill: #FDB462;' />
+<circle cx='237.10' cy='123.45' r='4.20' style='stroke-width: 0.71; stroke: #ADCDB3; fill: #ADCDB3;' />
+<circle cx='237.10' cy='57.91' r='4.91' style='stroke-width: 0.71; stroke: #ADCDB3; fill: #ADCDB3;' />
+<circle cx='237.10' cy='90.68' r='5.69' style='stroke-width: 0.71; stroke: #8CD0C8; fill: #8CD0C8;' />
+<circle cx='237.10' cy='156.21' r='3.97' style='stroke-width: 0.71; stroke: #8CCEC9; fill: #8CCEC9;' />
+<circle cx='237.10' cy='418.36' r='4.75' style='stroke-width: 0.71; stroke: #8AC8CB; fill: #8AC8CB;' />
+<circle cx='237.10' cy='188.98' r='3.97' style='stroke-width: 0.71; stroke: #8AC8CB; fill: #8AC8CB;' />
+<circle cx='237.10' cy='221.75' r='3.70' style='stroke-width: 0.71; stroke: #8AC8CB; fill: #8AC8CB;' />
+<circle cx='237.10' cy='287.29' r='4.20' style='stroke-width: 0.71; stroke: #89C7CB; fill: #89C7CB;' />
+<circle cx='237.10' cy='254.52' r='3.70' style='stroke-width: 0.71; stroke: #89C7CB; fill: #89C7CB;' />
+<circle cx='237.10' cy='320.06' r='3.97' style='stroke-width: 0.71; stroke: #88C4CD; fill: #88C4CD;' />
+<circle cx='237.10' cy='352.82' r='4.20' style='stroke-width: 0.71; stroke: #88C3CD; fill: #88C3CD;' />
+<circle cx='237.10' cy='385.59' r='3.97' style='stroke-width: 0.71; stroke: #88C3CD; fill: #88C3CD;' />
+<circle cx='367.63' cy='25.14' r='3.34' style='stroke-width: 0.71; stroke: #88C5CC; fill: #88C5CC;' />
+<circle cx='367.63' cy='123.45' r='3.34' style='stroke-width: 0.71; stroke: #88C3CD; fill: #88C3CD;' />
+<circle cx='367.63' cy='320.06' r='3.34' style='stroke-width: 0.71; stroke: #88C3CD; fill: #88C3CD;' />
+<circle cx='367.63' cy='385.59' r='3.34' style='stroke-width: 0.71; stroke: #88C3CD; fill: #88C3CD;' />
+<circle cx='367.63' cy='451.13' r='3.34' style='stroke-width: 0.71; stroke: #85BDCF; fill: #85BDCF;' />
+<circle cx='367.63' cy='418.36' r='3.70' style='stroke-width: 0.71; stroke: #85BDCF; fill: #85BDCF;' />
+<circle cx='367.63' cy='483.90' r='3.34' style='stroke-width: 0.71; stroke: #85BDCF; fill: #85BDCF;' />
+<circle cx='367.63' cy='516.67' r='2.49' style='stroke-width: 0.71; stroke: #85BBD0; fill: #85BBD0;' />
+<rect x='158.78' y='5.48' width='287.16' height='530.85' style='stroke-width: 0.32;' />
 </g>
 <g clip-path='url(#cpMC4wMHw1MTAuMjR8MC4wMHw1NjYuOTM=)'>
-<text x='183.23' y='519.88' text-anchor='end' style='font-size: 9.00px;fill: #4D4D4D; font-family: "Arial";' textLength='167.56px' lengthAdjust='spacingAndGlyphs'>Condensation of Prophase Chromosomes</text>
-<text x='183.23' y='487.11' text-anchor='end' style='font-size: 9.00px;fill: #4D4D4D; font-family: "Arial";' textLength='77.03px' lengthAdjust='spacingAndGlyphs'>DAP12 interactions</text>
-<text x='183.23' y='449.48' text-anchor='end' style='font-size: 9.00px;fill: #4D4D4D; font-family: "Arial";' textLength='160.06px' lengthAdjust='spacingAndGlyphs'>Regulation of APC/C activators between</text>
-<text x='183.23' y='459.20' text-anchor='end' style='font-size: 9.00px;fill: #4D4D4D; font-family: "Arial";' textLength='102.05px' lengthAdjust='spacingAndGlyphs'>G1/S and early anaphase</text>
-<text x='183.23' y='416.72' text-anchor='end' style='font-size: 9.00px;fill: #4D4D4D; font-family: "Arial";' textLength='125.04px' lengthAdjust='spacingAndGlyphs'>Degradation of the extracellular</text>
-<text x='183.23' y='426.44' text-anchor='end' style='font-size: 9.00px;fill: #4D4D4D; font-family: "Arial";' textLength='24.49px' lengthAdjust='spacingAndGlyphs'>matrix</text>
-<text x='183.23' y='388.81' text-anchor='end' style='font-size: 9.00px;fill: #4D4D4D; font-family: "Arial";' textLength='54.53px' lengthAdjust='spacingAndGlyphs'>Keratinization</text>
-<text x='183.23' y='351.18' text-anchor='end' style='font-size: 9.00px;fill: #4D4D4D; font-family: "Arial";' textLength='149.05px' lengthAdjust='spacingAndGlyphs'>Assembly of collagen fibrils and other</text>
-<text x='183.23' y='360.90' text-anchor='end' style='font-size: 9.00px;fill: #4D4D4D; font-family: "Arial";' textLength='82.99px' lengthAdjust='spacingAndGlyphs'>multimeric structures</text>
-<text x='183.23' y='323.27' text-anchor='end' style='font-size: 9.00px;fill: #4D4D4D; font-family: "Arial";' textLength='141.05px' lengthAdjust='spacingAndGlyphs'>Formation of the cornified envelope</text>
-<text x='183.23' y='290.51' text-anchor='end' style='font-size: 9.00px;fill: #4D4D4D; font-family: "Arial";' textLength='85.55px' lengthAdjust='spacingAndGlyphs'>Collagen degradation</text>
-<text x='183.23' y='257.74' text-anchor='end' style='font-size: 9.00px;fill: #4D4D4D; font-family: "Arial";' textLength='118.54px' lengthAdjust='spacingAndGlyphs'>Crosslinking of collagen fibrils</text>
-<text x='183.23' y='220.11' text-anchor='end' style='font-size: 9.00px;fill: #4D4D4D; font-family: "Arial";' textLength='76.01px' lengthAdjust='spacingAndGlyphs'>Activation of Matrix</text>
-<text x='183.23' y='229.83' text-anchor='end' style='font-size: 9.00px;fill: #4D4D4D; font-family: "Arial";' textLength='75.53px' lengthAdjust='spacingAndGlyphs'>Metalloproteinases</text>
-<text x='183.23' y='192.20' text-anchor='end' style='font-size: 9.00px;fill: #4D4D4D; font-family: "Arial";' textLength='87.03px' lengthAdjust='spacingAndGlyphs'>Complement cascade</text>
-<text x='183.23' y='159.43' text-anchor='end' style='font-size: 9.00px;fill: #4D4D4D; font-family: "Arial";' textLength='142.55px' lengthAdjust='spacingAndGlyphs'>Regulation of Complement cascade</text>
-<text x='183.23' y='116.95' text-anchor='end' style='font-size: 9.00px;fill: #4D4D4D; font-family: "Arial";' textLength='120.56px' lengthAdjust='spacingAndGlyphs'>Antigen Presentation: Folding,</text>
-<text x='183.23' y='126.67' text-anchor='end' style='font-size: 9.00px;fill: #4D4D4D; font-family: "Arial";' textLength='152.06px' lengthAdjust='spacingAndGlyphs'>assembly and peptide loading of class</text>
-<text x='183.23' y='136.39' text-anchor='end' style='font-size: 9.00px;fill: #4D4D4D; font-family: "Arial";' textLength='25.50px' lengthAdjust='spacingAndGlyphs'>I MHC</text>
-<text x='183.23' y='93.90' text-anchor='end' style='font-size: 9.00px;fill: #4D4D4D; font-family: "Arial";' textLength='128.03px' lengthAdjust='spacingAndGlyphs'>Extracellular matrix organization</text>
-<text x='183.23' y='61.13' text-anchor='end' style='font-size: 9.00px;fill: #4D4D4D; font-family: "Arial";' textLength='155.05px' lengthAdjust='spacingAndGlyphs'>Antigen processing-Cross presentation</text>
-<text x='183.23' y='28.36' text-anchor='end' style='font-size: 9.00px;fill: #4D4D4D; font-family: "Arial";' textLength='99.54px' lengthAdjust='spacingAndGlyphs'>ER-Phagosome pathway</text>
-<polyline points='183.23,516.66 188.90,516.66 ' style='stroke-width: 0.32; stroke-linecap: butt;' />
-<polyline points='183.23,483.89 188.90,483.89 ' style='stroke-width: 0.32; stroke-linecap: butt;' />
-<polyline points='183.23,451.12 188.90,451.12 ' style='stroke-width: 0.32; stroke-linecap: butt;' />
-<polyline points='183.23,418.35 188.90,418.35 ' style='stroke-width: 0.32; stroke-linecap: butt;' />
-<polyline points='183.23,385.59 188.90,385.59 ' style='stroke-width: 0.32; stroke-linecap: butt;' />
-<polyline points='183.23,352.82 188.90,352.82 ' style='stroke-width: 0.32; stroke-linecap: butt;' />
-<polyline points='183.23,320.05 188.90,320.05 ' style='stroke-width: 0.32; stroke-linecap: butt;' />
-<polyline points='183.23,287.28 188.90,287.28 ' style='stroke-width: 0.32; stroke-linecap: butt;' />
-<polyline points='183.23,254.52 188.90,254.52 ' style='stroke-width: 0.32; stroke-linecap: butt;' />
-<polyline points='183.23,221.75 188.90,221.75 ' style='stroke-width: 0.32; stroke-linecap: butt;' />
-<polyline points='183.23,188.98 188.90,188.98 ' style='stroke-width: 0.32; stroke-linecap: butt;' />
-<polyline points='183.23,156.21 188.90,156.21 ' style='stroke-width: 0.32; stroke-linecap: butt;' />
-<polyline points='183.23,123.44 188.90,123.44 ' style='stroke-width: 0.32; stroke-linecap: butt;' />
-<polyline points='183.23,90.68 188.90,90.68 ' style='stroke-width: 0.32; stroke-linecap: butt;' />
-<polyline points='183.23,57.91 188.90,57.91 ' style='stroke-width: 0.32; stroke-linecap: butt;' />
-<polyline points='183.23,25.14 188.90,25.14 ' style='stroke-width: 0.32; stroke-linecap: butt;' />
-<polyline points='256.79,541.99 256.79,536.32 ' style='stroke-width: 0.32; stroke-linecap: butt;' />
-<polyline points='369.93,541.99 369.93,536.32 ' style='stroke-width: 0.32; stroke-linecap: butt;' />
-<text x='256.79' y='550.20' text-anchor='middle' style='font-size: 10.00px;fill: #4D4D4D; font-family: "Arial";' textLength='44.85px' lengthAdjust='spacingAndGlyphs'>DT vs veh</text>
-<text x='369.93' y='550.20' text-anchor='middle' style='font-size: 10.00px;fill: #4D4D4D; font-family: "Arial";' textLength='68.26px' lengthAdjust='spacingAndGlyphs'>DT+Treg vs DT</text>
-<text x='470.38' y='172.61' text-anchor='middle' style='font-size: 10.00px;fill: #333333; font-family: "Arial";' textLength='31.70px' lengthAdjust='spacingAndGlyphs'>Counts</text>
-<circle cx='462.89' cy='187.28' r='3.70' style='stroke-width: 0.71; fill: #000000;' />
-<circle cx='462.89' cy='204.56' r='4.58' style='stroke-width: 0.71; fill: #000000;' />
-<circle cx='462.89' cy='221.84' r='5.19' style='stroke-width: 0.71; fill: #000000;' />
-<circle cx='462.89' cy='239.12' r='5.69' style='stroke-width: 0.71; fill: #000000;' />
-<text x='476.51' y='190.50' style='font-size: 9.00px;fill: #333333; font-family: "Arial";' textLength='5.00px' lengthAdjust='spacingAndGlyphs'>4</text>
-<text x='476.51' y='207.78' style='font-size: 9.00px;fill: #333333; font-family: "Arial";' textLength='5.00px' lengthAdjust='spacingAndGlyphs'>8</text>
-<text x='476.51' y='225.06' style='font-size: 9.00px;fill: #333333; font-family: "Arial";' textLength='10.01px' lengthAdjust='spacingAndGlyphs'>12</text>
-<text x='476.51' y='242.34' style='font-size: 9.00px;fill: #333333; font-family: "Arial";' textLength='10.01px' lengthAdjust='spacingAndGlyphs'>16</text>
-<image width='17.28' height='86.40' x='454.25' y='286.03' preserveAspectRatio='none' xlink:href='data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAEsCAYAAAACUNnVAAAAvElEQVQ4jbWSUQ7DIAxDX3LknWD3nlTvoxRKIB2Vup/KiWPHQPm8X3IMHMAxUcpTr32EW+yBQypTYhUUswSZwlYUmhjcGc6PtbptQes4Zrjt6CgHwubsTfSg1V/snx4eCZnhEvgGuKS+7IhN4IoE+CYVoo0UVGWRqLLf26Ki9aK2+l3GCIo4HGJMiDRGIMINNav9b69IsqF3QhxvNB+xgpSytRxGLtnqTD3Hyt7eOQ2u3n6IkVyJlndYjPYFE2jJWlttFhoAAAAASUVORK5CYII='/>
-<text x='476.51' y='368.33' style='font-size: 9.00px;fill: #333333; font-family: "Arial";' textLength='12.51px' lengthAdjust='spacingAndGlyphs'>1.0</text>
-<text x='476.51' y='350.39' style='font-size: 9.00px;fill: #333333; font-family: "Arial";' textLength='12.51px' lengthAdjust='spacingAndGlyphs'>1.5</text>
-<text x='476.51' y='332.45' style='font-size: 9.00px;fill: #333333; font-family: "Arial";' textLength='12.51px' lengthAdjust='spacingAndGlyphs'>2.0</text>
-<text x='476.51' y='314.51' style='font-size: 9.00px;fill: #333333; font-family: "Arial";' textLength='12.51px' lengthAdjust='spacingAndGlyphs'>2.5</text>
-<text x='476.51' y='296.57' style='font-size: 9.00px;fill: #333333; font-family: "Arial";' textLength='12.51px' lengthAdjust='spacingAndGlyphs'>3.0</text>
-<text x='454.25' y='277.89' style='font-size: 10.00px;fill: #333333; font-family: "Arial";' textLength='16.69px' lengthAdjust='spacingAndGlyphs'>-log</text>
-<text x='470.94' y='279.71' style='font-size: 7.00px;fill: #333333; font-family: "Arial";' textLength='7.79px' lengthAdjust='spacingAndGlyphs'>10</text>
-<text x='478.73' y='277.89' style='font-size: 10.00px;fill: #333333; font-family: "Arial";' textLength='20.55px' lengthAdjust='spacingAndGlyphs'>FDR</text>
-<line x1='454.25' y1='365.11' x2='457.70' y2='365.11' style='stroke-width: 0.38; stroke: #FFFFFF; stroke-linecap: butt;' />
-<line x1='454.25' y1='347.17' x2='457.70' y2='347.17' style='stroke-width: 0.38; stroke: #FFFFFF; stroke-linecap: butt;' />
-<line x1='454.25' y1='329.23' x2='457.70' y2='329.23' style='stroke-width: 0.38; stroke: #FFFFFF; stroke-linecap: butt;' />
-<line x1='454.25' y1='311.29' x2='457.70' y2='311.29' style='stroke-width: 0.38; stroke: #FFFFFF; stroke-linecap: butt;' />
-<line x1='454.25' y1='293.35' x2='457.70' y2='293.35' style='stroke-width: 0.38; stroke: #FFFFFF; stroke-linecap: butt;' />
-<line x1='468.07' y1='365.11' x2='471.53' y2='365.11' style='stroke-width: 0.38; stroke: #FFFFFF; stroke-linecap: butt;' />
-<line x1='468.07' y1='347.17' x2='471.53' y2='347.17' style='stroke-width: 0.38; stroke: #FFFFFF; stroke-linecap: butt;' />
-<line x1='468.07' y1='329.23' x2='471.53' y2='329.23' style='stroke-width: 0.38; stroke: #FFFFFF; stroke-linecap: butt;' />
-<line x1='468.07' y1='311.29' x2='471.53' y2='311.29' style='stroke-width: 0.38; stroke: #FFFFFF; stroke-linecap: butt;' />
-<line x1='468.07' y1='293.35' x2='471.53' y2='293.35' style='stroke-width: 0.38; stroke: #FFFFFF; stroke-linecap: butt;' />
+<text x='153.12' y='519.89' text-anchor='end' style='font-size: 9.00px;fill: #4D4D4D; font-family: "Arial Narrow";' textLength='137.44px' lengthAdjust='spacingAndGlyphs'>Condensation of Prophase Chromosomes</text>
+<text x='153.12' y='487.12' text-anchor='end' style='font-size: 9.00px;fill: #4D4D4D; font-family: "Arial Narrow";' textLength='63.19px' lengthAdjust='spacingAndGlyphs'>DAP12 interactions</text>
+<text x='153.12' y='449.49' text-anchor='end' style='font-size: 9.00px;fill: #4D4D4D; font-family: "Arial Narrow";' textLength='131.30px' lengthAdjust='spacingAndGlyphs'>Regulation of APC/C activators between</text>
+<text x='153.12' y='459.21' text-anchor='end' style='font-size: 9.00px;fill: #4D4D4D; font-family: "Arial Narrow";' textLength='83.71px' lengthAdjust='spacingAndGlyphs'>G1/S and early anaphase</text>
+<text x='153.12' y='416.72' text-anchor='end' style='font-size: 9.00px;fill: #4D4D4D; font-family: "Arial Narrow";' textLength='102.57px' lengthAdjust='spacingAndGlyphs'>Degradation of the extracellular</text>
+<text x='153.12' y='426.44' text-anchor='end' style='font-size: 9.00px;fill: #4D4D4D; font-family: "Arial Narrow";' textLength='20.10px' lengthAdjust='spacingAndGlyphs'>matrix</text>
+<text x='153.12' y='388.81' text-anchor='end' style='font-size: 9.00px;fill: #4D4D4D; font-family: "Arial Narrow";' textLength='44.73px' lengthAdjust='spacingAndGlyphs'>Keratinization</text>
+<text x='153.12' y='351.19' text-anchor='end' style='font-size: 9.00px;fill: #4D4D4D; font-family: "Arial Narrow";' textLength='122.28px' lengthAdjust='spacingAndGlyphs'>Assembly of collagen fibrils and other</text>
+<text x='153.12' y='360.91' text-anchor='end' style='font-size: 9.00px;fill: #4D4D4D; font-family: "Arial Narrow";' textLength='68.09px' lengthAdjust='spacingAndGlyphs'>multimeric structures</text>
+<text x='153.12' y='323.28' text-anchor='end' style='font-size: 9.00px;fill: #4D4D4D; font-family: "Arial Narrow";' textLength='115.70px' lengthAdjust='spacingAndGlyphs'>Formation of the cornified envelope</text>
+<text x='153.12' y='290.51' text-anchor='end' style='font-size: 9.00px;fill: #4D4D4D; font-family: "Arial Narrow";' textLength='70.16px' lengthAdjust='spacingAndGlyphs'>Collagen degradation</text>
+<text x='153.12' y='257.74' text-anchor='end' style='font-size: 9.00px;fill: #4D4D4D; font-family: "Arial Narrow";' textLength='97.24px' lengthAdjust='spacingAndGlyphs'>Crosslinking of collagen fibrils</text>
+<text x='153.12' y='220.11' text-anchor='end' style='font-size: 9.00px;fill: #4D4D4D; font-family: "Arial Narrow";' textLength='62.37px' lengthAdjust='spacingAndGlyphs'>Activation of Matrix</text>
+<text x='153.12' y='229.83' text-anchor='end' style='font-size: 9.00px;fill: #4D4D4D; font-family: "Arial Narrow";' textLength='61.96px' lengthAdjust='spacingAndGlyphs'>Metalloproteinases</text>
+<text x='153.12' y='192.20' text-anchor='end' style='font-size: 9.00px;fill: #4D4D4D; font-family: "Arial Narrow";' textLength='71.39px' lengthAdjust='spacingAndGlyphs'>Complement cascade</text>
+<text x='153.12' y='159.44' text-anchor='end' style='font-size: 9.00px;fill: #4D4D4D; font-family: "Arial Narrow";' textLength='116.94px' lengthAdjust='spacingAndGlyphs'>Regulation of Complement cascade</text>
+<text x='153.12' y='116.95' text-anchor='end' style='font-size: 9.00px;fill: #4D4D4D; font-family: "Arial Narrow";' textLength='98.89px' lengthAdjust='spacingAndGlyphs'>Antigen Presentation: Folding,</text>
+<text x='153.12' y='126.67' text-anchor='end' style='font-size: 9.00px;fill: #4D4D4D; font-family: "Arial Narrow";' textLength='124.75px' lengthAdjust='spacingAndGlyphs'>assembly and peptide loading of class</text>
+<text x='153.12' y='136.39' text-anchor='end' style='font-size: 9.00px;fill: #4D4D4D; font-family: "Arial Narrow";' textLength='20.91px' lengthAdjust='spacingAndGlyphs'>I MHC</text>
+<text x='153.12' y='93.90' text-anchor='end' style='font-size: 9.00px;fill: #4D4D4D; font-family: "Arial Narrow";' textLength='105.03px' lengthAdjust='spacingAndGlyphs'>Extracellular matrix organization</text>
+<text x='153.12' y='61.13' text-anchor='end' style='font-size: 9.00px;fill: #4D4D4D; font-family: "Arial Narrow";' textLength='127.19px' lengthAdjust='spacingAndGlyphs'>Antigen processing-Cross presentation</text>
+<text x='153.12' y='28.36' text-anchor='end' style='font-size: 9.00px;fill: #4D4D4D; font-family: "Arial Narrow";' textLength='81.64px' lengthAdjust='spacingAndGlyphs'>ER-Phagosome pathway</text>
+<polyline points='153.12,516.67 158.78,516.67 ' style='stroke-width: 0.32; stroke-linecap: butt;' />
+<polyline points='153.12,483.90 158.78,483.90 ' style='stroke-width: 0.32; stroke-linecap: butt;' />
+<polyline points='153.12,451.13 158.78,451.13 ' style='stroke-width: 0.32; stroke-linecap: butt;' />
+<polyline points='153.12,418.36 158.78,418.36 ' style='stroke-width: 0.32; stroke-linecap: butt;' />
+<polyline points='153.12,385.59 158.78,385.59 ' style='stroke-width: 0.32; stroke-linecap: butt;' />
+<polyline points='153.12,352.82 158.78,352.82 ' style='stroke-width: 0.32; stroke-linecap: butt;' />
+<polyline points='153.12,320.06 158.78,320.06 ' style='stroke-width: 0.32; stroke-linecap: butt;' />
+<polyline points='153.12,287.29 158.78,287.29 ' style='stroke-width: 0.32; stroke-linecap: butt;' />
+<polyline points='153.12,254.52 158.78,254.52 ' style='stroke-width: 0.32; stroke-linecap: butt;' />
+<polyline points='153.12,221.75 158.78,221.75 ' style='stroke-width: 0.32; stroke-linecap: butt;' />
+<polyline points='153.12,188.98 158.78,188.98 ' style='stroke-width: 0.32; stroke-linecap: butt;' />
+<polyline points='153.12,156.21 158.78,156.21 ' style='stroke-width: 0.32; stroke-linecap: butt;' />
+<polyline points='153.12,123.45 158.78,123.45 ' style='stroke-width: 0.32; stroke-linecap: butt;' />
+<polyline points='153.12,90.68 158.78,90.68 ' style='stroke-width: 0.32; stroke-linecap: butt;' />
+<polyline points='153.12,57.91 158.78,57.91 ' style='stroke-width: 0.32; stroke-linecap: butt;' />
+<polyline points='153.12,25.14 158.78,25.14 ' style='stroke-width: 0.32; stroke-linecap: butt;' />
+<polyline points='237.10,542.00 237.10,536.33 ' style='stroke-width: 0.32; stroke-linecap: butt;' />
+<polyline points='367.63,542.00 367.63,536.33 ' style='stroke-width: 0.32; stroke-linecap: butt;' />
+<text x='237.10' y='550.20' text-anchor='middle' style='font-size: 10.00px;fill: #4D4D4D; font-family: "Arial Narrow";' textLength='36.78px' lengthAdjust='spacingAndGlyphs'>DT vs veh</text>
+<text x='367.63' y='550.20' text-anchor='middle' style='font-size: 10.00px;fill: #4D4D4D; font-family: "Arial Narrow";' textLength='55.98px' lengthAdjust='spacingAndGlyphs'>DT+Treg vs DT</text>
+<text x='462.38' y='172.11' style='font-size: 10.00px;fill: #333333; font-family: "Arial Narrow";' textLength='13.67px' lengthAdjust='spacingAndGlyphs'>-log</text>
+<text x='476.05' y='173.93' style='font-size: 7.00px;fill: #333333; font-family: "Arial Narrow";' textLength='6.38px' lengthAdjust='spacingAndGlyphs'>10</text>
+<text x='482.43' y='172.11' style='font-size: 10.00px;fill: #333333; font-family: "Arial Narrow";' textLength='16.85px' lengthAdjust='spacingAndGlyphs'>FDR</text>
+<image width='17.28' height='86.40' x='464.32' y='180.74' preserveAspectRatio='none' xlink:href='data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAEsCAYAAAACUNnVAAAAp0lEQVQ4ja1SSRLDIAyT/OS+IP/uDO4hQAqRWdLeLEuWxYL38XIDAQOAUjnuvVq1EiqJspISj8ZWDeZxW5ZbMbbt/8WO7yVkN7Y5CHNarkCW3kmUCi28WAjx6qzDdsSL8GcDEpbmfilik+oNJRK2Y0nsTULSw345YPD6I05YCclekBnOxPyGUix0+TsG+bodOgFvs/4wnxBrK3GJQ51HJ9eBVk8+eMYPfHWjWlR+MqQAAAAASUVORK5CYII='/>
+<polyline points='478.15,259.82 481.60,259.82 ' style='stroke-width: 0.38; stroke: #FFFFFF; stroke-linecap: butt;' />
+<polyline points='478.15,241.88 481.60,241.88 ' style='stroke-width: 0.38; stroke: #FFFFFF; stroke-linecap: butt;' />
+<polyline points='478.15,223.94 481.60,223.94 ' style='stroke-width: 0.38; stroke: #FFFFFF; stroke-linecap: butt;' />
+<polyline points='478.15,206.00 481.60,206.00 ' style='stroke-width: 0.38; stroke: #FFFFFF; stroke-linecap: butt;' />
+<polyline points='478.15,188.06 481.60,188.06 ' style='stroke-width: 0.38; stroke: #FFFFFF; stroke-linecap: butt;' />
+<polyline points='467.78,259.82 464.32,259.82 ' style='stroke-width: 0.38; stroke: #FFFFFF; stroke-linecap: butt;' />
+<polyline points='467.78,241.88 464.32,241.88 ' style='stroke-width: 0.38; stroke: #FFFFFF; stroke-linecap: butt;' />
+<polyline points='467.78,223.94 464.32,223.94 ' style='stroke-width: 0.38; stroke: #FFFFFF; stroke-linecap: butt;' />
+<polyline points='467.78,206.00 464.32,206.00 ' style='stroke-width: 0.38; stroke: #FFFFFF; stroke-linecap: butt;' />
+<polyline points='467.78,188.06 464.32,188.06 ' style='stroke-width: 0.38; stroke: #FFFFFF; stroke-linecap: butt;' />
+<text x='487.08' y='263.05' style='font-size: 9.00px;fill: #333333; font-family: "Arial Narrow";' textLength='10.26px' lengthAdjust='spacingAndGlyphs'>1.0</text>
+<text x='487.08' y='245.11' style='font-size: 9.00px;fill: #333333; font-family: "Arial Narrow";' textLength='10.26px' lengthAdjust='spacingAndGlyphs'>1.5</text>
+<text x='487.08' y='227.17' style='font-size: 9.00px;fill: #333333; font-family: "Arial Narrow";' textLength='10.26px' lengthAdjust='spacingAndGlyphs'>2.0</text>
+<text x='487.08' y='209.23' style='font-size: 9.00px;fill: #333333; font-family: "Arial Narrow";' textLength='10.26px' lengthAdjust='spacingAndGlyphs'>2.5</text>
+<text x='487.08' y='191.29' style='font-size: 9.00px;fill: #333333; font-family: "Arial Narrow";' textLength='10.26px' lengthAdjust='spacingAndGlyphs'>3.0</text>
+<text x='477.87' y='297.27' text-anchor='middle' style='font-size: 10.00px;fill: #333333; font-family: "Arial Narrow";' textLength='25.98px' lengthAdjust='spacingAndGlyphs'>Counts</text>
+<circle cx='471.02' cy='312.44' r='3.70' style='stroke-width: 0.71; fill: #000000;' />
+<circle cx='471.02' cy='329.72' r='4.58' style='stroke-width: 0.71; fill: #000000;' />
+<circle cx='471.02' cy='347.00' r='5.19' style='stroke-width: 0.71; fill: #000000;' />
+<circle cx='471.02' cy='364.28' r='5.69' style='stroke-width: 0.71; fill: #000000;' />
+<text x='485.14' y='315.66' style='font-size: 9.00px;fill: #333333; font-family: "Arial Narrow";' textLength='4.10px' lengthAdjust='spacingAndGlyphs'>4</text>
+<text x='485.14' y='332.94' style='font-size: 9.00px;fill: #333333; font-family: "Arial Narrow";' textLength='4.10px' lengthAdjust='spacingAndGlyphs'>8</text>
+<text x='485.14' y='350.22' style='font-size: 9.00px;fill: #333333; font-family: "Arial Narrow";' textLength='8.21px' lengthAdjust='spacingAndGlyphs'>12</text>
+<text x='485.14' y='367.50' style='font-size: 9.00px;fill: #333333; font-family: "Arial Narrow";' textLength='8.21px' lengthAdjust='spacingAndGlyphs'>16</text>
 </g>
 </svg>

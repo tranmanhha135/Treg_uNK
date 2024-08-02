@@ -102,7 +102,7 @@ bossTheme_bar <- function(base_size, base_family="Arial Narrow", title_family = 
       panel.border = element_blank(),
       axis.line = element_line(colour = "black", size = 0.15)
     )
-}
+}`
 
 saveRDS(bossTheme_bar, here::here("0_data/functions/bossTheme_bar.rds"))
 saveRDS(bossTheme, here::here("0_data/functions/bossTheme.rds"))

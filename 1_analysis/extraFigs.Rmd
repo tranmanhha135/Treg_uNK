@@ -25,6 +25,9 @@ library(readr)
 library(tibble)
 library(reshape2)
 library(tidyverse)
+library(readxl)
+library(showtext)
+library(qs)
 
 # Visualisation:
 library(kableExtra)
@@ -35,16 +38,20 @@ library(extrafont)
 library(VennDiagram)
 
 # Custom ggplot
+library(ggplotify)
+library(ComplexHeatmap)
 library(gridExtra)
 library(ggbiplot)
 library(ggrepel)
 library(rrvgo)
-library(d3treeR)
 library(plotly)
 library(GOSemSim)
 library(data.table)
+library(igraph)
 
 # Bioconductor packages:
+library(RColorBrewer)
+library(CellChat)
 library(edgeR)
 library(limma)
 library(Glimma)
@@ -57,6 +64,11 @@ library(pandoc)
 library(knitr)
 opts_knit$set(progress = FALSE, verbose = FALSE)
 opts_chunk$set(warning=FALSE, message=FALSE, echo=FALSE)
+
+# test <- ggplot(cars,aes(speed,dist))+ geom_point()
+# 
+# ggsave(filename = "test.svg", plot = test, path = here::here("2_plots/"))
+# ggsave(filename = "sampleHeat.svg",plot = sampleHeatmap,path = here::here("2_plots/"),width = 25.5,height = 20,units = "cm")
 
 ```
 
@@ -97,9 +109,9 @@ firstCap <- function(x) {
 
 ```
 
-## Extra Figures
+# Functional heatmap
 
-```{r functionalHeat}
+```{r functionalHeat, results='hide', fig.height=9}
 enrichGO_sig <-  readRDS(here::here("0_data/rds_objects/enrichGO_sig.rds"))
 enrichKEGG_sig <-  readRDS(here::here("0_data/rds_objects/enrichKEGG_sig.rds"))
 reactome_sig <-  readRDS(here::here("0_data/rds_objects/reactome_sig.rds"))
@@ -126,7 +138,6 @@ all_ora_DTvPBS <- rbind(go[[1]],kegg[[1]], react[[1]], ipa[[1]])
 all_ora_TregvDT <- rbind(go[[3]],kegg[[3]], react[[3]], ipa[[3]])
 
 
-library(ComplexHeatmap)
 ora_id <- c("GO:0140507", "GO:0042267", "GO:0001910", "GO:0046703", "GO:0001913","GO:0019835","mmu04612","R-MMU-1236974","Interferon gamma signaling","Interferon alpha/beta signaling", "Neutrophil degranulation")
 all_ora_DTvPBS[all_ora_DTvPBS$ID %in% ora_id,2]
 
@@ -168,7 +179,7 @@ library(ggplotify)
 
 createHeat <- function(matrix, compIndex, col, legend){
   anno <- data.frame("Database" = c(rep("GO",6), rep("KEGG", 1), "Reactome",rep("IPA", 3)),
-                   "Constrast" = rep(Comp[compIndex], 11))
+                   "Contrast" = rep(Comp[compIndex], 11))
   breaks <-seq(-4,4, by = 1)
   # anno <- data.frame("Database" = c(rep("GO",6), rep("KEGG", 1), "Reactome", rep("GO",6), rep("KEGG", 1), "Reactome"),
   #                    "Constrast" = c(rep("DT vs PBS", 8), rep("Treg vs DT", 8)))
@@ -209,7 +220,7 @@ createHeat <- function(matrix, compIndex, col, legend){
     annotation_legend = legend,
     # legend_labels = T,
     annotation_row = anno,
-    annotation_colors = list("Database" = anno_col, "Constrast" = anno_col_2),
+    annotation_colors = list("Database" = anno_col, "Contrast" = anno_col_2),
     annotation_names_row = col,
     
     # Fonts
@@ -237,50 +248,36 @@ createHeat <- function(matrix, compIndex, col, legend){
 
 mat1 <- mat1 %>% as.data.frame() %>%  dplyr::select(starts_with(LETTERS))
 mat2 <- mat2 %>% as.data.frame() %>%  dplyr::select(starts_with(LETTERS))
+mat2 <- mat2 %>% dplyr::slice(c(1,4,2,3,5:11))
 
-p1 <- createHeat(mat1 %>% as.matrix(), 1, col = F,legend = T)
-p2 <- createHeat(mat2 %>% as.matrix(), 3, col = T,legend = T)
+
+p1 <- createHeat(mat1[,order(colnames(mat1))] %>% as.matrix(), 1, col = T,legend = T)
+p2 <- createHeat(mat2[,order(colnames(mat2))] %>% as.matrix(), 3, col = T,legend = T)
 
 # draw(p, merge_legend = T, heatmap_legend_side = "right", 
 #        annotation_legend_side = "right")
 
 # p3 <- createHeat(mat %>% as.matrix(),)
 sampleHeatmap <- p1/ p2
-sampleHeatmap
-png(filename = here::here(paste0("2_plots/functionalHeat.png")),width = 23,height = 18, res = 900, units = "cm")
-sampleHeatmap
-dev.off()
+# sampleHeatmap
 
-sampleHeatmap
-# ggsave(filename = "sampleHeat.svg",plot = sampleHeatmap,path = here::here("2_plots/"),width = 25.5,height = 20,units = "cm")
+saveRDS(sampleHeatmap, here::here("sampleHeatmap.rds"))
+# svg(filename = here::here(paste0("2_plots/functionalHeat.svg")))
+# sampleHeatmap
+# dev.off()
+# # 
+# sampleHeatmap
 
-```
-
-
-
-
-```{r}
-combine_kegg+combine_react
-
-combine_kegg_react <- wrap_plots(list(combine_kegg, combine_react)) + 
-  plot_layout(guides = "collect") +
-  plot_annotation(tag_levels = "A") & 
-  bossTheme(base_size = 12, legend = "none") &
-  theme(legend.box.margin = margin(-5, 0, 0, -50, unit = "mm"),
-        plot.tag.position = "topleft",
-        plot.tag = element_text(family = "Arial", face='plain', size = 18),
-        # plot.margin = margin(1, 1, 1, 0, unit = "pt"),
-        axis.text.y = element_text(family = "Arial Narrow", face = "plain", size = 10, hjust = 1),
-        axis.text.x = element_text(family =  "Arial", face = "plain", size = 11, hjust = 1, vjust = 1, angle = 40))
-
-ggsave(filename = "combine_kegg_react_dotplot.png", plot = combine_kegg_react, path = here::here("2_plots/3_FA/"),
-           width = 21, height = 27, units = "cm")
-
-combine_kegg_react
+ggsave(filename = "sampleHeat.svg",plot = sampleHeatmap,path = here::here("2_plots/"),width = 25.5,height = 20,units = "cm")
 
 ```
 
-```{r}
+```{r functionalHmap, fig.height=9}
+knitr::include_graphics("assets/functional_hmap.png", error = FALSE)
+```
+
+
+```{r figArrange, eval=FALSE, include=FALSE}
 library(patchwork)
 library(figpatch)
 images <- list(pca = fig(here::here("2_plots/1_QC/3d_pca.png"),aspect.ratio = "free"),
@@ -307,4 +304,797 @@ fig <- images[[1]] + images[[2]] + images[[3]] +
 
 ggsave(filename = "figure.png", plot = fig, path = here::here("2_plots/"), width = 23, height = 27, units = "cm",dpi = 900)
 ```
+
+
+# KEGG + Reactome
+
+```{r kegg_react, fig.height=10}
+combine_kegg <- readRDS(here::here("0_data/rds_plots/kegg_combined_dotPlot.rds"))
+combine_react <- readRDS(here::here("0_data/rds_plots/react_combined_dotPlot.rds"))
+
+# combine_kegg+combine_react
+
+combine_kegg_react <- wrap_plots(list(combine_kegg, combine_react)) + 
+  plot_layout(guides = "collect") +
+  plot_annotation(tag_levels = "A") & 
+  bossTheme(base_size = 12, legend = "right") &
+  theme(legend.box.margin = margin(0, 0, 0, 0, unit = "mm"),
+        plot.tag.position = "topleft",
+        plot.tag = element_text(family = "Arial", face='plain', size = 18),
+        # plot.margin = margin(1, 1, 1, 0, unit = "pt"),
+        axis.text.y = element_text(family = "Arial Narrow", face = "plain", size = 10, hjust = 1),
+        axis.text.x = element_text(family =  "Arial", face = "plain", size = 11, hjust = 1, vjust = 1, angle = 40))
+
+# ggsave(filename = "combine_kegg_react_dotplot.png", plot = combine_kegg_react, path = here::here("2_plots/3_FA/"),
+#            width = 21, height = 27, units = "cm")
+
+knitr::include_graphics("assets/kegg_react.png", error = FALSE)
+
+
+```
+
+
+# CellchatDB & Jia-Peng et al 2022 sc paper {.tabset .tabset-pills}
+
+See [Jia-Peng et al (2022)](https://www.ncbi.nlm.nih.gov/pmc/articles/PMC8817544/) paper for more details
+
+## CellchatDB subsetted by Jia-Peng et al 2022 
+
+```{r cellChatDB_scPaper}
+scFull <- read_excel(path = here::here("0_data/rawData/Table S1 13578_2022_749_MOESM1_ESM (1).xlsx"), sheet = "Table-S1-d6", skip = 2) %>% dplyr::filter(cell_type %in% c("T","NK","NKp")) %>%  type.convert(.,as.is = F)
+
+sc <- scFull %>% group_by(cell_type) %>% group_split(.) %>% setNames(levels(scFull$cell_type))
+
+# venn.diagram(x= list( "NK" = sc[[1]]$gene_symbol %>% as.character(),
+                      # "NKp"= sc[[2]]$gene_symbol %>% as.character(),
+                      # "T"  = sc[[3]]$gene_symbol %>% as.character()),disable.logging = T,filename = NULL) %>% grid.draw()
+
+extract_substrings <- function(text) {
+
+  # substrings <- gsub("\\+", " ", text)          # Replace '+' with space
+  # substrings <- gsub("-", " ", substrings)            # Replace '-' with space
+  substrings <- gsub(",", "", text)
+  # Split words if there's a space
+  words <- unlist(strsplit(substrings, " "))
+  
+  return(words)
+}
+
+# Separate the ligand and receptor gene symbol.
+CellChatDB <- CellChatDB.mouse$interaction
+CellChatDB$ligand.symbol_2 <- sapply(CellChatDB$ligand.symbol, extract_substrings)
+CellChatDB$receptor.symbol_2 <- sapply(CellChatDB$receptor.symbol, extract_substrings)
+CellChatDB <- unnest(CellChatDB, ligand.symbol_2)
+CellChatDB <- unnest(CellChatDB, receptor.symbol_2)
+
+
+# t  <- scFull %>% dplyr::filter(gene_symbol %in% CellChatDB$ligand.symbol_2 | gene_symbol %in% CellChatDB$receptor.symbol_2)
+# t2 <- scFull %>% dplyr::filter(gene_symbol %in% CellChatDB$ligand.symbol_2 & gene_symbol %in% CellChatDB$receptor.symbol_2)
+# t3 <- scFull %>%
+#   filter(cell_type == c("T","NK") & gene_symbol %in% CellChatDB$ligand.symbol_2)
+# %>% 
+#   filter(cell_type == "NK" & gene_symbol %in% CellChatDB$receptor.symbol_2)
+#   
+# t4 <- scFull %>%
+#   filter(cell_type == "NK" & gene_symbol %in% CellChatDB$ligand.symbol_2) %>% 
+#   filter(cell_type == "T" & gene_symbol %in% CellChatDB$receptor.symbol_2)
+# 
+# 
+# scFull %>%
+#   filter((cell_type == "T" & gene_symbol %in% CellChatDB$ligand.symbol_2) &
+#          (cell_type == "NK" & gene_symbol %in% CellChatDB$receptor.symbol_2))
+# 
+# scFull %>% dplyr::filter(gene_symbol %in% CellChatDB$ligand.symbol_2 | gene_symbol %in% CellChatDB$receptor.symbol_2) %>%
+#   dplyr::mutate_if(is.numeric, funs(as.character(signif(.,3)))) %>% 
+#   DT(.,"Table 1: Genes expressed by T, NK, or pNK cell from Jia-Peng et al. (2022) that are either ligands or receptor in CellChatDB")
+# 
+# scFull %>% dplyr::filter(gene_symbol %in% CellChatDB$ligand.symbol_2 & gene_symbol %in% CellChatDB$receptor.symbol_2) %>%
+#   dplyr::mutate_if(is.numeric, funs(as.character(signif(.,3)))) %>% 
+#   DT(.,"Table 2: Genes expressed by T, NK, or pNK cell from Jia-Peng et al. (2022) that are ligands and receptor in CellChatDB")
+# 
+# scFull %>%
+#   filter(cell_type == "T" & gene_symbol %in% CellChatDB$ligand.symbol_2) %>% 
+#   filter(cell_type == "NK" & gene_symbol %in% CellChatDB$receptor.symbol_2) %>%
+#   dplyr::mutate_if(is.numeric, funs(as.character(signif(.,3)))) %>% 
+#   DT(.,"Table 3: Genes expressed by T, NK, or pNK cell from Jia-Peng et al. (2022) that are ligands and receptor in CellChatDB")
+
+db_T.NK <- CellChatDB %>% 
+  filter(ligand.symbol_2 %in% sc[["T"]]$gene_symbol & receptor.symbol_2 %in% sc[["NK"]]$gene_symbol) %>% 
+  dplyr::select(c("interaction_name_2","pathway_name",  "ligand.symbol_2", "receptor.symbol_2","evidence"))
+
+db_T.pNK <- CellChatDB %>% 
+  filter(ligand.symbol_2 %in% sc[["T"]]$gene_symbol & receptor.symbol_2 %in% sc[["NKp"]]$gene_symbol) %>% 
+  dplyr::select(c("interaction_name_2","pathway_name",  "ligand.symbol_2", "receptor.symbol_2","evidence"))
+
+db_NK.T <- CellChatDB %>% 
+  filter(ligand.symbol_2 %in% sc[["NK"]]$gene_symbol & receptor.symbol_2 %in% sc[["T"]]$gene_symbol) %>% 
+  dplyr::select(c("interaction_name_2","pathway_name",  "ligand.symbol_2", "receptor.symbol_2","evidence"))
+
+DT(db_T.NK,"Table 1: Potential T-NK cell-cell communication from Jia-Peng et al (2022)")
+
+DT(db_T.pNK,"Table 2: Potential T-pNK cell-cell communication from Jia-Peng et al (2022)")
+
+DT(db_NK.T,"Table 3: Potential NK-T cell-cell communication from Jia-Peng et al (2022)")
+
+
+# scFull_subsetByDB <- scFull %>% dplyr::filter(gene_symbol %in% CellChatDB$ligand.symbol_2 | gene_symbol %in% CellChatDB$receptor.symbol_2)
+#                                               
+# sc_subsetByDB <- scFull_subsetByDB %>% group_by(cell_type) %>% group_split(.) %>% setNames(levels(scFull_subsetByDB$cell_type))
+# 
+# # venn.diagram(x= list( "NK" = sc_subsetByDB[[1]]$gene_symbol %>% as.character(),
+# #                       "NKp"= sc_subsetByDB[[2]]$gene_symbol %>% as.character(),
+# #                       "T"  = sc_subsetByDB[[3]]$gene_symbol %>% as.character()),disable.logging = T,filename = NULL) %>% grid.draw()
+# 
+# CellChatDB_subsetByscFull <- CellChatDB %>% dplyr::filter(ligand %in% scFull$gene_symbol | receptor %in% scFull$gene_symbol) %>%  dplyr::select(-receptor) %>% dplyr::distinct()
+```
+
+
+## Heatmaps
+
+```{r cellChatDB_heat}
+logCPM_combined <- cpm(dge, prior.count=3, log=TRUE)
+rownames(logCPM_combined) <- dge$genes$gene
+
+
+#merge the log cpm counts with the top 30 common de genes
+logCPM_combined <- logCPM_combined[c("H2-T23","Klrd1","Thy1","Itgb2","Itgax","Adgre5"),]
+logCPM_combined <- logCPM_combined[,c(6,7,8,9,10,11,1,2,3,4,5,12,13,14,15,16)]
+
+#df for heatmap annotation of sample type
+anno_combined <- factor(dge$samples$group, levels = c("veh", "DT", "DT+Treg")) %>% as.data.frame()
+anno_combined <- anno_combined[c(6,7,8,9,10,11,1,2,3,4,5,12,13,14,15,16),]%>% as.data.frame()
+
+colnames(anno_combined) <- "Groups"
+
+
+heat_combined <- ComplexHeatmap::pheatmap(
+    mat = logCPM_combined,
+    color = colorRampPalette(rev(c("#FB8072","#FDB462","#ffffd5","#8DD3C7","#80B1D3")))(300),
+    scale = "row",
+    cluster_cols = F,
+    cluster_rows = F,
+    border_color = "white",
+    gaps_col = c(6,11),
+    gaps_row = c(2),
+    # cutree_cols = 3,
+    # cutree_rows = 6,
+    # treeheight_row = 40,
+    # treeheight_col = 30,
+    show_colnames = T,
+    clustering_distance_rows = "euclidean",
+    # main = paste0("Top ", nrow(logCPM_combined), " significant DEGs"),
+
+
+    legend = T,
+
+    heatmap_legend_param = list(title = "Expression\nZ-score",
+                                direction= "vertical",
+                                merge_legend = T,
+                                legend_direction = "vertical",
+                                legend_width = unit(5, "cm")),
+
+    # annotation = T,
+    annotation_legend = T,
+    annotation_col = anno_combined,
+    annotation_colors = list("Groups" = groupColour),
+    annotation_names_col = T,
+    # annotation_legend_param = list(direction = "horizontal"),
+
+    fontfamily = "Arial Narrow",
+    fontsize = 12,
+    fontsize_col = 12,
+    fontsize_number = 12,
+    fontsize_row = 12,
+    labels_row = as.expression(lapply(rownames(logCPM_combined), function(a) bquote(italic(.(a)))))
+  )
+
+draw(heat_combined, merge_legend = T, heatmap_legend_side = "right",
+    annotation_legend_side = "right")
+
+# ggsave(filename = "LRheat.svg", plot = heat_combined, path = here::here("2_plots/"),width = 25.5,height = 20,units = "cm")
+
+```
+
+```{r cellChatDB_heat_logFC}
+lm_all <- readRDS(here::here("0_data/rds_objects/lm_all.rds"))
+lm_all_LR <- lapply(lm_all, function(x) {
+  x %>% dplyr::filter(symbol %in% c("H2-T23","Thy1","Klrd1","Itgb2","Itgax","Adgre5")) %>% dplyr::select(c("gene","logFC","adj.P.Val")) 
+})
+
+LR_mat <- lm_all_LR[[1]] %>% 
+  left_join(lm_all_LR[[3]], by = "gene") %>% column_to_rownames("gene") %>% 
+  magrittr::set_colnames(c("DT vs veh", "DT vs veh (adj.P.Val)","DT+Treg vs DT", "DT+Treg vs DT (adj.P.Val)"))
+
+LR_mat_anno <- LR_mat[,c(2,4)] %>% 
+  magrittr::set_colnames(c("DT vs veh","DT+Treg vs DT")) %>% 
+  dplyr::mutate_if(is.numeric, funs(as.character(signif(.,3)))) %>% 
+  dplyr::mutate(across(c(`DT vs veh`,`DT+Treg vs DT`), ~ case_when(. < 0.001 ~ "****",
+                                                                   . < 0.01 ~ "***",
+                                                                   . < 0.05 ~ "**",
+                                                                   . < 0.1 ~ "*",
+                                                                   TRUE ~ " ")))
+
+LR_heat <- ComplexHeatmap::pheatmap(
+    mat = LR_mat[,c(1,3)],
+    color = colorRampPalette(rev(c("#FB8072","#FDB462","#ffffd5","#8DD3C7","#80B1D3")))(300),
+    scale = "none",
+    cluster_cols = F,
+    cluster_rows = F,
+    gaps_col = c(1),
+    gaps_row = c(2),
+    angle_col = "0",
+    border_color = "white",
+    display_numbers = LR_mat_anno %>% as.matrix,
+    # gaps_col = c(6,11),
+    # cutree_cols = 3,
+    # cutree_rows = 6,
+    # treeheight_row = 40,
+    # treeheight_col = 30,
+    show_colnames = T,
+    # clustering_distance_rows = "euclidean",
+    # main = paste0("Top ", nrow(logCPM_combined), " significant DEGs"),
+
+
+    legend = T,
+
+    heatmap_legend_param = list(title = "Expression\nZ-score",
+                                direction= "vertical",
+                                merge_legend = T,
+                                legend_direction = "vertical",
+                                legend_width = unit(5, "cm")),
+
+    # annotation = T,
+    
+
+    fontfamily = "Arial Narrow",
+    fontsize = 12,
+    fontsize_col = 12,
+    fontsize_number = 12,
+    fontsize_row = 12
+  )
+
+draw(LR_heat, merge_legend = T, heatmap_legend_side = "right", 
+    annotation_legend_side = "right")
+```
+
+# Jiang et al (2023) trophoblast SC paper {.tabset .tabset-pills}
+
+See [Jiang et al (2023)](https://www.nature.com/articles/s41421-022-00513-z) for full paper
+
+```{r trophoblastScPaper}
+JiangSC <- read_csv(here::here("0_data/rawData/Jiang_TableS2_41421_2022_513_MOESM3_ESM.csv"))
+
+lm_sig_JiangSC_subset <- lapply(seq_along(lm_sig), function(x){
+  lm_sig[[x]] %>% dplyr::filter(gene %in% JiangSC$gene) %>% merge(.,JiangSC[,c("gene", "cluster")], by= "gene") %>% 
+    dplyr::mutate(comp = names(lm_sig)[x],
+                  clustAnno = case_when(cluster == 1 ~ "TSCs & ExE",
+                                        cluster == 2 | cluster == 3 ~ "LaTP",
+                                        cluster == 4 | cluster == 5 ~ "SynTI precusor",
+                                        cluster == 6 | cluster == 7 | cluster == 8 ~ "S-TGC precusor",
+                                        cluster == 9 ~ "S-TGC",
+                                        cluster == 10 ~ "1' P-TGC",
+                                        cluster == 11 ~ "2' P-TGC",
+                                        cluster == 12 ~ "2' P-TGC precusor",
+                                        cluster == 13 ~ "EPC cell",
+                                        cluster == 14 | cluster == 15 ~ "SpT",
+                                        cluster == 16 ~ "Gly-T",
+                                        cluster == 17 ~ "Spa-TGC",
+                                        cluster == 18 ~ "EPC migratory cell",
+                                        cluster == 19 ~ "SynTII precusor"))
+}) %>% setNames(.,names(lm_sig))
+
+# lapply(lm_sig_JiangSC_subset, function(x) x %>% dplyr::select(c("gene", "logFC", "AveExpr", "P.Value", "adj.P.Val", "description", "entrezid","expression", "cluster"))) %>% writexl::write_xlsx(x = ., here::here("3_output/sig_de_JiangSC_subset.xlsx"))
+
+subSet_lm_sig <- rbind(lm_sig_JiangSC_subset[[1]],lm_sig_JiangSC_subset[[3]])
+
+```
+
+## Large Heatmaps {.tabset .tabset-pills}
+
+Large heatmaps contains all significant DEGs that matched genes associated with known trophoblast cell types identified in Jiang et al 2023 from `DT vs veh` **or** `DT+Treg vs DT`. Therefore DEGs that are COMMON and UNIQUE to both comparisons.
+
+### Heatmap 1
+
+LogCPM of all 127 significant DEGs that are expressed by various trophoblasts cell types identified in Jiang et al (2023) paper. Cell type annotations not include as that will be too overwhelming.
+
+```{r hmap1, fig.height=14}
+logCPM_combined <- cpm(dge, prior.count=3, log=TRUE)
+rownames(logCPM_combined) <- dge$genes$gene
+
+
+#merge the log cpm counts with the top 30 common de genes
+logCPM_combined <- logCPM_combined[subSet_lm_sig$gene %>% as.factor() %>% levels(),]
+logCPM_combined <- logCPM_combined[,c(6,7,8,9,10,11,1,2,3,4,5,12,13,14,15,16)]
+
+#df for heatmap annotation of sample type
+anno_combined <- factor(dge$samples$group, levels = c("veh", "DT", "DT+Treg")) %>% as.data.frame()
+anno_combined <- anno_combined[c(6,7,8,9,10,11,1,2,3,4,5,12,13,14,15,16),]%>% as.data.frame()
+
+colnames(anno_combined) <- "Groups"
+
+
+hmap1 <-  ComplexHeatmap::pheatmap(
+    mat = logCPM_combined,
+    color = colorRampPalette(rev(c("#FB8072","#FDB462","#ffffd5","#8DD3C7","#80B1D3")))(300),
+    scale = "row",
+    cluster_cols = F,
+    cluster_rows = T,
+    border_color = "white",
+    gaps_col = c(6,11),
+    # gaps_row = c(2),
+    # cutree_cols = 3,
+    # cutree_rows = 6,
+    # treeheight_row = 40,
+    # treeheight_col = 30,
+    show_colnames = T,
+    clustering_distance_rows = "euclidean",
+    # main = paste0("Top ", nrow(logCPM_combined), " significant DEGs"),
+
+
+    legend = T,
+
+    heatmap_legend_param = list(title = "Expression\nZ-score",
+                                direction= "vertical",
+                                merge_legend = T,
+                                legend_direction = "vertical",
+                                legend_width = unit(5, "cm")),
+
+    # annotation = T,
+    annotation_legend = T,
+    annotation_col = anno_combined,
+    annotation_colors = list("Groups" = groupColour),
+    annotation_names_col = T,
+    # annotation_legend_param = list(direction = "horizontal"),
+
+    fontfamily = "Arial Narrow",
+    fontsize = 12,
+    fontsize_col = 12,
+    fontsize_number = 12,
+    fontsize_row = 12,
+    labels_row = as.expression(lapply(rownames(logCPM_combined), function(a) bquote(italic(.(a)))))
+  )
+
+draw(hmap1, merge_legend = T, heatmap_legend_side = "right", 
+    annotation_legend_side = "right")
+
+```
+
+### Heatmap 2
+
+Grey means that gene was not significantly differentially expressed in that comparison.
+
+```{r lHmap2, fig.height=9}
+# Option 2.1
+mat <- subSet_lm_sig %>% dplyr::select(gene, logFC, comp, clustAnno) %>% distinct() %>%  pivot_wider(names_from = comp, values_from = logFC) %>% 
+  group_by(gene) %>%
+  arrange(clustAnno) %>% 
+  mutate(clustAnno_id = paste0("clustAnno", row_number())) %>%
+  ungroup() %>% 
+  pivot_wider(names_from = clustAnno_id, values_from = clustAnno, names_prefix = "")
+
+
+mat[,c(1,4:ncol(mat))][is.na(mat[, c(1,4:ncol(mat))])] <- "empty"
+
+rowAnno_colours <- c("white",colorRampPalette(brewer.pal(9, "Set1"))(14))
+names(rowAnno_colours) <- c("empty",levels(subSet_lm_sig$clustAnno %>% as.factor()))
+
+m <- function(range){
+  hm <- pheatmap(
+      # MAIN
+      mat = mat[range,1:3] %>% column_to_rownames("gene") %>% as.matrix(),
+      # display_numbers = mat1_anno,
+      color = colorRampPalette(rev(c("#FB8072","#FDB462","grey95","#8DD3C7","#80B1D3")))(length(seq(-3,3, length.out=(4 + 1)))),
+      cellwidth = 30,
+      scale = "none",
+      
+      # Col
+      cluster_cols = F,
+      border_color = "white",
+      angle_col = "45",
+      # gaps_row = c(23,30,38),
+      
+      # Row
+      cluster_rows = F,
+      
+      # Labs
+      show_colnames = T,
+      show_rownames = T,
+      legend = F,
+      breaks = seq(-3,3, length.out=(4 + 1)),
+      heatmap_legend_param = list(title = "logFC", legend_width = unit(7, "cm")),
+      
+      # Annotation
+      annotation_legend = F,
+      # legend_labels = T,
+      annotation_row = mat[range,c(1,4:ncol(mat))] %>% column_to_rownames("gene") %>% as.data.frame(),
+      annotation_colors = list("clustAnno1" = rowAnno_colours,
+                               "clustAnno2" = rowAnno_colours,
+                               "clustAnno3" = rowAnno_colours,
+                               "clustAnno4" = rowAnno_colours,
+                               "clustAnno5" = rowAnno_colours,
+                               "clustAnno6" = rowAnno_colours,
+                               "clustAnno7" = rowAnno_colours,
+                               "clustAnno8" = rowAnno_colours),
+      
+      annotation_names_row =F,
+      
+      # Fonts
+      fontfamily = "Arial Narrow",
+      fontsize = 12,
+      fontsize_col = 12,
+      fontsize_number =12,
+      fontsize_row = 10
+      
+    ) %>% as.ggplot()
+  return(hm)
+}
+
+t <- m(1:43) + plot_spacer() + m(44:86) + plot_spacer() + m(87:129) +
+  plot_layout(widths = c(3,-1.5,3,-1.5,3))
+
+# ggsave(filename = "trophoblast_hmap_1.svg", plot = t, path = here::here("2_plots/"),
+#            width = 21, height = 27, units = "cm")
+
+
+knitr::include_graphics("assets/trophoblast_large_hmap2.png", error = FALSE)
+```
+
+### Heatmap 3
+
+Heatmap with all logFC values where significance indicated by asterisks 
+
+```{r lHmap3, fig.height=9}
+# Option 2.1
+mat <- subSet_lm_sig %>% dplyr::select(gene, logFC, comp, clustAnno) %>% distinct() %>%  pivot_wider(names_from = comp, values_from = logFC) %>% 
+  group_by(gene) %>%
+  arrange(clustAnno) %>% 
+  mutate(clustAnno_id = paste0("clustAnno", row_number())) %>%
+  ungroup() %>% 
+  pivot_wider(names_from = clustAnno_id, values_from = clustAnno, names_prefix = "")
+
+mat_label_anno <- merge(mat,lm_all$`DT+Treg vs DT`[lm_all$`DT+Treg vs DT`$gene %in% mat$gene,c("gene","adj.P.Val")], by = "gene") %>% mutate(`DT+Treg vs DT` = adj.P.Val) %>% dplyr::select(-adj.P.Val) %>%
+  merge(.,lm_all$`DT vs veh`[lm_all$`DT vs veh`$gene %in% mat$gene,c("gene","adj.P.Val")], by = "gene") %>% mutate(`DT vs veh` = adj.P.Val) %>% dplyr::select(-adj.P.Val) %>%  group_by(gene) %>%
+  arrange(clustAnno1) %>% 
+  dplyr::mutate_if(is.numeric, funs(as.character(signif(.,3)))) %>% 
+  dplyr::mutate(across(c(`DT vs veh`,`DT+Treg vs DT`), ~ case_when(. < 0.001 ~ "****",
+                                                                   . < 0.01 ~ "***",
+                                                                   . < 0.05 ~ "**",
+                                                                   . < 0.1 ~ "*",
+                                                                   TRUE ~ as.character(""))))
+
+mat <- merge(mat,lm_all$`DT+Treg vs DT`[lm_all$`DT+Treg vs DT`$gene %in% mat$gene,c("gene","logFC")], by = "gene") %>% mutate(`DT+Treg vs DT` = logFC) %>% dplyr::select(-logFC) %>%
+  merge(.,lm_all$`DT vs veh`[lm_all$`DT vs veh`$gene %in% mat$gene,c("gene","logFC")], by = "gene") %>% mutate(`DT vs veh` = logFC) %>% dplyr::select(-logFC) %>%  group_by(gene) %>%
+  arrange(clustAnno1)
+
+mat[,c(1,4:ncol(mat))][is.na(mat[, c(1,4:ncol(mat))])] <- "empty"
+
+rowAnno_colours <- c("white",colorRampPalette(brewer.pal(9, "Set1"))(14))
+names(rowAnno_colours) <- c("empty",levels(subSet_lm_sig$clustAnno %>% as.factor()))
+
+m <- function(range){
+  hm <- pheatmap(
+      # MAIN
+      mat = mat[range,1:3] %>% column_to_rownames("gene") %>% as.matrix(),
+      # display_numbers = mat1_anno,
+      color = colorRampPalette(rev(c("#FB8072","#FDB462","grey95","#8DD3C7","#80B1D3")))(length(seq(-3,3, length.out=(4 + 1)))),
+      cellwidth = 30,
+      scale = "none",
+      
+      # Col
+      cluster_cols = F,
+      border_color = "white",
+      angle_col = "45",
+      # gaps_row = c(23,30,38),
+      
+      # Row
+      cluster_rows = F,
+      display_numbers = mat_label_anno[range,1:3] %>% column_to_rownames("gene") %>% as.matrix(),
+      
+      # Labs
+      show_colnames = T,
+      show_rownames = T,
+      legend = F,
+      breaks = seq(-3,3, length.out=(4 + 1)),
+      heatmap_legend_param = list(title = "logFC", legend_width = unit(7, "cm")),
+      
+      # Annotation
+      annotation_legend = F,
+      # legend_labels = T,
+      annotation_row = mat[range,c(1,4:ncol(mat))] %>% column_to_rownames("gene") %>% as.data.frame(),
+      annotation_colors = list("clustAnno1" = rowAnno_colours,
+                               "clustAnno2" = rowAnno_colours,
+                               "clustAnno3" = rowAnno_colours,
+                               "clustAnno4" = rowAnno_colours,
+                               "clustAnno5" = rowAnno_colours,
+                               "clustAnno6" = rowAnno_colours,
+                               "clustAnno7" = rowAnno_colours,
+                               "clustAnno8" = rowAnno_colours),
+      
+      annotation_names_row =F,
+      
+      # Fonts
+      fontfamily = "Arial Narrow",
+      fontsize = 12,
+      fontsize_col = 12,
+      fontsize_number =12,
+      fontsize_row = 10
+      
+    ) %>% as.ggplot()
+  return(hm)
+}
+
+t <- m(1:43) + plot_spacer() + m(44:86) + plot_spacer() + m(87:129) +
+  plot_layout(widths = c(3,-1.5,3,-1.5,3))
+
+# ggsave(filename = "trophoblast_hmap_5.svg", plot = t, path = here::here("2_plots/"),
+#            width = 21, height = 27, units = "cm")
+
+ 
+knitr::include_graphics("assets/trophoblast_large_hmap3.png", error = FALSE)
+```
+
+## Small Heatmaps {.tabset .tabset-pills}
+
+These heatmaps contains only DEGs that were significant in BOTH DT vs veh AND DT+Treg vs DT.
+
+### Heatmap 1
+
+```{r sHmap1, fig.height=5}
+# Option 2.2
+mat <- subSet_lm_sig %>% dplyr::select(gene, logFC, comp, clustAnno) %>% distinct() %>%  pivot_wider(names_from = comp, values_from = logFC) %>% na.omit() %>%
+  group_by(gene) %>%
+  arrange(clustAnno) %>%
+  mutate(clustAnno_id = paste0("clustAnno", row_number())) %>%
+  ungroup() %>% 
+  pivot_wider(names_from = clustAnno_id, values_from = clustAnno, names_prefix = "")
+
+mat[,c(1,4:ncol(mat))][is.na(mat[, c(1,4:ncol(mat))])] <- "empty"
+
+m <- function(range){
+  hm <- pheatmap(
+      # MAIN
+      mat = mat[range,1:3] %>% column_to_rownames("gene") %>% as.matrix(),
+      # display_numbers = mat1_anno,
+      color = colorRampPalette(rev(c("#FB8072","#FDB462","grey95","#8DD3C7","#80B1D3")))(100),
+      cellwidth = 70,
+      scale = "none",
+      
+      # Col
+      cluster_cols = F,
+      border_color = "white",
+      angle_col = "0",
+      # gaps_row = c(23,30,38),
+      
+      # Row
+      cluster_rows = F,
+      
+      # Labs
+      show_colnames = T,
+      show_rownames = T,
+      legend = T,
+      breaks = seq(-2,2, length.out=(2 + 1)),
+      heatmap_legend_param = list(title = "logFC", legend_width = unit(7, "cm")),
+      
+      # Annotation
+      annotation_legend = T,
+      # legend_labels = T,
+      annotation_row = mat[range,c(1,4:ncol(mat))] %>% column_to_rownames("gene") %>% as.data.frame(),
+      annotation_colors = list("clustAnno1" = rowAnno_colours,
+                               "clustAnno2" = rowAnno_colours,
+                               "clustAnno3" = rowAnno_colours,
+                               "clustAnno4" = rowAnno_colours,
+                               "clustAnno5" = rowAnno_colours),
+      
+      annotation_names_row =F,
+      
+      # Fonts
+      fontfamily = "Arial Narrow",
+      fontsize = 12,
+      fontsize_col = 12,
+      fontsize_number = 8,
+      fontsize_row = 10
+      
+    ) %>% as.ggplot()
+  return(hm)
+}
+
+
+t <- m(1:nrow(mat))
+# + plot_spacer() + m(44:86) + plot_spacer() + m(87:129) +
+#   plot_layout(widths = c(3,-1.5,3,-1.5,3))
+
+# ggsave(filename = "trophoblast_sHmap_1.svg", plot = t, path = here::here("2_plots/"),
+#            width = 21, height = 10, units = "cm")
+
+knitr::include_graphics("assets/trophoblast_small_hmap1.png", error = FALSE)
+```
+
+
+### Heatmap 2
+
+```{r sHmap2, fig.height=5}
+# Option 2.3
+logCPM_combined <- cpm(dge, prior.count=3, log=TRUE) %>% as.data.frame() %>%  rownames_to_column("gene")
+logCPM_combined <- logCPM_combined[logCPM_combined$gene %in% mat$gene,]
+logCPM_combined <- logCPM_combined %>% left_join(.,mat[,c(1,4:ncol(mat))] %>% as.data.frame(), by = "gene") %>% column_to_rownames("gene")
+logCPM_combined <- logCPM_combined[,c(6,7,8,9,10,11,1,2,3,4,5,12:ncol(logCPM_combined))]
+
+colAnno_combined <- factor(dge$samples$group, levels = c("veh", "DT", "DT+Treg")) %>% as.data.frame()
+colAnno_combined <- colAnno_combined[c(6,7,8,9,10,11,1,2,3,4,5,12,13,14,15,16),]%>% as.data.frame()
+colnames(colAnno_combined) <- "Groups"
+
+
+
+m2 <- function(df){
+  hm <- pheatmap(
+      # MAIN
+      mat = df[,1:16] %>% as.matrix(),
+      # display_numbers = mat1_anno,
+      color = colorRampPalette(rev(c("#FB8072","#FDB462","grey95","#8DD3C7","#80B1D3")))(100),
+      cellwidth = 20,
+      scale = "row",
+      
+      # Col
+      cluster_cols = F,
+      border_color = "white",
+      angle_col = "90",
+      gaps_col = c(6,11),
+      
+      # Row
+      cluster_rows = T,
+      # gaps_row = c(23,30,38),
+      clustering_distance_rows = "euclidean",
+
+
+      # Labs
+      show_colnames = T,
+      show_rownames = T,
+      legend = T,
+      # breaks = seq(-2,2, length.out=(2 + 1)),
+      heatmap_legend_param = list(title = "Expression\nZ-score", legend_width = unit(7, "cm")),
+      
+      # Annotation
+      annotation_legend = T,
+      # legend_labels = T,
+      annotation_row = df[,c(17:ncol(df))] %>%  as.data.frame(),
+      annotation_col = colAnno_combined,
+      annotation_colors = list("clustAnno1" = rowAnno_colours,
+                               "clustAnno2" = rowAnno_colours,
+                               "clustAnno3" = rowAnno_colours,
+                               "clustAnno4" = rowAnno_colours,
+                               "clustAnno5" = rowAnno_colours,
+                               "Groups" = groupColour),
+      
+      annotation_names_col = T,
+      annotation_names_row =F,
+      
+      # Fonts
+      fontfamily = "Arial Narrow",
+      fontsize = 12,
+      fontsize_col = 12,
+      fontsize_number = 8,
+      fontsize_row = 10
+      
+    ) %>% as.ggplot()
+  return(hm)
+} 
+
+t <- m2(logCPM_combined)
+
+# ggsave(filename = "trophoblast_sHmap_2.svg", plot = t, path = here::here("2_plots/"),
+#            width = 21, height = 10, units = "cm")
+
+
+
+knitr::include_graphics("assets/trophoblast_small_hmap2.png", error = FALSE)
+```
+
+# MGI data combined
+
+This includes significant DEGs that matched genes associated with known expression in placenta BUT NOT in uterus (based on MGI gene expression data)
+
+Of these 38 genes, those which were also found in the sc trophoblast paper from Jiang et al 2023 paper were also annotated
+
+IMPORTANTLY, this version contains only DEGs that were significant in BOTH DT vs veh AND DT+Treg vs DT.
+
+Again, note that logFC were included for all DEGs but the significant ones in each comparison is marked by asterisk.
+
+ONE CAVEAT: Since this list of 38 genes were obtained programmatically and not manually, this list may contains genes which may have only a few publications which supports it. I suggest using these 38 and going back to MGI for more exploration. 
+
+
+```{r mgi, fig.height=5}
+mgi <- read_tsv(here::here("0_data/rawData/MGI_tissues.tsv"),col_names = F) %>%
+  magrittr::set_colnames(c("gene","description","MGI_ID","species","tissue")) %>% 
+  pivot_wider(names_from = "tissue", values_from = "gene") %>% 
+  dplyr::filter(is.na(uterus)) %>% dplyr::select(-c(uterus, species))
+
+
+mgi_mat <- rbind(lm_sig[[1]] %>% filter(gene %in% mgi$placenta) %>% mutate(comp = "DT vs veh"),
+                    lm_sig[[3]] %>% filter(gene %in% mgi$placenta) %>% mutate(comp = "DT+Treg vs DT")) %>% 
+  dplyr::select(gene, logFC, comp) %>% distinct() %>%  pivot_wider(names_from = comp, values_from = logFC) %>% left_join(., mat[,c(1,4:ncol(mat))], by = "gene") %>% arrange(gene)
+
+mgi_mat <- mgi_mat[,colSums(is.na(mgi_mat)) < nrow(mgi_mat)]
+
+mgi_mat_anno <- merge(mgi_mat,lm_all$`DT+Treg vs DT`[lm_all$`DT+Treg vs DT`$gene %in% mgi_mat$gene,c("gene","adj.P.Val")], by = "gene") %>% mutate(`DT+Treg vs DT` = adj.P.Val) %>% dplyr::select(-adj.P.Val) %>%
+  merge(.,lm_all$`DT vs veh`[lm_all$`DT vs veh`$gene %in% mgi_mat$gene,c("gene","adj.P.Val")], by = "gene") %>% mutate(`DT vs veh` = adj.P.Val) %>% dplyr::select(-adj.P.Val) %>% 
+  dplyr::mutate_if(is.numeric, funs(as.character(signif(.,3)))) %>% 
+  dplyr::mutate(across(c(`DT vs veh`,`DT+Treg vs DT`), ~ case_when(. < 0.001 ~ "****",
+                                                                   . < 0.01 ~ "***",
+                                                                   . < 0.05 ~ "**",
+                                                                   . < 0.1 ~ "*",
+                                                                   TRUE ~ as.character(""))))
+
+mgi_mat <- merge(mgi_mat,lm_all$`DT+Treg vs DT`[lm_all$`DT+Treg vs DT`$gene %in% mgi_mat$gene,c("gene","logFC")], by = "gene") %>% mutate(`DT+Treg vs DT` = logFC) %>% dplyr::select(-logFC) %>%
+  merge(.,lm_all$`DT vs veh`[lm_all$`DT vs veh`$gene %in% mgi_mat$gene,c("gene","logFC")], by = "gene") %>% mutate(`DT vs veh` = logFC) %>% dplyr::select(-logFC)
+
+mgi_mat[,c(1,4:ncol(mgi_mat))][is.na(mgi_mat[, c(1,4:ncol(mgi_mat))])] <- "empty"
+
+rowAnno_colours <- c("white",colorRampPalette(brewer.pal(9, "Set1"))(14))
+names(rowAnno_colours) <- c("empty",levels(subSet_lm_sig$clustAnno %>% as.factor()))
+
+m3 <- function(range){
+  hm <- pheatmap(
+      # MAIN
+      mat = mgi_mat[range,1:3] %>% remove_rownames() %>% column_to_rownames("gene") %>% as.matrix(),
+      # display_numbers = mat1_anno,
+      color = colorRampPalette(rev(c("#FB8072","#FDB462","grey95","#8DD3C7","#80B1D3")))(length(seq(-3,3, length.out=(4 + 1)))),
+      cellwidth = 70,
+      scale = "none",
+      
+      # Col
+      cluster_cols = F,
+      border_color = "white",
+      angle_col = "0",
+      # gaps_row = c(23,30,38),
+      
+      # Row
+      cluster_rows = F,
+      display_numbers = mgi_mat_anno[range,1:3] %>% remove_rownames() %>%  column_to_rownames("gene") %>% as.matrix(),
+      
+      # Labs
+      show_colnames = T,
+      show_rownames = T,
+      legend = T,
+      breaks = seq(-4,4, length.out=(4 + 1)),
+      heatmap_legend_param = list(title = "logFC", legend_width = unit(7, "cm")),
+      
+      # Annotation
+      annotation_legend = T,
+      # legend_labels = T,
+      annotation_row = mgi_mat[range,c(1,4:ncol(mgi_mat))] %>%  remove_rownames() %>% column_to_rownames("gene") %>% as.data.frame(),
+      annotation_colors = list("clustAnno1" = rowAnno_colours,
+                               "clustAnno2" = rowAnno_colours,
+                               "clustAnno3" = rowAnno_colours,
+                               "clustAnno4" = rowAnno_colours,
+                               "clustAnno5" = rowAnno_colours),
+      
+      annotation_names_row =F,
+      
+      # Fonts
+      fontfamily = "Arial Narrow",
+      fontsize = 12,
+      fontsize_col = 12,
+      fontsize_number =12,
+      fontsize_row = 10
+      
+    ) %>% as.ggplot()
+  return(hm)
+}
+
+
+mgi_hm <- m3(1:19) + plot_spacer() +  m3(20:38) +
+  plot_layout(widths = c(3,-1,3))
+
+# ggsave(filename = "mgi_hmap_1.svg", plot = mgi_hm, path = here::here("2_plots/"),
+           # width = 21, height = 10, units = "cm")
+
+
+knitr::include_graphics("assets/mgi_hmap.png", error = FALSE)
+
+```
+
+
+
+
+
 

@@ -245,7 +245,7 @@ futile.logger::flog.threshold(futile.logger::ERROR, name = "VennDiagramLogger")
 venn.diagram(x = list("DT vs veh"   = rownames(reactome_sig[[1]]) %>% as.character(), 
                       "DT+Treg vs veh" = rownames(reactome_sig[[2]]) %>% as.character(),
                       "DT+Treg vs DT"  = rownames(reactome_sig[[3]]) %>% as.character()),
-             filename = here::here(paste0("2_plots/3_FA/reactome/venn_react.png")),
+             filename = here::here(paste0("docs/assets/venn_react.png")),
              lwd = 2,
              disable.logging = T,
              fill = compColour,
@@ -269,7 +269,7 @@ venn.diagram(x = list("DT vs veh"   = rownames(reactome_sig[[1]]) %>% as.charact
 
 ```
 
-![](figure/reactome.Rmd/venn_react.png)
+![](assets/venn_react.png)
 
 
 #### Dot plot

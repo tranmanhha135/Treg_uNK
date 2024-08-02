@@ -34,6 +34,7 @@ library(reshape2)
 library(tidyverse)
 library(bookdown)
 library(here)
+library(scales)
 
 # Visualisation:
 library(ggbiplot)
