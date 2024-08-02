@@ -429,7 +429,7 @@ div.tocify {
 <p>
 <button type="button" class="btn btn-default btn-workflowr btn-workflowr-report" data-toggle="collapse" data-target="#workflowr-report">
 <span class="glyphicon glyphicon-list" aria-hidden="true"></span>
-workflowr <span class="glyphicon glyphicon-exclamation-sign text-danger"
+workflowr <span class="glyphicon glyphicon-ok text-success"
 aria-hidden="true"></span>
 </button>
 </p>
@@ -440,8 +440,8 @@ aria-hidden="true"></span>
 </li>
 <li>
 <a data-toggle="tab" href="#checks"> Checks <span
-class="glyphicon glyphicon-exclamation-sign text-danger"
-aria-hidden="true"></span> </a>
+class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span>
+</a>
 </li>
 <li>
 <a data-toggle="tab" href="#versions">Past versions</a>
@@ -454,9 +454,9 @@ aria-hidden="true"></span> </a>
 </p>
 <p>
 <strong>Checks:</strong> <span
-class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> 6
+class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> 7
 <span class="glyphicon glyphicon-exclamation-sign text-danger"
-aria-hidden="true"></span> 1
+aria-hidden="true"></span> 0
 </p>
 <p>
 <strong>Knit directory:</strong> <code>5_Treg_uNK/1_analysis/</code>
@@ -479,21 +479,18 @@ versions</em> tab lists the development history.
 <div class="panel panel-default">
 <div class="panel-heading">
 <p class="panel-title">
-<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRMarkdownfilestronguncommittedchanges">
-<span class="glyphicon glyphicon-exclamation-sign text-danger"
-aria-hidden="true"></span> <strong>R Markdown file:</strong> uncommitted
-changes </a>
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRMarkdownfilestronguptodate">
+<span class="glyphicon glyphicon-ok text-success"
+aria-hidden="true"></span> <strong>R Markdown file:</strong> up-to-date
+</a>
 </p>
 </div>
-<div id="strongRMarkdownfilestronguncommittedchanges"
+<div id="strongRMarkdownfilestronguptodate"
 class="panel-collapse collapse">
 <div class="panel-body">
-<p>The R Markdown file has unstaged changes. To know which version of
-the R Markdown file created these results, you’ll want to first commit
-it to the Git repo. If you’re still working on the analysis, you can
-ignore this warning. When you’re finished, you can run
-<code>wflow_publish</code> to commit the R Markdown file and build the
-HTML.</p>
+<p>Great! Since the R Markdown file has been committed to the Git
+repository, you know the exact version of the code that produced these
+results.</p>
 </div>
 </div>
 </div>
@@ -584,15 +581,15 @@ project makes it easier to run your code on other machines.</p>
 <div class="panel panel-default">
 <div class="panel-heading">
 <p class="panel-title">
-<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRepositoryversionstrongahrefhttpsgithubcomtranmanhha135TreguNKtreea5cdd4ec7e940249cd3f0b44b2c6e7aa34ccaa26targetblanka5cdd4ea">
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRepositoryversionstrongahrefhttpsgithubcomtranmanhha135TreguNKtree73ae14f407412692dc76774f1adbfff3f1593fcatargetblank73ae14fa">
 <span class="glyphicon glyphicon-ok text-success"
 aria-hidden="true"></span> <strong>Repository version:</strong>
-<a href="https://github.com/tranmanhha135/Treg_uNK/tree/a5cdd4ec7e940249cd3f0b44b2c6e7aa34ccaa26" target="_blank">a5cdd4e</a>
+<a href="https://github.com/tranmanhha135/Treg_uNK/tree/73ae14f407412692dc76774f1adbfff3f1593fca" target="_blank">73ae14f</a>
 </a>
 </p>
 </div>
 <div
-id="strongRepositoryversionstrongahrefhttpsgithubcomtranmanhha135TreguNKtreea5cdd4ec7e940249cd3f0b44b2c6e7aa34ccaa26targetblanka5cdd4ea"
+id="strongRepositoryversionstrongahrefhttpsgithubcomtranmanhha135TreguNKtree73ae14f407412692dc76774f1adbfff3f1593fcatargetblank73ae14fa"
 class="panel-collapse collapse">
 <div class="panel-body">
 <p>
@@ -602,7 +599,7 @@ reproducibility.
 </p>
 <p>
 The results in this page were generated with repository version
-<a href="https://github.com/tranmanhha135/Treg_uNK/tree/a5cdd4ec7e940249cd3f0b44b2c6e7aa34ccaa26" target="_blank">a5cdd4e</a>.
+<a href="https://github.com/tranmanhha135/Treg_uNK/tree/73ae14f407412692dc76774f1adbfff3f1593fca" target="_blank">73ae14f</a>.
 See the <em>Past versions</em> tab to see a history of the changes made
 to the R Markdown and HTML files.
 </p>
@@ -623,118 +620,14 @@ Ignored files:
 Untracked files:
     Untracked:  .DS_Store
     Untracked:  .gitignore
-    Untracked:  0_data/.DS_Store
-    Untracked:  0_data/rawData/.DS_Store
-    Untracked:  0_data/rawData/Jiang_TableS2_41421_2022_513_MOESM3_ESM.csv
-    Untracked:  0_data/rawData/MGI_tissues.tsv
-    Untracked:  0_data/rawData/Table S1 13578_2022_749_MOESM1_ESM (1).xlsx
-    Untracked:  0_data/rds_objects/cellchat.qs
-    Untracked:  0_data/rds_objects/cellchat_veh.qs
-    Untracked:  1_analysis/cellChat.Rmd
-    Untracked:  2_plots/.DS_Store
-    Untracked:  2_plots/LRheat.svg
-    Untracked:  2_plots/mgi_hmap_1.svg
-    Untracked:  2_plots/test.svg
-    Untracked:  2_plots/trophoblast_hmap_1.png
-    Untracked:  2_plots/trophoblast_hmap_1.svg
-    Untracked:  2_plots/trophoblast_hmap_2.svg
-    Untracked:  2_plots/trophoblast_hmap_3.svg
-    Untracked:  2_plots/trophoblast_hmap_4.svg
-    Untracked:  2_plots/trophoblast_hmap_5.svg
-    Untracked:  3_output/sig_de_JiangSC_subset.xlsx
-    Untracked:  sampleHeatmap.rds
+    Untracked:  cellChat.Rmd
 
 Unstaged changes:
-    Modified:   0_data/rds_objects/comp.rds
-    Modified:   0_data/rds_objects/dge.rds
-    Modified:   0_data/rds_objects/disease_function_sig.rds
-    Modified:   0_data/rds_objects/ipa_pathways.rds
-    Modified:   0_data/rds_objects/lm.rds
-    Modified:   0_data/rds_objects/lm_all.rds
-    Modified:   0_data/rds_objects/lm_sig.rds
-    Modified:   0_data/rds_objects/upstream_sig.rds
     Modified:   0_data/rds_plots/deHmap_plots.rds
-    Modified:   0_data/rds_plots/go_combined_dotPlot.rds
     Modified:   0_data/rds_plots/go_combined_parTerm_dotPlot.rds
-    Modified:   0_data/rds_plots/go_dotPlot.rds
     Modified:   0_data/rds_plots/go_parTerm_dotPlot.rds
-    Modified:   0_data/rds_plots/go_parTerm_scatter.rds
-    Modified:   0_data/rds_plots/kegg_combined_dotPlot.rds
-    Modified:   0_data/rds_plots/kegg_dotPlot.rds
     Modified:   0_data/rds_plots/kegg_path_Hmap.rds
-    Modified:   0_data/rds_plots/ma_plots.rds
-    Modified:   0_data/rds_plots/react_combined_dotPlot.rds
-    Modified:   0_data/rds_plots/react_dotPlot.rds
-    Modified:   0_data/rds_plots/vol_plots.rds
-    Modified:   140_treg_uNK.Rproj
-    Modified:   1_analysis/_site.yml
-    Modified:   1_analysis/deAnalysis.Rmd
-    Modified:   1_analysis/extraFigs.Rmd
-    Modified:   1_analysis/go.Rmd
-    Modified:   1_analysis/ipa.Rmd
-    Modified:   1_analysis/kegg.Rmd
-    Modified:   1_analysis/reactome.Rmd
-    Modified:   1_analysis/setUp.Rmd
-    Modified:   2_plots/1_QC/PC1_PC2.svg
-    Modified:   2_plots/1_QC/PC1_PC3.svg
-    Modified:   2_plots/1_QC/PC2_PC3.svg
-    Modified:   2_plots/1_QC/counts_after_filtering.svg
-    Modified:   2_plots/1_QC/counts_before_after_filtering.svg
-    Modified:   2_plots/1_QC/counts_before_filtering.svg
-    Modified:   2_plots/1_QC/library_size.svg
-    Modified:   2_plots/2_DE/heat_DT vs veh.svg
-    Modified:   2_plots/2_DE/heat_DT+Treg vs DT.svg
-    Modified:   2_plots/2_DE/heat_DT+Treg vs veh.svg
-    Modified:   2_plots/2_DE/ma_DT vs veh.png
-    Modified:   2_plots/2_DE/ma_DT+Treg vs DT.png
-    Modified:   2_plots/2_DE/ma_DT+Treg vs veh.png
-    Modified:   2_plots/2_DE/venn.png
-    Modified:   2_plots/2_DE/venn_2comp.png
-    Modified:   2_plots/2_DE/vol_DT vs veh.png
-    Modified:   2_plots/2_DE/vol_DT+Treg vs DT.png
-    Modified:   2_plots/2_DE/vol_DT+Treg vs veh.png
-    Modified:   2_plots/3_FA/go/combine_go_dot.svg
-    Modified:   2_plots/3_FA/go/dot_DT vs veh.svg
-    Modified:   2_plots/3_FA/go/dot_DT+Treg vs DT.svg
-    Modified:   2_plots/3_FA/go/dot_DT+Treg vs veh.svg
-    Modified:   2_plots/3_FA/go/parTerm_dot_DT vs veh.svg
-    Modified:   2_plots/3_FA/go/parTerm_dot_DT+Treg vs DT.svg
-    Modified:   2_plots/3_FA/go/parTerm_dot_DT+Treg vs veh.svg
-    Modified:   2_plots/3_FA/go/parentTerm_all.png
-    Modified:   2_plots/3_FA/go/semSim_dendrogram_DT vs veh.svg
-    Modified:   2_plots/3_FA/go/semSim_dendrogram_DT+Treg vs DT.svg
-    Modified:   2_plots/3_FA/go/semSim_dendrogram_DT+Treg vs veh.svg
-    Modified:   2_plots/3_FA/go/semSim_scatter_DT vs veh.svg
-    Modified:   2_plots/3_FA/go/semSim_scatter_DT+Treg vs DT.svg
-    Modified:   2_plots/3_FA/go/semSim_scatter_DT+Treg vs veh.svg
-    Modified:   2_plots/3_FA/go/upset_DT vs veh.svg
-    Modified:   2_plots/3_FA/go/upset_DT+Treg vs DT.svg
-    Modified:   2_plots/3_FA/go/upset_DT+Treg vs veh.svg
-    Modified:   2_plots/3_FA/ipa/combine_ipa_dot.png
-    Modified:   2_plots/3_FA/ipa/dnf_dot.png
-    Modified:   2_plots/3_FA/ipa/upstream_hmap.png
-    Modified:   2_plots/3_FA/ipa/venn_ipaDiseFunct.png
-    Modified:   2_plots/3_FA/kegg/combine_kegg_dot.svg
-    Modified:   2_plots/3_FA/kegg/heat_Antigen processing and presentation.svg
-    Modified:   2_plots/3_FA/kegg/heat_Epstein-Barr virus infection.svg
-    Modified:   2_plots/3_FA/kegg/heat_Natural killer cell mediated cytotoxicity.svg
-    Modified:   2_plots/3_FA/kegg/heat_Phagosome.svg
-    Modified:   2_plots/3_FA/kegg/kegg_dot_DT vs veh.svg
-    Modified:   2_plots/3_FA/kegg/kegg_dot_DT+Treg vs DT.svg
-    Modified:   2_plots/3_FA/kegg/kegg_dot_DT+Treg vs veh.svg
-    Modified:   2_plots/3_FA/kegg/kegg_upset_DT vs veh.svg
-    Modified:   2_plots/3_FA/kegg/kegg_upset_DT+Treg vs DT.svg
-    Modified:   2_plots/3_FA/kegg/kegg_upset_DT+Treg vs veh.svg
-    Modified:   2_plots/3_FA/reactome/combine_react_dot.svg
-    Modified:   2_plots/3_FA/reactome/react_dot_DT vs veh.svg
-    Modified:   2_plots/3_FA/reactome/react_dot_DT+Treg vs DT.svg
-    Modified:   2_plots/3_FA/reactome/react_dot_DT+Treg vs veh.svg
-    Modified:   2_plots/3_FA/reactome/react_upset_DT vs veh.svg
-    Modified:   2_plots/3_FA/reactome/react_upset_DT+Treg vs DT.svg
-    Modified:   2_plots/3_FA/reactome/react_upset_DT+Treg vs veh.svg
-    Modified:   2_plots/3_FA/reactome/venn_react.png
-    Modified:   2_plots/functionalHeat.png
-    Modified:   2_plots/sampleHeat.svg
+    Deleted:    1_analysis/cellChat.Rmd
     Modified:   3_output/GO_sig.xlsx
     Modified:   3_output/KEGG_all.xlsx
     Modified:   3_output/KEGG_sig.xlsx
@@ -742,7 +635,7 @@ Unstaged changes:
     Modified:   3_output/de_genes_sig.xlsx
     Modified:   3_output/reactome_all.xlsx
     Modified:   3_output/reactome_sig.xlsx
-    Modified:   functions.Rmd
+    Modified:   sampleHeatmap.rds
 
 </code></pre>
 <p>
@@ -788,6 +681,40 @@ Message
 </tr>
 </thead>
 <tbody>
+<tr>
+<td>
+Rmd
+</td>
+<td>
+<a href="https://github.com/tranmanhha135/Treg_uNK/blob/73ae14f407412692dc76774f1adbfff3f1593fca/1_analysis/extraFigs.Rmd" target="_blank">73ae14f</a>
+</td>
+<td>
+Ha Tran
+</td>
+<td>
+2024-08-02
+</td>
+<td>
+Large update with final visualisations
+</td>
+</tr>
+<tr>
+<td>
+html
+</td>
+<td>
+<a href="https://rawcdn.githack.com/tranmanhha135/Treg_uNK/73ae14f407412692dc76774f1adbfff3f1593fca/docs/extraFigs.html" target="_blank">73ae14f</a>
+</td>
+<td>
+Ha Tran
+</td>
+<td>
+2024-08-02
+</td>
+<td>
+Large update with final visualisations
+</td>
+</tr>
 <tr>
 <td>
 Rmd
@@ -985,10 +912,84 @@ opts_chunk$set(warning=FALSE, message=FALSE, echo=FALSE)
 <div id="functional-heatmap" class="section level1">
 <h1>Functional heatmap</h1>
 <p><img src="assets/functional_hmap.png" style="display: block; margin: auto;" /></p>
+<p>
+<button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-functional_hmap">
+Past versions of functional_hmap.png
+</button>
+</p>
+<div id="fig-functional_hmap" class="collapse">
+<div class="table-responsive">
+<table class="table table-condensed table-hover">
+<thead>
+<tr>
+<th>
+Version
+</th>
+<th>
+Author
+</th>
+<th>
+Date
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>
+<a href="https://github.com/tranmanhha135/Treg_uNK/blob/73ae14f407412692dc76774f1adbfff3f1593fca/docs/assets/functional_hmap.png" target="_blank">73ae14f</a>
+</td>
+<td>
+Ha Tran
+</td>
+<td>
+2024-08-02
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
 </div>
 <div id="kegg-reactome" class="section level1">
 <h1>KEGG + Reactome</h1>
 <p><img src="assets/kegg_react.png" style="display: block; margin: auto;" /></p>
+<p>
+<button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-kegg_react">
+Past versions of kegg_react.png
+</button>
+</p>
+<div id="fig-kegg_react" class="collapse">
+<div class="table-responsive">
+<table class="table table-condensed table-hover">
+<thead>
+<tr>
+<th>
+Version
+</th>
+<th>
+Author
+</th>
+<th>
+Date
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>
+<a href="https://github.com/tranmanhha135/Treg_uNK/blob/73ae14f407412692dc76774f1adbfff3f1593fca/docs/assets/kegg_react.png" target="_blank">73ae14f</a>
+</td>
+<td>
+Ha Tran
+</td>
+<td>
+2024-08-02
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
 </div>
 <div id="cellchatdb-jia-peng-et-al-2022-sc-paper"
 class="section level1 tabset tabset-pills">
@@ -1010,7 +1011,81 @@ class="section level2">
 <div id="heatmaps" class="section level2">
 <h2>Heatmaps</h2>
 <p><img src="figure/extraFigs.Rmd/cellChatDB_heat-1.png" width="672" style="display: block; margin: auto;" /></p>
+<p>
+<button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-cellChatDB_heat-1">
+Past versions of cellChatDB_heat-1.png
+</button>
+</p>
+<div id="fig-cellChatDB_heat-1" class="collapse">
+<div class="table-responsive">
+<table class="table table-condensed table-hover">
+<thead>
+<tr>
+<th>
+Version
+</th>
+<th>
+Author
+</th>
+<th>
+Date
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>
+<a href="https://github.com/tranmanhha135/Treg_uNK/blob/73ae14f407412692dc76774f1adbfff3f1593fca/docs/figure/extraFigs.Rmd/cellChatDB_heat-1.png" target="_blank">73ae14f</a>
+</td>
+<td>
+Ha Tran
+</td>
+<td>
+2024-08-02
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
 <p><img src="figure/extraFigs.Rmd/cellChatDB_heat_logFC-1.png" width="672" style="display: block; margin: auto;" /></p>
+<p>
+<button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-cellChatDB_heat_logFC-1">
+Past versions of cellChatDB_heat_logFC-1.png
+</button>
+</p>
+<div id="fig-cellChatDB_heat_logFC-1" class="collapse">
+<div class="table-responsive">
+<table class="table table-condensed table-hover">
+<thead>
+<tr>
+<th>
+Version
+</th>
+<th>
+Author
+</th>
+<th>
+Date
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>
+<a href="https://github.com/tranmanhha135/Treg_uNK/blob/73ae14f407412692dc76774f1adbfff3f1593fca/docs/figure/extraFigs.Rmd/cellChatDB_heat_logFC-1.png" target="_blank">73ae14f</a>
+</td>
+<td>
+Ha Tran
+</td>
+<td>
+2024-08-02
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
 </div>
 </div>
 <div id="jiang-et-al-2023-trophoblast-sc-paper"
@@ -1033,18 +1108,129 @@ both comparisons.</p>
 trophoblasts cell types identified in Jiang et al (2023) paper. Cell
 type annotations not include as that will be too overwhelming.</p>
 <p><img src="figure/extraFigs.Rmd/hmap1-1.png" width="672" style="display: block; margin: auto;" /></p>
+<p>
+<button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-hmap1-1">
+Past versions of hmap1-1.png
+</button>
+</p>
+<div id="fig-hmap1-1" class="collapse">
+<div class="table-responsive">
+<table class="table table-condensed table-hover">
+<thead>
+<tr>
+<th>
+Version
+</th>
+<th>
+Author
+</th>
+<th>
+Date
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>
+<a href="https://github.com/tranmanhha135/Treg_uNK/blob/73ae14f407412692dc76774f1adbfff3f1593fca/docs/figure/extraFigs.Rmd/hmap1-1.png" target="_blank">73ae14f</a>
+</td>
+<td>
+Ha Tran
+</td>
+<td>
+2024-08-02
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
 </div>
 <div id="heatmap-2" class="section level3">
 <h3>Heatmap 2</h3>
 <p>Grey means that gene was not significantly differentially expressed
 in that comparison.</p>
 <p><img src="assets/trophoblast_large_hmap2.png" style="display: block; margin: auto;" /></p>
+<p>
+<button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-trophoblast_large_hmap2">
+Past versions of trophoblast_large_hmap2.png
+</button>
+</p>
+<div id="fig-trophoblast_large_hmap2" class="collapse">
+<div class="table-responsive">
+<table class="table table-condensed table-hover">
+<thead>
+<tr>
+<th>
+Version
+</th>
+<th>
+Author
+</th>
+<th>
+Date
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>
+<a href="https://github.com/tranmanhha135/Treg_uNK/blob/73ae14f407412692dc76774f1adbfff3f1593fca/docs/assets/trophoblast_large_hmap2.png" target="_blank">73ae14f</a>
+</td>
+<td>
+Ha Tran
+</td>
+<td>
+2024-08-02
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
 </div>
 <div id="heatmap-3" class="section level3">
 <h3>Heatmap 3</h3>
 <p>Heatmap with all logFC values where significance indicated by
 asterisks</p>
 <p><img src="assets/trophoblast_large_hmap3.png" style="display: block; margin: auto;" /></p>
+<p>
+<button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-trophoblast_large_hmap3">
+Past versions of trophoblast_large_hmap3.png
+</button>
+</p>
+<div id="fig-trophoblast_large_hmap3" class="collapse">
+<div class="table-responsive">
+<table class="table table-condensed table-hover">
+<thead>
+<tr>
+<th>
+Version
+</th>
+<th>
+Author
+</th>
+<th>
+Date
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>
+<a href="https://github.com/tranmanhha135/Treg_uNK/blob/73ae14f407412692dc76774f1adbfff3f1593fca/docs/assets/trophoblast_large_hmap3.png" target="_blank">73ae14f</a>
+</td>
+<td>
+Ha Tran
+</td>
+<td>
+2024-08-02
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
 </div>
 </div>
 <div id="small-heatmaps" class="section level2 tabset tabset-pills">
@@ -1054,10 +1240,84 @@ veh AND DT+Treg vs DT.</p>
 <div id="heatmap-1-1" class="section level3">
 <h3>Heatmap 1</h3>
 <p><img src="assets/trophoblast_small_hmap1.png" style="display: block; margin: auto;" /></p>
+<p>
+<button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-trophoblast_small_hmap1">
+Past versions of trophoblast_small_hmap1.png
+</button>
+</p>
+<div id="fig-trophoblast_small_hmap1" class="collapse">
+<div class="table-responsive">
+<table class="table table-condensed table-hover">
+<thead>
+<tr>
+<th>
+Version
+</th>
+<th>
+Author
+</th>
+<th>
+Date
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>
+<a href="https://github.com/tranmanhha135/Treg_uNK/blob/73ae14f407412692dc76774f1adbfff3f1593fca/docs/assets/trophoblast_small_hmap1.png" target="_blank">73ae14f</a>
+</td>
+<td>
+Ha Tran
+</td>
+<td>
+2024-08-02
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
 </div>
 <div id="heatmap-2-1" class="section level3">
 <h3>Heatmap 2</h3>
 <p><img src="assets/trophoblast_small_hmap2.png" style="display: block; margin: auto;" /></p>
+<p>
+<button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-trophoblast_small_hmap2">
+Past versions of trophoblast_small_hmap2.png
+</button>
+</p>
+<div id="fig-trophoblast_small_hmap2" class="collapse">
+<div class="table-responsive">
+<table class="table table-condensed table-hover">
+<thead>
+<tr>
+<th>
+Version
+</th>
+<th>
+Author
+</th>
+<th>
+Date
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>
+<a href="https://github.com/tranmanhha135/Treg_uNK/blob/73ae14f407412692dc76774f1adbfff3f1593fca/docs/assets/trophoblast_small_hmap2.png" target="_blank">73ae14f</a>
+</td>
+<td>
+Ha Tran
+</td>
+<td>
+2024-08-02
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
 </div>
 </div>
 </div>
@@ -1077,6 +1337,43 @@ programmatically and not manually, this list may contains genes which
 may have only a few publications which supports it. I suggest using
 these 38 and going back to MGI for more exploration.</p>
 <p><img src="assets/mgi_hmap.png" style="display: block; margin: auto;" /></p>
+<p>
+<button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-mgi_hmap">
+Past versions of mgi_hmap.png
+</button>
+</p>
+<div id="fig-mgi_hmap" class="collapse">
+<div class="table-responsive">
+<table class="table table-condensed table-hover">
+<thead>
+<tr>
+<th>
+Version
+</th>
+<th>
+Author
+</th>
+<th>
+Date
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>
+<a href="https://github.com/tranmanhha135/Treg_uNK/blob/73ae14f407412692dc76774f1adbfff3f1593fca/docs/assets/mgi_hmap.png" target="_blank">73ae14f</a>
+</td>
+<td>
+Ha Tran
+</td>
+<td>
+2024-08-02
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
 <br>
 <p>
 <button type="button" class="btn btn-default btn-workflowr btn-workflowr-sessioninfo" data-toggle="collapse" data-target="#workflowr-sessioninfo" style="display: block;">

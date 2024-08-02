@@ -428,7 +428,7 @@ div.tocify {
 <p>
 <button type="button" class="btn btn-default btn-workflowr btn-workflowr-report" data-toggle="collapse" data-target="#workflowr-report">
 <span class="glyphicon glyphicon-list" aria-hidden="true"></span>
-workflowr <span class="glyphicon glyphicon-exclamation-sign text-danger"
+workflowr <span class="glyphicon glyphicon-ok text-success"
 aria-hidden="true"></span>
 </button>
 </p>
@@ -439,8 +439,8 @@ aria-hidden="true"></span>
 </li>
 <li>
 <a data-toggle="tab" href="#checks"> Checks <span
-class="glyphicon glyphicon-exclamation-sign text-danger"
-aria-hidden="true"></span> </a>
+class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span>
+</a>
 </li>
 <li>
 <a data-toggle="tab" href="#versions">Past versions</a>
@@ -449,13 +449,13 @@ aria-hidden="true"></span> </a>
 <div class="tab-content">
 <div id="summary" class="tab-pane fade in active">
 <p>
-<strong>Last updated:</strong> 2024-08-01
+<strong>Last updated:</strong> 2024-08-02
 </p>
 <p>
 <strong>Checks:</strong> <span
-class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> 6
+class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> 7
 <span class="glyphicon glyphicon-exclamation-sign text-danger"
-aria-hidden="true"></span> 1
+aria-hidden="true"></span> 0
 </p>
 <p>
 <strong>Knit directory:</strong> <code>5_Treg_uNK/1_analysis/</code>
@@ -478,21 +478,18 @@ versions</em> tab lists the development history.
 <div class="panel panel-default">
 <div class="panel-heading">
 <p class="panel-title">
-<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRMarkdownfilestronguncommittedchanges">
-<span class="glyphicon glyphicon-exclamation-sign text-danger"
-aria-hidden="true"></span> <strong>R Markdown file:</strong> uncommitted
-changes </a>
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRMarkdownfilestronguptodate">
+<span class="glyphicon glyphicon-ok text-success"
+aria-hidden="true"></span> <strong>R Markdown file:</strong> up-to-date
+</a>
 </p>
 </div>
-<div id="strongRMarkdownfilestronguncommittedchanges"
+<div id="strongRMarkdownfilestronguptodate"
 class="panel-collapse collapse">
 <div class="panel-body">
-<p>The R Markdown file has unstaged changes. To know which version of
-the R Markdown file created these results, you’ll want to first commit
-it to the Git repo. If you’re still working on the analysis, you can
-ignore this warning. When you’re finished, you can run
-<code>wflow_publish</code> to commit the R Markdown file and build the
-HTML.</p>
+<p>Great! Since the R Markdown file has been committed to the Git
+repository, you know the exact version of the code that produced these
+results.</p>
 </div>
 </div>
 </div>
@@ -583,15 +580,15 @@ project makes it easier to run your code on other machines.</p>
 <div class="panel panel-default">
 <div class="panel-heading">
 <p class="panel-title">
-<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRepositoryversionstrongahrefhttpsgithubcomtranmanhha135TreguNKtreea5cdd4ec7e940249cd3f0b44b2c6e7aa34ccaa26targetblanka5cdd4ea">
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRepositoryversionstrongahrefhttpsgithubcomtranmanhha135TreguNKtree73ae14f407412692dc76774f1adbfff3f1593fcatargetblank73ae14fa">
 <span class="glyphicon glyphicon-ok text-success"
 aria-hidden="true"></span> <strong>Repository version:</strong>
-<a href="https://github.com/tranmanhha135/Treg_uNK/tree/a5cdd4ec7e940249cd3f0b44b2c6e7aa34ccaa26" target="_blank">a5cdd4e</a>
+<a href="https://github.com/tranmanhha135/Treg_uNK/tree/73ae14f407412692dc76774f1adbfff3f1593fca" target="_blank">73ae14f</a>
 </a>
 </p>
 </div>
 <div
-id="strongRepositoryversionstrongahrefhttpsgithubcomtranmanhha135TreguNKtreea5cdd4ec7e940249cd3f0b44b2c6e7aa34ccaa26targetblanka5cdd4ea"
+id="strongRepositoryversionstrongahrefhttpsgithubcomtranmanhha135TreguNKtree73ae14f407412692dc76774f1adbfff3f1593fcatargetblank73ae14fa"
 class="panel-collapse collapse">
 <div class="panel-body">
 <p>
@@ -601,7 +598,7 @@ reproducibility.
 </p>
 <p>
 The results in this page were generated with repository version
-<a href="https://github.com/tranmanhha135/Treg_uNK/tree/a5cdd4ec7e940249cd3f0b44b2c6e7aa34ccaa26" target="_blank">a5cdd4e</a>.
+<a href="https://github.com/tranmanhha135/Treg_uNK/tree/73ae14f407412692dc76774f1adbfff3f1593fca" target="_blank">73ae14f</a>.
 See the <em>Past versions</em> tab to see a history of the changes made
 to the R Markdown and HTML files.
 </p>
@@ -622,88 +619,22 @@ Ignored files:
 Untracked files:
     Untracked:  .DS_Store
     Untracked:  .gitignore
-    Untracked:  0_data/.DS_Store
-    Untracked:  0_data/rawData/.DS_Store
-    Untracked:  0_data/rawData/Jiang_TableS2_41421_2022_513_MOESM3_ESM.csv
-    Untracked:  0_data/rawData/Table S1 13578_2022_749_MOESM1_ESM (1).xlsx
-    Untracked:  0_data/rds_objects/cellchat.qs
-    Untracked:  0_data/rds_objects/cellchat_veh.qs
-    Untracked:  1_analysis/cellChat.Rmd
-    Untracked:  2_plots/.DS_Store
-    Untracked:  2_plots/LRheat.svg
-    Untracked:  2_plots/test.svg
-    Untracked:  2_plots/trophoblast_hmap_1.png
-    Untracked:  2_plots/trophoblast_hmap_1.svg
-    Untracked:  2_plots/trophoblast_hmap_2.svg
-    Untracked:  2_plots/trophoblast_hmap_3.svg
-    Untracked:  2_plots/trophoblast_hmap_4.svg
-    Untracked:  2_plots/trophoblast_hmap_5.svg
-    Untracked:  3_output/sig_de_JiangSC_subset.xlsx
-    Untracked:  sampleHeatmap.rds
+    Untracked:  cellChat.Rmd
 
 Unstaged changes:
-    Modified:   0_data/rds_objects/comp.rds
-    Modified:   0_data/rds_objects/dge.rds
-    Modified:   0_data/rds_objects/lm.rds
-    Modified:   0_data/rds_objects/lm_all.rds
-    Modified:   0_data/rds_objects/lm_sig.rds
     Modified:   0_data/rds_plots/deHmap_plots.rds
-    Modified:   0_data/rds_plots/go_combined_dotPlot.rds
     Modified:   0_data/rds_plots/go_combined_parTerm_dotPlot.rds
-    Modified:   0_data/rds_plots/go_dotPlot.rds
     Modified:   0_data/rds_plots/go_parTerm_dotPlot.rds
-    Modified:   0_data/rds_plots/go_parTerm_scatter.rds
-    Modified:   0_data/rds_plots/ma_plots.rds
-    Modified:   0_data/rds_plots/vol_plots.rds
-    Modified:   140_treg_uNK.Rproj
-    Modified:   1_analysis/_site.yml
-    Modified:   1_analysis/deAnalysis.Rmd
-    Modified:   1_analysis/extraFigs.Rmd
-    Modified:   1_analysis/go.Rmd
-    Modified:   1_analysis/ipa.Rmd
-    Modified:   1_analysis/kegg.Rmd
-    Modified:   1_analysis/setUp.Rmd
-    Modified:   2_plots/1_QC/PC1_PC2.svg
-    Modified:   2_plots/1_QC/PC1_PC3.svg
-    Modified:   2_plots/1_QC/PC2_PC3.svg
-    Modified:   2_plots/1_QC/counts_after_filtering.svg
-    Modified:   2_plots/1_QC/counts_before_after_filtering.svg
-    Modified:   2_plots/1_QC/counts_before_filtering.svg
-    Modified:   2_plots/1_QC/library_size.svg
-    Modified:   2_plots/2_DE/heat_DT vs veh.svg
-    Modified:   2_plots/2_DE/heat_DT+Treg vs DT.svg
-    Modified:   2_plots/2_DE/heat_DT+Treg vs veh.svg
-    Modified:   2_plots/2_DE/ma_DT vs veh.png
-    Modified:   2_plots/2_DE/ma_DT+Treg vs DT.png
-    Modified:   2_plots/2_DE/ma_DT+Treg vs veh.png
-    Modified:   2_plots/2_DE/venn.png
-    Modified:   2_plots/2_DE/venn_2comp.png
-    Modified:   2_plots/2_DE/vol_DT vs veh.png
-    Modified:   2_plots/2_DE/vol_DT+Treg vs DT.png
-    Modified:   2_plots/2_DE/vol_DT+Treg vs veh.png
-    Modified:   2_plots/3_FA/go/combine_go_dot.svg
-    Modified:   2_plots/3_FA/go/dot_DT vs veh.svg
-    Modified:   2_plots/3_FA/go/dot_DT+Treg vs DT.svg
-    Modified:   2_plots/3_FA/go/dot_DT+Treg vs veh.svg
-    Modified:   2_plots/3_FA/go/parTerm_dot_DT vs veh.svg
-    Modified:   2_plots/3_FA/go/parTerm_dot_DT+Treg vs DT.svg
-    Modified:   2_plots/3_FA/go/parTerm_dot_DT+Treg vs veh.svg
-    Modified:   2_plots/3_FA/go/parentTerm_all.png
-    Modified:   2_plots/3_FA/go/semSim_dendrogram_DT vs veh.svg
-    Modified:   2_plots/3_FA/go/semSim_dendrogram_DT+Treg vs DT.svg
-    Modified:   2_plots/3_FA/go/semSim_dendrogram_DT+Treg vs veh.svg
-    Modified:   2_plots/3_FA/go/semSim_scatter_DT vs veh.svg
-    Modified:   2_plots/3_FA/go/semSim_scatter_DT+Treg vs DT.svg
-    Modified:   2_plots/3_FA/go/semSim_scatter_DT+Treg vs veh.svg
-    Modified:   2_plots/3_FA/go/upset_DT vs veh.svg
-    Modified:   2_plots/3_FA/go/upset_DT+Treg vs DT.svg
-    Modified:   2_plots/3_FA/go/upset_DT+Treg vs veh.svg
-    Modified:   2_plots/functionalHeat.png
-    Modified:   2_plots/sampleHeat.svg
+    Modified:   0_data/rds_plots/kegg_path_Hmap.rds
+    Deleted:    1_analysis/cellChat.Rmd
     Modified:   3_output/GO_sig.xlsx
+    Modified:   3_output/KEGG_all.xlsx
+    Modified:   3_output/KEGG_sig.xlsx
     Modified:   3_output/de_genes_all.xlsx
     Modified:   3_output/de_genes_sig.xlsx
-    Modified:   functions.Rmd
+    Modified:   3_output/reactome_all.xlsx
+    Modified:   3_output/reactome_sig.xlsx
+    Modified:   sampleHeatmap.rds
 
 </code></pre>
 <p>
@@ -748,6 +679,40 @@ Message
 </tr>
 </thead>
 <tbody>
+<tr>
+<td>
+Rmd
+</td>
+<td>
+<a href="https://github.com/tranmanhha135/Treg_uNK/blob/73ae14f407412692dc76774f1adbfff3f1593fca/1_analysis/kegg.Rmd" target="_blank">73ae14f</a>
+</td>
+<td>
+Ha Tran
+</td>
+<td>
+2024-08-02
+</td>
+<td>
+Large update with final visualisations
+</td>
+</tr>
+<tr>
+<td>
+html
+</td>
+<td>
+<a href="https://rawcdn.githack.com/tranmanhha135/Treg_uNK/73ae14f407412692dc76774f1adbfff3f1593fca/docs/kegg.html" target="_blank">73ae14f</a>
+</td>
+<td>
+Ha Tran
+</td>
+<td>
+2024-08-02
+</td>
+<td>
+Large update with final visualisations
+</td>
+</tr>
 <tr>
 <td>
 Rmd
@@ -1108,6 +1073,17 @@ Date
 <tbody>
 <tr>
 <td>
+<a href="https://github.com/tranmanhha135/Treg_uNK/blob/73ae14f407412692dc76774f1adbfff3f1593fca/docs/figure/kegg.Rmd/kegg_dot-1.png" target="_blank">73ae14f</a>
+</td>
+<td>
+Ha Tran
+</td>
+<td>
+2024-08-02
+</td>
+</tr>
+<tr>
+<td>
 <a href="https://github.com/tranmanhha135/Treg_uNK/blob/e9e7671a3bb7cdda8602bf9275a15e119c622cf1/docs/figure/kegg.Rmd/kegg_dot-1.png" target="_blank">e9e7671</a>
 </td>
 <td>
@@ -1176,6 +1152,17 @@ Date
 <tbody>
 <tr>
 <td>
+<a href="https://github.com/tranmanhha135/Treg_uNK/blob/73ae14f407412692dc76774f1adbfff3f1593fca/docs/figure/kegg.Rmd/upset-1.png" target="_blank">73ae14f</a>
+</td>
+<td>
+Ha Tran
+</td>
+<td>
+2024-08-02
+</td>
+</tr>
+<tr>
+<td>
 <a href="https://github.com/tranmanhha135/Treg_uNK/blob/e9e7671a3bb7cdda8602bf9275a15e119c622cf1/docs/figure/kegg.Rmd/upset-1.png" target="_blank">e9e7671</a>
 </td>
 <td>
@@ -1240,6 +1227,17 @@ Date
 </tr>
 </thead>
 <tbody>
+<tr>
+<td>
+<a href="https://github.com/tranmanhha135/Treg_uNK/blob/73ae14f407412692dc76774f1adbfff3f1593fca/docs/figure/kegg.Rmd/dot2-1.png" target="_blank">73ae14f</a>
+</td>
+<td>
+Ha Tran
+</td>
+<td>
+2024-08-02
+</td>
+</tr>
 <tr>
 <td>
 <a href="https://github.com/tranmanhha135/Treg_uNK/blob/e9e7671a3bb7cdda8602bf9275a15e119c622cf1/docs/figure/kegg.Rmd/dot2-1.png" target="_blank">e9e7671</a>
@@ -1310,6 +1308,17 @@ Date
 <tbody>
 <tr>
 <td>
+<a href="https://github.com/tranmanhha135/Treg_uNK/blob/73ae14f407412692dc76774f1adbfff3f1593fca/docs/figure/kegg.Rmd/upset2-1.png" target="_blank">73ae14f</a>
+</td>
+<td>
+Ha Tran
+</td>
+<td>
+2024-08-02
+</td>
+</tr>
+<tr>
+<td>
 <a href="https://github.com/tranmanhha135/Treg_uNK/blob/e9e7671a3bb7cdda8602bf9275a15e119c622cf1/docs/figure/kegg.Rmd/upset2-1.png" target="_blank">e9e7671</a>
 </td>
 <td>
@@ -1374,6 +1383,17 @@ Date
 </tr>
 </thead>
 <tbody>
+<tr>
+<td>
+<a href="https://github.com/tranmanhha135/Treg_uNK/blob/73ae14f407412692dc76774f1adbfff3f1593fca/docs/figure/kegg.Rmd/dot3-1.png" target="_blank">73ae14f</a>
+</td>
+<td>
+Ha Tran
+</td>
+<td>
+2024-08-02
+</td>
+</tr>
 <tr>
 <td>
 <a href="https://github.com/tranmanhha135/Treg_uNK/blob/e9e7671a3bb7cdda8602bf9275a15e119c622cf1/docs/figure/kegg.Rmd/dot3-1.png" target="_blank">e9e7671</a>
@@ -1444,6 +1464,17 @@ Date
 <tbody>
 <tr>
 <td>
+<a href="https://github.com/tranmanhha135/Treg_uNK/blob/73ae14f407412692dc76774f1adbfff3f1593fca/docs/figure/kegg.Rmd/upset3-1.png" target="_blank">73ae14f</a>
+</td>
+<td>
+Ha Tran
+</td>
+<td>
+2024-08-02
+</td>
+</tr>
+<tr>
+<td>
 <a href="https://github.com/tranmanhha135/Treg_uNK/blob/e9e7671a3bb7cdda8602bf9275a15e119c622cf1/docs/figure/kegg.Rmd/upset3-1.png" target="_blank">e9e7671</a>
 </td>
 <td>
@@ -1512,6 +1543,17 @@ Date
 </tr>
 </thead>
 <tbody>
+<tr>
+<td>
+<a href="https://github.com/tranmanhha135/Treg_uNK/blob/73ae14f407412692dc76774f1adbfff3f1593fca/docs/figure/kegg.Rmd/combined_dot-1.png" target="_blank">73ae14f</a>
+</td>
+<td>
+Ha Tran
+</td>
+<td>
+2024-08-02
+</td>
+</tr>
 <tr>
 <td>
 <a href="https://github.com/tranmanhha135/Treg_uNK/blob/e9e7671a3bb7cdda8602bf9275a15e119c622cf1/docs/figure/kegg.Rmd/combined_dot-1.png" target="_blank">e9e7671</a>
@@ -1596,6 +1638,17 @@ Date
 <tbody>
 <tr>
 <td>
+<a href="https://github.com/tranmanhha135/Treg_uNK/blob/73ae14f407412692dc76774f1adbfff3f1593fca/docs/figure/kegg.Rmd/heat41-1.png" target="_blank">73ae14f</a>
+</td>
+<td>
+Ha Tran
+</td>
+<td>
+2024-08-02
+</td>
+</tr>
+<tr>
+<td>
 <a href="https://github.com/tranmanhha135/Treg_uNK/blob/e9e7671a3bb7cdda8602bf9275a15e119c622cf1/docs/figure/kegg.Rmd/heat41-1.png" target="_blank">e9e7671</a>
 </td>
 <td>
@@ -1649,6 +1702,17 @@ Date
 </tr>
 </thead>
 <tbody>
+<tr>
+<td>
+<a href="https://github.com/tranmanhha135/Treg_uNK/blob/73ae14f407412692dc76774f1adbfff3f1593fca/docs/figure/kegg.Rmd/heat42-1.png" target="_blank">73ae14f</a>
+</td>
+<td>
+Ha Tran
+</td>
+<td>
+2024-08-02
+</td>
+</tr>
 <tr>
 <td>
 <a href="https://github.com/tranmanhha135/Treg_uNK/blob/e9e7671a3bb7cdda8602bf9275a15e119c622cf1/docs/figure/kegg.Rmd/heat42-1.png" target="_blank">e9e7671</a>
@@ -1705,6 +1769,17 @@ Date
 <tbody>
 <tr>
 <td>
+<a href="https://github.com/tranmanhha135/Treg_uNK/blob/73ae14f407412692dc76774f1adbfff3f1593fca/docs/figure/kegg.Rmd/heat43-1.png" target="_blank">73ae14f</a>
+</td>
+<td>
+Ha Tran
+</td>
+<td>
+2024-08-02
+</td>
+</tr>
+<tr>
+<td>
 <a href="https://github.com/tranmanhha135/Treg_uNK/blob/e9e7671a3bb7cdda8602bf9275a15e119c622cf1/docs/figure/kegg.Rmd/heat43-1.png" target="_blank">e9e7671</a>
 </td>
 <td>
@@ -1756,6 +1831,17 @@ Date
 </tr>
 </thead>
 <tbody>
+<tr>
+<td>
+<a href="https://github.com/tranmanhha135/Treg_uNK/blob/73ae14f407412692dc76774f1adbfff3f1593fca/docs/figure/kegg.Rmd/heat44-1.png" target="_blank">73ae14f</a>
+</td>
+<td>
+Ha Tran
+</td>
+<td>
+2024-08-02
+</td>
+</tr>
 <tr>
 <td>
 <a href="https://github.com/tranmanhha135/Treg_uNK/blob/e9e7671a3bb7cdda8602bf9275a15e119c622cf1/docs/figure/kegg.Rmd/heat44-1.png" target="_blank">e9e7671</a>

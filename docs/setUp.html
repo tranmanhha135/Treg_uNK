@@ -432,7 +432,7 @@ div.tocify {
 <p>
 <button type="button" class="btn btn-default btn-workflowr btn-workflowr-report" data-toggle="collapse" data-target="#workflowr-report">
 <span class="glyphicon glyphicon-list" aria-hidden="true"></span>
-workflowr <span class="glyphicon glyphicon-exclamation-sign text-danger"
+workflowr <span class="glyphicon glyphicon-ok text-success"
 aria-hidden="true"></span>
 </button>
 </p>
@@ -443,8 +443,8 @@ aria-hidden="true"></span>
 </li>
 <li>
 <a data-toggle="tab" href="#checks"> Checks <span
-class="glyphicon glyphicon-exclamation-sign text-danger"
-aria-hidden="true"></span> </a>
+class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span>
+</a>
 </li>
 <li>
 <a data-toggle="tab" href="#versions">Past versions</a>
@@ -453,13 +453,13 @@ aria-hidden="true"></span> </a>
 <div class="tab-content">
 <div id="summary" class="tab-pane fade in active">
 <p>
-<strong>Last updated:</strong> 2024-08-01
+<strong>Last updated:</strong> 2024-08-02
 </p>
 <p>
 <strong>Checks:</strong> <span
-class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> 6
+class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> 7
 <span class="glyphicon glyphicon-exclamation-sign text-danger"
-aria-hidden="true"></span> 1
+aria-hidden="true"></span> 0
 </p>
 <p>
 <strong>Knit directory:</strong> <code>5_Treg_uNK/1_analysis/</code>
@@ -482,21 +482,18 @@ versions</em> tab lists the development history.
 <div class="panel panel-default">
 <div class="panel-heading">
 <p class="panel-title">
-<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRMarkdownfilestronguncommittedchanges">
-<span class="glyphicon glyphicon-exclamation-sign text-danger"
-aria-hidden="true"></span> <strong>R Markdown file:</strong> uncommitted
-changes </a>
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRMarkdownfilestronguptodate">
+<span class="glyphicon glyphicon-ok text-success"
+aria-hidden="true"></span> <strong>R Markdown file:</strong> up-to-date
+</a>
 </p>
 </div>
-<div id="strongRMarkdownfilestronguncommittedchanges"
+<div id="strongRMarkdownfilestronguptodate"
 class="panel-collapse collapse">
 <div class="panel-body">
-<p>The R Markdown file has unstaged changes. To know which version of
-the R Markdown file created these results, you’ll want to first commit
-it to the Git repo. If you’re still working on the analysis, you can
-ignore this warning. When you’re finished, you can run
-<code>wflow_publish</code> to commit the R Markdown file and build the
-HTML.</p>
+<p>Great! Since the R Markdown file has been committed to the Git
+repository, you know the exact version of the code that produced these
+results.</p>
 </div>
 </div>
 </div>
@@ -587,15 +584,15 @@ project makes it easier to run your code on other machines.</p>
 <div class="panel panel-default">
 <div class="panel-heading">
 <p class="panel-title">
-<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRepositoryversionstrongahrefhttpsgithubcomtranmanhha135TreguNKtreea5cdd4ec7e940249cd3f0b44b2c6e7aa34ccaa26targetblanka5cdd4ea">
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRepositoryversionstrongahrefhttpsgithubcomtranmanhha135TreguNKtree73ae14f407412692dc76774f1adbfff3f1593fcatargetblank73ae14fa">
 <span class="glyphicon glyphicon-ok text-success"
 aria-hidden="true"></span> <strong>Repository version:</strong>
-<a href="https://github.com/tranmanhha135/Treg_uNK/tree/a5cdd4ec7e940249cd3f0b44b2c6e7aa34ccaa26" target="_blank">a5cdd4e</a>
+<a href="https://github.com/tranmanhha135/Treg_uNK/tree/73ae14f407412692dc76774f1adbfff3f1593fca" target="_blank">73ae14f</a>
 </a>
 </p>
 </div>
 <div
-id="strongRepositoryversionstrongahrefhttpsgithubcomtranmanhha135TreguNKtreea5cdd4ec7e940249cd3f0b44b2c6e7aa34ccaa26targetblanka5cdd4ea"
+id="strongRepositoryversionstrongahrefhttpsgithubcomtranmanhha135TreguNKtree73ae14f407412692dc76774f1adbfff3f1593fcatargetblank73ae14fa"
 class="panel-collapse collapse">
 <div class="panel-body">
 <p>
@@ -605,7 +602,7 @@ reproducibility.
 </p>
 <p>
 The results in this page were generated with repository version
-<a href="https://github.com/tranmanhha135/Treg_uNK/tree/a5cdd4ec7e940249cd3f0b44b2c6e7aa34ccaa26" target="_blank">a5cdd4e</a>.
+<a href="https://github.com/tranmanhha135/Treg_uNK/tree/73ae14f407412692dc76774f1adbfff3f1593fca" target="_blank">73ae14f</a>.
 See the <em>Past versions</em> tab to see a history of the changes made
 to the R Markdown and HTML files.
 </p>
@@ -626,38 +623,22 @@ Ignored files:
 Untracked files:
     Untracked:  .DS_Store
     Untracked:  .gitignore
-    Untracked:  0_data/.DS_Store
-    Untracked:  0_data/rawData/.DS_Store
-    Untracked:  0_data/rawData/Jiang_TableS2_41421_2022_513_MOESM3_ESM.csv
-    Untracked:  0_data/rawData/Table S1 13578_2022_749_MOESM1_ESM (1).xlsx
-    Untracked:  0_data/rds_objects/cellchat.qs
-    Untracked:  0_data/rds_objects/cellchat_veh.qs
-    Untracked:  1_analysis/cellChat.Rmd
-    Untracked:  1_analysis/figure/
-    Untracked:  2_plots/.DS_Store
-    Untracked:  2_plots/LRheat.svg
-    Untracked:  2_plots/test.svg
-    Untracked:  2_plots/trophoblast_hmap_1.png
-    Untracked:  2_plots/trophoblast_hmap_1.svg
-    Untracked:  2_plots/trophoblast_hmap_2.svg
-    Untracked:  2_plots/trophoblast_hmap_3.svg
-    Untracked:  2_plots/trophoblast_hmap_4.svg
-    Untracked:  3_output/sig_de_JiangSC_subset.xlsx
-    Untracked:  sampleHeatmap.rds
+    Untracked:  cellChat.Rmd
 
 Unstaged changes:
-    Modified:   140_treg_uNK.Rproj
-    Modified:   1_analysis/_site.yml
-    Modified:   1_analysis/extraFigs.Rmd
-    Modified:   1_analysis/ipa.Rmd
-    Modified:   1_analysis/setUp.Rmd
-    Modified:   2_plots/1_QC/counts_after_filtering.svg
-    Modified:   2_plots/1_QC/counts_before_after_filtering.svg
-    Modified:   2_plots/1_QC/counts_before_filtering.svg
-    Modified:   2_plots/1_QC/library_size.svg
-    Modified:   2_plots/functionalHeat.png
-    Modified:   2_plots/sampleHeat.svg
-    Modified:   functions.Rmd
+    Modified:   0_data/rds_plots/deHmap_plots.rds
+    Modified:   0_data/rds_plots/go_combined_parTerm_dotPlot.rds
+    Modified:   0_data/rds_plots/go_parTerm_dotPlot.rds
+    Modified:   0_data/rds_plots/kegg_path_Hmap.rds
+    Deleted:    1_analysis/cellChat.Rmd
+    Modified:   3_output/GO_sig.xlsx
+    Modified:   3_output/KEGG_all.xlsx
+    Modified:   3_output/KEGG_sig.xlsx
+    Modified:   3_output/de_genes_all.xlsx
+    Modified:   3_output/de_genes_sig.xlsx
+    Modified:   3_output/reactome_all.xlsx
+    Modified:   3_output/reactome_sig.xlsx
+    Modified:   sampleHeatmap.rds
 
 </code></pre>
 <p>
@@ -702,6 +683,40 @@ Message
 </tr>
 </thead>
 <tbody>
+<tr>
+<td>
+Rmd
+</td>
+<td>
+<a href="https://github.com/tranmanhha135/Treg_uNK/blob/73ae14f407412692dc76774f1adbfff3f1593fca/1_analysis/setUp.Rmd" target="_blank">73ae14f</a>
+</td>
+<td>
+Ha Tran
+</td>
+<td>
+2024-08-02
+</td>
+<td>
+Large update with final visualisations
+</td>
+</tr>
+<tr>
+<td>
+html
+</td>
+<td>
+<a href="https://rawcdn.githack.com/tranmanhha135/Treg_uNK/73ae14f407412692dc76774f1adbfff3f1593fca/docs/setUp.html" target="_blank">73ae14f</a>
+</td>
+<td>
+Ha Tran
+</td>
+<td>
+2024-08-02
+</td>
+<td>
+Large update with final visualisations
+</td>
+</tr>
 <tr>
 <td>
 html
@@ -1038,7 +1053,7 @@ pie &lt;- pie %&gt;% layout(title = &#39;Frequency of gene biotype&#39;,
 
 pie</code></pre>
 <div class="plotly html-widget html-fill-item" id="htmlwidget-8d32cfd9db97395c4a5f" style="width:768px;height:480px;"></div>
-<script type="application/json" data-for="htmlwidget-8d32cfd9db97395c4a5f">{"x":{"visdat":{"14969511b9295":["function () ","plotlyVisDat"]},"cur_data":"14969511b9295","attrs":{"14969511b9295":{"labels":{},"values":{},"textposition":"inside","textinfo":"label+percent","hoverinfo":"text","text":{},"marker":{"colors":["function (distinct = FALSE) ","{","    c <- .Call(C_colors)","    if (distinct) ","        c[!duplicated(t(col2rgb(c)))]","    else c","}"],"line":{"color":"#FFFFFF","width":1}},"showlegend":true,"alpha_stroke":1,"sizes":[10,100],"spans":[1,20],"type":"pie"}},"layout":{"margin":{"b":40,"l":60,"t":25,"r":10},"title":"Frequency of gene biotype","xaxis":{"showgrid":false,"zeroline":false,"showticklabels":false},"yaxis":{"showgrid":false,"zeroline":false,"showticklabels":false},"hovermode":"closest","showlegend":true},"source":"A","config":{"modeBarButtonsToAdd":["hoverclosest","hovercompare"],"showSendToCloud":false},"data":[{"labels":["lncRNA","miRNA","Misc rna","Processed pseudogene","Protein coding","pseudogene","ribozyme","rRNA","scaRNA","snoRNA","snRNA","TEC","Transcribed processed pseudogene","Transcribed unitary pseudogene","Transcribed unprocessed pseudogene","Translated unprocessed pseudogene","Unitary pseudogene","Unprocessed pseudogene"],"values":[2290,1173,1,122,18844,2,4,6,7,116,4,26,80,15,38,1,1,52],"textposition":["inside","inside","inside","inside","inside","inside","inside","inside","inside","inside","inside","inside","inside","inside","inside","inside","inside","inside"],"textinfo":"label+percent","hoverinfo":["text","text","text","text","text","text","text","text","text","text","text","text","text","text","text","text","text","text"],"text":["2290  genes","1173  genes","1  genes","122  genes","18844  genes","2  genes","4  genes","6  genes","7  genes","116  genes","4  genes","26  genes","80  genes","15  genes","38  genes","1  genes","1  genes","52  genes"],"marker":{"color":"rgba(31,119,180,1)","colors":["structure(function (distinct = FALSE) ","{","    c <- .Call(C_colors)","    if (distinct) ","        c[!duplicated(t(col2rgb(c)))]","    else c","}, apiSrc = TRUE)"],"line":{"color":"#FFFFFF","width":1}},"showlegend":true,"type":"pie","frame":null}],"highlight":{"on":"plotly_click","persistent":false,"dynamic":false,"selectize":false,"opacityDim":0.20000000000000001,"selected":{"opacity":1},"debounce":0},"shinyEvents":["plotly_hover","plotly_click","plotly_selected","plotly_relayout","plotly_brushed","plotly_brushing","plotly_clickannotation","plotly_doubleclick","plotly_deselect","plotly_afterplot","plotly_sunburstclick"],"base_url":"https://plot.ly"},"evals":[],"jsHooks":[]}</script>
+<script type="application/json" data-for="htmlwidget-8d32cfd9db97395c4a5f">{"x":{"visdat":{"c48b6d8290c":["function () ","plotlyVisDat"]},"cur_data":"c48b6d8290c","attrs":{"c48b6d8290c":{"labels":{},"values":{},"textposition":"inside","textinfo":"label+percent","hoverinfo":"text","text":{},"marker":{"colors":["function (distinct = FALSE) ","{","    c <- .Call(C_colors)","    if (distinct) ","        c[!duplicated(t(col2rgb(c)))]","    else c","}"],"line":{"color":"#FFFFFF","width":1}},"showlegend":true,"alpha_stroke":1,"sizes":[10,100],"spans":[1,20],"type":"pie"}},"layout":{"margin":{"b":40,"l":60,"t":25,"r":10},"title":"Frequency of gene biotype","xaxis":{"showgrid":false,"zeroline":false,"showticklabels":false},"yaxis":{"showgrid":false,"zeroline":false,"showticklabels":false},"hovermode":"closest","showlegend":true},"source":"A","config":{"modeBarButtonsToAdd":["hoverclosest","hovercompare"],"showSendToCloud":false},"data":[{"labels":["lncRNA","miRNA","Misc rna","Processed pseudogene","Protein coding","pseudogene","ribozyme","rRNA","scaRNA","snoRNA","snRNA","TEC","Transcribed processed pseudogene","Transcribed unitary pseudogene","Transcribed unprocessed pseudogene","Translated unprocessed pseudogene","Unitary pseudogene","Unprocessed pseudogene"],"values":[2290,1173,1,122,18844,2,4,6,7,116,4,26,80,15,38,1,1,52],"textposition":["inside","inside","inside","inside","inside","inside","inside","inside","inside","inside","inside","inside","inside","inside","inside","inside","inside","inside"],"textinfo":"label+percent","hoverinfo":["text","text","text","text","text","text","text","text","text","text","text","text","text","text","text","text","text","text"],"text":["2290  genes","1173  genes","1  genes","122  genes","18844  genes","2  genes","4  genes","6  genes","7  genes","116  genes","4  genes","26  genes","80  genes","15  genes","38  genes","1  genes","1  genes","52  genes"],"marker":{"color":"rgba(31,119,180,1)","colors":["structure(function (distinct = FALSE) ","{","    c <- .Call(C_colors)","    if (distinct) ","        c[!duplicated(t(col2rgb(c)))]","    else c","}, apiSrc = TRUE)"],"line":{"color":"#FFFFFF","width":1}},"showlegend":true,"type":"pie","frame":null}],"highlight":{"on":"plotly_click","persistent":false,"dynamic":false,"selectize":false,"opacityDim":0.20000000000000001,"selected":{"opacity":1},"debounce":0},"shinyEvents":["plotly_hover","plotly_click","plotly_selected","plotly_relayout","plotly_brushed","plotly_brushing","plotly_clickannotation","plotly_doubleclick","plotly_deselect","plotly_afterplot","plotly_sunburstclick"],"base_url":"https://plot.ly"},"evals":[],"jsHooks":[]}</script>
 </div>
 <div id="table" class="section level4">
 <h4>Table</h4>
@@ -1138,6 +1153,17 @@ Date
 </tr>
 </thead>
 <tbody>
+<tr>
+<td>
+<a href="https://github.com/tranmanhha135/Treg_uNK/blob/73ae14f407412692dc76774f1adbfff3f1593fca/docs/figure/setUp.Rmd/libraryChecks-1.png" target="_blank">73ae14f</a>
+</td>
+<td>
+Ha Tran
+</td>
+<td>
+2024-08-02
+</td>
+</tr>
 <tr>
 <td>
 <a href="https://github.com/tranmanhha135/Treg_uNK/blob/e9e7671a3bb7cdda8602bf9275a15e119c622cf1/docs/figure/setUp.Rmd/libraryChecks-1.png" target="_blank">e9e7671</a>
@@ -1300,6 +1326,17 @@ Date
 <tbody>
 <tr>
 <td>
+<a href="https://github.com/tranmanhha135/Treg_uNK/blob/73ae14f407412692dc76774f1adbfff3f1593fca/docs/figure/setUp.Rmd/afterFiltering-1.png" target="_blank">73ae14f</a>
+</td>
+<td>
+Ha Tran
+</td>
+<td>
+2024-08-02
+</td>
+</tr>
+<tr>
+<td>
 <a href="https://github.com/tranmanhha135/Treg_uNK/blob/e9e7671a3bb7cdda8602bf9275a15e119c622cf1/docs/figure/setUp.Rmd/afterFiltering-1.png" target="_blank">e9e7671</a>
 </td>
 <td>
@@ -1425,6 +1462,17 @@ Date
 <tbody>
 <tr>
 <td>
+<a href="https://github.com/tranmanhha135/Treg_uNK/blob/73ae14f407412692dc76774f1adbfff3f1593fca/docs/figure/setUp.Rmd/beforeNorm-1.png" target="_blank">73ae14f</a>
+</td>
+<td>
+Ha Tran
+</td>
+<td>
+2024-08-02
+</td>
+</tr>
+<tr>
+<td>
 <a href="https://github.com/tranmanhha135/Treg_uNK/blob/e9e7671a3bb7cdda8602bf9275a15e119c622cf1/docs/figure/setUp.Rmd/beforeNorm-1.png" target="_blank">e9e7671</a>
 </td>
 <td>
@@ -1512,6 +1560,17 @@ Date
 </tr>
 </thead>
 <tbody>
+<tr>
+<td>
+<a href="https://github.com/tranmanhha135/Treg_uNK/blob/73ae14f407412692dc76774f1adbfff3f1593fca/docs/figure/setUp.Rmd/afterNorm-1.png" target="_blank">73ae14f</a>
+</td>
+<td>
+Ha Tran
+</td>
+<td>
+2024-08-02
+</td>
+</tr>
 <tr>
 <td>
 <a href="https://github.com/tranmanhha135/Treg_uNK/blob/e9e7671a3bb7cdda8602bf9275a15e119c622cf1/docs/figure/setUp.Rmd/afterNorm-1.png" target="_blank">e9e7671</a>
@@ -1634,6 +1693,17 @@ Date
 <tbody>
 <tr>
 <td>
+<a href="https://github.com/tranmanhha135/Treg_uNK/blob/73ae14f407412692dc76774f1adbfff3f1593fca/docs/figure/setUp.Rmd/pca-1.png" target="_blank">73ae14f</a>
+</td>
+<td>
+Ha Tran
+</td>
+<td>
+2024-08-02
+</td>
+</tr>
+<tr>
+<td>
 <a href="https://github.com/tranmanhha135/Treg_uNK/blob/e9e7671a3bb7cdda8602bf9275a15e119c622cf1/docs/figure/setUp.Rmd/pca-1.png" target="_blank">e9e7671</a>
 </td>
 <td>
@@ -1715,7 +1785,7 @@ pca_3d &lt;- plot_ly(pc, x = ~PC1, y = ~PC2, z = ~PC3, color = ~dge$samples$grou
 
 pca_3d</code></pre>
 <div class="plotly html-widget html-fill-item" id="htmlwidget-02880d8cbf9369760f4f" style="width:768px;height:480px;"></div>
-<script type="application/json" data-for="htmlwidget-02880d8cbf9369760f4f">{"x":{"visdat":{"1496978cf87fe":["function () ","plotlyVisDat"]},"cur_data":"1496978cf87fe","attrs":{"1496978cf87fe":{"x":{},"y":{},"z":{},"marker":{"symbol":"circle","sizemode":"diameter","size":5},"hoverinfo":"text","color":{},"colors":["#73c1a6","#f58d5f","#8DA0CB"],"alpha_stroke":1,"sizes":[10,100],"spans":[1,20]}},"layout":{"margin":{"b":40,"l":60,"t":25,"r":10},"showlegend":true,"title":"Total Explained Variance = 44.949","scene":{"xaxis":{"title":"PC 1 (20%)","gridcolor":"rgb(194, 197, 204)","zerolinewidth":1,"ticklen":5,"gridwidth":2},"yaxis":{"title":"PC 2 (15%)","gridcolor":"rgb(194, 197, 204)","zerolinewidth":1,"ticklen":5,"gridwith":2},"zaxis":{"title":"PC 3 (9%)","gridcolor":"rgb(194, 197, 204)","zerolinewidth":1,"ticklen":5,"gridwith":2}},"hovermode":"closest"},"source":"A","config":{"modeBarButtonsToAdd":["hoverclosest","hovercompare"],"showSendToCloud":false},"data":[{"x":[82.919539075405083,-7.7885128767346066,-5.7268484889767493,-6.5690481787729098,-2.7051468682432489,23.308620305021918],"y":[-28.147293743969566,26.181105179841854,31.657943651314177,15.913709430147353,34.837008319058931,35.823627675600051],"z":[15.631863570937831,2.3865278398343741,-6.951339172052859,23.108649226665879,2.6180625671528057,11.674790060081358],"marker":{"color":"rgba(245,141,95,1)","symbol":"circle","sizemode":"diameter","size":5,"line":{"color":"rgba(245,141,95,1)"}},"hoverinfo":["text","text","text","text","text","text"],"type":"scatter3d","mode":"markers","name":"veh","textfont":{"color":"rgba(245,141,95,1)"},"error_y":{"color":"rgba(245,141,95,1)"},"error_x":{"color":"rgba(245,141,95,1)"},"line":{"color":"rgba(245,141,95,1)"},"frame":null},{"x":[-9.4087924844131532,32.45431241340625,-19.259203856508588,-1.6381004770677581,-8.892833320334784],"y":[-7.8404694858956008,-1.674218603564078,-26.677377210099955,10.48460383684449,-10.152030263470918],"z":[-41.756200708727199,-35.596953076302711,-11.647360920231771,-3.9188291477213726,-7.0036148547760533],"marker":{"color":"rgba(141,160,203,1)","symbol":"circle","sizemode":"diameter","size":5,"line":{"color":"rgba(141,160,203,1)"}},"hoverinfo":["text","text","text","text","text"],"type":"scatter3d","mode":"markers","name":"DT","textfont":{"color":"rgba(141,160,203,1)"},"error_y":{"color":"rgba(141,160,203,1)"},"error_x":{"color":"rgba(141,160,203,1)"},"line":{"color":"rgba(141,160,203,1)"},"frame":null},{"x":[-18.678763461714468,-25.778547435475549,-12.069749969224654,-13.64295653808704,-6.5239678382798871],"y":[-26.808198540602724,-24.468495600097981,-16.779996691937725,-8.7117978281127098,-3.6381201250556945],"z":[10.97291450274119,21.914317735617153,6.4562089999895385,4.8395705144506636,7.2713928623411528],"marker":{"color":"rgba(115,193,166,1)","symbol":"circle","sizemode":"diameter","size":5,"line":{"color":"rgba(115,193,166,1)"}},"hoverinfo":["text","text","text","text","text"],"type":"scatter3d","mode":"markers","name":"DT+Treg","textfont":{"color":"rgba(115,193,166,1)"},"error_y":{"color":"rgba(115,193,166,1)"},"error_x":{"color":"rgba(115,193,166,1)"},"line":{"color":"rgba(115,193,166,1)"},"frame":null}],"highlight":{"on":"plotly_click","persistent":false,"dynamic":false,"selectize":false,"opacityDim":0.20000000000000001,"selected":{"opacity":1},"debounce":0},"shinyEvents":["plotly_hover","plotly_click","plotly_selected","plotly_relayout","plotly_brushed","plotly_brushing","plotly_clickannotation","plotly_doubleclick","plotly_deselect","plotly_afterplot","plotly_sunburstclick"],"base_url":"https://plot.ly"},"evals":[],"jsHooks":[]}</script>
+<script type="application/json" data-for="htmlwidget-02880d8cbf9369760f4f">{"x":{"visdat":{"c48b6cc28ac7":["function () ","plotlyVisDat"]},"cur_data":"c48b6cc28ac7","attrs":{"c48b6cc28ac7":{"x":{},"y":{},"z":{},"marker":{"symbol":"circle","sizemode":"diameter","size":5},"hoverinfo":"text","color":{},"colors":["#73c1a6","#f58d5f","#8DA0CB"],"alpha_stroke":1,"sizes":[10,100],"spans":[1,20]}},"layout":{"margin":{"b":40,"l":60,"t":25,"r":10},"showlegend":true,"title":"Total Explained Variance = 44.949","scene":{"xaxis":{"title":"PC 1 (20%)","gridcolor":"rgb(194, 197, 204)","zerolinewidth":1,"ticklen":5,"gridwidth":2},"yaxis":{"title":"PC 2 (15%)","gridcolor":"rgb(194, 197, 204)","zerolinewidth":1,"ticklen":5,"gridwith":2},"zaxis":{"title":"PC 3 (9%)","gridcolor":"rgb(194, 197, 204)","zerolinewidth":1,"ticklen":5,"gridwith":2}},"hovermode":"closest"},"source":"A","config":{"modeBarButtonsToAdd":["hoverclosest","hovercompare"],"showSendToCloud":false},"data":[{"x":[82.919539075405083,-7.7885128767346066,-5.7268484889767493,-6.5690481787729098,-2.7051468682432489,23.308620305021918],"y":[-28.147293743969566,26.181105179841854,31.657943651314177,15.913709430147353,34.837008319058931,35.823627675600051],"z":[15.631863570937831,2.3865278398343741,-6.951339172052859,23.108649226665879,2.6180625671528057,11.674790060081358],"marker":{"color":"rgba(245,141,95,1)","symbol":"circle","sizemode":"diameter","size":5,"line":{"color":"rgba(245,141,95,1)"}},"hoverinfo":["text","text","text","text","text","text"],"type":"scatter3d","mode":"markers","name":"veh","textfont":{"color":"rgba(245,141,95,1)"},"error_y":{"color":"rgba(245,141,95,1)"},"error_x":{"color":"rgba(245,141,95,1)"},"line":{"color":"rgba(245,141,95,1)"},"frame":null},{"x":[-9.4087924844131532,32.45431241340625,-19.259203856508588,-1.6381004770677581,-8.892833320334784],"y":[-7.8404694858956008,-1.674218603564078,-26.677377210099955,10.48460383684449,-10.152030263470918],"z":[-41.756200708727199,-35.596953076302711,-11.647360920231771,-3.9188291477213726,-7.0036148547760533],"marker":{"color":"rgba(141,160,203,1)","symbol":"circle","sizemode":"diameter","size":5,"line":{"color":"rgba(141,160,203,1)"}},"hoverinfo":["text","text","text","text","text"],"type":"scatter3d","mode":"markers","name":"DT","textfont":{"color":"rgba(141,160,203,1)"},"error_y":{"color":"rgba(141,160,203,1)"},"error_x":{"color":"rgba(141,160,203,1)"},"line":{"color":"rgba(141,160,203,1)"},"frame":null},{"x":[-18.678763461714468,-25.778547435475549,-12.069749969224654,-13.64295653808704,-6.5239678382798871],"y":[-26.808198540602724,-24.468495600097981,-16.779996691937725,-8.7117978281127098,-3.6381201250556945],"z":[10.97291450274119,21.914317735617153,6.4562089999895385,4.8395705144506636,7.2713928623411528],"marker":{"color":"rgba(115,193,166,1)","symbol":"circle","sizemode":"diameter","size":5,"line":{"color":"rgba(115,193,166,1)"}},"hoverinfo":["text","text","text","text","text"],"type":"scatter3d","mode":"markers","name":"DT+Treg","textfont":{"color":"rgba(115,193,166,1)"},"error_y":{"color":"rgba(115,193,166,1)"},"error_x":{"color":"rgba(115,193,166,1)"},"line":{"color":"rgba(115,193,166,1)"},"frame":null}],"highlight":{"on":"plotly_click","persistent":false,"dynamic":false,"selectize":false,"opacityDim":0.20000000000000001,"selected":{"opacity":1},"debounce":0},"shinyEvents":["plotly_hover","plotly_click","plotly_selected","plotly_relayout","plotly_brushed","plotly_brushing","plotly_clickannotation","plotly_doubleclick","plotly_deselect","plotly_afterplot","plotly_sunburstclick"],"base_url":"https://plot.ly"},"evals":[],"jsHooks":[]}</script>
 <div id="correlation-plot" class="section level3">
 <h3>Correlation plot</h3>
 <p>A correlation matrix between principal components (PC) and metadata
@@ -1784,7 +1854,7 @@ attached base packages:
 
 other attached packages:
  [1] extrafont_0.19       Glimma_2.14.0        edgeR_4.2.1         
- [4] limma_3.60.3         AnnotationHub_3.12.0 BiocFileCache_2.12.0
+ [4] limma_3.60.4         AnnotationHub_3.12.0 BiocFileCache_2.12.0
  [7] dbplyr_2.5.0         BiocGenerics_0.50.0  patchwork_1.2.0     
 [10] plotly_4.10.4        DT_0.33              corrplot_0.92       
 [13] cowplot_1.1.3        ggrepel_0.9.5.9999   ggbiplot_0.6.2      
@@ -1802,13 +1872,13 @@ loaded via a namespace (and not attached):
   [9] memoise_2.0.1               htmltools_0.5.8.1          
  [11] S4Arrays_1.4.1              curl_5.2.1                 
  [13] SparseArray_1.4.8           sass_0.4.9                 
- [15] bslib_0.7.0                 htmlwidgets_1.6.4          
+ [15] bslib_0.8.0                 htmlwidgets_1.6.4          
  [17] plyr_1.8.9                  cachem_1.1.0               
  [19] whisker_0.4.1               lifecycle_1.0.4            
  [21] pkgconfig_2.0.3             Matrix_1.7-0               
  [23] R6_2.5.1                    fastmap_1.2.0              
  [25] GenomeInfoDbData_1.2.12     MatrixGenerics_1.16.0      
- [27] digest_0.6.36               colorspace_2.1-0           
+ [27] digest_0.6.36               colorspace_2.1-1           
  [29] AnnotationDbi_1.66.0        S4Vectors_0.42.1           
  [31] DESeq2_1.44.0               rprojroot_2.0.4            
  [33] textshaping_0.4.0           crosstalk_1.2.1            
@@ -1817,7 +1887,7 @@ loaded via a namespace (and not attached):
  [39] fansi_1.0.6                 timechange_0.3.0           
  [41] httr_1.4.7                  abind_1.4-5                
  [43] compiler_4.4.1              bit64_4.0.5                
- [45] withr_3.0.0                 BiocParallel_1.38.0        
+ [45] withr_3.0.1                 BiocParallel_1.38.0        
  [47] DBI_1.2.3                   highr_0.11                 
  [49] Rttf2pt1_1.3.12             rappdirs_0.3.3             
  [51] DelayedArray_0.30.1         tools_4.4.1                
@@ -1833,15 +1903,15 @@ loaded via a namespace (and not attached):
  [71] Biostrings_2.72.1           knitr_1.48                 
  [73] git2r_0.33.0                IRanges_2.38.1             
  [75] SummarizedExperiment_1.34.0 svglite_2.1.3              
- [77] stats4_4.4.1                xfun_0.45                  
+ [77] stats4_4.4.1                xfun_0.46                  
  [79] Biobase_2.64.0              statmod_1.5.0              
  [81] matrixStats_1.3.0           stringi_1.8.4              
  [83] UCSC.utils_1.0.0            workflowr_1.7.1            
- [85] lazyeval_0.2.2              yaml_2.3.9                 
+ [85] lazyeval_0.2.2              yaml_2.3.10                
  [87] evaluate_0.24.0             codetools_0.2-20           
  [89] BiocManager_1.30.23         cli_3.6.3                  
  [91] systemfonts_1.1.0           munsell_0.5.1              
- [93] jquerylib_0.1.4             Rcpp_1.0.12                
+ [93] jquerylib_0.1.4             Rcpp_1.0.13                
  [95] GenomeInfoDb_1.40.1         png_0.1-8                  
  [97] parallel_4.4.1              blob_1.2.4                 
  [99] viridisLite_0.4.2           crayon_1.5.3               

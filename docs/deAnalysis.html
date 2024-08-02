@@ -428,7 +428,7 @@ div.tocify {
 <p>
 <button type="button" class="btn btn-default btn-workflowr btn-workflowr-report" data-toggle="collapse" data-target="#workflowr-report">
 <span class="glyphicon glyphicon-list" aria-hidden="true"></span>
-workflowr <span class="glyphicon glyphicon-exclamation-sign text-danger"
+workflowr <span class="glyphicon glyphicon-ok text-success"
 aria-hidden="true"></span>
 </button>
 </p>
@@ -439,8 +439,8 @@ aria-hidden="true"></span>
 </li>
 <li>
 <a data-toggle="tab" href="#checks"> Checks <span
-class="glyphicon glyphicon-exclamation-sign text-danger"
-aria-hidden="true"></span> </a>
+class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span>
+</a>
 </li>
 <li>
 <a data-toggle="tab" href="#versions">Past versions</a>
@@ -449,13 +449,13 @@ aria-hidden="true"></span> </a>
 <div class="tab-content">
 <div id="summary" class="tab-pane fade in active">
 <p>
-<strong>Last updated:</strong> 2024-08-01
+<strong>Last updated:</strong> 2024-08-02
 </p>
 <p>
 <strong>Checks:</strong> <span
-class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> 6
+class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> 7
 <span class="glyphicon glyphicon-exclamation-sign text-danger"
-aria-hidden="true"></span> 1
+aria-hidden="true"></span> 0
 </p>
 <p>
 <strong>Knit directory:</strong> <code>5_Treg_uNK/1_analysis/</code>
@@ -478,21 +478,18 @@ versions</em> tab lists the development history.
 <div class="panel panel-default">
 <div class="panel-heading">
 <p class="panel-title">
-<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRMarkdownfilestronguncommittedchanges">
-<span class="glyphicon glyphicon-exclamation-sign text-danger"
-aria-hidden="true"></span> <strong>R Markdown file:</strong> uncommitted
-changes </a>
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRMarkdownfilestronguptodate">
+<span class="glyphicon glyphicon-ok text-success"
+aria-hidden="true"></span> <strong>R Markdown file:</strong> up-to-date
+</a>
 </p>
 </div>
-<div id="strongRMarkdownfilestronguncommittedchanges"
+<div id="strongRMarkdownfilestronguptodate"
 class="panel-collapse collapse">
 <div class="panel-body">
-<p>The R Markdown file has unstaged changes. To know which version of
-the R Markdown file created these results, you’ll want to first commit
-it to the Git repo. If you’re still working on the analysis, you can
-ignore this warning. When you’re finished, you can run
-<code>wflow_publish</code> to commit the R Markdown file and build the
-HTML.</p>
+<p>Great! Since the R Markdown file has been committed to the Git
+repository, you know the exact version of the code that produced these
+results.</p>
 </div>
 </div>
 </div>
@@ -583,15 +580,15 @@ project makes it easier to run your code on other machines.</p>
 <div class="panel panel-default">
 <div class="panel-heading">
 <p class="panel-title">
-<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRepositoryversionstrongahrefhttpsgithubcomtranmanhha135TreguNKtreea5cdd4ec7e940249cd3f0b44b2c6e7aa34ccaa26targetblanka5cdd4ea">
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRepositoryversionstrongahrefhttpsgithubcomtranmanhha135TreguNKtree73ae14f407412692dc76774f1adbfff3f1593fcatargetblank73ae14fa">
 <span class="glyphicon glyphicon-ok text-success"
 aria-hidden="true"></span> <strong>Repository version:</strong>
-<a href="https://github.com/tranmanhha135/Treg_uNK/tree/a5cdd4ec7e940249cd3f0b44b2c6e7aa34ccaa26" target="_blank">a5cdd4e</a>
+<a href="https://github.com/tranmanhha135/Treg_uNK/tree/73ae14f407412692dc76774f1adbfff3f1593fca" target="_blank">73ae14f</a>
 </a>
 </p>
 </div>
 <div
-id="strongRepositoryversionstrongahrefhttpsgithubcomtranmanhha135TreguNKtreea5cdd4ec7e940249cd3f0b44b2c6e7aa34ccaa26targetblanka5cdd4ea"
+id="strongRepositoryversionstrongahrefhttpsgithubcomtranmanhha135TreguNKtree73ae14f407412692dc76774f1adbfff3f1593fcatargetblank73ae14fa"
 class="panel-collapse collapse">
 <div class="panel-body">
 <p>
@@ -601,7 +598,7 @@ reproducibility.
 </p>
 <p>
 The results in this page were generated with repository version
-<a href="https://github.com/tranmanhha135/Treg_uNK/tree/a5cdd4ec7e940249cd3f0b44b2c6e7aa34ccaa26" target="_blank">a5cdd4e</a>.
+<a href="https://github.com/tranmanhha135/Treg_uNK/tree/73ae14f407412692dc76774f1adbfff3f1593fca" target="_blank">73ae14f</a>.
 See the <em>Past versions</em> tab to see a history of the changes made
 to the R Markdown and HTML files.
 </p>
@@ -622,62 +619,22 @@ Ignored files:
 Untracked files:
     Untracked:  .DS_Store
     Untracked:  .gitignore
-    Untracked:  0_data/.DS_Store
-    Untracked:  0_data/rawData/.DS_Store
-    Untracked:  0_data/rawData/Jiang_TableS2_41421_2022_513_MOESM3_ESM.csv
-    Untracked:  0_data/rawData/Table S1 13578_2022_749_MOESM1_ESM (1).xlsx
-    Untracked:  0_data/rds_objects/cellchat.qs
-    Untracked:  0_data/rds_objects/cellchat_veh.qs
-    Untracked:  1_analysis/cellChat.Rmd
-    Untracked:  2_plots/.DS_Store
-    Untracked:  2_plots/LRheat.svg
-    Untracked:  2_plots/test.svg
-    Untracked:  2_plots/trophoblast_hmap_1.png
-    Untracked:  2_plots/trophoblast_hmap_1.svg
-    Untracked:  2_plots/trophoblast_hmap_2.svg
-    Untracked:  2_plots/trophoblast_hmap_3.svg
-    Untracked:  2_plots/trophoblast_hmap_4.svg
-    Untracked:  3_output/sig_de_JiangSC_subset.xlsx
-    Untracked:  sampleHeatmap.rds
+    Untracked:  cellChat.Rmd
 
 Unstaged changes:
-    Modified:   0_data/rds_objects/comp.rds
-    Modified:   0_data/rds_objects/dge.rds
-    Modified:   0_data/rds_objects/lm.rds
-    Modified:   0_data/rds_objects/lm_all.rds
-    Modified:   0_data/rds_objects/lm_sig.rds
     Modified:   0_data/rds_plots/deHmap_plots.rds
-    Modified:   0_data/rds_plots/ma_plots.rds
-    Modified:   0_data/rds_plots/vol_plots.rds
-    Modified:   140_treg_uNK.Rproj
-    Modified:   1_analysis/_site.yml
-    Modified:   1_analysis/deAnalysis.Rmd
-    Modified:   1_analysis/extraFigs.Rmd
-    Modified:   1_analysis/ipa.Rmd
-    Modified:   1_analysis/setUp.Rmd
-    Modified:   2_plots/1_QC/PC1_PC2.svg
-    Modified:   2_plots/1_QC/PC1_PC3.svg
-    Modified:   2_plots/1_QC/PC2_PC3.svg
-    Modified:   2_plots/1_QC/counts_after_filtering.svg
-    Modified:   2_plots/1_QC/counts_before_after_filtering.svg
-    Modified:   2_plots/1_QC/counts_before_filtering.svg
-    Modified:   2_plots/1_QC/library_size.svg
-    Modified:   2_plots/2_DE/heat_DT vs veh.svg
-    Modified:   2_plots/2_DE/heat_DT+Treg vs DT.svg
-    Modified:   2_plots/2_DE/heat_DT+Treg vs veh.svg
-    Modified:   2_plots/2_DE/ma_DT vs veh.png
-    Modified:   2_plots/2_DE/ma_DT+Treg vs DT.png
-    Modified:   2_plots/2_DE/ma_DT+Treg vs veh.png
-    Modified:   2_plots/2_DE/venn.png
-    Modified:   2_plots/2_DE/venn_2comp.png
-    Modified:   2_plots/2_DE/vol_DT vs veh.png
-    Modified:   2_plots/2_DE/vol_DT+Treg vs DT.png
-    Modified:   2_plots/2_DE/vol_DT+Treg vs veh.png
-    Modified:   2_plots/functionalHeat.png
-    Modified:   2_plots/sampleHeat.svg
+    Modified:   0_data/rds_plots/go_combined_parTerm_dotPlot.rds
+    Modified:   0_data/rds_plots/go_parTerm_dotPlot.rds
+    Modified:   0_data/rds_plots/kegg_path_Hmap.rds
+    Deleted:    1_analysis/cellChat.Rmd
+    Modified:   3_output/GO_sig.xlsx
+    Modified:   3_output/KEGG_all.xlsx
+    Modified:   3_output/KEGG_sig.xlsx
     Modified:   3_output/de_genes_all.xlsx
     Modified:   3_output/de_genes_sig.xlsx
-    Modified:   functions.Rmd
+    Modified:   3_output/reactome_all.xlsx
+    Modified:   3_output/reactome_sig.xlsx
+    Modified:   sampleHeatmap.rds
 
 </code></pre>
 <p>
@@ -723,6 +680,40 @@ Message
 </tr>
 </thead>
 <tbody>
+<tr>
+<td>
+Rmd
+</td>
+<td>
+<a href="https://github.com/tranmanhha135/Treg_uNK/blob/73ae14f407412692dc76774f1adbfff3f1593fca/1_analysis/deAnalysis.Rmd" target="_blank">73ae14f</a>
+</td>
+<td>
+Ha Tran
+</td>
+<td>
+2024-08-02
+</td>
+<td>
+Large update with final visualisations
+</td>
+</tr>
+<tr>
+<td>
+html
+</td>
+<td>
+<a href="https://rawcdn.githack.com/tranmanhha135/Treg_uNK/73ae14f407412692dc76774f1adbfff3f1593fca/docs/deAnalysis.html" target="_blank">73ae14f</a>
+</td>
+<td>
+Ha Tran
+</td>
+<td>
+2024-08-02
+</td>
+<td>
+Large update with final visualisations
+</td>
+</tr>
 <tr>
 <td>
 html
@@ -1061,6 +1052,17 @@ Date
 <tbody>
 <tr>
 <td>
+<a href="https://github.com/tranmanhha135/Treg_uNK/blob/73ae14f407412692dc76774f1adbfff3f1593fca/docs/figure/deAnalysis.Rmd/voom-1.png" target="_blank">73ae14f</a>
+</td>
+<td>
+Ha Tran
+</td>
+<td>
+2024-08-02
+</td>
+</tr>
+<tr>
+<td>
 <a href="https://github.com/tranmanhha135/Treg_uNK/blob/e9e7671a3bb7cdda8602bf9275a15e119c622cf1/docs/figure/deAnalysis.Rmd/voom-1.png" target="_blank">e9e7671</a>
 </td>
 <td>
@@ -1140,6 +1142,17 @@ Date
 <tbody>
 <tr>
 <td>
+<a href="https://github.com/tranmanhha135/Treg_uNK/blob/73ae14f407412692dc76774f1adbfff3f1593fca/docs/figure/deAnalysis.Rmd/voom_groupWeights-1.png" target="_blank">73ae14f</a>
+</td>
+<td>
+Ha Tran
+</td>
+<td>
+2024-08-02
+</td>
+</tr>
+<tr>
+<td>
 <a href="https://github.com/tranmanhha135/Treg_uNK/blob/e9e7671a3bb7cdda8602bf9275a15e119c622cf1/docs/figure/deAnalysis.Rmd/voom_groupWeights-1.png" target="_blank">e9e7671</a>
 </td>
 <td>
@@ -1217,6 +1230,17 @@ Date
 </tr>
 </thead>
 <tbody>
+<tr>
+<td>
+<a href="https://github.com/tranmanhha135/Treg_uNK/blob/73ae14f407412692dc76774f1adbfff3f1593fca/docs/figure/deAnalysis.Rmd/voom_sampleWeights-1.png" target="_blank">73ae14f</a>
+</td>
+<td>
+Ha Tran
+</td>
+<td>
+2024-08-02
+</td>
+</tr>
 <tr>
 <td>
 <a href="https://github.com/tranmanhha135/Treg_uNK/blob/e9e7671a3bb7cdda8602bf9275a15e119c622cf1/docs/figure/deAnalysis.Rmd/voom_sampleWeights-1.png" target="_blank">e9e7671</a>
@@ -1299,6 +1323,17 @@ Date
 <tbody>
 <tr>
 <td>
+<a href="https://github.com/tranmanhha135/Treg_uNK/blob/73ae14f407412692dc76774f1adbfff3f1593fca/docs/figure/deAnalysis.Rmd/voomPCA-1.png" target="_blank">73ae14f</a>
+</td>
+<td>
+Ha Tran
+</td>
+<td>
+2024-08-02
+</td>
+</tr>
+<tr>
+<td>
 <a href="https://github.com/tranmanhha135/Treg_uNK/blob/e9e7671a3bb7cdda8602bf9275a15e119c622cf1/docs/figure/deAnalysis.Rmd/voomPCA-1.png" target="_blank">e9e7671</a>
 </td>
 <td>
@@ -1378,7 +1413,7 @@ cut-off that generates a sufficiently small list of DE genes.</p>
 </ul>
 <div id="fcnone" class="section level3">
 <h3>FC=none</h3>
-<table class="table table-striped table-hover" style="color: black; margin-left: auto; margin-right: auto;">
+<table class="table table-striped table-hover" style="margin-left: auto; margin-right: auto;">
 <caption>
 TABLE 1: Number of significant DE genes with ‘none’ adjusment method,
 and at a p-value/adj.p-value of 0.01
@@ -1443,7 +1478,7 @@ Up
 </tr>
 </tbody>
 </table>
-<table class="table table-striped table-hover" style="color: black; margin-left: auto; margin-right: auto;">
+<table class="table table-striped table-hover" style="margin-left: auto; margin-right: auto;">
 <caption>
 TABLE 2: Number of significant DE genes with ‘fdr’ adjusment method, and
 at a p-value/adj.p-value of 0.1
@@ -1508,7 +1543,7 @@ Up
 </tr>
 </tbody>
 </table>
-<table class="table table-striped table-hover" style="color: black; margin-left: auto; margin-right: auto;">
+<table class="table table-striped table-hover" style="margin-left: auto; margin-right: auto;">
 <caption>
 TABLE 3: Number of significant DE genes with ‘fdr’ adjusment method, and
 at a p-value/adj.p-value of 0.05
@@ -1576,7 +1611,7 @@ Up
 </div>
 <div id="fc1.1" class="section level3">
 <h3>FC=1.1</h3>
-<table class="table table-striped table-hover" style="color: black; margin-left: auto; margin-right: auto;">
+<table class="table table-striped table-hover" style="margin-left: auto; margin-right: auto;">
 <caption>
 TABLE 4: Number of significant DE genes with ‘none’ adjusment method,
 and at a p-value/adj.p-value of 0.01
@@ -1641,7 +1676,7 @@ Up
 </tr>
 </tbody>
 </table>
-<table class="table table-striped table-hover" style="color: black; margin-left: auto; margin-right: auto;">
+<table class="table table-striped table-hover" style="margin-left: auto; margin-right: auto;">
 <caption>
 TABLE 5: Number of significant DE genes with ‘fdr’ adjusment method, and
 at a p-value/adj.p-value of 0.1
@@ -1706,7 +1741,7 @@ Up
 </tr>
 </tbody>
 </table>
-<table class="table table-striped table-hover" style="color: black; margin-left: auto; margin-right: auto;">
+<table class="table table-striped table-hover" style="margin-left: auto; margin-right: auto;">
 <caption>
 TABLE 6: Number of significant DE genes with ‘fdr’ adjusment method, and
 at a p-value/adj.p-value of 0.05
@@ -1774,7 +1809,7 @@ Up
 </div>
 <div id="fc1.2" class="section level3">
 <h3>FC=1.2</h3>
-<table class="table table-striped table-hover" style="color: black; margin-left: auto; margin-right: auto;">
+<table class="table table-striped table-hover" style="margin-left: auto; margin-right: auto;">
 <caption>
 TABLE 7: Number of significant DE genes with ‘none’ adjusment method,
 and at a p-value/adj.p-value of 0.01
@@ -1839,7 +1874,7 @@ Up
 </tr>
 </tbody>
 </table>
-<table class="table table-striped table-hover" style="color: black; margin-left: auto; margin-right: auto;">
+<table class="table table-striped table-hover" style="margin-left: auto; margin-right: auto;">
 <caption>
 TABLE 8: Number of significant DE genes with ‘fdr’ adjusment method, and
 at a p-value/adj.p-value of 0.1
@@ -1904,7 +1939,7 @@ Up
 </tr>
 </tbody>
 </table>
-<table class="table table-striped table-hover" style="color: black; margin-left: auto; margin-right: auto;">
+<table class="table table-striped table-hover" style="margin-left: auto; margin-right: auto;">
 <caption>
 TABLE 9: Number of significant DE genes with ‘fdr’ adjusment method, and
 at a p-value/adj.p-value of 0.05
@@ -1972,7 +2007,7 @@ Up
 </div>
 <div id="fc1.3" class="section level3">
 <h3>FC=1.3</h3>
-<table class="table table-striped table-hover" style="color: black; margin-left: auto; margin-right: auto;">
+<table class="table table-striped table-hover" style="margin-left: auto; margin-right: auto;">
 <caption>
 TABLE 10: Number of significant DE genes with ‘none’ adjusment method,
 and at a p-value/adj.p-value of 0.01
@@ -2037,7 +2072,7 @@ Up
 </tr>
 </tbody>
 </table>
-<table class="table table-striped table-hover" style="color: black; margin-left: auto; margin-right: auto;">
+<table class="table table-striped table-hover" style="margin-left: auto; margin-right: auto;">
 <caption>
 TABLE 11: Number of significant DE genes with ‘fdr’ adjusment method,
 and at a p-value/adj.p-value of 0.1
@@ -2102,7 +2137,7 @@ Up
 </tr>
 </tbody>
 </table>
-<table class="table table-striped table-hover" style="color: black; margin-left: auto; margin-right: auto;">
+<table class="table table-striped table-hover" style="margin-left: auto; margin-right: auto;">
 <caption>
 TABLE 12: Number of significant DE genes with ‘fdr’ adjusment method,
 and at a p-value/adj.p-value of 0.05
@@ -2255,6 +2290,17 @@ Date
 <tbody>
 <tr>
 <td>
+<a href="https://github.com/tranmanhha135/Treg_uNK/blob/73ae14f407412692dc76774f1adbfff3f1593fca/docs/figure/deAnalysis.Rmd/hist-1.png" target="_blank">73ae14f</a>
+</td>
+<td>
+Ha Tran
+</td>
+<td>
+2024-08-02
+</td>
+</tr>
+<tr>
+<td>
 <a href="https://github.com/tranmanhha135/Treg_uNK/blob/e9e7671a3bb7cdda8602bf9275a15e119c622cf1/docs/figure/deAnalysis.Rmd/hist-1.png" target="_blank">e9e7671</a>
 </td>
 <td>
@@ -2316,6 +2362,17 @@ Date
 </tr>
 </thead>
 <tbody>
+<tr>
+<td>
+<a href="https://github.com/tranmanhha135/Treg_uNK/blob/73ae14f407412692dc76774f1adbfff3f1593fca/docs/figure/deAnalysis.Rmd/ma-1.png" target="_blank">73ae14f</a>
+</td>
+<td>
+Ha Tran
+</td>
+<td>
+2024-08-02
+</td>
+</tr>
 <tr>
 <td>
 <a href="https://github.com/tranmanhha135/Treg_uNK/blob/e9e7671a3bb7cdda8602bf9275a15e119c622cf1/docs/figure/deAnalysis.Rmd/ma-1.png" target="_blank">e9e7671</a>
@@ -2392,6 +2449,17 @@ Date
 <tbody>
 <tr>
 <td>
+<a href="https://github.com/tranmanhha135/Treg_uNK/blob/73ae14f407412692dc76774f1adbfff3f1593fca/docs/figure/deAnalysis.Rmd/vol-1.png" target="_blank">73ae14f</a>
+</td>
+<td>
+Ha Tran
+</td>
+<td>
+2024-08-02
+</td>
+</tr>
+<tr>
+<td>
 <a href="https://github.com/tranmanhha135/Treg_uNK/blob/e9e7671a3bb7cdda8602bf9275a15e119c622cf1/docs/figure/deAnalysis.Rmd/vol-1.png" target="_blank">e9e7671</a>
 </td>
 <td>
@@ -2466,6 +2534,17 @@ Date
 <tbody>
 <tr>
 <td>
+<a href="https://github.com/tranmanhha135/Treg_uNK/blob/73ae14f407412692dc76774f1adbfff3f1593fca/docs/figure/deAnalysis.Rmd/hmap-1.png" target="_blank">73ae14f</a>
+</td>
+<td>
+Ha Tran
+</td>
+<td>
+2024-08-02
+</td>
+</tr>
+<tr>
+<td>
 <a href="https://github.com/tranmanhha135/Treg_uNK/blob/e9e7671a3bb7cdda8602bf9275a15e119c622cf1/docs/figure/deAnalysis.Rmd/hmap-1.png" target="_blank">e9e7671</a>
 </td>
 <td>
@@ -2530,6 +2609,17 @@ Date
 </tr>
 </thead>
 <tbody>
+<tr>
+<td>
+<a href="https://github.com/tranmanhha135/Treg_uNK/blob/73ae14f407412692dc76774f1adbfff3f1593fca/docs/figure/deAnalysis.Rmd/hist_2-1.png" target="_blank">73ae14f</a>
+</td>
+<td>
+Ha Tran
+</td>
+<td>
+2024-08-02
+</td>
+</tr>
 <tr>
 <td>
 <a href="https://github.com/tranmanhha135/Treg_uNK/blob/e9e7671a3bb7cdda8602bf9275a15e119c622cf1/docs/figure/deAnalysis.Rmd/hist_2-1.png" target="_blank">e9e7671</a>
@@ -2606,6 +2696,17 @@ Date
 <tbody>
 <tr>
 <td>
+<a href="https://github.com/tranmanhha135/Treg_uNK/blob/73ae14f407412692dc76774f1adbfff3f1593fca/docs/figure/deAnalysis.Rmd/ma_2-1.png" target="_blank">73ae14f</a>
+</td>
+<td>
+Ha Tran
+</td>
+<td>
+2024-08-02
+</td>
+</tr>
+<tr>
+<td>
 <a href="https://github.com/tranmanhha135/Treg_uNK/blob/e9e7671a3bb7cdda8602bf9275a15e119c622cf1/docs/figure/deAnalysis.Rmd/ma_2-1.png" target="_blank">e9e7671</a>
 </td>
 <td>
@@ -2678,6 +2779,17 @@ Date
 </tr>
 </thead>
 <tbody>
+<tr>
+<td>
+<a href="https://github.com/tranmanhha135/Treg_uNK/blob/73ae14f407412692dc76774f1adbfff3f1593fca/docs/figure/deAnalysis.Rmd/vol_2-1.png" target="_blank">73ae14f</a>
+</td>
+<td>
+Ha Tran
+</td>
+<td>
+2024-08-02
+</td>
+</tr>
 <tr>
 <td>
 <a href="https://github.com/tranmanhha135/Treg_uNK/blob/e9e7671a3bb7cdda8602bf9275a15e119c622cf1/docs/figure/deAnalysis.Rmd/vol_2-1.png" target="_blank">e9e7671</a>
@@ -2754,6 +2866,17 @@ Date
 <tbody>
 <tr>
 <td>
+<a href="https://github.com/tranmanhha135/Treg_uNK/blob/73ae14f407412692dc76774f1adbfff3f1593fca/docs/figure/deAnalysis.Rmd/hmap_2-1.png" target="_blank">73ae14f</a>
+</td>
+<td>
+Ha Tran
+</td>
+<td>
+2024-08-02
+</td>
+</tr>
+<tr>
+<td>
 <a href="https://github.com/tranmanhha135/Treg_uNK/blob/e9e7671a3bb7cdda8602bf9275a15e119c622cf1/docs/figure/deAnalysis.Rmd/hmap_2-1.png" target="_blank">e9e7671</a>
 </td>
 <td>
@@ -2818,6 +2941,17 @@ Date
 </tr>
 </thead>
 <tbody>
+<tr>
+<td>
+<a href="https://github.com/tranmanhha135/Treg_uNK/blob/73ae14f407412692dc76774f1adbfff3f1593fca/docs/figure/deAnalysis.Rmd/hist_3-1.png" target="_blank">73ae14f</a>
+</td>
+<td>
+Ha Tran
+</td>
+<td>
+2024-08-02
+</td>
+</tr>
 <tr>
 <td>
 <a href="https://github.com/tranmanhha135/Treg_uNK/blob/e9e7671a3bb7cdda8602bf9275a15e119c622cf1/docs/figure/deAnalysis.Rmd/hist_3-1.png" target="_blank">e9e7671</a>
@@ -2894,6 +3028,17 @@ Date
 <tbody>
 <tr>
 <td>
+<a href="https://github.com/tranmanhha135/Treg_uNK/blob/73ae14f407412692dc76774f1adbfff3f1593fca/docs/figure/deAnalysis.Rmd/ma_3-1.png" target="_blank">73ae14f</a>
+</td>
+<td>
+Ha Tran
+</td>
+<td>
+2024-08-02
+</td>
+</tr>
+<tr>
+<td>
 <a href="https://github.com/tranmanhha135/Treg_uNK/blob/e9e7671a3bb7cdda8602bf9275a15e119c622cf1/docs/figure/deAnalysis.Rmd/ma_3-1.png" target="_blank">e9e7671</a>
 </td>
 <td>
@@ -2966,6 +3111,17 @@ Date
 </tr>
 </thead>
 <tbody>
+<tr>
+<td>
+<a href="https://github.com/tranmanhha135/Treg_uNK/blob/73ae14f407412692dc76774f1adbfff3f1593fca/docs/figure/deAnalysis.Rmd/vol_3-1.png" target="_blank">73ae14f</a>
+</td>
+<td>
+Ha Tran
+</td>
+<td>
+2024-08-02
+</td>
+</tr>
 <tr>
 <td>
 <a href="https://github.com/tranmanhha135/Treg_uNK/blob/e9e7671a3bb7cdda8602bf9275a15e119c622cf1/docs/figure/deAnalysis.Rmd/vol_3-1.png" target="_blank">e9e7671</a>
@@ -3042,6 +3198,17 @@ Date
 <tbody>
 <tr>
 <td>
+<a href="https://github.com/tranmanhha135/Treg_uNK/blob/73ae14f407412692dc76774f1adbfff3f1593fca/docs/figure/deAnalysis.Rmd/hmap_3-1.png" target="_blank">73ae14f</a>
+</td>
+<td>
+Ha Tran
+</td>
+<td>
+2024-08-02
+</td>
+</tr>
+<tr>
+<td>
 <a href="https://github.com/tranmanhha135/Treg_uNK/blob/e9e7671a3bb7cdda8602bf9275a15e119c622cf1/docs/figure/deAnalysis.Rmd/hmap_3-1.png" target="_blank">e9e7671</a>
 </td>
 <td>
@@ -3111,6 +3278,17 @@ Date
 </tr>
 </thead>
 <tbody>
+<tr>
+<td>
+<a href="https://github.com/tranmanhha135/Treg_uNK/blob/73ae14f407412692dc76774f1adbfff3f1593fca/docs/figure/deAnalysis.Rmd/heat_combined-1.png" target="_blank">73ae14f</a>
+</td>
+<td>
+Ha Tran
+</td>
+<td>
+2024-08-02
+</td>
+</tr>
 <tr>
 <td>
 <a href="https://github.com/tranmanhha135/Treg_uNK/blob/e9e7671a3bb7cdda8602bf9275a15e119c622cf1/docs/figure/deAnalysis.Rmd/heat_combined-1.png" target="_blank">e9e7671</a>
@@ -3190,7 +3368,7 @@ attached base packages:
 
 other attached packages:
  [1] knitr_1.48            pandoc_0.2.0          Glimma_2.14.0        
- [4] edgeR_4.2.1           limma_3.60.3          viridis_0.6.5        
+ [4] edgeR_4.2.1           limma_3.60.4          viridis_0.6.5        
  [7] viridisLite_0.4.2     ggrepel_0.9.5.9999    ggpubr_0.6.0         
 [10] ggplotify_0.1.2       extrafont_0.19        patchwork_1.2.0      
 [13] DT_0.33               VennDiagram_1.7.3     futile.logger_1.4.3  
@@ -3214,21 +3392,21 @@ loaded via a namespace (and not attached):
  [17] lambda.r_1.2.4              broom_1.0.6                
  [19] cellranger_1.1.0            SparseArray_1.4.8          
  [21] gridGraphics_0.5-1          sass_0.4.9                 
- [23] bslib_0.7.0                 htmlwidgets_1.6.4          
+ [23] bslib_0.8.0                 htmlwidgets_1.6.4          
  [25] futile.options_1.0.1        cachem_1.1.0               
  [27] whisker_0.4.1               lifecycle_1.0.4            
  [29] iterators_1.0.14            pkgconfig_2.0.3            
  [31] Matrix_1.7-0                R6_2.5.1                   
  [33] fastmap_1.2.0               MatrixGenerics_1.16.0      
  [35] GenomeInfoDbData_1.2.12     clue_0.3-65                
- [37] digest_0.6.36               colorspace_2.1-0           
+ [37] digest_0.6.36               colorspace_2.1-1           
  [39] S4Vectors_0.42.1            DESeq2_1.44.0              
  [41] rprojroot_2.0.4             textshaping_0.4.0          
  [43] crosstalk_1.2.1             GenomicRanges_1.56.1       
  [45] labeling_0.4.3              fansi_1.0.6                
  [47] timechange_0.3.0            httr_1.4.7                 
  [49] abind_1.4-5                 compiler_4.4.1             
- [51] here_1.0.1                  withr_3.0.0                
+ [51] here_1.0.1                  withr_3.0.1                
  [53] doParallel_1.0.17           backports_1.5.0            
  [55] BiocParallel_1.38.0         carData_3.0-5              
  [57] highr_0.11                  Rttf2pt1_1.3.12            
@@ -3242,20 +3420,20 @@ loaded via a namespace (and not attached):
  [73] XVector_0.44.0              xml2_1.3.6                 
  [75] car_3.1-2                   utf8_1.2.4                 
  [77] BiocGenerics_0.50.0         foreach_1.5.2              
- [79] pillar_1.9.0                yulab.utils_0.1.4          
+ [79] pillar_1.9.0                yulab.utils_0.1.5          
  [81] later_1.3.2                 circlize_0.4.16            
  [83] lattice_0.22-6              tidyselect_1.2.1           
  [85] locfit_1.5-9.10             git2r_0.33.0               
  [87] gridExtra_2.3               IRanges_2.38.1             
  [89] SummarizedExperiment_1.34.0 svglite_2.1.3              
- [91] stats4_4.4.1                xfun_0.45                  
+ [91] stats4_4.4.1                xfun_0.46                  
  [93] Biobase_2.64.0              statmod_1.5.0              
  [95] matrixStats_1.3.0           stringi_1.8.4              
  [97] UCSC.utils_1.0.0            workflowr_1.7.1            
- [99] yaml_2.3.9                  evaluate_0.24.0            
+ [99] yaml_2.3.10                 evaluate_0.24.0            
 [101] codetools_0.2-20            cli_3.6.3                  
 [103] systemfonts_1.1.0           munsell_0.5.1              
-[105] jquerylib_0.1.4             Rcpp_1.0.12                
+[105] jquerylib_0.1.4             Rcpp_1.0.13                
 [107] GenomeInfoDb_1.40.1         png_0.1-8                  
 [109] parallel_4.4.1              writexl_1.5.0              
 [111] crayon_1.5.3                GetoptLong_1.0.5           
